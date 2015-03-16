@@ -1,3 +1,6 @@
 vendor/
 .env
 etc/nginx.conf
+/config/app.php
+/tmp/*
+/logs/*
