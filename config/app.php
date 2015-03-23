@@ -8,7 +8,7 @@ catch (\Exception $e) {
 	exit(1);
 }
 
-$debug = getenv('DEBUG') ?: true;
+$debug = getenv('DEBUG') ?: false;
 $salt = getenv('SALT') ?: 'dc363e686e16eafeab563188e3a5264ee73196accaec05a3541b1ce4148d9992';
 
 $db_host = getenv('DB_NAME') ?: 'localhost';
