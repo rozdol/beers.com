@@ -1,7 +1,7 @@
-project-template
-================
+project-template-cakephp
+========================
 
-This is a template for the new project.
+This is a template for the new CakePHP project.
 
 Install
 -------
@@ -12,7 +12,7 @@ When starting a new PHP project, do the following:
 mkdir new-project
 cd new-project
 git init
-git remote add template git@github.com:QoboLtd/project-template.git
+git remote add template git@github.com:QoboLtd/project-template-cakephp.git
 git remote update
 git merge template/master
 composer install
@@ -26,11 +26,11 @@ Now that you have the project template installed, check that it works
 before you start working on your changes.  Fire up the PHP web server:
 
 ```
-php -S localhost:8000
+bin/cake server -H localhost -p 8000
 ```
 
 In your browser navigate to [http://localhost:8000](http://localhost:8000).  
-You should see the standard ```phpinfo()``` page.  If you do, all parts 
+You should see the standard CakePHP home page.  If you do, all parts 
 are in place.
 
 Usage
