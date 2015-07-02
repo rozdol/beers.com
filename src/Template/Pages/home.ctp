@@ -23,31 +23,31 @@ if (!Configure::read('debug')):
 endif;
 
 ?>
-
-<?= $this->Html->css('base.css') ?>
-<?= $this->Html->css('cake.css') ?>
-
-<div class="home">
-    <header>
-        <div class="header-image">
-            <?= $this->Html->image('http://cakephp.org/img/cake-logo.png') ?>
-            <h1>Along with Bootstrap 3!</h1>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="jumbotron">
+                    <?= $this->Html->image('http://cakephp.org/img/cake-logo.png') ?>
+                    <h1>Bootstrap 3 helpers!</h1>
+                    <p><a class="btn btn-primary btn-lg" target="_blank" href="https://holt59.github.io/cakephp3-bootstrap3-helpers/" role="button">See examples</a></p>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <p id="url-rewriting-warning" style="background-color:#e32; color:#fff;display:none">
+                    URL rewriting is not properly configured on your server.
+                    1) <a target="_blank" href="http://book.cakephp.org/3.0/en/installation/url-rewriting.html" style="color:#fff;">Help me configure it</a>
+                    2) <a target="_blank" href="http://book.cakephp.org/3.0/en/development/configuration.html#general-configuration" style="color:#fff;">I don't / can't use URL rewriting</a>
+                </p>
+            </div>
         </div>
-    </header>
-    <div id="content">
         <?php
         if (Configure::read('debug')):
             Debugger::checkSecurityKeys();
         endif;
         ?>
-        <p id="url-rewriting-warning" style="background-color:#e32; color:#fff;display:none">
-            URL rewriting is not properly configured on your server.
-            1) <a target="_blank" href="http://book.cakephp.org/3.0/en/installation/url-rewriting.html" style="color:#fff;">Help me configure it</a>
-            2) <a target="_blank" href="http://book.cakephp.org/3.0/en/development/configuration.html#general-configuration" style="color:#fff;">I don't / can't use URL rewriting</a>
-        </p>
-
         <div class="row">
-            <div class="columns large-5 platform checks">
+            <div class="col-xs-5 platform checks">
                 <?php if (version_compare(PHP_VERSION, '5.4.16', '>=')): ?>
                     <p class="success">Your version of PHP is 5.4.16 or higher.</p>
                 <?php else: ?>
@@ -74,7 +74,7 @@ endif;
                     <p class="problem">Your version of PHP does NOT have the intl extension loaded.</p>
                 <?php endif; ?>
             </div>
-            <div class="columns large-6 filesystem checks">
+            <div class="col-xs-6 col-xs-offset-1 filesystem checks">
                 <?php if (is_writable(TMP)): ?>
                     <p class="success">Your tmp directory is writable.</p>
                 <?php else: ?>
@@ -96,7 +96,7 @@ endif;
             </div>
         </div>
         <div class="row">
-            <div class="columns large-12  database checks">
+            <div class="col-xs-12  database checks">
                 <?php
                     try {
                         $connection = ConnectionManager::get('default');
@@ -112,22 +112,22 @@ endif;
                         endif;
                     }
                 ?>
-                <?php if ($connected): ?>
-                    <p class="success">CakePHP is able to connect to the database.</p>
+                <?php if ($connected) : ?>
+                    <?=  $this->Html->alert('CakePHP is able to connect to the database.', 'success'); ?>
                 <?php else: ?>
-                    <p class="problem">CakePHP is NOT able to connect to the database.<br /><br /><?= $errorMsg ?></p>
+                    <?=  $this->Html->alert('CakePHP is NOT able to connect to the database.<br /><br />' . $errorMsg, 'danger'); ?>
                 <?php endif; ?>
             </div>
         </div>
         <div class="row">
-            <div class="columns large-6">
+            <div class="col-xs-6">
                 <h3>Editing this Page</h3>
                 <ul>
                     <li>To change the content of this page, edit: src/Template/Pages/home.ctp.</li>
                     <li>You can also add some CSS styles for your pages at: webroot/css/.</li>
                 </ul>
             </div>
-            <div class="columns large-6">
+            <div class="col-xs-6">
                 <h3>Getting Started</h3>
                 <ul>
                     <li><a target="_blank" href="http://book.cakephp.org/3.0/en/">CakePHP 3.0 Docs</a></li>
@@ -140,7 +140,7 @@ endif;
 
         <hr/>
         <div class="row">
-            <div class="columns large-12">
+            <div class="col-xs-12">
                 <h3 class="">More about Cake</h3>
                 <p>
                     CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Front Controller and MVC.
