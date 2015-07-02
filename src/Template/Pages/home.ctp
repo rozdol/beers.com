@@ -18,31 +18,20 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Error\Debugger;
 use Cake\Network\Exception\NotFoundException;
 
-$this->layout = false;
-
 if (!Configure::read('debug')):
     throw new NotFoundException();
 endif;
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
-</head>
-<body class="home">
+
+<?= $this->Html->css('base.css') ?>
+<?= $this->Html->css('cake.css') ?>
+
+<div class="home">
     <header>
         <div class="header-image">
             <?= $this->Html->image('http://cakephp.org/img/cake-logo.png') ?>
-            <h1>Get the Ovens Ready</h1>
+            <h1>Along with Bootstrap 3!</h1>
         </div>
     </header>
     <div id="content">
@@ -185,7 +174,4 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             </div>
         </div>
     </div>
-    <footer>
-    </footer>
-</body>
-</html>
+</div>
