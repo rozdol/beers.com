@@ -49,49 +49,49 @@ endif;
         <div class="row">
             <div class="col-xs-5 platform checks">
                 <?php if (version_compare(PHP_VERSION, '5.4.16', '>=')): ?>
-                    <p class="success">Your version of PHP is 5.4.16 or higher.</p>
+                        <?= $this->Html->alert('Your version of PHP is 5.4.16 or higher.', 'success'); ?>
                 <?php else: ?>
-                    <p class="problem">Your version of PHP is too low. You need PHP 5.4.16 or higher to use CakePHP.</p>
+                        <?= $this->Html->alert('Your version of PHP is too low. You need PHP 5.4.16 or higher to use CakePHP.', 'danger'); ?>
                 <?php endif; ?>
 
                 <?php if (extension_loaded('mbstring')): ?>
-                    <p class="success">Your version of PHP has the mbstring extension loaded.</p>
+                    <?=  $this->Html->alert('Your version of PHP has the mbstring extension loaded.', 'success'); ?>
                 <?php else: ?>
-                    <p class="problem">Your version of PHP does NOT have the mbstring extension loaded.</p>;
+                    <?=  $this->Html->alert('Your version of PHP does NOT have the mbstring extension loaded.', 'danger'); ?>
                 <?php endif; ?>
 
                 <?php if (extension_loaded('openssl')): ?>
-                    <p class="success">Your version of PHP has the openssl extension loaded.</p>
+                    <?=  $this->Html->alert('Your version of PHP has the openssl extension loaded.', 'success'); ?>
                 <?php elseif (extension_loaded('mcrypt')): ?>
-                    <p class="success">Your version of PHP has the mcrypt extension loaded.</p>
+                    <?=  $this->Html->alert('Your version of PHP has the mcrypt extension loaded.', 'success'); ?>
                 <?php else: ?>
-                    <p class="problem">Your version of PHP does NOT have the openssl or mcrypt extension loaded.</p>
+                    <?=  $this->Html->alert('Your version of PHP does NOT have the openssl or mcrypt extension loaded.', 'danger'); ?>
                 <?php endif; ?>
 
                 <?php if (extension_loaded('intl')): ?>
-                    <p class="success">Your version of PHP has the intl extension loaded.</p>
+                    <?=  $this->Html->alert('Your version of PHP has the intl extension loaded.', 'success'); ?>
                 <?php else: ?>
-                    <p class="problem">Your version of PHP does NOT have the intl extension loaded.</p>
+                    <?=  $this->Html->alert('Your version of PHP does NOT have the intl extension loaded.', 'danger'); ?>
                 <?php endif; ?>
             </div>
             <div class="col-xs-6 col-xs-offset-1 filesystem checks">
                 <?php if (is_writable(TMP)): ?>
-                    <p class="success">Your tmp directory is writable.</p>
+                    <?=  $this->Html->alert('Your tmp directory is writable.', 'success'); ?>
                 <?php else: ?>
-                    <p class="problem">Your tmp directory is NOT writable.</p>
+                    <?=  $this->Html->alert('Your tmp directory is NOT writable.', 'danger'); ?>
                 <?php endif; ?>
 
                 <?php if (is_writable(LOGS)): ?>
-                    <p class="success">Your logs directory is writable.</p>
+                    <?=  $this->Html->alert('Your logs directory is writable.', 'success'); ?>
                 <?php else: ?>
-                    <p class="problem">Your logs directory is NOT writable.</p>
+                    <?=  $this->Html->alert('Your logs directory is NOT writable.', 'danger'); ?>
                 <?php endif; ?>
 
                 <?php $settings = Cache::config('_cake_core_'); ?>
                 <?php if (!empty($settings)): ?>
-                    <p class="success">The <em><?= $settings['className'] ?>Engine</em> is being used for core caching. To change the config edit config/app.php</p>
+                    <?=  $this->Html->alert('The <em>' . $settings['className'] . 'Engine</em> is being used for core caching. To change the config edit config/app.php', 'success'); ?>
                 <?php else: ?>
-                    <p class="problem">Your cache is NOT working. Please check the settings in config/app.php</p>
+                    <?=  $this->Html->alert('Your cache is NOT working. Please check the settings in config/app.php', 'danger'); ?>
                 <?php endif; ?>
             </div>
         </div>
