@@ -47,7 +47,7 @@ endif;
         endif;
         ?>
         <div class="row">
-            <div class="col-xs-5 platform checks">
+            <div class="col-xs-5">
                 <?php if (version_compare(PHP_VERSION, '5.4.16', '>=')): ?>
                         <?= $this->Html->alert('Your version of PHP is 5.4.16 or higher.', 'success'); ?>
                 <?php else: ?>
@@ -74,7 +74,7 @@ endif;
                     <?=  $this->Html->alert('Your version of PHP does NOT have the intl extension loaded.', 'danger'); ?>
                 <?php endif; ?>
             </div>
-            <div class="col-xs-6 col-xs-offset-1 filesystem checks">
+            <div class="col-xs-6 col-xs-offset-1">
                 <?php if (is_writable(TMP)): ?>
                     <?=  $this->Html->alert('Your tmp directory is writable.', 'success'); ?>
                 <?php else: ?>
@@ -96,7 +96,7 @@ endif;
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12  database checks">
+            <div class="col-xs-12">
                 <?php
                     try {
                         $connection = ConnectionManager::get('default');
