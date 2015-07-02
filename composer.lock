@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3b89c2c6a6ff6df194d905999973c6cd",
+    "hash": "e00b97aebd59b46a5655c7f556f60670",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -290,6 +290,43 @@
             ],
             "description": "A composer installer for CakePHP 3.0+ plugins.",
             "time": "2015-02-06 02:06:07"
+        },
+        {
+            "name": "holt59/cakephp3-bootstrap3-helpers",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Holt59/cakephp3-bootstrap3-helpers.git",
+                "reference": "bc112f1c41b15b9eff2a66b98b3d322095ecd87b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Holt59/cakephp3-bootstrap3-helpers/zipball/bc112f1c41b15b9eff2a66b98b3d322095ecd87b",
+                "reference": "bc112f1c41b15b9eff2a66b98b3d322095ecd87b",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0"
+            },
+            "type": "cakephp-plugin",
+            "extra": {
+                "installer-name": "Bootstrap3"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bootstrap3\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache"
+            ],
+            "description": "Bootstrap 3 Helpers for CakePHP 3.0",
+            "keywords": [
+                "bootstrap",
+                "cakephp"
+            ],
+            "time": "2015-05-03 10:36:25"
         },
         {
             "name": "interconnectit/search-replace-db",
@@ -2450,6 +2487,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "holt59/cakephp3-bootstrap3-helpers": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,
