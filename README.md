@@ -8,13 +8,23 @@ Install
 
 When starting a new PHP project, do the following:
 
-```
+
+```bash
+# Initiate the new work space
 mkdir new-project
 cd new-project
 git init
-git remote add template git@github.com:QoboLtd/project-template-cakephp.git
+# Kick off the project (this is needed for --squash merge later)
+touch README.md
+git add README.md
+git commit -m "Initial commit"
+# Get project-template
+git remote add template https://github.com/QoboLtd/project-template-cakephp.git
 git remote update
-git merge template/master
+# Merge latest tag (or use 'template/master' instead)
+git merge --squash $(git tag | tail -n 1)
+git commit -m "Merged project-template-cakephp ($(git tag | tail -n 1))"
+# Finalize the setup
 composer install
 ./vendor/bin/phake dotenv:create
 ```
