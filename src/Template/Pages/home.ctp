@@ -28,7 +28,7 @@ endif;
         <div class="jumbotron">
             <?= $this->Html->image('http://cakephp.org/img/cake-logo.png') ?>
             <h1>Bootstrap 3 helpers!</h1>
-            <p><a class="btn btn-primary btn-lg" target="_blank" href="https://holt59.github.io/cakephp3-bootstrap3-helpers/" role="button">See examples</a></p>
+            <p><a class="btn btn-primary btn-lg" target="_blank" href="https://holt59.github.io/cakephp3-bootstrap-helpers/" role="button">See examples</a></p>
         </div>
     </div>
     <div class="col-xs-12">
