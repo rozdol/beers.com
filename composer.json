@@ -6,7 +6,7 @@
         "cakephp/migrations": "~1.0",
         "cakephp/plugin-installer": "*",
 		"qobo/phake-builder": "~1.0",
-		"holt59/cakephp3-bootstrap3-helpers": "dev-master"
+        "holt59/cakephp3-bootstrap-helpers": "dev-master"
     },
     "require-dev": {
         "psy/psysh": "@stable",
