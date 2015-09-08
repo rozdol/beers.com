@@ -1,7 +1,7 @@
 <?php
 try {
-	Dotenv::load( dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' );
-	Dotenv::required(array('DB_NAME'));
+    Dotenv::load(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
+    Dotenv::required(['DB_NAME']);
 }
 catch (\Exception $e) {
 	echo $e->getMessage();
