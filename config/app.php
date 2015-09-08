@@ -2,8 +2,7 @@
 try {
     Dotenv::load(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
     Dotenv::required(['DB_NAME']);
-}
-catch (\Exception $e) {
+} catch (\Exception $e) {
     echo $e->getMessage();
     exit(1);
 }
