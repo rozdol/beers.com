@@ -26,22 +26,22 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
-	public $helpers = [
-		'Html' => [
-			'className' => 'Bootstrap3.BootstrapHtml',
-			'useFontAwesome' => true,
-		],
-		'Form' => [
-			'className' => 'Bootstrap3.BootstrapForm',
-		],
-		'Paginator' => [
-			'className' => 'Bootstrap3.BootstrapPaginator',
-		],
-		'Modal' => [
-			'className' => 'Bootstrap3.BootstrapModal',
-		],
+    public $helpers = [
+        'Html' => [
+            'className' => 'Bootstrap3.BootstrapHtml',
+            'useFontAwesome' => true,
+        ],
+        'Form' => [
+            'className' => 'Bootstrap3.BootstrapForm',
+        ],
+        'Paginator' => [
+            'className' => 'Bootstrap3.BootstrapPaginator',
+        ],
+        'Modal' => [
+            'className' => 'Bootstrap3.BootstrapModal',
+        ],
 
-	];
+    ];
 
     /**
      * Initialization hook method.
