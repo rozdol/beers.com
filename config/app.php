@@ -11,10 +11,10 @@ catch (\Exception $e) {
 $debug = getenv('DEBUG') ?: false;
 $salt = getenv('SALT') ?: 'dc363e686e16eafeab563188e3a5264ee73196accaec05a3541b1ce4148d9992';
 
-$db_host = getenv('DB_HOST') ?: 'localhost';
-$db_name = getenv('DB_NAME');
-$db_user = getenv('DB_USER') ?: 'root';
-$db_pass = getenv('DB_PASS') ?: '';
+$dbHost = getenv('DB_HOST') ?: 'localhost';
+$dbName = getenv('DB_NAME');
+$dbUser = getenv('DB_USER') ?: 'root';
+$dbPass = getenv('DB_PASS') ?: '';
 
 return [
     /**
@@ -229,16 +229,16 @@ return [
             'className' => 'Cake\Database\Connection',
             'driver' => 'Cake\Database\Driver\Mysql',
             'persistent' => false,
-            'host' => $db_host,
+            'host' => $dbHost,
             /*
             * CakePHP will use the default DB port based on the driver selected
             * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
             * the following line and set the port accordingly
             */
             //'port' => 'nonstandard_port_number',
-            'username' => $db_user,
-            'password' => $db_pass,
-            'database' => $db_name,
+            'username' => $dbUser,
+            'password' => $dbPass,
+            'database' => $dbName,
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'cacheMetadata' => true,
