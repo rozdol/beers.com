@@ -4,8 +4,8 @@ try {
     Dotenv::required(['DB_NAME']);
 }
 catch (\Exception $e) {
-	echo $e->getMessage();
-	exit(1);
+    echo $e->getMessage();
+    exit(1);
 }
 
 $debug = getenv('DEBUG') ?: false;
