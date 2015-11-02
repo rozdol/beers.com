@@ -1,7 +1,9 @@
 <?php
 try {
+    Dotenv::makeMutable();
     Dotenv::load(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
     Dotenv::required(['DB_NAME']);
+    Dotenv::makeImmutable();
 } catch (\Exception $e) {
     echo $e->getMessage();
     exit(1);
