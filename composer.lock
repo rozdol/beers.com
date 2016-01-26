@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "16cc764f9dc39681e7e6d13da5fd275c",
-    "content-hash": "f64a2aa33236eb1e399b0c81a77f155d",
+    "hash": "72031880ac220ccf99ceb8f1025ab58e",
+    "content-hash": "ebc585c2e8ca45a93ee06869f25814cc",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -125,6 +125,46 @@
                 "localization"
             ],
             "time": "2014-08-24 00:00:00"
+        },
+        {
+            "name": "cakedc/users",
+            "version": "3.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CakeDC/users.git",
+                "reference": "73c422506c253e7961f042e00d66bc5208f676bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CakeDC/users/zipball/73c422506c253e7961f042e00d66bc5208f676bb",
+                "reference": "73c422506c253e7961f042e00d66bc5208f676bb",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "3.1.*",
+                "php": ">=5.4.16"
+            },
+            "require-dev": {
+                "opauth/facebook": "*",
+                "opauth/opauth": "*",
+                "opauth/twitter": "*",
+                "phpunit/phpunit": "*"
+            },
+            "suggest": {
+                "google/recaptcha": "Provide reCAPTCHA validation for registration form",
+                "opauth/facebook": "Provide Social Login: Facebook Strategy, requires Opauth",
+                "opauth/opauth": "Used for Social Login, if you add Opauth, remember adding at least one strategy too",
+                "opauth/twitter": "Provide Social Login: Twitter Strategy, requires Opauth"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CakeDC\\Users\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Users plugin for CakePHP 3.1",
+            "time": "2015-11-12 09:28:00"
         },
         {
             "name": "cakephp/cakephp",
