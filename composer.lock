@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "72031880ac220ccf99ceb8f1025ab58e",
-    "content-hash": "ebc585c2e8ca45a93ee06869f25814cc",
+    "hash": "06d3e772cff27a5fd1721233fd08c16a",
+    "content-hash": "1bcafdcad8d58781ebb956e92c3c9b75",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -327,6 +327,58 @@
             "time": "2015-06-10 10:35:13"
         },
         {
+            "name": "friendsofcake/bootstrap-ui",
+            "version": "v0.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfCake/bootstrap-ui.git",
+                "reference": "89f360ab0a30469e1bd19b92ccd8b82232f376a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfCake/bootstrap-ui/zipball/89f360ab0a30469e1bd19b92ccd8b82232f376a0",
+                "reference": "89f360ab0a30469e1bd19b92ccd8b82232f376a0",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "dev-master",
+                "phpunit/phpunit": "4.1.*",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "BootstrapUI\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jad Bitar",
+                    "homepage": "http://jadb.io",
+                    "role": "Author"
+                },
+                {
+                    "name": "Others",
+                    "homepage": "https://github.com/friendsofcake/bootstrap-ui/graphs/contributors"
+                }
+            ],
+            "description": "Twitter Bootstrap 3 support for CakePHP 3",
+            "homepage": "http://github.com/friendsofcake/bootstrap-ui",
+            "keywords": [
+                "bootstrap",
+                "cakephp",
+                "twitter"
+            ],
+            "time": "2015-12-12 18:56:46"
+        },
+        {
             "name": "gorkalaucirica/hipchat-v2-api-client",
             "version": "v1.5.0",
             "target-dir": "GorkaLaucirica/HipchatAPIv2Client",
@@ -467,46 +519,6 @@
                 "system"
             ],
             "time": "2012-10-03 19:54:08"
-        },
-        {
-            "name": "holt59/cakephp3-bootstrap-helpers",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Holt59/cakephp3-bootstrap-helpers.git",
-                "reference": "9e13397acc745195a29fff90c51b821edd5bf42b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Holt59/cakephp3-bootstrap-helpers/zipball/9e13397acc745195a29fff90c51b821edd5bf42b",
-                "reference": "9e13397acc745195a29fff90c51b821edd5bf42b",
-                "shasum": ""
-            },
-            "require": {
-                "cakephp/cakephp": "~3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "cakephp-plugin",
-            "extra": {
-                "installer-name": "Bootstrap"
-            },
-            "autoload": {
-                "psr-4": {
-                    "Bootstrap\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache"
-            ],
-            "description": "Bootstrap Helpers for CakePHP 3.0",
-            "keywords": [
-                "bootstrap",
-                "cakephp"
-            ],
-            "time": "2016-01-26 09:28:54"
         },
         {
             "name": "interconnectit/search-replace-db",
@@ -3078,7 +3090,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "holt59/cakephp3-bootstrap-helpers": 20,
         "psy/psysh": 0,
         "cakephp/cakephp-codesniffer": 20
     },
