@@ -56,7 +56,18 @@ group('cakephp', function() {
 			printSeparator();
 			printInfo('Running CakePHP migrations task');
 
+			/**
+			 * shell command for running application migrations
+			 * @var string
+			 */
 			$command = getenv('CAKE_CONSOLE') . ' migrations migrate';
+			doShellCommand($command);
+
+			/**
+			 * shell command for running loaded plugins migrations
+			 * @var string
+			 */
+			$command = getenv('CAKE_CONSOLE') . ' qobo_plugin migrate';
 			doShellCommand($command);
 		});
 
