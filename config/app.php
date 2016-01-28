@@ -16,6 +16,7 @@ $dbHost = getenv('DB_HOST') ?: 'localhost';
 $dbName = getenv('DB_NAME');
 $dbUser = getenv('DB_USER') ?: 'root';
 $dbPass = getenv('DB_PASS') ?: '';
+$dbTestName = $dbName . '_test';
 
 return [
     /**
@@ -273,9 +274,9 @@ return [
             'persistent' => false,
             'host' => 'localhost',
             //'port' => 'nonstandard_port_number',
-            'username' => 'my_app',
-            'password' => 'secret',
-            'database' => 'test_myapp',
+            'username' => $dbUser,
+            'password' => $dbPass,
+            'database' => $dbTestName,
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'cacheMetadata' => true,
