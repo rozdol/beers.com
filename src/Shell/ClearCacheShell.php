@@ -20,7 +20,8 @@ class ClearCacheShell extends Shell
      */
     public function views()
     {
-        Cache::clear();
+        // false flag clears all keys.
+        Cache::clear(false);
         $this->out('<success>Clear all cached view elements.</success>');
 
         return true;
