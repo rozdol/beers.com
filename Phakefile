@@ -20,6 +20,7 @@ group('app', function() {
 	task('update', ':git:pull', ':git:checkout');
 	task('update', ':composer:install');
 	task('update', ':dotenv:create', ':dotenv:reload', ':file:process');
+	task('update', ':cakephp:update:run');
 
 
 	desc('Remove application');
@@ -28,6 +29,35 @@ group('app', function() {
 		printInfo("Removing application");
 	});
 	task('remove', ':dotenv:delete');
+
+});
+
+/**
+ * Grouped CakePHP related tasks
+ */
+group('cakephp', function() {
+
+	/**
+	 * 'Grouped CakePHP app update related tasks
+	 */
+	group('update', function() {
+
+		desc('Runs CakePHP clear cache task');
+		task('clear_cache', function() {
+			printSeparator();
+			printInfo('Running CakePHP clear cache task');
+
+			$command = 'clear_cache all';
+			doShellCommand([getenv('CAKE_CONSOLE'), $command]);
+		});
+
+		desc('Runs CakePHP app update related tasks');
+		task('run', ':cakephp:update:clear_cache', function($app) {
+			printSeparator();
+			printInfo('All CakePHP tasks are completed');
+		});
+
+	});
 
 });
 
