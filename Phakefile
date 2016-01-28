@@ -47,15 +47,29 @@ group('cakephp', function() {
 			printSeparator();
 			printInfo('Running CakePHP clear cache task');
 
-			$command = 'clear_cache all';
-			doShellCommand([getenv('CAKE_CONSOLE'), $command]);
+			$command = getenv('CAKE_CONSOLE') . ' clear_cache all';
+			doShellCommand($command);
+		});
+
+		desc('Runs CakePHP migrations task');
+		task('migrations', function() {
+			printSeparator();
+			printInfo('Running CakePHP migrations task');
+
+			$command = getenv('CAKE_CONSOLE') . ' migrations migrate';
+			doShellCommand($command);
 		});
 
 		desc('Runs CakePHP app update related tasks');
-		task('run', ':cakephp:update:clear_cache', function($app) {
-			printSeparator();
-			printInfo('All CakePHP tasks are completed');
-		});
+		task(
+			'run',
+			':cakephp:update:clear_cache',
+			':cakephp:update:migrations',
+			function($app) {
+				printSeparator();
+				printInfo('All CakePHP tasks are completed');
+			}
+		);
 
 	});
 
