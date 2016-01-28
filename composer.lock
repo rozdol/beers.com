@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "06d3e772cff27a5fd1721233fd08c16a",
+    "hash": "abce099716331ec3c07f7de9df0702f9",
     "content-hash": "1bcafdcad8d58781ebb956e92c3c9b75",
     "packages": [
         {
@@ -238,20 +238,20 @@
         },
         {
             "name": "cakephp/migrations",
-            "version": "1.5.2",
+            "version": "1.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/migrations.git",
-                "reference": "27d65766312b51be8228365f2b75e2541017723f"
+                "reference": "ba856dce1306d633d4f8fb20385f67d07ccc3708"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/migrations/zipball/27d65766312b51be8228365f2b75e2541017723f",
-                "reference": "27d65766312b51be8228365f2b75e2541017723f",
+                "url": "https://api.github.com/repos/cakephp/migrations/zipball/ba856dce1306d633d4f8fb20385f67d07ccc3708",
+                "reference": "ba856dce1306d633d4f8fb20385f67d07ccc3708",
                 "shasum": ""
             },
             "require": {
-                "cakephp/cakephp": "~3.1",
+                "cakephp/cakephp": "~3.1 || 3.2.*",
                 "php": ">=5.4",
                 "robmorgan/phinx": "~0.5.0"
             },
@@ -284,7 +284,7 @@
                 "cakephp",
                 "migrations"
             ],
-            "time": "2015-12-25 11:58:59"
+            "time": "2016-01-19 12:14:44"
         },
         {
             "name": "cakephp/plugin-installer",
