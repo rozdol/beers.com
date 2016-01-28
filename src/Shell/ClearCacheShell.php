@@ -77,12 +77,10 @@ class ClearCacheShell extends Shell
     public function getOptionParser()
     {
         $parser = parent::getOptionParser();
-        $parser->addSubcommand('views', [
-            'help' => 'Clear View elements\' cache.',
-        ])->addSubcommand('models', [
-            'help' => 'Clear Models\' cache.',
-        ])->addSubcommand('all', [
-            'help' => 'Clear all cache.']);
+        $parser
+            ->addSubcommand('views', ['help' => 'Clear View elements\' cache.'])
+            ->addSubcommand('models', ['help' => 'Clear Models\' cache.'])
+            ->addSubcommand('all', ['help' => 'Clear all cache.']);
 
         return $parser;
     }
