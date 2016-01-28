@@ -10,6 +10,7 @@ group('app', function() {
 	});
 	task('install', ':git:pull', ':git:checkout');
 	task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
+	task('install', ':cakephp:update:run');
 
 
 	desc('Update application');
