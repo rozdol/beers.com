@@ -10,7 +10,7 @@ group('app', function() {
 	});
 	task('install', ':git:pull', ':git:checkout');
 	task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
-	task('install', ':cakephp:install:run');
+	task('install', ':cakephp:install');
 
 
 	desc('Update application');
@@ -21,7 +21,7 @@ group('app', function() {
 	task('update', ':git:pull', ':git:checkout');
 	task('update', ':composer:install');
 	task('update', ':dotenv:create', ':dotenv:reload', ':file:process');
-	task('update', ':cakephp:update:run');
+	task('update', ':cakephp:update');
 
 
 	desc('Remove application');
