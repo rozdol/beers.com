@@ -107,7 +107,7 @@ class ClearCacheShell extends Shell
         $parser
             ->addSubcommand('views', ['help' => 'Clear View elements\' cache.'])
             ->addSubcommand('models', ['help' => 'Clear Models\' cache.'])
-            ->addSubcommand('core', ['help' => 'Clear l10n, i18n and file maps\' cache',])
+            ->addSubcommand('core', ['help' => 'Clear l10n, i18n and file maps\' cache'])
             ->addSubcommand('all', ['help' => 'Clear all cache.']);
 
         return $parser;
