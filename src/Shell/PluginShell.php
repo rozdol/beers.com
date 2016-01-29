@@ -3,13 +3,13 @@
 namespace App\Shell;
 
 use Cake\Console\ConsoleOptionParser;
-use Cake\Shell\PluginShell;
+use Cake\Shell\PluginShell as CorePluginShell;
 
 /**
  * Custom Plugin Shell class that adds extended
  * functionality to Cake's core Plugin Shell.
  */
-class QoboPluginShell extends PluginShell
+class PluginShell extends CorePluginShell
 {
     /**
      * Tasks to load
