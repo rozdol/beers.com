@@ -70,37 +70,29 @@ group('cakephp', function() {
 	/**
 	 * 'Grouped CakePHP app update related tasks
 	 */
-	group('update', function() {
-
-		desc('Runs CakePHP app update related tasks');
-		task(
-			'run',
-			':cakephp:clear_cache',
-			':cakephp:migrations',
-			function($app) {
-				printSeparator();
-				printInfo('All CakePHP app:update related tasks are completed');
-			}
-		);
-
-	});
+	desc('Runs CakePHP app update related tasks');
+	task(
+		'update',
+		':cakephp:clear_cache',
+		':cakephp:migrations',
+		function($app) {
+			printSeparator();
+			printInfo('All CakePHP app:update related tasks are completed');
+		}
+	);
 
 	/**
-	 * 'Grouped CakePHP app install related tasks
+	 * 'Group CakePHP app install related tasks
 	 */
-	group('install', function() {
-
-		desc('Runs CakePHP app install related tasks');
-		task(
-			'run',
-			':cakephp:migrations',
-			function($app) {
-				printSeparator();
-				printInfo('All CakePHP app:install related tasks are completed');
-			}
-		);
-
-	});
+	desc('Runs CakePHP app install related tasks');
+	task(
+		'install',
+		':cakephp:migrations',
+		function($app) {
+			printSeparator();
+			printInfo('All CakePHP app:install related tasks are completed');
+		}
+	);
 
 });
 
