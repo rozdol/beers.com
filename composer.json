@@ -7,7 +7,9 @@
         "cakephp/plugin-installer": "*",
 		"qobo/phake-builder": "~1.0",
         "cakedc/users": "~3.1",
-        "friendsofcake/bootstrap-ui": "~0.3"
+        "friendsofcake/bootstrap-ui": "~0.3",
+        "burzum/cakephp-file-storage": "^1.1",
+        "burzum/cakephp-imagine-plugin": "^2.1"
     },
     "require-dev": {
         "psy/psysh": "@stable",
