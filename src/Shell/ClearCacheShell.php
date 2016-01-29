@@ -49,7 +49,33 @@ class ClearCacheShell extends Shell
 
         return true;
     }
+    /**
+     * Clear all caching file of the framework. This includes
+     * l10n, i18n and file maps.
+     *
+     * @return bool
+     */
+    public function core()
+    {
+        $core = Cache::config('_cake_core_');
+        if (!$core) {
+            $this->error('Error! Cannot find core config.');
+            return false;
+        }
+        $dir = $core['path'];
+        if (!file_exists($dir)) {
+            $this->error('Error! Cannot proceed without the cache\'s path');
+            return false;
+        }
+        $it = new \FilesystemIterator($dir, \FilesystemIterator::SKIP_DOTS);
+        foreach ($it as $file) {
+            $filename = str_replace($core['prefix'], '', $file->getFilename());
+            Cache::delete($filename, '_cake_core_');
+        }
+        $this->out('<success>Clear all core caching files.</success>');
 
+        return true;
+    }
 
     /**
      * Clear all cache.
@@ -60,10 +86,11 @@ class ClearCacheShell extends Shell
     {
         $m = $this->models();
         $v = $this->views();
+        $c = $this->core();
 
-        if (!$m || !$v) {
-            $this->err('Something when wrong.');
-            return false;
+        if (!$m || !$v || !$c) {
+             $this->err('Something when wrong.');
+             return false;
         }
 
         return true;
@@ -80,6 +107,7 @@ class ClearCacheShell extends Shell
         $parser
             ->addSubcommand('views', ['help' => 'Clear View elements\' cache.'])
             ->addSubcommand('models', ['help' => 'Clear Models\' cache.'])
+            ->addSubcommand('core', ['help' => 'Clear l10n, i18n and file maps\' cache',])
             ->addSubcommand('all', ['help' => 'Clear all cache.']);
 
         return $parser;
