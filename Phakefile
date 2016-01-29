@@ -39,7 +39,7 @@ group('app', function() {
 group('cakephp', function() {
 
 	desc('Runs CakePHP migrations task');
-	task('migrations', function() {
+	task('migrations', ':builder:init', function() {
 		printSeparator();
 		printInfo('Running CakePHP migrations task');
 
@@ -59,7 +59,7 @@ group('cakephp', function() {
 	});
 
 	desc('Runs CakePHP clear cache task');
-	task('clear_cache', function() {
+	task('clear_cache', ':builder:init', function() {
 		printSeparator();
 		printInfo('Running CakePHP clear cache task');
 
@@ -73,6 +73,7 @@ group('cakephp', function() {
 	desc('Runs CakePHP app update related tasks');
 	task(
 		'update',
+		':builder:init',
 		':cakephp:clear_cache',
 		':cakephp:migrations',
 		function($app) {
@@ -87,6 +88,7 @@ group('cakephp', function() {
 	desc('Runs CakePHP app install related tasks');
 	task(
 		'install',
+		':builder:init',
 		':cakephp:migrations',
 		function($app) {
 			printSeparator();
