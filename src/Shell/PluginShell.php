@@ -18,21 +18,22 @@ class PluginShell extends CorePluginShell
      */
     public $tasks = [
         'List',
-        'Migrate'
+        'Migrations'
     ];
 
     /**
-     * Get the option parser for this shell.
-     *
-     * @return \Cake\Console\ConsoleOptionParser
+     * {@inheritDoc}
      */
     public function getOptionParser()
     {
         $parser = parent::getOptionParser();
         $parser
             ->description('Qobo Plugin Shell adds extended functionality to Cake\'s Plugin Shell.')
-            ->addSubcommand('list', ['help' => 'List all plugins', 'parser' => $this->List->getOptionParser()])
-            ->addSubcommand('migrate', ['help' => 'Migrate all plugins', 'parser' => $this->Migrate->getOptionParser()]);
+            ->addSubcommand('list', ['help' => 'List all loaded plugins', 'parser' => $this->List->getOptionParser()])
+            ->addSubcommand(
+                'migrations',
+                ['help' => 'Migration tasks for all loaded plugins', 'parser' => $this->Migrations->getOptionParser()]
+            );
 
         return $parser;
     }
