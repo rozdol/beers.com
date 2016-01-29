@@ -54,7 +54,7 @@ group('cakephp', function() {
 		 * shell command for running loaded plugins migrations
 		 * @var string
 		 */
-		$command = getenv('CAKE_CONSOLE') . ' plugin migrate';
+		$command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate';
 		doShellCommand($command);
 	});
 
