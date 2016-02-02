@@ -54,7 +54,7 @@ group('cakephp', function() {
 		printInfo('Dropping test database.');
 
 		$dbTestName = requireValue('DB_NAME', $app) . '_test';
-		$query = "CREATE DATABASE " . $dbTestName;
+		$query = "DROP DATABASE " . $dbTestName;
 		doMySQLCommand($app, $query, false, true);
 	});
 
