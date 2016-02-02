@@ -16,7 +16,7 @@ $dbHost = getenv('DB_HOST') ?: 'localhost';
 $dbName = getenv('DB_NAME');
 $dbUser = getenv('DB_USER') ?: 'root';
 $dbPass = getenv('DB_PASS') ?: '';
-$dbTestName = getenv('DB_NAME_TEST') ?:$dbName . '_test';
+$dbTestName = $dbName . '_test';
 
 return [
     /**

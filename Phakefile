@@ -43,7 +43,8 @@ group('cakephp', function() {
 		printSeparator();
 		printInfo('Creating test database.');
 
-		$query = "CREATE DATABASE " . requireValue('DB_NAME_TEST', $app);
+		$dbTestName = requireValue('DB_NAME', $app) . '_test';
+		$query = "CREATE DATABASE " . $dbTestName;
 		doMySQLCommand($app, $query, false, true);
 	});
 
@@ -52,7 +53,8 @@ group('cakephp', function() {
 		printSeparator();
 		printInfo('Dropping test database.');
 
-		$query = "DROP DATABASE " . requireValue('DB_NAME_TEST', $app);
+		$dbTestName = requireValue('DB_NAME', $app) . '_test';
+		$query = "CREATE DATABASE " . $dbTestName;
 		doMySQLCommand($app, $query, false, true);
 	});
 
