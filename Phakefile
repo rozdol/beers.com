@@ -56,6 +56,16 @@ group('cakephp', function() {
 		doMySQLCommand($app, $query, false, true);
 	});
 
+	desc('Migrates migrations to the test database');
+	task('test-database-migrate', ':builder:init', function($app) {
+		printSeparator();
+		printInfo('Migrating to the test database.');
+
+		$command = getenv('CAKE_CONSOLE') . ' migrations migrate --connection=test';
+		doShellCommand($command);
+	});
+
+
 	desc('Runs CakePHP migrations task');
 	task('migrations', ':builder:init', function() {
 		printSeparator();
