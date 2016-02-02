@@ -38,6 +38,24 @@ group('app', function() {
  */
 group('cakephp', function() {
 
+	desc('Creates CakePHP test database');
+	task('database-test-create', ':builder:init', function($app) {
+		printSeparator();
+		printInfo('Creating test database.');
+
+		$query = "CREATE DATABASE " . requireValue('DB_NAME_TEST', $app);
+		doMySQLCommand($app, $query, false, true);
+	});
+
+	desc('Deletes the existing CakePHP test database');
+	task('database-test-drop', ':builder:init', function($app) {
+		printSeparator();
+		printInfo('Dropping test database.');
+
+		$query = "DROP DATABASE " . requireValue('DB_NAME_TEST', $app);
+		doMySQLCommand($app, $query, false, true);
+	});
+
 	desc('Runs CakePHP migrations task');
 	task('migrations', ':builder:init', function() {
 		printSeparator();
