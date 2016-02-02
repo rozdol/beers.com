@@ -39,7 +39,7 @@ group('app', function() {
 group('cakephp', function() {
 
 	desc('Creates CakePHP test database');
-	task('database-test-create', ':builder:init', function($app) {
+	task('test-database-create', ':builder:init', function($app) {
 		printSeparator();
 		printInfo('Creating test database.');
 
@@ -48,7 +48,7 @@ group('cakephp', function() {
 	});
 
 	desc('Deletes the existing CakePHP test database');
-	task('database-test-drop', ':builder:init', function($app) {
+	task('test-database-drop', ':builder:init', function($app) {
 		printSeparator();
 		printInfo('Dropping test database.');
 
