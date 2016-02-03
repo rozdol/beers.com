@@ -31,6 +31,7 @@ group('app', function() {
 		printInfo("Removing application");
 	});
 	task('remove', ':dotenv:delete');
+	task('remove', ':mysql:database-drop');
 
 });
 
