@@ -88,6 +88,15 @@ group('cakephp', function() {
 		doShellCommand($command);
 	});
 
+	desc('Create \'qobo\' user');
+	task('qobo_user', ':builder:init', function() {
+		printSeparator();
+		printInfo('Creating \'qobo\' user');
+
+		$command = getenv('CAKE_CONSOLE') . ' users addUser --username=qobo --password=qobo --email=webdev@qobocloud.com';
+		doShellCommand($command);
+	});
+
 	desc('Runs CakePHP clear cache task');
 	task('clear_cache', ':builder:init', function() {
 		printSeparator();
@@ -113,13 +122,14 @@ group('cakephp', function() {
 	);
 
 	/**
-	 * 'Group CakePHP app install related tasks
+	 * 'Grouped CakePHP app install related tasks
 	 */
 	desc('Runs CakePHP app install related tasks');
 	task(
 		'install',
 		':builder:init',
 		':cakephp:migrations',
+		':cakephp:qobo_user',
 		function($app) {
 			printSeparator();
 			printInfo('All CakePHP app:install related tasks are completed');
