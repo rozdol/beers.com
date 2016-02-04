@@ -38,10 +38,10 @@ class GroupsFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => '26503ce1-32c3-41e2-96a9-ae0ce2626b3f',
+            'id' => '959b9de4-07c7-4032-a9a0-0d075ca2c633',
             'name' => 'Lorem ipsum dolor sit amet',
-            'created' => '2016-02-03 15:58:10',
-            'modified' => '2016-02-03 15:58:10'
+            'created' => '2016-02-04 11:12:29',
+            'modified' => '2016-02-04 11:12:29'
         ],
     ];
 }

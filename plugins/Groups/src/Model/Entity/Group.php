@@ -11,6 +11,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property \Groups\Model\Entity\Phinxlog[] $phinxlog
+ * @property \Groups\Model\Entity\User[] $users
  */
 class Group extends Entity
 {

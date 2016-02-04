@@ -11,6 +11,7 @@ use Groups\Model\Entity\Group;
  * Groups Model
  *
  * @property \Cake\ORM\Association\BelongsToMany $Phinxlog
+ * @property \Cake\ORM\Association\BelongsToMany $Users
  */
 class GroupsTable extends Table
 {
@@ -37,8 +38,12 @@ class GroupsTable extends Table
             'joinTable' => 'groups_phinxlog',
             'className' => 'Groups.Phinxlog'
         ]);
-
-        $this->belongsToMany('Users');
+        $this->belongsToMany('Users', [
+            'foreignKey' => 'group_id',
+            'targetForeignKey' => 'user_id',
+            'joinTable' => 'groups_users',
+            'className' => 'Groups.Users'
+        ]);
     }
 
     /**

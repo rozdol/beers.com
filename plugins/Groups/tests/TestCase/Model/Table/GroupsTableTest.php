@@ -19,7 +19,9 @@ class GroupsTableTest extends TestCase
     public $fixtures = [
         'plugin.groups.groups',
         'plugin.groups.phinxlog',
-        'plugin.groups.groups_phinxlog'
+        'plugin.groups.groups_phinxlog',
+        'plugin.groups.users',
+        'plugin.groups.groups_users'
     ];
 
     /**
