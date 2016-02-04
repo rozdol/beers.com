@@ -95,7 +95,10 @@ group('cakephp', function() {
 		printSeparator();
 		printInfo('Creating \'qobo\' user');
 
-		$command = getenv('CAKE_CONSOLE') . ' users addUser --username=qobo --password=qobo --email=webdev@qobocloud.com';
+		$command  = getenv('CAKE_CONSOLE') . ' users addUser';
+		$command .= ' --username=' . getenv('DEV_USER');
+		$command .= ' --password=' . getenv('DEV_PASS');
+		$command .=' --email=' . getenv('DEV_EMAIL');
 		doShellCommand($command);
 	});
 
