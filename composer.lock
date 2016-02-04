@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "68817e07f1d86f30fe45cd5f0ef3fccf",
-    "content-hash": "40bdbb78498860b30d96c4696e42e08c",
+    "hash": "dc7585b2a5178b008ef0f4cbd7718c08",
+    "content-hash": "0f759a9bdffaa92f9aa53888693409b2",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -1198,6 +1198,38 @@
                 "psr-3"
             ],
             "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "qobo/cakephp-groups",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/QoboLtd/cakephp-groups.git",
+                "reference": "55ac9107f8679771e998cddaec84bf732f65f9cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-groups/zipball/55ac9107f8679771e998cddaec84bf732f65f9cd",
+                "reference": "55ac9107f8679771e998cddaec84bf732f65f9cd",
+                "shasum": ""
+            },
+            "require": {
+                "cakedc/users": "~3.1",
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4.16"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Groups\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Groups plugin for CakePHP",
+            "time": "2016-02-04 14:06:39"
         },
         {
             "name": "qobo/pattern",
@@ -3337,6 +3369,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "qobo/cakephp-groups": 20,
         "psy/psysh": 0,
         "cakephp/cakephp-codesniffer": 20
     },
