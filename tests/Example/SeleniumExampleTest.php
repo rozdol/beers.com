@@ -33,7 +33,7 @@ class SeleniumExampleTest extends \PHPUnit_Extensions_Selenium2TestCase
 	public function testTitle()
 	{
 		$this->url('/');
-		$this->assertContains('Pages', $this->title());
+		$this->assertContains('Users', $this->title());
 	}
 
 }
