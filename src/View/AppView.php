@@ -20,6 +20,7 @@ use Cake\View\View;
  */
 class AppView extends View
 {
+    public $layout = 'QoboAdminPanel.basic';
 
     /**
      * Initialization hook method.
