@@ -90,10 +90,10 @@ group('cakephp', function() {
 		doShellCommand($command);
 	});
 
-	desc('Create \'qobo\' user');
+	desc('Create dev user');
 	task('qobo_user', ':builder:init', function() {
 		printSeparator();
-		printInfo('Creating \'qobo\' user');
+		printInfo('Creating dev user');
 
 		$command  = getenv('CAKE_CONSOLE') . ' users addUser';
 		$command .= ' --username=' . getenv('DEV_USER');
