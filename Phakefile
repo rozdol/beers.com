@@ -10,6 +10,7 @@ group('app', function() {
 	});
 	task('install', ':git:pull', ':git:checkout');
 	task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
+	task('install', ':mysql:database-create');
 	task('install', ':cakephp:install');
 
 
@@ -30,6 +31,7 @@ group('app', function() {
 		printInfo("Removing application");
 	});
 	task('remove', ':dotenv:delete');
+	task('remove', ':mysql:database-drop');
 
 });
 
@@ -88,6 +90,18 @@ group('cakephp', function() {
 		doShellCommand($command);
 	});
 
+	desc('Create dev user');
+	task('qobo_user', ':builder:init', function() {
+		printSeparator();
+		printInfo('Creating dev user');
+
+		$command  = getenv('CAKE_CONSOLE') . ' users addUser';
+		$command .= ' --username=' . getenv('DEV_USER');
+		$command .= ' --password=' . getenv('DEV_PASS');
+		$command .=' --email=' . getenv('DEV_EMAIL');
+		doShellCommand($command);
+	});
+
 	desc('Runs CakePHP clear cache task');
 	task('clear_cache', ':builder:init', function() {
 		printSeparator();
@@ -113,13 +127,14 @@ group('cakephp', function() {
 	);
 
 	/**
-	 * 'Group CakePHP app install related tasks
+	 * 'Grouped CakePHP app install related tasks
 	 */
 	desc('Runs CakePHP app install related tasks');
 	task(
 		'install',
 		':builder:init',
 		':cakephp:migrations',
+		':cakephp:qobo_user',
 		function($app) {
 			printSeparator();
 			printInfo('All CakePHP app:install related tasks are completed');
