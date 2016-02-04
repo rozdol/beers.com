@@ -32,7 +32,7 @@ class GroupsController extends AppController
     public function view($id = null)
     {
         $group = $this->Groups->get($id, [
-            'contain' => ['Phinxlog', 'Users']
+            'contain' => ['Users']
         ]);
         $this->set('group', $group);
         $this->set('_serialize', ['group']);
@@ -55,9 +55,8 @@ class GroupsController extends AppController
                 $this->Flash->error(__('The group could not be saved. Please, try again.'));
             }
         }
-        $phinxlog = $this->Groups->Phinxlog->find('list', ['limit' => 200]);
         $users = $this->Groups->Users->find('list', ['limit' => 200]);
-        $this->set(compact('group', 'phinxlog', 'users'));
+        $this->set(compact('group', 'users'));
         $this->set('_serialize', ['group']);
     }
 
@@ -71,7 +70,7 @@ class GroupsController extends AppController
     public function edit($id = null)
     {
         $group = $this->Groups->get($id, [
-            'contain' => ['Phinxlog', 'Users']
+            'contain' => ['Users']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $group = $this->Groups->patchEntity($group, $this->request->data);
@@ -82,9 +81,8 @@ class GroupsController extends AppController
                 $this->Flash->error(__('The group could not be saved. Please, try again.'));
             }
         }
-        $phinxlog = $this->Groups->Phinxlog->find('list', ['limit' => 200]);
         $users = $this->Groups->Users->find('list', ['limit' => 200]);
-        $this->set(compact('group', 'phinxlog', 'users'));
+        $this->set(compact('group', 'users'));
         $this->set('_serialize', ['group']);
     }
 

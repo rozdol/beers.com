@@ -5,8 +5,6 @@
         <li><?= $this->Form->postLink(__('Delete Group'), ['action' => 'delete', $group->id], ['confirm' => __('Are you sure you want to delete # {0}?', $group->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Groups'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Group'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Phinxlog'), ['controller' => 'Phinxlog', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Phinxlog'), ['controller' => 'Phinxlog', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?> </li>
     </ul>
@@ -31,34 +29,6 @@
             <td><?= h($group->modified) ?></td>
         </tr>
     </table>
-    <div class="related">
-        <h4><?= __('Related Phinxlog') ?></h4>
-        <?php if (!empty($group->phinxlog)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Version') ?></th>
-                <th><?= __('Start Time') ?></th>
-                <th><?= __('End Time') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($group->phinxlog as $phinxlog): ?>
-            <tr>
-                <td><?= h($phinxlog->version) ?></td>
-                <td><?= h($phinxlog->start_time) ?></td>
-                <td><?= h($phinxlog->end_time) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Phinxlog', 'action' => 'view', $phinxlog->version]) ?>
-
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Phinxlog', 'action' => 'edit', $phinxlog->version]) ?>
-
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Phinxlog', 'action' => 'delete', $phinxlog->version], ['confirm' => __('Are you sure you want to delete # {0}?', $phinxlog->version)]) ?>
-
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-    <?php endif; ?>
-    </div>
     <div class="related">
         <h4><?= __('Related Users') ?></h4>
         <?php if (!empty($group->users)): ?>
