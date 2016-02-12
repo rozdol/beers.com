@@ -62,4 +62,32 @@ class PagesController extends AppController
             throw new NotFoundException();
         }
     }
+
+    /**
+     * Define menu tasks.
+     *
+     * @param  string $name of the string
+     * @return array
+     */
+    public static function getMenu($name)
+    {
+        $result = [];
+
+        $menus = [
+            'sidebar' => [
+                ['label' => 'Main menu', 'url' => '/' ],
+                ['label' => 'Add new page', 'url' => '/pages/add']
+            ],
+            'top' => [
+                ['label' => 'Main menu', 'url' => '/' ],
+                ['label' => 'Add new page', 'url' => '/pages/add'],
+            ]
+        ];
+
+        if (!empty($menus[$name])) {
+            $result = $menus[$name];
+        }
+
+        return $result;
+    }
 }
