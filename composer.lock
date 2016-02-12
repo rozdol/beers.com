@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d937a06c568d23c148e2f68a6349b0f4",
-    "content-hash": "5a5ee36880643cda8b9b07ac049a4cad",
+    "hash": "295ebe749563828bed3c23b29f9681c2",
+    "content-hash": "0c0877a84ebfa253db10a5e6d618a88d",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -1410,6 +1410,38 @@
             "notification-url": "https://packagist.org/downloads/",
             "description": "Groups plugin for CakePHP",
             "time": "2016-02-11 10:16:45"
+        },
+        {
+            "name": "qobo/cakephp-roles-capabilities",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/QoboLtd/cakephp-roles-capabilities.git",
+                "reference": "60d8f17a6f15a49c08bc31a93df319337b7b248b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-roles-capabilities/zipball/60d8f17a6f15a49c08bc31a93df319337b7b248b",
+                "reference": "60d8f17a6f15a49c08bc31a93df319337b7b248b",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4.16",
+                "qobo/cakephp-groups": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "RolesCapabilities\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Roles and Capabilities plugin for CakePHP",
+            "time": "2016-02-11 15:01:20"
         },
         {
             "name": "qobo/pattern",
@@ -3609,6 +3641,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "qobo/cakephp-roles-capabilities": 20,
         "psy/psysh": 0,
         "cakephp/cakephp-codesniffer": 20
     },

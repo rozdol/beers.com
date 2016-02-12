@@ -10,7 +10,8 @@
         "friendsofcake/bootstrap-ui": "~0.3",
         "burzum/cakephp-file-storage": "^1.1",
         "burzum/cakephp-imagine-plugin": "^2.1",
-        "qobo/cakephp-groups": "~1.0"
+        "qobo/cakephp-groups": "~1.0",
+        "qobo/cakephp-roles-capabilities": "dev-master"
     },
     "require-dev": {
         "psy/psysh": "@stable",
