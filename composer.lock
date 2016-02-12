@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "295ebe749563828bed3c23b29f9681c2",
-    "content-hash": "0c0877a84ebfa253db10a5e6d618a88d",
+    "hash": "f11429afedb0cf1614d7f00fb2ae4089",
+    "content-hash": "693d77573c4f2c47dd4b5c1e85cf13c7",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -1410,6 +1410,37 @@
             "notification-url": "https://packagist.org/downloads/",
             "description": "Groups plugin for CakePHP",
             "time": "2016-02-11 10:16:45"
+        },
+        {
+            "name": "qobo/cakephp-qobo-admin-panel",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/QoboLtd/cakephp-qobo-admin-panel.git",
+                "reference": "d5b22d257526c746b2cfd7077e864ad433d8e868"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-qobo-admin-panel/zipball/d5b22d257526c746b2cfd7077e864ad433d8e868",
+                "reference": "d5b22d257526c746b2cfd7077e864ad433d8e868",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4.16"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "QoboAdminPanel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "QoboAdminPanel plugin for CakePHP",
+            "time": "2016-02-04 15:56:04"
         },
         {
             "name": "qobo/cakephp-roles-capabilities",
