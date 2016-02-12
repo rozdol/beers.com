@@ -184,6 +184,7 @@ Plugin::load('BootstrapUI');
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Plugin::load('Groups', ['bootstrap' => false, 'routes' => true]);
 Plugin::load('QoboAdminPanel');
+Plugin::load('Menu');
 
 // Only try to load DebugKit in development mode
 // Debug Kit should not be installed on a production system
