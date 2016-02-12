@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f11429afedb0cf1614d7f00fb2ae4089",
-    "content-hash": "693d77573c4f2c47dd4b5c1e85cf13c7",
+    "hash": "16ec991eabbaef671ec702a8142172c4",
+    "content-hash": "10b8629242ca5a3e606ca20a02ff09d1",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -1444,16 +1444,16 @@
         },
         {
             "name": "qobo/cakephp-roles-capabilities",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QoboLtd/cakephp-roles-capabilities.git",
-                "reference": "60d8f17a6f15a49c08bc31a93df319337b7b248b"
+                "reference": "4ea3171c4136e69c474daf36f19971df3e7eb254"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QoboLtd/cakephp-roles-capabilities/zipball/60d8f17a6f15a49c08bc31a93df319337b7b248b",
-                "reference": "60d8f17a6f15a49c08bc31a93df319337b7b248b",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-roles-capabilities/zipball/4ea3171c4136e69c474daf36f19971df3e7eb254",
+                "reference": "4ea3171c4136e69c474daf36f19971df3e7eb254",
                 "shasum": ""
             },
             "require": {
@@ -1472,7 +1472,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Roles and Capabilities plugin for CakePHP",
-            "time": "2016-02-11 15:01:20"
+            "time": "2016-02-12 08:17:02"
         },
         {
             "name": "qobo/pattern",
@@ -3672,7 +3672,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "qobo/cakephp-roles-capabilities": 20,
         "psy/psysh": 0,
         "cakephp/cakephp-codesniffer": 20
     },

@@ -12,7 +12,7 @@
         "burzum/cakephp-imagine-plugin": "^2.1",
         "qobo/cakephp-groups": "~1.0",
         "qobo/cakephp-qobo-admin-panel": "^1.0",
-        "qobo/cakephp-roles-capabilities": "dev-master"
+        "qobo/cakephp-roles-capabilities": "~1.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",
