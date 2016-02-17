@@ -75,14 +75,15 @@ class PagesController extends AppController
 
         $menus = [
             'sidebar' => [
-                ['label' => 'Main menu', 'url' => '/' ],
-                ['label' => 'Add new page', 'url' => '/pages/add']
+                ['label' => 'Sidebar element 1', 'url' => '/'],
+                ['label' => 'Sidebar element 2', 'url' => '/']
             ],
             'top' => [
-                ['label' => 'Main menu', 'url' => '/' ],
-                ['label' => 'Add new page', 'url' => '/pages/add'],
+                ['label' => 'Top item 1', 'url' => '/' ],
+                ['label' => 'Top item 2', 'url' => '/'],
             ]
         ];
+
 
         if (!empty($menus[$name])) {
             $result = $menus[$name];
