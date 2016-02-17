@@ -183,6 +183,7 @@ Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Plugin::load('Groups', ['bootstrap' => false, 'routes' => true]);
+Plugin::load('RolesCapabilities', ['bootstrap' => false, 'routes' => true]);
 Plugin::load('QoboAdminPanel');
 Plugin::load('Menu', ['bootstrap' => true]);
 
