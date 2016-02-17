@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "16ec991eabbaef671ec702a8142172c4",
-    "content-hash": "10b8629242ca5a3e606ca20a02ff09d1",
+    "hash": "8e82bc8efd288be60a202d1e15f19962",
+    "content-hash": "ce6dd7d91497fa3c6d983f7f97760cf7",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -342,16 +342,16 @@
         },
         {
             "name": "cakephp/chronos",
-            "version": "0.4.6",
+            "version": "0.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "14c54f91e35bbdb9e70b18530c6de930a474cd42"
+                "reference": "8f90c9b8cc813be21fb07ac487dc90ddbdf2fb0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/14c54f91e35bbdb9e70b18530c6de930a474cd42",
-                "reference": "14c54f91e35bbdb9e70b18530c6de930a474cd42",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/8f90c9b8cc813be21fb07ac487dc90ddbdf2fb0b",
+                "reference": "8f90c9b8cc813be21fb07ac487dc90ddbdf2fb0b",
                 "shasum": ""
             },
             "require": {
@@ -393,7 +393,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2016-02-07 15:48:49"
+            "time": "2016-02-14 20:36:45"
         },
         {
             "name": "cakephp/migrations",
@@ -1412,6 +1412,41 @@
             "time": "2016-02-11 10:16:45"
         },
         {
+            "name": "qobo/cakephp-menu",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/QoboLtd/cakephp-menu.git",
+                "reference": "cf434be117c75c38514204599e619b29b764d8ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-menu/zipball/cf434be117c75c38514204599e619b29b764d8ae",
+                "reference": "cf434be117c75c38514204599e619b29b764d8ae",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4.16"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "dev-master",
+                "phpunit/phpunit": "~4.3"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Menu\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "description": "Menu plugin for CakePHP",
+            "time": "2016-02-17 13:45:30"
+        },
+        {
             "name": "qobo/cakephp-qobo-admin-panel",
             "version": "v1.0.0",
             "source": {
@@ -1476,23 +1511,24 @@
         },
         {
             "name": "qobo/pattern",
-            "version": "v1.0.6",
+            "version": "v1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QoboLtd/PHP-Pattern.git",
-                "reference": "eaf13a6d3ecd9631d3b7ca14dc2f9dabd65bdcb9"
+                "reference": "6e74a371b51eb137dcbb006070d00fad17083723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QoboLtd/PHP-Pattern/zipball/eaf13a6d3ecd9631d3b7ca14dc2f9dabd65bdcb9",
-                "reference": "eaf13a6d3ecd9631d3b7ca14dc2f9dabd65bdcb9",
+                "url": "https://api.github.com/repos/QoboLtd/PHP-Pattern/zipball/6e74a371b51eb137dcbb006070d00fad17083723",
+                "reference": "6e74a371b51eb137dcbb006070d00fad17083723",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.3.*"
+                "phpunit/phpunit": "~4.3",
+                "squizlabs/php_codesniffer": "~2.5"
             },
             "type": "library",
             "autoload": {
@@ -1518,7 +1554,7 @@
                 "strings",
                 "templating"
             ],
-            "time": "2015-04-08 11:07:16"
+            "time": "2016-02-16 09:09:22"
         },
         {
             "name": "qobo/phake-builder",
@@ -2596,22 +2632,24 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "4745ded9307786b730d7a60df5cb5a6c43cf95f7"
+                "reference": "3c91bdf81797d725b14cb62906f9a4ce44235972"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/4745ded9307786b730d7a60df5cb5a6c43cf95f7",
-                "reference": "4745ded9307786b730d7a60df5cb5a6c43cf95f7",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/3c91bdf81797d725b14cb62906f9a4ce44235972",
+                "reference": "3c91bdf81797d725b14cb62906f9a4ce44235972",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
+                "php": "^5.3|^7.0",
                 "phpdocumentor/reflection-docblock": "~2.0",
-                "sebastian/comparator": "~1.1"
+                "sebastian/comparator": "~1.1",
+                "sebastian/recursion-context": "~1.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "~2.0"
@@ -2619,7 +2657,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.5.x-dev"
                 }
             },
             "autoload": {
@@ -2652,7 +2690,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2015-08-13 10:07:40"
+            "time": "2016-02-15 07:46:21"
         },
         {
             "name": "phpunit/php-code-coverage",
