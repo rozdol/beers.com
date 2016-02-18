@@ -487,23 +487,22 @@
         },
         {
             "name": "friendsofcake/bootstrap-ui",
-            "version": "v0.3.5",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfCake/bootstrap-ui.git",
-                "reference": "8b52d5ebcfcc05f08f4500e46427a2c1bfa72f62"
+                "reference": "a696d5acaa2f3fc8bc2c8b77ef429791081be926"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfCake/bootstrap-ui/zipball/8b52d5ebcfcc05f08f4500e46427a2c1bfa72f62",
-                "reference": "8b52d5ebcfcc05f08f4500e46427a2c1bfa72f62",
+                "url": "https://api.github.com/repos/FriendsOfCake/bootstrap-ui/zipball/a696d5acaa2f3fc8bc2c8b77ef429791081be926",
+                "reference": "a696d5acaa2f3fc8bc2c8b77ef429791081be926",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cakephp": "~3.0"
             },
             "require-dev": {
-                "cakephp/cakephp-codesniffer": "dev-master",
                 "phpunit/phpunit": "4.1.*"
             },
             "type": "cakephp-plugin",
@@ -534,7 +533,7 @@
                 "cakephp",
                 "twitter"
             ],
-            "time": "2016-02-10 19:43:30"
+            "time": "2016-02-13 07:09:35"
         },
         {
             "name": "gorkalaucirica/hipchat-v2-api-client",
