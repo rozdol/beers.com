@@ -13,12 +13,13 @@
  */
 namespace App\View;
 
+use BootstrapUI\View\UIView;
 use Cake\View\View;
 
 /**
  * App View class
  */
-class AppView extends View
+class AppView extends UIView
 {
     public $layout = 'QoboAdminPanel.basic';
 
@@ -32,10 +33,7 @@ class AppView extends View
      */
     public function initialize()
     {
-        $this->loadHelper('Html', ['className' => 'BootstrapUI.Html']);
-        $this->loadHelper('Form', ['className' => 'BootstrapUI.Form']);
-        $this->loadHelper('Flash', ['className' => 'BootstrapUI.Flash']);
-        $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
+        parent::initialize();
         $this->loadHelper('Menu.Menu');
     }
 }
