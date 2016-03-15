@@ -23,7 +23,8 @@
         "cakephp/bake": "~1.0",
         "phpunit/phpunit": "~4.3",
         "phpunit/phpunit-selenium": "~2.0",
-        "cakephp/cakephp-codesniffer": "dev-master"
+        "cakephp/cakephp-codesniffer": "dev-master",
+		"sami/sami": "~3.2"
     },
     "suggest": {
         "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
