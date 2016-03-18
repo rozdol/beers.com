@@ -5,3 +5,4 @@ etc/nginx.conf
 /config/app.php
 tmp/
 logs/
+webroot/uploads

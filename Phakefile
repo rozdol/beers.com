@@ -12,7 +12,9 @@ group('app', function() {
 	task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
 	task('install', ':mysql:database-create');
 	task('install', ':cakephp:install');
-
+	task('install', ':file:chmod');
+	task('install', ':file:chown');
+	task('install', ':file:chgrp');
 
 	desc('Update application');
 	task('update', ':builder:init', function($app) {
@@ -23,7 +25,9 @@ group('app', function() {
 	task('update', ':composer:install');
 	task('update', ':dotenv:create', ':dotenv:reload', ':file:process');
 	task('update', ':cakephp:update');
-
+	task('update', ':file:chmod');
+	task('update', ':file:chown');
+	task('update', ':file:chgrp');
 
 	desc('Remove application');
 	task('remove', ':builder:init', function($app) {
