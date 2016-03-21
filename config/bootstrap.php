@@ -181,12 +181,17 @@ Request::addDetector('tablet', function ($request) {
 
 Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
-Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Plugin::load('Crud');
 Plugin::load('Groups', ['bootstrap' => false, 'routes' => true]);
 Plugin::load('RolesCapabilities', ['bootstrap' => false, 'routes' => true]);
 Plugin::load('QoboAdminPanel');
 Plugin::load('Menu', ['bootstrap' => true]);
+/**
+ * @todo seems like if CakeDC/Users plugin is loaded
+ * before any of our plugins that use routes, it breaks
+ * them, needs to be investigated further.
+ */
+Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 
 // Only try to load DebugKit in development mode
 // Debug Kit should not be installed on a production system
