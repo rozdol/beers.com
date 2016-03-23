@@ -1355,16 +1355,16 @@
         },
         {
             "name": "qobo/cakephp-qobo-admin-panel",
-            "version": "v1.0.5",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QoboLtd/cakephp-qobo-admin-panel.git",
-                "reference": "432e7efb7c00926327bb2433ec63e48d1ca70444"
+                "reference": "d6b39d8aa0f35f264d251ba0a578fe90c8733ca0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QoboLtd/cakephp-qobo-admin-panel/zipball/432e7efb7c00926327bb2433ec63e48d1ca70444",
-                "reference": "432e7efb7c00926327bb2433ec63e48d1ca70444",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-qobo-admin-panel/zipball/d6b39d8aa0f35f264d251ba0a578fe90c8733ca0",
+                "reference": "d6b39d8aa0f35f264d251ba0a578fe90c8733ca0",
                 "shasum": ""
             },
             "require": {
@@ -1387,7 +1387,7 @@
                 "GPL-2.0"
             ],
             "description": "QoboAdminPanel plugin for CakePHP",
-            "time": "2016-03-10 14:17:57"
+            "time": "2016-03-22 15:32:39"
         },
         {
             "name": "qobo/cakephp-roles-capabilities",
