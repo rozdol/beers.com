@@ -234,16 +234,16 @@
         },
         {
             "name": "cakedc/users",
-            "version": "3.1.5",
+            "version": "3.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CakeDC/users.git",
-                "reference": "788ffc61c0053a83b0a83afe78778f5a3d2f7f63"
+                "reference": "9236b121f1228d2fe59584a909863ef106e81c66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CakeDC/users/zipball/788ffc61c0053a83b0a83afe78778f5a3d2f7f63",
-                "reference": "788ffc61c0053a83b0a83afe78778f5a3d2f7f63",
+                "url": "https://api.github.com/repos/CakeDC/users/zipball/9236b121f1228d2fe59584a909863ef106e81c66",
+                "reference": "9236b121f1228d2fe59584a909863ef106e81c66",
                 "shasum": ""
             },
             "require": {
@@ -296,7 +296,7 @@
                 "cakephp",
                 "oauth2"
             ],
-            "time": "2016-02-15 16:59:35"
+            "time": "2016-03-20 16:30:44"
         },
         {
             "name": "cakephp/cakephp",
@@ -1284,16 +1284,16 @@
         },
         {
             "name": "qobo/cakephp-groups",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QoboLtd/cakephp-groups.git",
-                "reference": "318593bc2c8a85d73213c63208f01dec92cb05f7"
+                "reference": "5d1c2f81a267ed5711e535d231b62e2a52356e61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QoboLtd/cakephp-groups/zipball/318593bc2c8a85d73213c63208f01dec92cb05f7",
-                "reference": "318593bc2c8a85d73213c63208f01dec92cb05f7",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-groups/zipball/5d1c2f81a267ed5711e535d231b62e2a52356e61",
+                "reference": "5d1c2f81a267ed5711e535d231b62e2a52356e61",
                 "shasum": ""
             },
             "require": {
@@ -1316,7 +1316,7 @@
                 "GPL-2.0"
             ],
             "description": "Groups plugin for CakePHP",
-            "time": "2016-02-14 10:30:03"
+            "time": "2016-03-20 18:36:37"
         },
         {
             "name": "qobo/cakephp-menu",
@@ -1355,16 +1355,16 @@
         },
         {
             "name": "qobo/cakephp-qobo-admin-panel",
-            "version": "v1.0.5",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QoboLtd/cakephp-qobo-admin-panel.git",
-                "reference": "432e7efb7c00926327bb2433ec63e48d1ca70444"
+                "reference": "d6b39d8aa0f35f264d251ba0a578fe90c8733ca0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QoboLtd/cakephp-qobo-admin-panel/zipball/432e7efb7c00926327bb2433ec63e48d1ca70444",
-                "reference": "432e7efb7c00926327bb2433ec63e48d1ca70444",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-qobo-admin-panel/zipball/d6b39d8aa0f35f264d251ba0a578fe90c8733ca0",
+                "reference": "d6b39d8aa0f35f264d251ba0a578fe90c8733ca0",
                 "shasum": ""
             },
             "require": {
@@ -1387,20 +1387,20 @@
                 "GPL-2.0"
             ],
             "description": "QoboAdminPanel plugin for CakePHP",
-            "time": "2016-03-10 14:17:57"
+            "time": "2016-03-22 15:32:39"
         },
         {
             "name": "qobo/cakephp-roles-capabilities",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QoboLtd/cakephp-roles-capabilities.git",
-                "reference": "fb2c1d90d8db4b277a4b36f3ec06dbac3fcba141"
+                "reference": "9d62fb2f736a465eb790457dfbcdf39c5922fbd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QoboLtd/cakephp-roles-capabilities/zipball/fb2c1d90d8db4b277a4b36f3ec06dbac3fcba141",
-                "reference": "fb2c1d90d8db4b277a4b36f3ec06dbac3fcba141",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-roles-capabilities/zipball/9d62fb2f736a465eb790457dfbcdf39c5922fbd2",
+                "reference": "9d62fb2f736a465eb790457dfbcdf39c5922fbd2",
                 "shasum": ""
             },
             "require": {
@@ -1423,7 +1423,7 @@
                 "GPL-2.0"
             ],
             "description": "Roles and Capabilities plugin for CakePHP",
-            "time": "2016-02-14 10:51:08"
+            "time": "2016-03-20 18:37:14"
         },
         {
             "name": "qobo/pattern",
@@ -2083,16 +2083,16 @@
     "packages-dev": [
         {
             "name": "blackfire/php-sdk",
-            "version": "v1.5.11",
+            "version": "v1.5.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blackfireio/php-sdk.git",
-                "reference": "559e1b507820b01df45988d6f4c2cbc82d0a0dc3"
+                "reference": "fee598740a7927db7781e645d279142a7a77bb4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blackfireio/php-sdk/zipball/559e1b507820b01df45988d6f4c2cbc82d0a0dc3",
-                "reference": "559e1b507820b01df45988d6f4c2cbc82d0a0dc3",
+                "url": "https://api.github.com/repos/blackfireio/php-sdk/zipball/fee598740a7927db7781e645d279142a7a77bb4b",
+                "reference": "fee598740a7927db7781e645d279142a7a77bb4b",
                 "shasum": ""
             },
             "require": {
@@ -2133,7 +2133,7 @@
                 "uprofiler",
                 "xhprof"
             ],
-            "time": "2016-03-01 11:48:09"
+            "time": "2016-03-17 15:37:22"
         },
         {
             "name": "cakephp/bake",
