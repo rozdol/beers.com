@@ -15,7 +15,8 @@
         "qobo/cakephp-qobo-admin-panel": "^1.0",
         "qobo/cakephp-menu": "^1.0",
         "qobo/cakephp-roles-capabilities": "~1.0",
-        "friendsofcake/crud": "^4.3"
+        "friendsofcake/crud": "^4.3",
+        "lorenzo/audit-stash": "^1.0"
 
     },
     "require-dev": {
