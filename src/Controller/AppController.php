@@ -45,6 +45,12 @@ class AppController extends Controller
         $this->loadComponent('RolesCapabilities.Capability');
     }
 
+    /**
+     * Callack method.
+     *
+     * @param  Cake\Event\Event $event Event object
+     * @return void
+     */
     public function beforeFilter(Event $event)
     {
         EventManager::instance()->on(new RequestMetadata($this->request, $this->Auth->user('id')));
