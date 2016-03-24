@@ -186,6 +186,7 @@ Plugin::load('Groups', ['bootstrap' => false, 'routes' => true]);
 Plugin::load('RolesCapabilities', ['bootstrap' => false, 'routes' => true]);
 Plugin::load('QoboAdminPanel');
 Plugin::load('Menu', ['bootstrap' => true]);
+Plugin::load('AuditStash');
 /**
  * @todo seems like if CakeDC/Users plugin is loaded
  * before any of our plugins that use routes, it breaks
