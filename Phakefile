@@ -11,6 +11,8 @@ group('app', function() {
 	task('install', ':git:pull', ':git:checkout');
 	task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
 	task('install', ':mysql:database-create');
+	task('install', ':cakephp:test-database-create');
+	task('install', ':cakephp:test-database-migrate');
 	task('install', ':cakephp:install');
 	task('install', ':file:chmod');
 	task('install', ':file:chown');
@@ -36,6 +38,7 @@ group('app', function() {
 	});
 	task('remove', ':dotenv:delete');
 	task('remove', ':mysql:database-drop');
+	task('remove', ':cakephp:test-database-drop');
 
 });
 
