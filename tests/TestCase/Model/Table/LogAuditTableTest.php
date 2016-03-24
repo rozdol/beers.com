@@ -24,7 +24,7 @@ class LogAuditTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.audit_logs'
+        'app.log_audit'
     ];
 
     /**
