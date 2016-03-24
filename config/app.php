@@ -342,4 +342,7 @@ return [
     'Session' => [
         'defaults' => 'php',
     ],
+    'AuditStash' => [
+        'persister' => 'App\Persister\MysqlPersister'
+    ],
 ];
