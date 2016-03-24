@@ -14,7 +14,10 @@
  */
 namespace App\Controller;
 
+use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
+use Cake\Event\Event;
+use Cake\Event\EventManager;
 
 /**
  * Application Controller
@@ -40,5 +43,10 @@ class AppController extends Controller
         $this->loadComponent('Flash');
         $this->loadComponent('CakeDC/Users.UsersAuth');
         $this->loadComponent('RolesCapabilities.Capability');
+    }
+
+    public function beforeFilter(Event $event)
+    {
+        EventManager::instance()->on(new RequestMetadata($this->request, $this->Auth->user('id')));
     }
 }
