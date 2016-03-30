@@ -39,8 +39,30 @@ var changelog = changelog || {};
                 query: $(that.id).data('id')
             },
             success: function(data) {
+                data = that._groupByDateAndUser(data);
             }
         });
+    };
+
+    /**
+     * Groups results by date and user
+     *
+     * @param  {object} data result set
+     * @return {object}
+     */
+    Changelog.prototype._groupByDateAndUser = function(data) {
+        that = this;
+
+        result = {};
+        $.each(data.changelog, function(k, v) {
+            meta = JSON.parse(v.meta);
+            if (!result.hasOwnProperty(meta.user)) {
+                result[v.timestamp] = {};
+            }
+            result[v.timestamp][meta.user] = v;
+        });
+
+        return result;
     };
 
     changelog = new Changelog({id: '#changelogBtn'});
