@@ -49,6 +49,9 @@ Router::prefix('api', function ($routes) {
      * handle json file extension on API calls
      */
     $routes->extensions(['json']);
+    $routes->resources('Posts');
+    $routes->resources('Users');
+    $routes->fallbacks('InflectedRoute');
 });
 
 Router::scope('/', function ($routes) {
