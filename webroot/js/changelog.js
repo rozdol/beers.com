@@ -78,7 +78,7 @@ var changelog = changelog || {};
         result = '';
         $.each(data, function(date, record) {
             $.each(record, function(user, details) {
-                result += '<table class="table table-condensed table-bordered">';
+                result += '<table class="table table-condensed">';
                     result += that._prepareTableHead(date, user);
                     result += that._prepareTableBody(details);
                 result += '</table>';
@@ -101,7 +101,7 @@ var changelog = changelog || {};
         date += ts.getHours() + ':' + (ts.getMinutes() < 10 ? '0' : '') + ts.getMinutes();
         result = '<thead>';
             result += '<tr>';
-                result += '<th colspan="3">Changed by ' + user + ' on ' + date + '</th>';
+                result += '<th colspan="3">Changed by ' + this._getUsername(user) + ' on ' + date + '</th>';
             result += '</tr>';
             result += '<tr>';
                 result += '<th width="14%">Field</th>';
@@ -151,6 +151,29 @@ var changelog = changelog || {};
         });
 
         return result;
+    };
+
+    /**
+     * Fetches and returns username, based on user id
+     * @param  {string} id user id
+     * @return {string}
+     */
+    Changelog.prototype._getUsername = function(id) {
+        that = this;
+
+        if (!that.usernames.hasOwnProperty(id)) {
+            // ajax
+            $.ajax({
+                url: '/api/users/' + id + '.json',
+                method: 'get',
+                async: false,
+                success: function(data) {
+                    that.usernames[id] = data.data.username;
+                }
+            });
+        }
+
+        return that.usernames[id];
     };
 
     changelog = new Changelog({id: '#changelogBtn'});
