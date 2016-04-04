@@ -25,6 +25,7 @@ class MysqlPersister implements PersisterInterface
                 'source' => $log->getSourceName(),
                 'parent_source' => $log->getParentSourceName(),
                 'changed' => 'delete' === $eventType ? null : json_encode($log->getChanged()),
+                'original' => json_encode($log->getOriginal()),
                 'meta' => json_encode($log->getMetaInfo())
             ];
             // save audit log
