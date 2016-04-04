@@ -25,7 +25,8 @@ git merge --squash $(git tag --sort=v:refname | tail -n 1)
 git commit -m "Merged project-template-cakephp ($(git tag --sort=v:refname | tail -n 1))"
 # Finalize the setup
 composer install
-./vendor/bin/phake dotenv:create
+./vendor/bin/phake dotenv:create DB_NAME=YOUR_DATABASE_NAME
+./vendor/bin/phake app:install
 ```
 
 Usage
@@ -34,7 +35,7 @@ Usage
 Now you can develop your PHP project as per usual, but with the following
 advantages:
 
-* Support for [PHP built-in web server](http://php.net/manual/en/features.commandline.webserver.php) (start with ```php -S localhost:8000```)
+* Support for [PHP built-in web server](http://php.net/manual/en/features.commandline.webserver.php) (start with ```bin/cake server -H localhost -p 8000```)
 * Per-environment configuration using ```.env``` file, which is ignored by git
 * Powerful build system ([phake-builder](https://github.com/QoboLtd/phake-builder)) integrated
 * Composer integrated with ```vendor/``` folder added to ```.gitignore``` .
@@ -74,8 +75,12 @@ bin/cake server -H localhost -p 8000
 ```
 
 In your browser navigate to [http://localhost:8000](http://localhost:8000).
-You should see the standard CakePHP home page.  If you do, all parts
+You should see the login page.  If you do, all parts
 are in place.
+
+**Login credentials**
+Username: qobo
+Password: qobo
 
 ###PHPUnit
 
