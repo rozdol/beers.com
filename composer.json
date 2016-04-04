@@ -16,7 +16,8 @@
         "qobo/cakephp-menu": "^1.0",
         "qobo/cakephp-roles-capabilities": "~1.0",
         "friendsofcake/crud": "^4.3",
-        "lorenzo/audit-stash": "^1.0"
+        "lorenzo/audit-stash": "^1.0",
+        "qobo/cakephp-search": "^1.0"
 
     },
     "require-dev": {
