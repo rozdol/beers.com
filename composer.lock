@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "89f9faaf6d54d0195b1ee1692603c7de",
-    "content-hash": "1f628c31969f501384a339fa25350812",
+    "hash": "97fcd605f534ab04daf309e673e0df40",
+    "content-hash": "5c4cefc80183e94f70a76d7889e1db60",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -1468,6 +1468,37 @@
             "time": "2016-03-20 18:37:14"
         },
         {
+            "name": "qobo/cakephp-search",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/QoboLtd/cakephp-search.git",
+                "reference": "ba286baee37b26caafba1d3c9bb5fc8861d33199"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/QoboLtd/cakephp-search/zipball/ba286baee37b26caafba1d3c9bb5fc8861d33199",
+                "reference": "ba286baee37b26caafba1d3c9bb5fc8861d33199",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4.16"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Search\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Search plugin for CakePHP",
+            "time": "2016-04-04 11:14:45"
+        },
+        {
             "name": "qobo/pattern",
             "version": "v1.0.7",
             "source": {
@@ -2233,7 +2264,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/c8d759b86b0e7ef24a6a5e9f7710ed5c289acefd",
+                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/fe95558271dcec53275f728f9b52caf42ae3dcab",
                 "reference": "c8d759b86b0e7ef24a6a5e9f7710ed5c289acefd",
                 "shasum": ""
             },

@@ -43,6 +43,7 @@ class AppController extends Controller
         $this->loadComponent('Flash');
         $this->loadComponent('CakeDC/Users.UsersAuth');
         $this->loadComponent('RolesCapabilities.Capability');
+        $this->loadComponent('Search.Searchable');
     }
 
     /**

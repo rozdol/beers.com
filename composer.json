@@ -16,7 +16,8 @@
         "qobo/cakephp-menu": "^1.0",
         "qobo/cakephp-roles-capabilities": "~1.0",
         "friendsofcake/crud": "^4.3",
-        "lorenzo/audit-stash": "^1.0"
+        "lorenzo/audit-stash": "^1.0",
+        "qobo/cakephp-search": "^1.0"
 
     },
     "require-dev": {
@@ -25,7 +26,7 @@
         "phpunit/phpunit": "~4.3",
         "phpunit/phpunit-selenium": "~2.0",
         "cakephp/cakephp-codesniffer": "dev-master",
-		"sami/sami": "~3.2"
+        "sami/sami": "~3.2"
     },
     "suggest": {
         "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
