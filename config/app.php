@@ -18,8 +18,9 @@ $dbName = getenv('DB_NAME');
 $dbUser = getenv('DB_USER') ?: 'root';
 $dbPass = getenv('DB_PASS') ?: '';
 $dbTestName = $dbName . '_test';
-$sessionCookieSecure = (bool) env('APP_SESSION_SECURE_COOKIE') ?: false;
+$sessionCookieSecure = (bool)env('APP_SESSION_SECURE_COOKIE') ?: false;
 $sessionCookieSecure = $https ?: $sessionCookieSecure;
+$cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY') ?: false;
 
 return [
     /**
@@ -345,7 +346,8 @@ return [
     'Session' => [
         'defaults' => 'php',
         'ini' => [
-            'session.cookie_secure' => $sessionCookieSecure
+            'session.cookie_secure' => $sessionCookieSecure,
+            'session.cookie_httponly' => $cookieHttpOnly,
         ]
     ],
     'AuditStash' => [
