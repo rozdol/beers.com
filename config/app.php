@@ -9,6 +9,7 @@ try {
     exit(1);
 }
 
+$https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? true : false;
 $debug = getenv('DEBUG') ?: false;
 $salt = getenv('SALT') ?: 'dc363e686e16eafeab563188e3a5264ee73196accaec05a3541b1ce4148d9992';
 
@@ -17,6 +18,8 @@ $dbName = getenv('DB_NAME');
 $dbUser = getenv('DB_USER') ?: 'root';
 $dbPass = getenv('DB_PASS') ?: '';
 $dbTestName = $dbName . '_test';
+$sessionCookieSecure = (bool) env('APP_SESSION_SECURE_COOKIE') ?: false;
+$sessionCookieSecure = $https ?: $sessionCookieSecure;
 
 return [
     /**
@@ -341,6 +344,9 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
+        'ini' => [
+            'session.cookie_secure' => $sessionCookieSecure
+        ]
     ],
     'AuditStash' => [
         'persister' => 'App\Persister\MysqlPersister'
