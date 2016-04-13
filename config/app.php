@@ -10,7 +10,7 @@ try {
 }
 
 $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? true : false;
-$debug = getenv('DEBUG') ?: false;
+$debug = (bool)env('DEBUG');
 $salt = getenv('SALT') ?: 'dc363e686e16eafeab563188e3a5264ee73196accaec05a3541b1ce4148d9992';
 
 $dbHost = getenv('DB_HOST') ?: 'localhost';
@@ -18,9 +18,9 @@ $dbName = getenv('DB_NAME');
 $dbUser = getenv('DB_USER') ?: 'root';
 $dbPass = getenv('DB_PASS') ?: '';
 $dbTestName = $dbName . '_test';
-$sessionCookieSecure = (bool)env('APP_SESSION_SECURE_COOKIE') ?: false;
+$sessionCookieSecure = (bool)env('APP_SESSION_SECURE_COOKIE');
 $sessionCookieSecure = $https ?: $sessionCookieSecure;
-$cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY') ?: false;
+$cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY');
 
 return [
     /**
