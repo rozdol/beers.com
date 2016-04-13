@@ -54,6 +54,11 @@ class AppController extends Controller
      */
     public function beforeFilter(Event $event)
     {
+        /*
+        Prevent page rendering in iframe
+         */
+        $this->response->header('X-Frame-Options', 'DENY');
+
         EventManager::instance()->on(new RequestMetadata($this->request, $this->Auth->user('id')));
     }
 }
