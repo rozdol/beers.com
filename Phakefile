@@ -153,7 +153,7 @@ group('cakephp', function() {
 		':builder:init',
 		':cakephp:clear_cache',
 		':cakephp:migrations',
-		'set-folder-permissions',
+		':cakephp:set-folder-permissions',
 		function($app) {
 			printSeparator();
 			printInfo('All CakePHP app:update related tasks are completed');
@@ -169,7 +169,7 @@ group('cakephp', function() {
 		':builder:init',
 		':cakephp:migrations',
 		':cakephp:qobo_user',
-		'set-folder-permissions',
+		':cakephp:set-folder-permissions',
 		function($app) {
 			printSeparator();
 			printInfo('All CakePHP app:install related tasks are completed');
