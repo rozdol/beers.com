@@ -257,7 +257,7 @@ return [
             * decreases performance because each query needs to be traversed and
             * manipulated before being executed.
             */
-            'quoteIdentifiers' => false,
+            'quoteIdentifiers' => true,
 
             /*
             * During development, if using MySQL < 5.6, uncommenting the
