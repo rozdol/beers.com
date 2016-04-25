@@ -9,26 +9,26 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-12 col-md-6">
                                 <?= $this->Form->input('username'); ?>
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-xs-12 col-md-6">
                                 <?= $this->Form->input('password'); ?>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-12 col-md-6">
                                 <?= $this->Form->input('first_name'); ?>
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-xs-12 col-md-6">
                                 <?= $this->Form->input('last_name'); ?>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-12 col-md-6">
                                 <?= $this->Form->input('email'); ?>
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-xs-12 col-md-6">
                                 <?= $this->Form->input('active', ['type' => 'checkbox']); ?>
                             </div>
                         </div>
