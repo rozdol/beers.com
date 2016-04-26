@@ -7,7 +7,6 @@ $this->layout = 'QoboAdminPanel.plain';
     <div class="row">
         <div class="col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-6 col-md-offset-3">
             <div class="users form well well-lg">
-                <?= $this->Flash->render('auth') ?>
                 <?= $this->Form->create() ?>
                 <p class="text-center">
                     <?php
@@ -16,8 +15,8 @@ $this->layout = 'QoboAdminPanel.plain';
                         }
                     ?>
                 </p>
+                <?= $this->Flash->render('auth') ?>
                 <fieldset>
-                    <legend><?= __d('Users', 'Please enter your username and password') ?></legend>
                     <?= $this->Form->input('username', ['required' => true]) ?>
                     <?= $this->Form->input('password', ['required' => true]) ?>
                     <?php
