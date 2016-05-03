@@ -21,6 +21,7 @@ $dbTestName = $dbName . '_test';
 $sessionCookieSecure = (bool)env('APP_SESSION_SECURE_COOKIE');
 $sessionCookieSecure = $https ?: $sessionCookieSecure;
 $cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY');
+$useOnlyCookies = (bool)env('APP_SESSION_USE_ONLY_COOKIES');
 
 return [
     /**
@@ -348,6 +349,7 @@ return [
         'ini' => [
             'session.cookie_secure' => $sessionCookieSecure,
             'session.cookie_httponly' => $cookieHttpOnly,
+            'session.use_only_cookies' => $useOnlyCookies
         ]
     ],
     'AuditStash' => [
