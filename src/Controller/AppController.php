@@ -41,6 +41,7 @@ class AppController extends Controller
     {
         parent::initialize();
         $this->loadComponent('Flash');
+        $this->loadComponent('Csrf');
         $this->loadComponent('CakeDC/Users.UsersAuth');
         $this->loadComponent('RolesCapabilities.Capability');
         $this->loadComponent('Search.Searchable');
