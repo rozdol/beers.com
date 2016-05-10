@@ -4,8 +4,8 @@ ARGS=$*
 
 if [ -z "$ARGS" ]
 then
-	ARGS="-S localhost:8000"
+	ARGS="-H localhost -p 8000"
 fi
 
-cd "$(dirname ${BASH_SOURCE[0]})/../webroot"
-php $ARGS
+cd "$(dirname ${BASH_SOURCE[0]})/../"
+bin/cake server $ARGS
