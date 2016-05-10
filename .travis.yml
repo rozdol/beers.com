@@ -17,7 +17,7 @@ install:
 before_script:
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99.0
-    - wget http://selenium-release.storage.googleapis.com/2.49/selenium-server-standalone-2.53.0.jar
+    - wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar
     - ./bin/cake server -H localhost -p 8000 > /dev/null 2>&1 &
     - java -jar selenium-server-standalone-2.53.0.jar > /dev/null 2>&1 &
     - sleep 30
