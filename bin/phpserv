@@ -1,0 +1,11 @@
+#!/bin/bash
+
+ARGS=$*
+
+if [ -z "$ARGS" ]
+then
+	ARGS="-H localhost -p 8000"
+fi
+
+cd "$(dirname ${BASH_SOURCE[0]})/../"
+bin/cake server $ARGS
