@@ -188,6 +188,7 @@ Plugin::load('QoboAdminPanel');
 Plugin::load('Menu', ['bootstrap' => true]);
 Plugin::load('AuditStash');
 Plugin::load('Search', ['routes' => true]);
+Plugin::load('Burzum/FileStorage');
 /**
  * @todo seems like if CakeDC/Users plugin is loaded
  * before any of our plugins that use routes, it breaks
