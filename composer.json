@@ -27,7 +27,7 @@
     "require-dev": {
         "phpunit/phpunit": "*",
         "phpunit/phpunit-selenium": "~3.0",
-        "sami/sami": "~3.2"
+        "sami/sami": "~3.2",
         "psy/psysh": "@stable",
         "cakephp/bake": "~1.0",
         "cakephp/cakephp-codesniffer": "dev-master"
