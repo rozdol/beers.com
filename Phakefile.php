@@ -1,5 +1,5 @@
 <?php
-require_once 'vendor/qobo/phake-builder/Phakefile';
+require_once 'vendor/qobo/phake-builder/Phakefile.php';
 
 group('app', function() {
 
@@ -8,7 +8,6 @@ group('app', function() {
 		printSeparator();
 		printInfo("Installing application");
 	});
-	task('install', ':git:pull', ':git:checkout');
 	task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
 	task('install', ':mysql:database-create');
 	task('install', ':cakephp:test-database-create');
@@ -20,8 +19,6 @@ group('app', function() {
 		printSeparator();
 		printInfo("Updating application");
 	});
-	task('update', ':git:pull', ':git:checkout');
-	task('update', ':composer:install');
 	task('update', ':dotenv:create', ':dotenv:reload', ':file:process');
 	task('update', ':cakephp:update');
 
@@ -177,6 +174,3 @@ group('cakephp', function() {
 	);
 
 });
-
-# vi:ft=php
-?>

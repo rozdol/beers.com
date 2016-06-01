@@ -3,13 +3,14 @@
 	"description": "Template for new CakePHP projects",
 	"license": "GPL-2.0",
     "require": {
-        "php": ">=5.4.16",
+        "php": ">=5.6.0",
+        "qobo/phake-builder": "~2.0",
+        "pyrech/composer-changelogs": "~1.4",
         "cakephp/cakephp": "~3.0",
         "cakephp/debug_kit": "~3.0",
         "mobiledetect/mobiledetectlib": "2.*",
         "cakephp/migrations": "~1.0",
         "cakephp/plugin-installer": "*",
-        "qobo/phake-builder": "~1.0",
         "cakedc/users": "~3.1",
         "friendsofcake/bootstrap-ui": "~0.3",
         "burzum/cakephp-file-storage": "^1.1",
@@ -24,16 +25,16 @@
 
     },
     "require-dev": {
+        "phpunit/phpunit": "*",
+        "phpunit/phpunit-selenium": "~3.0",
+        "sami/sami": "~3.2",
         "psy/psysh": "@stable",
         "cakephp/bake": "~1.0",
-        "phpunit/phpunit": "~4.3",
-        "phpunit/phpunit-selenium": "~2.0",
-        "cakephp/cakephp-codesniffer": "dev-master",
-        "sami/sami": "~3.2"
+        "cakephp/cakephp-codesniffer": "dev-master"
     },
     "suggest": {
-        "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
         "ext-xdebug": "Allows code coverage reports and advanced debugging",
+        "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
         "cakephp/cakephp-codesniffer": "Allows to check the code against the coding standards used in CakePHP."
     },
     "autoload": {

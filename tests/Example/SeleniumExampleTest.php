@@ -1,5 +1,6 @@
 <?php
 namespace Tests\Example;
+
 /**
  * Selenium Example Test
  *
@@ -15,26 +16,23 @@ namespace Tests\Example;
  *
  * 4. Run the phpunit
  *
- * @author Antonis Flangofas <a.flangofas@qobo.biz>
- * @group example
- * @group selenium
- * @group network
+ * @author   Antonis Flangofas <a.flangofas@qobo.biz>
+ * @group    example
+ * @group    selenium
+ * @group    network
  * @requires PHP 5.4
  */
 class SeleniumExampleTest extends \PHPUnit_Extensions_Selenium2TestCase
 {
-	protected function setUp()
-	{
-		$this->setBrowser('firefox');
-		$this->setBrowserUrl('http://localhost:8000');
-	}
+    protected function setUp()
+    {
+        $this->setBrowser('firefox');
+        $this->setBrowserUrl('http://localhost:8000');
+    }
 
-
-	public function testTitle()
-	{
-		$this->url('/');
-		$this->assertContains('Users', $this->title());
-	}
-
+    public function testTitle()
+    {
+        $this->url('/');
+        $this->assertContains('Users', $this->title());
+    }
 }
-?>
