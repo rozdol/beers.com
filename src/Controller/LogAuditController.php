@@ -20,8 +20,7 @@ class LogAuditController extends AppController
          */
         $query = $this->LogAudit->findByPrimaryKey($id)
             ->order(['LogAudit.timestamp' => 'DESC'])
-            ->group('LogAudit.timestamp')
-        ;
+            ->group('LogAudit.timestamp');
 
         $entity = TableRegistry::get($modelName)->findById($id)->first();
 
