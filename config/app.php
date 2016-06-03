@@ -21,7 +21,7 @@ $dbTestName = $dbName . '_test';
 $sessionCookieSecure = (bool)env('APP_SESSION_SECURE_COOKIE');
 $sessionCookieSecure = $https ?: $sessionCookieSecure;
 $cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY');
-$sessionTimeout = env('APP_SESSION_TIMEOUT');
+$sessionTimeout = (bool)env('APP_SESSION_TIMEOUT');
 
 return [
     /**
