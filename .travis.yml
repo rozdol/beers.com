@@ -1,7 +1,6 @@
 language: php
 
 php:
-    - 5.5
     - 5.6
     - 7.0
     - hhvm
@@ -12,18 +11,19 @@ matrix:
         - php: hhvm
 
 install:
-    - ./bin/composer install
+    - if [ -f composer.lock ] ; then ./bin/composer install ; else ./bin/composer update ; fi
     - ./vendor/bin/phake app:install DB_NAME=project_template_cakephp CHOWN_USER=$USER CHGRP_GROUP=$USER
 
 before_script:
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99.0
-    - wget http://selenium-release.storage.googleapis.com/2.49/selenium-server-standalone-2.49.0.jar
+    - wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar
     - ./bin/cake server -H localhost -p 8000 > /dev/null 2>&1 &
-    - java -jar selenium-server-standalone-2.49.0.jar > /dev/null 2>&1 &
+    - java -jar selenium-server-standalone-2.53.0.jar > /dev/null 2>&1 &
     - sleep 30
 
 script:
   - ./vendor/bin/phpunit --group example
   - ./vendor/bin/phpunit --exclude-group example
   - ./vendor/bin/phpcs -n -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/Fixture/ tests/TestCase/
+

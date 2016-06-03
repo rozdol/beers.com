@@ -21,6 +21,7 @@ $dbTestName = $dbName . '_test';
 $sessionCookieSecure = (bool)env('APP_SESSION_SECURE_COOKIE');
 $sessionCookieSecure = $https ?: $sessionCookieSecure;
 $cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY');
+$useOnlyCookies = (bool)env('APP_SESSION_USE_ONLY_COOKIES');
 $sessionTimeout = (bool)env('APP_SESSION_TIMEOUT');
 
 return [
@@ -258,7 +259,7 @@ return [
             * decreases performance because each query needs to be traversed and
             * manipulated before being executed.
             */
-            'quoteIdentifiers' => false,
+            'quoteIdentifiers' => true,
 
             /*
             * During development, if using MySQL < 5.6, uncommenting the
@@ -349,6 +350,7 @@ return [
         'ini' => [
             'session.cookie_secure' => $sessionCookieSecure,
             'session.cookie_httponly' => $cookieHttpOnly,
+            'session.use_only_cookies' => $useOnlyCookies
         ]
     ],
     'AuditStash' => [

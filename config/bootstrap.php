@@ -181,13 +181,15 @@ Request::addDetector('tablet', function ($request) {
 
 Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
+Plugin::load('CsvMigrations', ['bootstrap' => true]);
 Plugin::load('Crud');
 Plugin::load('Groups', ['bootstrap' => false, 'routes' => true]);
 Plugin::load('RolesCapabilities', ['bootstrap' => false, 'routes' => true]);
 Plugin::load('QoboAdminPanel');
 Plugin::load('Menu', ['bootstrap' => true]);
 Plugin::load('AuditStash');
-Plugin::load('Search', ['routes' => true]);
+Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
+Plugin::load('Burzum/FileStorage');
 /**
  * @todo seems like if CakeDC/Users plugin is loaded
  * before any of our plugins that use routes, it breaks

@@ -1,5 +1,5 @@
 <?php
-require_once 'vendor/qobo/phake-builder/Phakefile';
+require_once 'vendor/qobo/phake-builder/Phakefile.php';
 
 group('app', function() {
 
@@ -8,28 +8,19 @@ group('app', function() {
 		printSeparator();
 		printInfo("Installing application");
 	});
-	task('install', ':git:pull', ':git:checkout');
 	task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
 	task('install', ':mysql:database-create');
 	task('install', ':cakephp:test-database-create');
 	task('install', ':cakephp:test-database-migrate');
 	task('install', ':cakephp:install');
-	task('install', ':file:chmod');
-	task('install', ':file:chown');
-	task('install', ':file:chgrp');
 
 	desc('Update application');
 	task('update', ':builder:init', function($app) {
 		printSeparator();
 		printInfo("Updating application");
 	});
-	task('update', ':git:pull', ':git:checkout');
-	task('update', ':composer:install');
 	task('update', ':dotenv:create', ':dotenv:reload', ':file:process');
 	task('update', ':cakephp:update');
-	task('update', ':file:chmod');
-	task('update', ':file:chown');
-	task('update', ':file:chgrp');
 
 	desc('Remove application');
 	task('remove', ':builder:init', function($app) {
@@ -46,6 +37,38 @@ group('app', function() {
  * Grouped CakePHP related tasks
  */
 group('cakephp', function() {
+
+	desc('Setting folder permissions');
+	task('set-folder-permissions', ':builder:init', function($app) {
+		$dirMode = getValue('CHMOD_DIR_MODE', $app);
+		$fileMode = getValue('CHMOD_FILE_MODE', $app);
+		$user = getValue('CHOWN_USER', $app);
+		$group = getValue('CHGRP_GROUP', $app);
+
+		$paths = [
+			'tmp',
+			'logs',
+			'webroot/uploads',
+		];
+		foreach($paths as $path) {
+			$path = __DIR__ . DS . $path;
+			if (file_exists($path)) {
+				$result = \PhakeBuilder\FileSystem::chmodPath($path, $dirMode, $fileMode);
+				if (!$result) {
+					throw new \RuntimeException("Failed to change permissions");
+				}
+				$result = \PhakeBuilder\FileSystem::chownPath($path, $user);
+				if (!$result) {
+					throw new \RuntimeException("Failed to change user ownership");
+				}
+				$result = \PhakeBuilder\FileSystem::chownPath($path, $group);
+				if (!$result) {
+					throw new \RuntimeException("Failed to change group ownership");
+				}
+			}
+		}
+		printInfo('Set folder permissions has been completed.');
+	});
 
 	desc('Creates CakePHP test database');
 	task('test-database-create', ':builder:init', function($app) {
@@ -127,6 +150,7 @@ group('cakephp', function() {
 		':builder:init',
 		':cakephp:clear_cache',
 		':cakephp:migrations',
+		':cakephp:set-folder-permissions',
 		function($app) {
 			printSeparator();
 			printInfo('All CakePHP app:update related tasks are completed');
@@ -142,6 +166,7 @@ group('cakephp', function() {
 		':builder:init',
 		':cakephp:migrations',
 		':cakephp:qobo_user',
+		':cakephp:set-folder-permissions',
 		function($app) {
 			printSeparator();
 			printInfo('All CakePHP app:install related tasks are completed');
@@ -149,6 +174,3 @@ group('cakephp', function() {
 	);
 
 });
-
-# vi:ft=php
-?>

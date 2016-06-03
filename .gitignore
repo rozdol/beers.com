@@ -2,6 +2,7 @@ build/
 vendor/
 .env
 etc/nginx.conf
+etc/ssl/*
 /config/app.php
 tmp/
 logs/
