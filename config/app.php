@@ -22,6 +22,7 @@ $sessionCookieSecure = (bool)env('APP_SESSION_SECURE_COOKIE');
 $sessionCookieSecure = $https ?: $sessionCookieSecure;
 $cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY');
 $useOnlyCookies = (bool)env('APP_SESSION_USE_ONLY_COOKIES');
+$sessionTimeout = (bool)env('APP_SESSION_TIMEOUT');
 
 return [
     /**
@@ -356,3 +357,7 @@ return [
         'persister' => 'App\Persister\MysqlPersister'
     ],
 ];
+
+if (!Configure::read('Session.timeout') && is_numeric($sessionTimeout)) {
+    Configure::write('Session.timeout', $sessionTimeout);
+}
