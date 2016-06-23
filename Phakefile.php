@@ -121,7 +121,7 @@ group('cakephp', function() {
 	});
 
 	desc('Create dev user');
-	task('qobo_user', ':builder:init', function() {
+	task('dev-user-create', ':builder:init', function() {
 		printSeparator();
 		printInfo('Creating dev user');
 
@@ -165,7 +165,7 @@ group('cakephp', function() {
 		'install',
 		':builder:init',
 		':cakephp:migrations',
-		':cakephp:qobo_user',
+		':cakephp:dev-user-create',
 		':cakephp:set-folder-permissions',
 		function($app) {
 			printSeparator();
