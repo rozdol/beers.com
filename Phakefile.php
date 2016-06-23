@@ -133,7 +133,7 @@ group('cakephp', function() {
 	});
 
 	desc('Runs CakePHP clear cache task');
-	task('clear_cache', ':builder:init', function() {
+	task('clear-cache', ':builder:init', function() {
 		printSeparator();
 		printInfo('Running CakePHP clear cache task');
 
@@ -148,7 +148,7 @@ group('cakephp', function() {
 	task(
 		'update',
 		':builder:init',
-		':cakephp:clear_cache',
+		':cakephp:clear-cache',
 		':cakephp:migrations',
 		':cakephp:set-folder-permissions',
 		function($app) {
