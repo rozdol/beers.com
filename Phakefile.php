@@ -6,7 +6,7 @@ group('app', function() {
 	desc('Install application');
 	task('install', ':builder:init', function($app) {
 		printSeparator();
-		printInfo("Installing application");
+		printInfo("Task: app:install (Install application)");
 	});
 	task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
 	task('install', ':mysql:database-create');
@@ -17,7 +17,7 @@ group('app', function() {
 	desc('Update application');
 	task('update', ':builder:init', function($app) {
 		printSeparator();
-		printInfo("Updating application");
+		printInfo("Task: app:update (Update application)");
 	});
 	task('update', ':dotenv:create', ':dotenv:reload', ':file:process');
 	task('update', ':cakephp:update');
@@ -25,7 +25,7 @@ group('app', function() {
 	desc('Remove application');
 	task('remove', ':builder:init', function($app) {
 		printSeparator();
-		printInfo("Removing application");
+		printInfo("Task: app:remove (Update application)");
 	});
 	task('remove', ':dotenv:delete');
 	task('remove', ':mysql:database-drop');
@@ -40,6 +40,8 @@ group('cakephp', function() {
 
 	desc('Setting folder permissions');
 	task('set-folder-permissions', ':builder:init', function($app) {
+		printSeparator();
+		printInfo("Task: cakephp:set-folder-permissions (Setting folder permissions)");
 		$dirMode = getValue('CHMOD_DIR_MODE', $app);
 		$fileMode = getValue('CHMOD_FILE_MODE', $app);
 		$user = getValue('CHOWN_USER', $app);
@@ -70,40 +72,40 @@ group('cakephp', function() {
 		printInfo('Set folder permissions has been completed.');
 	});
 
-	desc('Creates CakePHP test database');
+	desc('Create CakePHP test database');
 	task('test-database-create', ':builder:init', function($app) {
 		printSeparator();
-		printInfo('Creating test database.');
+		printInfo("Task: cakephp:test-database-create (Create CakePHP test database)");
 
 		$dbTestName = requireValue('DB_NAME', $app) . '_test';
 		$query = "CREATE DATABASE " . $dbTestName;
 		doMySQLCommand($app, $query, false, true);
 	});
 
-	desc('Deletes the existing CakePHP test database');
+	desc('Drop CakePHP test database');
 	task('test-database-drop', ':builder:init', function($app) {
 		printSeparator();
-		printInfo('Dropping test database.');
+		printInfo("Task: cakephp:test-database-drop (Drop CakePHP test database)");
 
 		$dbTestName = requireValue('DB_NAME', $app) . '_test';
 		$query = "DROP DATABASE " . $dbTestName;
 		doMySQLCommand($app, $query, false, true);
 	});
 
-	desc('Migrates migrations to the test database');
+	desc('Run migrations for the test database');
 	task('test-database-migrate', ':builder:init', function($app) {
 		printSeparator();
-		printInfo('Migrating to the test database.');
+		printInfo("Task: cakephp:test-database-migrate (Run migrations for the test database)");
 
 		$command = getenv('CAKE_CONSOLE') . ' migrations migrate --connection=test';
 		doShellCommand($command);
 	});
 
 
-	desc('Runs CakePHP migrations task');
+	desc('Run CakePHP migrations task');
 	task('migrations', ':builder:init', function() {
 		printSeparator();
-		printInfo('Running CakePHP migrations task');
+		printInfo("Task: cakephp:migrations (Run CakePHP migrations task)");
 
 		/**
 		 * shell command for running application migrations
@@ -123,7 +125,7 @@ group('cakephp', function() {
 	desc('Create dev user');
 	task('dev-user-create', ':builder:init', function() {
 		printSeparator();
-		printInfo('Creating dev user');
+		printInfo("Task: cakephp:dev-user-create (Create dev user)");
 
 		$command  = getenv('CAKE_CONSOLE') . ' users addUser';
 		$command .= ' --username=' . getenv('DEV_USER');
@@ -132,10 +134,10 @@ group('cakephp', function() {
 		doShellCommand($command);
 	});
 
-	desc('Runs CakePHP clear cache task');
+	desc('Run CakePHP clear cache task');
 	task('clear-cache', ':builder:init', function() {
 		printSeparator();
-		printInfo('Running CakePHP clear cache task');
+		printInfo("Task: cakephp:clear-cache (Run CakePHP clear cache task)");
 
 		$command = getenv('CAKE_CONSOLE') . ' clear_cache all';
 		doShellCommand($command);
@@ -144,7 +146,7 @@ group('cakephp', function() {
 	/**
 	 * 'Grouped CakePHP app update related tasks
 	 */
-	desc('Runs CakePHP app update related tasks');
+	desc('Run CakePHP app update related tasks');
 	task(
 		'update',
 		':builder:init',
@@ -153,7 +155,7 @@ group('cakephp', function() {
 		':cakephp:set-folder-permissions',
 		function($app) {
 			printSeparator();
-			printInfo('All CakePHP app:update related tasks are completed');
+		    printInfo("Task: cakephp:update (Run CakePHP app update related tasks)");
 		}
 	);
 
@@ -169,7 +171,7 @@ group('cakephp', function() {
 		':cakephp:set-folder-permissions',
 		function($app) {
 			printSeparator();
-			printInfo('All CakePHP app:install related tasks are completed');
+ 			printInfo("Task: cakephp:install (Run CakePHP app install related tasks)");
 		}
 	);
 
