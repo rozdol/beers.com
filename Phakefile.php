@@ -19,7 +19,7 @@ group('app', function() {
 		printSeparator();
 		printInfo("Task: app:update (Update application)");
 	});
-	task('update', ':dotenv:create', ':dotenv:reload', ':file:process');
+	task('update', ':dotenv:create', ':dotenv:reload', ':file:process', ':letsencrypt:symlink');
 	task('update', ':cakephp:update');
 
 	desc('Remove application');
