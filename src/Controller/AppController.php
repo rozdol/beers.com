@@ -18,6 +18,7 @@ use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
+use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use RolesCapabilities\Capability;
 use RolesCapabilities\CapabilityTrait;
@@ -71,7 +72,18 @@ class AppController extends Controller
      */
     public function beforeFilter(Event $event)
     {
-        $this->_checkAccess($event);
+        /*
+        if user not logged in, redirect him to login page
+         */
+        try {
+            $this->_checkAccess($event);
+        } catch (ForbiddenException $e) {
+            if (empty($this->Auth->user())) {
+                $this->redirect('/login');
+            } else {
+                throw new ForbiddenException($e->getMessage());
+            }
+        }
 
         $this->_setIframeRendering();
 
