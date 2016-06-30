@@ -54,11 +54,7 @@ class AppController extends Controller
         // $this->loadComponent('Csrf');
         $this->loadComponent('CakeDC/Users.UsersAuth');
         $this->Auth->config('authorize', false);
-        $this->Auth->config('loginRedirect', [
-            'plugin' => 'Search',
-            'controller' => 'Dashboards',
-            'action' => 'index'
-        ]);
+        $this->Auth->config('loginRedirect', '/');
         $this->loadComponent('RolesCapabilities.Capability');
         $this->loadComponent('CsvMigrations.CsvView');
         $this->loadComponent('Search.Searchable');
