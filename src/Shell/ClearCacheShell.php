@@ -60,11 +60,13 @@ class ClearCacheShell extends Shell
         $core = Cache::config('_cake_core_');
         if (!$core) {
             $this->error('Error! Cannot find core config.');
+
             return false;
         }
         $dir = $core['path'];
         if (!file_exists($dir)) {
             $this->error('Error! Cannot proceed without the cache\'s path');
+
             return false;
         }
         $it = new \FilesystemIterator($dir, \FilesystemIterator::SKIP_DOTS);
@@ -90,6 +92,7 @@ class ClearCacheShell extends Shell
 
         if (!$m || !$v || !$c) {
              $this->err('Something when wrong.');
+
              return false;
         }
 
