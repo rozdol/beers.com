@@ -34,6 +34,7 @@ class ListTask extends Shell
 
         if (empty($plugins)) {
             $this->err('<error>No loaded plugins detected.</error>');
+
             return false;
         }
 
