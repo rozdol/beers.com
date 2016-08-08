@@ -184,7 +184,7 @@ Plugin::load('BootstrapUI');
 Plugin::load('CsvMigrations', ['bootstrap' => true]);
 Plugin::load('Crud');
 Plugin::load('Groups', ['bootstrap' => false, 'routes' => true]);
-Plugin::load('RolesCapabilities', ['bootstrap' => false, 'routes' => true]);
+Plugin::load('RolesCapabilities', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('QoboAdminPanel', ['bootstrap' => true]);
 Plugin::load('Menu', ['bootstrap' => true]);
 Plugin::load('AuditStash');
