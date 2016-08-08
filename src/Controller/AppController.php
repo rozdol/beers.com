@@ -51,7 +51,9 @@ class AppController extends Controller
         $this->loadComponent('CakeDC/Users.UsersAuth');
         $this->Auth->config('authorize', false);
         $this->Auth->config('loginRedirect', '/');
-        $this->loadComponent('RolesCapabilities.Capability');
+        $this->loadComponent('RolesCapabilities.Capability', [
+            'currentRequest' => $this->request->params
+        ]);
         $this->loadComponent('CsvMigrations.CsvView');
         $this->loadComponent('Search.Searchable');
     }
