@@ -47,10 +47,7 @@ class AppController extends Controller
         parent::initialize();
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
-        /**
-         * Temporarily disabled.
-         * @todo Find out why this is returning 403 on API calls.
-         */
+        // Temporarily disabled. @todo Find out why this is returning 403 on API calls.
         // $this->loadComponent('Csrf');
         $this->loadComponent('CakeDC/Users.UsersAuth');
         $this->Auth->config('authorize', false);
