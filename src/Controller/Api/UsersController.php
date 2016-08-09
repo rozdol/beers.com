@@ -13,7 +13,10 @@ class UsersController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['token']);
+
+        if (Configure::read('api_auth')) {
+            $this->Auth->allow(['token']);
+        }
     }
 
     /**
