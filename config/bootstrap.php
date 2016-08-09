@@ -190,7 +190,12 @@ Plugin::load('Menu', ['bootstrap' => true]);
 Plugin::load('AuditStash');
 Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Burzum/FileStorage');
-Plugin::load('ADmad/JwtAuth');
+
+// Only load JwtAuth plugin if API authentication is enabled
+if (Configure::read('api_auth')) {
+    Plugin::load('ADmad/JwtAuth');
+}
+
 /**
  * @todo seems like if CakeDC/Users plugin is loaded
  * before any of our plugins that use routes, it breaks
