@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Api;
 
+use Cake\Core\Configure;
 use Cake\Network\Exception\UnauthorizedException;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
