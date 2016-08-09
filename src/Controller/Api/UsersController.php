@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Api;
 
+use Cake\Core\Configure;
 use Cake\Network\Exception\UnauthorizedException;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
@@ -13,7 +14,10 @@ class UsersController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['token']);
+
+        if (Configure::read('api_auth')) {
+            $this->Auth->allow(['token']);
+        }
     }
 
     /**
