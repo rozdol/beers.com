@@ -192,7 +192,7 @@ Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Burzum/FileStorage');
 
 // Only load JwtAuth plugin if API authentication is enabled
-if (Configure::read('api_auth')) {
+if (Configure::read('API.auth')) {
     Plugin::load('ADmad/JwtAuth');
 }
 
