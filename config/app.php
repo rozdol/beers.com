@@ -26,9 +26,13 @@ $sessionTimeout = (bool)env('APP_SESSION_TIMEOUT');
 
 return [
     /**
-     * API Authentication flag.
+     * API Authentication parameters
      */
-    'api_auth' => (bool)getenv('API_AUTHENTICATION'),
+    'API' => [
+        'auth' => (bool)getenv('API_AUTHENTICATION'),
+        'user' => getenv('API_USER'),
+        'pass' => getenv('API_PASS')
+    ],
 
     /**
      * Debug Level:

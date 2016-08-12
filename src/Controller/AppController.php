@@ -16,10 +16,13 @@ namespace App\Controller;
 
 use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Security;
+use Firebase\JWT\JWT;
 use RolesCapabilities\Capability;
 use RolesCapabilities\CapabilityTrait;
 
@@ -66,9 +69,7 @@ class AppController extends Controller
      */
     public function beforeFilter(Event $event)
     {
-        /*
-        if user not logged in, redirect him to login page
-         */
+        // if user not logged in, redirect him to login page
         try {
             $this->_checkAccess($event);
         } catch (ForbiddenException $e) {
@@ -82,6 +83,17 @@ class AppController extends Controller
         $this->_setIframeRendering();
 
         EventManager::instance()->on(new RequestMetadata($this->request, $this->Auth->user('id')));
+
+        // if API authentication is enabled, generate a token for internal use
+        if (Configure::read('API.auth')) {
+            Configure::write('API.token', JWT::encode(
+                [
+                    'sub' => $this->Auth->user('id'),
+                    'exp' => time() + 604800
+                ],
+                Security::salt()
+            ));
+        }
     }
 
     /**

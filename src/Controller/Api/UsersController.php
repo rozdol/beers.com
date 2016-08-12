@@ -15,7 +15,7 @@ class UsersController extends AppController
     {
         parent::initialize();
 
-        if (Configure::read('api_auth')) {
+        if (Configure::read('API.auth')) {
             $this->Auth->allow(['token']);
         }
     }
