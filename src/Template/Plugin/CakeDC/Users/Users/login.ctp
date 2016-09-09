@@ -50,7 +50,7 @@ $this->layout = 'QoboAdminPanel.plain';
                     </div>
                 </fieldset>
                 <?= implode(' ', $this->User->socialLoginList()); ?>
-                <?= $this->Form->button(__d('Users', 'Login')); ?>
+                <?= $this->Form->button(__d('Users', '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login'), ['class' => 'btn btn-primary']); ?>
                 <?= $this->Form->end() ?>
             </div>
         </div>
