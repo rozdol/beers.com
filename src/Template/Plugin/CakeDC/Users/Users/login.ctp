@@ -16,6 +16,7 @@ $this->layout = 'QoboAdminPanel.plain';
                     ?>
                 </p>
                 <?= $this->Flash->render('auth') ?>
+                <?= $this->Flash->render() ?>
                 <fieldset>
                     <?= $this->Form->input('username', ['required' => true]) ?>
                     <?= $this->Form->input('password', ['required' => true]) ?>
