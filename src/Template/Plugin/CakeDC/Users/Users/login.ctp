@@ -16,35 +16,42 @@ $this->layout = 'QoboAdminPanel.plain';
                     ?>
                 </p>
                 <?= $this->Flash->render('auth') ?>
+                <?= $this->Flash->render() ?>
                 <fieldset>
                     <?= $this->Form->input('username', ['required' => true]) ?>
                     <?= $this->Form->input('password', ['required' => true]) ?>
-                    <?php
-                    if (Configure::check('Users.RememberMe.active')) {
-                        echo $this->Form->input(Configure::read('Users.Key.Data.rememberMe'), [
-                            'type' => 'checkbox',
-                            'label' => __d('Users', 'Remember me'),
-                            'checked' => 'checked'
-                        ]);
-                    }
-                    ?>
-                    <p>
-                        <?php
-                        $registrationActive = Configure::read('Users.Registration.active');
-                        if ($registrationActive) {
-                            echo $this->Html->link(__d('users', 'Register'), ['action' => 'register']);
-                        }
-                        if (Configure::read('Users.Email.required')) {
-                            if ($registrationActive) {
-                                echo ' | ';
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?php
+                            if (Configure::check('Users.RememberMe.active')) {
+                                echo $this->Form->input(Configure::read('Users.Key.Data.rememberMe'), [
+                                    'type' => 'checkbox',
+                                    'label' => __d('Users', 'Remember me'),
+                                    'checked' => 'checked'
+                                ]);
                             }
-                            echo $this->Html->link(__d('users', 'Reset Password'), ['action' => 'requestResetPassword']);
-                        }
-                        ?>
-                    </p>
+                            ?>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="checkbox text-right">
+                                <?php
+                                $registrationActive = Configure::read('Users.Registration.active');
+                                if ($registrationActive) {
+                                    echo $this->Html->link(__d('users', 'Register'), ['action' => 'register']);
+                                }
+                                if (Configure::read('Users.Email.required')) {
+                                    if ($registrationActive) {
+                                        echo ' | ';
+                                    }
+                                    echo $this->Html->link(__d('users', 'Reset Password'), ['action' => 'requestResetPassword']);
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
                 </fieldset>
                 <?= implode(' ', $this->User->socialLoginList()); ?>
-                <?= $this->Form->button(__d('Users', 'Login')); ?>
+                <?= $this->Form->button(__d('Users', '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login'), ['class' => 'btn btn-primary']); ?>
                 <?= $this->Form->end() ?>
             </div>
         </div>

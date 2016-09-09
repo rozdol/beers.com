@@ -54,6 +54,7 @@ class AppController extends Controller
         $this->loadComponent('CakeDC/Users.UsersAuth');
         $this->Auth->config('authorize', false);
         $this->Auth->config('loginRedirect', '/');
+        $this->Auth->config('flash', ['element' => 'error', 'key' => 'auth']);
         $this->loadComponent('RolesCapabilities.Capability', [
             'currentRequest' => $this->request->params
         ]);
