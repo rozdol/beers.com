@@ -47,6 +47,7 @@ use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
+use Cake\Event\EventManager;
 use Cake\Log\Log;
 use Cake\Network\Email\Email;
 use Cake\Network\Request;
