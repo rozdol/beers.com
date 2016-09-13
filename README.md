@@ -140,5 +140,14 @@ want to remove the example tests from the file.
 project-template provides a few examples of how to write and organize unit tests.  Have a look
 in the ```tests/``` folder.  Now you have **NO EXCUSE** for not testing your applications!
 
+###Configurations
 
+####Analytics
+
+Load Google Analytics in your project by doing the following.
+
+```
+<?= $this->element('Snippets/analytics', ['ua' => 'UA goes here']); ?>
+```
+The parameter is optional as it defaults to App.analytics configuration.
 

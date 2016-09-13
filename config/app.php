@@ -86,6 +86,7 @@ return [
             'templates' => [APP . 'Template' . DS],
             'locales' => [APP . 'Locale' . DS],
         ],
+        'analytics' => env('GOOGLE_ANALYTICS_ACCOUNT_ID'),
     ],
 
     /**
