@@ -147,7 +147,7 @@ in the ```tests/``` folder.  Now you have **NO EXCUSE** for not testing your app
 Load Google Analytics in your project by doing the following.
 
 ```
-<?= $this->element('Snippets/analytics', ['ua' => 'UA goes here']); ?>
+<?= $this->element('Snippet/google_analytics', ['ua' => 'UA goes here']); ?>
 ```
 The parameter is optional as it defaults to App.analytics configuration.
 
