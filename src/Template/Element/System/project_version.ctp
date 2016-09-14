@@ -13,7 +13,7 @@ $projectUrl = $projectUrl ?: 'https://github.com/QoboLtd/project-template-cakeph
 
 // Use PROJECT_VERSION environment variable or fallback
 $projectVersion = getenv('PROJECT_VERSION') ?: getenv('GIT_BRANCH');
-$projectVersion = 'N/A';
+$projectVersion = $projectVersion ?: 'N/A';
 
 //
 // Versions
