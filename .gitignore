@@ -7,3 +7,5 @@ etc/ssl/*
 tmp/
 logs/
 webroot/uploads
+config/Migrations/schema-dump-default.lock
+config/Migrations/schema-dump-test.lock
