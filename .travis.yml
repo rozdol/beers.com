@@ -11,7 +11,6 @@ matrix:
         - php: hhvm
 
 install:
-=======
     - ./bin/composer install --no-interaction --no-progress
     - ./vendor/bin/phake app:install CHOWN_USER=$USER CHGRP_GROUP=$USER DB_NAME=app DB_ADMIN_USER=root DB_USER=root
 
