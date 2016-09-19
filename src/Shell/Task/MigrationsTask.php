@@ -50,7 +50,12 @@ class MigrationsTask extends Shell
     {
         $parser = parent::getOptionParser();
         $parser
-            ->addSubcommand('migrate', ['help' => 'Migrate all loaded plugins']);
+            ->addSubcommand('migrate', ['help' => 'Migrate all loaded plugins'])
+            ->addOption('connection', [
+                'short' => 'c',
+                'help' => 'The datasource connection to use',
+                'required' => false
+            ]);
 
         return $parser;
     }

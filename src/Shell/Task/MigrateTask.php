@@ -54,10 +54,17 @@ class MigrateTask extends Shell
      */
     protected function _migratePlugins(array $plugins)
     {
+        $dispatchCommand = 'migrations migrate';
+
+        // datasource connection
+        if (!empty($this->params['connection'])) {
+            $dispatchCommand .= ' -c ' . $this->params['connection'];
+        }
+
         foreach ($plugins as $plugin) {
             $this->out('Migrating plugin [' . $plugin . ']:');
             $this->dispatchShell([
-               'command' => ['migrations', 'migrate', '--plugin', $plugin]
+               'command' => $dispatchCommand . ' --plugin ' . $plugin
             ]);
             $this->hr();
         }
