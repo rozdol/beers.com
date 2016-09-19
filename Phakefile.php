@@ -126,6 +126,13 @@ group('cakephp', function() {
 
 		$command = getenv('CAKE_CONSOLE') . ' migrations migrate --connection=test';
 		doShellCommand($command);
+
+		/**
+		 * shell command for running loaded plugins migrations
+		 * @var string
+		 */
+		$command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate --connection=test';
+		doShellCommand($command);
 	});
 
 
