@@ -192,6 +192,7 @@ Plugin::load('Menu', ['bootstrap' => true]);
 Plugin::load('AuditStash');
 Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Burzum/FileStorage');
+Plugin::load('Alt3/Swagger', ['routes' => true]);
 
 // Only load JwtAuth plugin if API authentication is enabled
 if (Configure::read('API.auth')) {
