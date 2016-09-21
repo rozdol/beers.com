@@ -23,7 +23,7 @@
         "lorenzo/audit-stash": "^1.0",
         "qobo/cakephp-csv-migrations": "^4.0",
         "qobo/cakephp-search": "^1.0",
-        "alt3/cakephp-swagger": "dev-master"
+        "alt3/cakephp-swagger": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
