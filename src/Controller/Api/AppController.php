@@ -12,7 +12,7 @@ use CsvMigrations\Controller\Api\AppController as BaseController;
             version="1.0.0"
         )
     )
-*/
+ */
 class AppController extends BaseController
 {
 }
