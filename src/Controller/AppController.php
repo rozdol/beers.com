@@ -58,7 +58,6 @@ class AppController extends Controller
         $this->loadComponent('RolesCapabilities.Capability', [
             'currentRequest' => $this->request->params
         ]);
-        $this->loadComponent('CsvMigrations.CsvView');
         $this->loadComponent('Search.Searchable');
     }
 
@@ -85,16 +84,25 @@ class AppController extends Controller
 
         EventManager::instance()->on(new RequestMetadata($this->request, $this->Auth->user('id')));
 
-        // if API authentication is enabled, generate a token for internal use
-        if (Configure::read('API.auth')) {
-            Configure::write('API.token', JWT::encode(
-                [
-                    'sub' => $this->Auth->user('id'),
-                    'exp' => time() + 604800
-                ],
-                Security::salt()
-            ));
-        }
+        $this->_generateApiToken();
+    }
+
+    /**
+     * Method that generates API token for internal use.
+     *
+     * @return void
+     */
+    protected function _generateApiToken()
+    {
+        Configure::write('API.token', JWT::encode(
+            [
+                'sub' => $this->Auth->user('id'),
+                'exp' => time() + 604800
+            ],
+            Security::salt()
+        ));
+
+        Configure::write('CsvMigrations.api.token', Configure::read('API.token'));
     }
 
     /**

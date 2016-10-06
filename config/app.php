@@ -29,9 +29,7 @@ return [
      * API Authentication parameters
      */
     'API' => [
-        'auth' => (bool)getenv('API_AUTHENTICATION'),
-        'user' => getenv('API_USER'),
-        'pass' => getenv('API_PASS')
+        'auth' => (bool)getenv('API_AUTHENTICATION')
     ],
 
     /**

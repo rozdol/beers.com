@@ -212,6 +212,9 @@ if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
 
+// include configration file(s)
+include('csv_migrations.php');
+
 /**
  * Connect middleware/dispatcher filters.
  */
