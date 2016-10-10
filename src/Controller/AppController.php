@@ -14,6 +14,7 @@
  */
 namespace App\Controller;
 
+use App\Controller\ChangelogTrait;
 use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
@@ -37,6 +38,7 @@ use RolesCapabilities\CapabilityTrait;
 class AppController extends Controller
 {
     use CapabilityTrait;
+    use ChangelogTrait;
 
     /**
      * Initialization hook method.
