@@ -16,8 +16,8 @@ foreach ($changelog as $record) {
     if (!isset($meta->user)) {
         $meta->user = __('Unknown');
     } else {
-        $meta->user = $usersTable->findById($meta->user)->first();
-        $meta->user = $meta->user->username;
+        $user = $usersTable->findById($meta->user)->first();
+        $meta->user = empty($user) ? $meta->user : $meta->user->username;
     }
     if ($meta->user !== $oldUser || $timestamp !== $oldTime) {
         $result .= '<table class="table table-condensed">';

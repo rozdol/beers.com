@@ -27,7 +27,7 @@ trait ChangelogTrait
      *
      * @var string
      */
-    protected $_elementView = 'Element/changelog';
+    protected $_elementView = '/Element/changelog';
 
     /**
      * Return log audit results for specific record.
