@@ -59,7 +59,7 @@ Router::scope('/', function ($routes) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    $routes->connect('/', ['plugin' => 'Search', 'controller' => 'Dashboards', 'action' => 'index']);
 
     $routes->connect('/users/', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index']);
     $routes->connect('/users/:action/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users']);
