@@ -26,6 +26,7 @@ use Cake\Utility\Security;
 use Firebase\JWT\JWT;
 use RolesCapabilities\Capability;
 use RolesCapabilities\CapabilityTrait;
+use Search\Controller\SearchTrait;
 
 /**
  * Application Controller
@@ -39,6 +40,7 @@ class AppController extends Controller
 {
     use CapabilityTrait;
     use ChangelogTrait;
+    use SearchTrait;
 
     /**
      * Initialization hook method.
