@@ -22,7 +22,7 @@
         "friendsofcake/crud": "^4.3",
         "lorenzo/audit-stash": "^1.0",
         "qobo/cakephp-csv-migrations": "^6.0",
-        "qobo/cakephp-search": "^1.0",
+        "qobo/cakephp-search": "^2.0",
         "alt3/cakephp-swagger": "^1.0"
     },
     "require-dev": {
