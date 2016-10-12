@@ -15,3 +15,4 @@ pipelines:
           - ./vendor/bin/phake app:install CHOWN_USER=$USER CHGRP_GROUP=$USER DB_NAME=app DB_ADMIN_USER=root DB_ADMIN_PASS=root DB_USER=root DB_PASS=root
           - ./vendor/bin/phpunit --group example
           - ./vendor/bin/phpunit --exclude-group example
+          - ./vendor/bin/phpcs -n -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/Fixture/ tests/TestCase/
