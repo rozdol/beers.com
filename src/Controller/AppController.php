@@ -60,7 +60,6 @@ class AppController extends Controller
         $this->loadComponent('RolesCapabilities.Capability', [
             'currentRequest' => $this->request->params
         ]);
-        $this->loadComponent('Search.Searchable');
     }
 
     /**
