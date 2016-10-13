@@ -50,7 +50,8 @@ Router::prefix('api', function ($routes) {
      */
     $routes->extensions(['json']);
     $routes->resources('Users');
-    $routes->fallbacks('InflectedRoute');
+
+    $routes->fallbacks('DashedRoute');
 });
 
 Router::scope('/', function ($routes) {
