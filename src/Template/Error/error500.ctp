@@ -1,6 +1,7 @@
 <?php
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
+use Cake\Routing\Router;
 
 if (Configure::read('debug')):
     $this->layout = 'dev_error';
@@ -30,8 +31,19 @@ if (Configure::read('debug')):
     $this->end();
 endif;
 ?>
-<h2><?= __d('cake', 'An Internal Error Has Occurred') ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= h($message) ?>
-</p>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <b><?= __d('cake', 'Error') ?> <?= h($code) ?>: <?= h($message) ?></b>
+            </div>
+            <div class="panel-body">
+                <?php echo 'There was a problem processing your request.  Please notify your system administrator.'; ?>
+            </div>
+            <div class="panel-footer">
+                <b>URL: </b><?= h(Router::url($url, true)) ?>
+            </div>
+        </div>
+    </div>
+</div>
