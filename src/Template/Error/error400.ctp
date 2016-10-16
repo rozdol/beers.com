@@ -1,5 +1,6 @@
 <?php
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 if (Configure::read('debug')):
     $this->layout = 'dev_error';
@@ -28,11 +29,34 @@ if (Configure::read('debug')):
     $this->end();
 endif;
 ?>
-<h2><?= h($message) ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= sprintf(
-        __d('cake', 'The requested address %s was not found on this server.'),
-        "<strong>'{$url}'</strong>"
-    ) ?>
-</p>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <b><?= __d('cake', 'Error') ?> <?= h($code) ?>: <?= h($message) ?></b>
+            </div>
+            <div class="panel-body">
+                <?php
+                    switch ($code) {
+                        case 401: echo 'The page that you are trying to access requires authorization. Please login and try again.'; break;
+                        case 403: echo 'You do not have sufficient authorization to access this page. Please contact your system administrator.'; break;
+                        case 404: echo 'The page that you are trying to access does not exist. Please adjust your URL and try again.'; break;
+                        case 405: echo 'The method that you are using to access this page is not allowed.'; break;
+                        case 406: echo 'Your browser does not understand how to render the requested page. Please contact your system administrator.'; break;
+                        case 408: echo 'The server took longer than it is allowed to process your request.  Please try again later.'; break;
+                        case 409: echo 'The file that you requested used to be here, but it is gone now.  Please contact your system administrator.'; break;
+                        case 411: echo 'Your request is missing <pre>Content-Length</pre> header. Please contact your system administrator.'; break;
+                        case 413: echo 'The request file was too big to process.  Please try with a smaller file or contact your system administrator.'; break;
+                        case 414: echo 'The request URL is too long.  Please limit the number and/or length of parameters, or contact your system administrator.'; break;
+                        case 415: echo 'The file type of the request is not supported.  Please try with another file or contact your system administrator.'; break;
+                        default: echo 'There was a problem with your request. Please try later, adjust your request, or contact your system administrator.'; break;
+                    }
+                ?>
+            </div>
+            <div class="panel-footer">
+                <b>URL: </b><?= h(Router::url($url, true)) ?>
+            </div>
+        </div>
+    </div>
+</div>
