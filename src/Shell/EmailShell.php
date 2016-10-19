@@ -25,9 +25,15 @@ class EmailShell extends Shell
     protected function _getDefaultDomain()
     {
         $result = getenv('EMAIL_DOMAIN') ?: self::DEFAULT_DOMAIN;
+
         return $result;
     }
 
+    /**
+     * Configure option parser
+     *
+     * @return ConsoleOptionParser
+     */
     public function getOptionParser()
     {
         $parser = parent::getOptionParser();
@@ -49,6 +55,11 @@ class EmailShell extends Shell
         return $parser;
     }
 
+    /**
+     * Main shell method
+     *
+     * @return void
+     */
     public function main()
     {
         // Get the settings
