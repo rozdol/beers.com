@@ -215,20 +215,20 @@ return [
         'default' => [
             'className' => 'Mail',
             // The following keys are used in SMTP transports
-            'host' => 'localhost',
-            'port' => 25,
-            'timeout' => 30,
-            'username' => 'user',
-            'password' => 'secret',
+            'host' => getenv('SMTP_HOST') ?: 'localhost',
+            'port' => getenv('SMTP_PORT') ?: 25,
+            'timeout' => getenv('SMTP_TIMEOUT') ?: 30,
+            'username' => getenv('SMTP_USERNAME') ?: null,
+            'password' => getenv('SMTP_PASSWORD') ?: null,
             'client' => null,
-            'tls' => null,
+            'tls' => (bool)getenv('SMTP_TLS'),
         ],
     ],
 
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'you@localhost',
+            'from' => [ getenv('EMAIL_FROM_ADDRESS') => getenv('EMAIL_FROM_NAME')],
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
