@@ -9,14 +9,12 @@ Install
 When starting a new CakePHP project, do the following:
 
 ```bash
-composer create-project qobo/project-template-cakephp
-mv project-template-cakephp example.com
+composer create-project qobo/project-template-cakephp example.com
 cd example.com
 git init
 git add .
 git commit -m "Initial commit"
-./vendor/bin/phake dotenv:create DB_NAME=YOUR_DATABASE_NAME
-./vendor/bin/phake app:install
+composer exec -- phake app:install DB_NAME=YOUR_DATABASE_NAME
 ```
 
 Update
