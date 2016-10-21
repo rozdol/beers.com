@@ -12,8 +12,9 @@ pipelines:
           - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
           - chmod -R u+rwX,go-rwX ~/.ssh
           - ./bin/composer install --no-interaction --no-progress
+          - ./vendor/bin/phake dotenv:create CHOWN_USER=$USER CHGRP_GROUP=$USER DB_NAME=app DB_ADMIN_USER=root DB_ADMIN_PASS=root DB_USER=root DB_PASS=root
           - ./bin/cake validate
-          - ./vendor/bin/phake app:install CHOWN_USER=$USER CHGRP_GROUP=$USER DB_NAME=app DB_ADMIN_USER=root DB_ADMIN_PASS=root DB_USER=root DB_PASS=root
+          - ./vendor/bin/phake app:install
           - ./vendor/bin/phpunit --group example
           - ./vendor/bin/phpunit --exclude-group example
           - ./vendor/bin/phpcs -n -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/Fixture/ tests/TestCase/
