@@ -82,18 +82,24 @@ group('cakephp', function() {
 		foreach($paths as $path) {
 			$path = __DIR__ . DS . $path;
 			if (file_exists($path)) {
-				$result = \PhakeBuilder\FileSystem::chmodPath($path, $dirMode, $fileMode);
-				if (!$result) {
-					throw new \RuntimeException("Failed to change permissions");
-				}
-				$result = \PhakeBuilder\FileSystem::chownPath($path, $user);
-				if (!$result) {
-					throw new \RuntimeException("Failed to change user ownership");
-				}
-				$result = \PhakeBuilder\FileSystem::chownPath($path, $group);
-				if (!$result) {
-					throw new \RuntimeException("Failed to change group ownership");
-				}
+                if ($dirMode && $fileMode) {
+                    $result = \PhakeBuilder\FileSystem::chmodPath($path, $dirMode, $fileMode);
+                    if (!$result) {
+                        throw new \RuntimeException("Failed to change permissions");
+                    }
+                }
+                if ($user) {
+                    $result = \PhakeBuilder\FileSystem::chownPath($path, $user);
+                    if (!$result) {
+                        throw new \RuntimeException("Failed to change user ownership");
+                    }
+                }
+                if ($group) {
+                    $result = \PhakeBuilder\FileSystem::chgrpPath($path, $group);
+                    if (!$result) {
+                        throw new \RuntimeException("Failed to change group ownership");
+                    }
+                }
 			}
 		}
 		printInfo('Set folder permissions has been completed.');
