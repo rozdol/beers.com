@@ -79,30 +79,48 @@ group('cakephp', function() {
 			'logs',
 			'webroot/uploads',
 		];
+        $failures = 0;
 		foreach($paths as $path) {
 			$path = __DIR__ . DS . $path;
-			if (file_exists($path)) {
-                if ($dirMode && $fileMode) {
+			if (!file_exists($path)) {
+                continue;
+            }
+
+            if ($dirMode && $fileMode) {
+                try {
                     $result = \PhakeBuilder\FileSystem::chmodPath($path, $dirMode, $fileMode);
                     if (!$result) {
-                        throw new \RuntimeException("Failed to change permissions");
+                        throw new \RuntimeException("Failed to change permissions to [$dirMode, $fileMode] on [$path]");
                     }
+                } catch (\Exception $e) {
+                    $failures++;
+                    printWarning($e->getMessage());
                 }
-                if ($user) {
+            }
+            if ($user) {
+                try {
                     $result = \PhakeBuilder\FileSystem::chownPath($path, $user);
                     if (!$result) {
-                        throw new \RuntimeException("Failed to change user ownership");
+                        throw new \RuntimeException("Failed to change user ownership to [$user] on [$path]");
                     }
+                } catch (\Exception $e) {
+                    $failures++;
+                    printWarning($e->getMessage());
                 }
-                if ($group) {
+            }
+            if ($group) {
+                try {
                     $result = \PhakeBuilder\FileSystem::chgrpPath($path, $group);
                     if (!$result) {
-                        throw new \RuntimeException("Failed to change group ownership");
+                        throw new \RuntimeException("Failed to change group ownership to [$group] on [$path]");
                     }
+                } catch (\Exception $e) {
+                    $failures++;
+                    printWarning($e->getMessage());
                 }
-			}
+            }
 		}
-		printInfo('Set folder permissions has been completed.');
+		printInfo("Set folder permissions has been completed with " . (int)$failures . " warnings.");
 	});
 
 	desc('Create CakePHP test database');
