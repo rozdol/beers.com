@@ -45,6 +45,25 @@
             <directory>tests/Unit/</directory>
         </testsuite>
 		<!-- Add plugin test suites here. -->
+		<testsuite name="CsvMigrations Plugin Test Suite">
+            <directory>./vendor/qobo/cakephp-csv-migrations/tests/TestCase</directory>
+		</testsuite>
+		<testsuite name="Group Plugin Test Suite">
+            <directory>./vendor/qobo/cakephp-groups/tests/TestCase</directory>
+		</testsuite>
+		<testsuite name="RolesCapabilities Plugin Test Suite">
+            <directory>./vendor/qobo/cakephp-roles-capabilities/tests/TestCase</directory>
+		</testsuite>
+		<testsuite name="QoboAdminPanel Plugin Test Suite">
+            <directory>./vendor/qobo/cakephp-qobo-admin-panel/tests/TestCase</directory>
+		</testsuite>
+		<testsuite name="Menu Plugin Test Suite">
+            <directory>./vendor/qobo/cakephp-menu/tests/TestCase</directory>
+		</testsuite>
+		<testsuite name="Search Plugin Test Suite">
+            <directory>./vendor/qobo/cakephp-search/tests/TestCase</directory>
+		</testsuite>
+
 	</testsuites>
 
 	<!-- Setup a listener for fixtures -->
