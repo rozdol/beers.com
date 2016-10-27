@@ -294,7 +294,7 @@ return [
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'cacheMetadata' => true,
-            'quoteIdentifiers' => false,
+            'quoteIdentifiers' => true,
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
         ],
     ],
