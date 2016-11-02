@@ -74,7 +74,7 @@ class ViewMenuListener implements EventListenerInterface
      *
      * @param  \Cake\Event\Event     $event   Event object
      * @param  \Cake\Network\Request $request Request object
-     * @param  \Cake\ORM\Entity      $options Entity options
+     * @param  \Cake\ORM\Entity      $entity Entity options
      * @return void
      */
     public function getChangelogMenuTop(Event $event, Request $request, Entity $entity)
