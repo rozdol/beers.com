@@ -28,5 +28,4 @@ script:
   - ./vendor/bin/phpunit --group example
   - ./vendor/bin/phpunit --exclude-group example
   - ./vendor/bin/phpcs
-  - ./vendor/bin/phpcs
 
