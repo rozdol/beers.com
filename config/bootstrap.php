@@ -192,6 +192,7 @@ Plugin::load('RolesCapabilities', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('QoboAdminPanel', ['bootstrap' => true]);
 Plugin::load('Menu', ['bootstrap' => true]);
 Plugin::load('AuditStash');
+Plugin::load('DatabaseLog', ['routes' => true]);
 Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Burzum/FileStorage');
 Plugin::load('Alt3/Swagger', ['routes' => true]);
