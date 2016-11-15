@@ -304,10 +304,12 @@ return [
      */
     'Log' => [
         'debug' => [
-            'className' => 'DatabaseLog.Database'
+            'className' => 'DatabaseLog.Database',
+            'levels' => ['notice', 'info', 'debug']
         ],
         'error' => [
-            'className' => 'DatabaseLog.Database'
+            'className' => 'DatabaseLog.Database',
+            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency']
         ],
     ],
 
