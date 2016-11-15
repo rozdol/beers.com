@@ -31,6 +31,7 @@ foreach ($types as $type) {
 			<th><?php echo $this->Paginator->sort('created');?></th>
 			<th><?php echo $this->Paginator->sort('type');?></th>
 			<th><?php echo $this->Paginator->sort('message');?></th>
+			<th><?php echo $this->Paginator->sort('ip');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 		</tr>
 		<?php
@@ -50,6 +51,7 @@ foreach ($types as $type) {
 				<td><?php echo h($log['type']); ?><br>
 					<small>(<?php echo h($log['count']); ?>x)</small></td>
 				<td><?php echo nl2br(h($message)); ?>&nbsp;</td>
+				<td><?php echo h($log['ip']); ?>&nbsp;</td>
 				<td class="actions">
 					<?php echo $this->Html->link(__('Details'), ['action' => 'view', $log['id'], '?' => $this->request->query]); ?>
 					<?php echo $this->Form->postLink(__('Delete'), ['action' => 'delete', $log['id']], ['confirm' => __('Are you sure you want to delete this log # {0}?', $log['id'])]); ?>
