@@ -87,7 +87,7 @@
                         <strong><?= __('Context'); ?></strong>
                     </div>
                     <div class="col-md-10">
-                        <pre><?= nl2br(h($log['context'])); ?></pre>
+                        <pre><?= h($log['context']); ?></pre>
                     </div>
                 </div>
                 <div class="row">
@@ -95,7 +95,7 @@
                         <strong><?= __('Message'); ?></strong>
                     </div>
                     <div class="col-md-10">
-                        <pre><?= trim(nl2br(h($log['message']))); ?></pre>
+                        <pre><?= trim(h($log['message'])); ?></pre>
                     </div>
                 </div>
             </div>

@@ -5,14 +5,12 @@ $typeLabels = [
     'emergency' => 'danger',
     'alert' => 'danger',
     'critical' => 'danger',
-    'error' => 'warning',
+    'error' => 'danger',
     'warning' => 'warning',
-    'notice' => 'primary',
+    'notice' => 'info',
     'info' => 'info',
-    'debug' => 'info'
+    'debug' => 'primary'
 ];
-
-$maxMsgLength = 130;
 ?>
 <div class="row">
     <div class="col-xs-6">
@@ -25,8 +23,9 @@ $maxMsgLength = 130;
                 $this->Html->icon('trash') . '&nbsp;' . __('Duplicates'),
                 ['action' => 'removeDuplicates'],
                 [
+                    'confirm' => 'Are you sure? This action will truncate all duplicate logs from the database.',
                     'escape' => false,
-                    'class' => 'btn btn-default'
+                    'class' => 'btn btn-danger'
                 ]
             );
         ?>
@@ -55,7 +54,7 @@ $maxMsgLength = 130;
 // sort types by importance
 $types = array_intersect(array_keys($typeLabels), $types);
 foreach ($types as $type) {
-    $label = array_key_exists($type, $typeLabels) ? $typeLabels[$type] : 'primary';
+    $label = array_key_exists($type, $typeLabels) ? $typeLabels[$type] : 'default';
     echo '<li>';
     echo $this->Html->link(
         $type,
@@ -70,14 +69,15 @@ foreach ($types as $type) {
 <?php echo $this->element('DatabaseLog.admin_filter'); ?>
 
 <div class="table-responsive">
-    <table class="table table-hover">
+    <table class="table table-hover table-condensed">
         <thead>
             <tr>
-                <th><?php echo $this->Paginator->sort('created');?></th>
-                <th><?php echo $this->Paginator->sort('type');?></th>
-                <th><?php echo $this->Paginator->sort('message');?></th>
-                <th><?php echo $this->Paginator->sort('ip', __('IP'));?></th>
-                <th class="actions"><?php echo __('Actions');?></th>
+                <th class="col-xs-1"><?php echo $this->Paginator->sort('type');?></th>
+                <th class="col-xs-5"><?php echo $this->Paginator->sort('message');?></th>
+                <th class="col-xs-2"><?php echo $this->Paginator->sort('uri', __('URI'));?></th>
+                <th class="col-xs-1"><?php echo $this->Paginator->sort('ip', __('IP'));?></th>
+                <th class="col-xs-2"><?php echo $this->Paginator->sort('created');?></th>
+                <th class="actions col-xs-1"><?php echo __('Actions');?></th>
             </tr>
         </thead>
         <tbody>
@@ -92,28 +92,45 @@ foreach ($types as $type) {
             if ($pos) {
                 $message = trim(substr($message, 0, $pos));
             }
-            $title = 'Log message';
-            if (preg_match('/\[(.*?Exception.*?)\]/', $message, $matches)) {
-                if (!empty($matches[1])) {
-                    $title = $matches[1];
-                }
-            }
+            $title = $this->Text->truncate(
+                $message,
+                85,
+                [
+                    'ellipsis' => '...',
+                    'exact' => true
+                ]
+            );
             ?>
             <tr>
-                <td><?php echo $this->Time->nice($log['created']); ?>&nbsp;</td>
-                <td><?php echo h($log['type']); ?> <small>(<?php echo h($log['count']); ?>x)</small></td>
-                <td class="logs-col-message">
-                    <?= strlen($message) > $maxMsgLength ? h($title) : '<pre>' . h($message) . '</pre>'; ?>
-                    <?php if (strlen($message) > $maxMsgLength) : ?>
-                    <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse<?= $log['id']; ?>" aria-expanded="false" aria-controls="collapse<?= $log['id']; ?>">
-                        <small><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></small>
-                    </button>
-                    <div class="collapse" id="collapse<?= $log['id']; ?>">
-                        <pre><?php echo nl2br(h($message)); ?></pre>
-                    </div>
-                    <?php endif; ?>
+                <td>
+                <?php $label = array_key_exists($log['type'], $typeLabels) ? $typeLabels[$log['type']] : 'default';?>
+                <span class="label label-<?= $label;?>"><?= h($log['type']); ?></span>
+                &nbsp;<small>(<?php echo h($log['count']); ?>x)</small>
                 </td>
+                <td class="logs-col-message">
+                    <div class="row">
+                        <div class="col-xs-9 col-lg-10 title">
+                            <?= h($title); ?>
+                        </div>
+                        <div class="col-xs-3 col-lg-2">
+                            <div class="text-right">
+                            <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse<?= $log['id']; ?>" aria-expanded="false" aria-controls="collapse<?= $log['id']; ?>">
+                                <small><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></small>
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="collapse" id="collapse<?= $log['id']; ?>">
+                                    <pre><?php echo h($message); ?></pre>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td><?php echo h($log['uri']); ?>&nbsp;</td>
                 <td><?php echo h($log['ip']); ?>&nbsp;</td>
+                <td><?php echo $this->Time->nice($log['created']); ?>&nbsp;</td>
                 <td class="actions">
                     <?php echo $this->Html->link(
                         null,
