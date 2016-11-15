@@ -33,7 +33,7 @@ class LayoutMenuListener implements EventListenerInterface
      * Method that adds elements to index View top menu.
      *
      * @param  Cake\Event\Event     $event   Event object
-     * @return Cake\Event\Event
+     * @return void
      */
     public function getSearchForm(Event $event)
     {
