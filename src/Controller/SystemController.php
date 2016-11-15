@@ -13,6 +13,8 @@ class SystemController extends AppController
      * information, like project name, URL, version,
      * installed plugins, composer libraries, PHP version,
      * PHP configurations, server environment, etc.
+     *
+     * @return void
      */
     public function info()
     {

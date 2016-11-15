@@ -23,9 +23,9 @@ class UsersController extends AppController
     /**
      * Method responsible for generating JSON Web Token (WT), after it authenticates the user.
      *
-     * @return array Authentication token
      * @throws \Cake\Network\Exception\UnauthorizedException
      * @link   http://www.bravo-kernel.com/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/
+     * @return void
      */
     public function token()
     {

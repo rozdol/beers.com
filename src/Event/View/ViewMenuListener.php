@@ -32,7 +32,7 @@ class ViewMenuListener implements EventListenerInterface
      * @param  \Cake\Event\Event     $event   Event object
      * @param  \Cake\Network\Request $request Request object
      * @param  array                 $options Entity options
-     * @return void
+     * @return string
      */
     public function getViewMenuTop(Event $event, Request $request, array $options)
     {
@@ -75,7 +75,7 @@ class ViewMenuListener implements EventListenerInterface
      * @param  \Cake\Event\Event     $event   Event object
      * @param  \Cake\Network\Request $request Request object
      * @param  \Cake\ORM\Entity      $entity Entity options
-     * @return void
+     * @return string
      */
     public function getChangelogMenuTop(Event $event, Request $request, Entity $entity)
     {
