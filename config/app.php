@@ -286,7 +286,7 @@ return [
             'className' => 'Cake\Database\Connection',
             'driver' => 'Cake\Database\Driver\Mysql',
             'persistent' => false,
-            'host' => 'localhost',
+            'host' => $dbHost,
             //'port' => 'nonstandard_port_number',
             'username' => $dbUser,
             'password' => $dbPass,
