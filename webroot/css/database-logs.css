@@ -1,0 +1,10 @@
+.logs-col-message .title {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.logs-col-message pre {
+    font-size: 10px;
+    white-space: pre-wrap;
+    margin-top: 5px;
+}
