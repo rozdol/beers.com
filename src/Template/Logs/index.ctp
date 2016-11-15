@@ -31,6 +31,7 @@ $typeLabels = [
         ?>
         &nbsp;
         <?php
+        if ('localhost' === $this->request->env('SERVER_NAME')) {
             echo $this->Form->postLink(
                 $this->Html->icon('trash') . '&nbsp;' . __('Logs'),
                 ['action' => 'reset'],
@@ -40,6 +41,7 @@ $typeLabels = [
                     'class' => 'btn btn-danger'
                 ]
             );
+        }
         ?>
         </div>
     </div>
