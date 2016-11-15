@@ -304,12 +304,14 @@ return [
      */
     'Log' => [
         'debug' => [
-            'className' => 'DatabaseLog.Database',
-            'levels' => ['notice', 'info', 'debug']
+            'className' => 'Cake\Log\Engine\FileLog',
+            'path' => LOGS,
+            'file' => 'debug',
+            'levels' => ['debug'],
         ],
         'error' => [
             'className' => 'DatabaseLog.Database',
-            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency']
+            'levels' => ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency']
         ],
     ],
 
