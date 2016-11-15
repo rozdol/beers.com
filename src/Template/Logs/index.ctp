@@ -111,9 +111,7 @@ foreach ($types as $type) {
                 </td>
                 <td class="logs-col-message">
                     <div class="row">
-                        <div class="col-xs-9 col-lg-10 title">
-                            <?= h($title); ?>
-                        </div>
+                        <div class="col-xs-9 col-lg-10 title"><?= h($title); ?></div>
                         <div class="col-xs-3 col-lg-2">
                             <div class="text-right">
                             <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse<?= $log['id']; ?>" aria-expanded="false" aria-controls="collapse<?= $log['id']; ?>">
