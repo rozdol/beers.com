@@ -128,9 +128,18 @@ group('cakephp', function() {
 		printSeparator();
 		printInfo("Task: cakephp:test-database-create (Create CakePHP test database)");
 
-		$dbTestName = requireValue('DB_NAME', $app) . '_test';
-		$query = "CREATE DATABASE " . $dbTestName;
-		doMySQLCommand($app, $query, false, true);
+        $dsn = array(
+            'host' => getValue('DB_HOST', $app),
+            'user' => getValue('DB_ADMIN_USER', $app),
+            'pass' => getValue('DB_ADMIN_PASS', $app),
+        );
+
+        $mysql = new \PhakeBuilder\MySQL(requireValue('SYSTEM_COMMAND_MYSQL', $app));
+        $mysql->setDSN($dsn);
+        $command = $mysql->query('CREATE DATABASE IF NOT EXISTS ' . requireValue('DB_NAME', $app) . '_test');
+        $secureStrings = array('DB_PASS', 'DB_ADMIN_PASS');
+        doShellCommand($command, $secureStrings);
+
 	});
 
 	desc('Drop CakePHP test database');
@@ -138,9 +147,17 @@ group('cakephp', function() {
 		printSeparator();
 		printInfo("Task: cakephp:test-database-drop (Drop CakePHP test database)");
 
-		$dbTestName = requireValue('DB_NAME', $app) . '_test';
-		$query = "DROP DATABASE " . $dbTestName;
-		doMySQLCommand($app, $query, false, true);
+        $dsn = array(
+            'host' => getValue('DB_HOST', $app),
+            'user' => getValue('DB_ADMIN_USER', $app),
+            'pass' => getValue('DB_ADMIN_PASS', $app),
+        );
+
+        $mysql = new \PhakeBuilder\MySQL(requireValue('SYSTEM_COMMAND_MYSQL', $app));
+        $mysql->setDSN($dsn);
+        $command = $mysql->query('DROP DATABASE IF EXISTS ' . requireValue('DB_NAME', $app) . '_test');
+        $secureStrings = array('DB_PASS', 'DB_ADMIN_PASS');
+        doShellCommand($command, $secureStrings);
 	});
 
 	desc('Run migrations for the test database');
