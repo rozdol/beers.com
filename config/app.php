@@ -304,17 +304,15 @@ return [
      */
     'Log' => [
         'debug' => [
-            'className' => 'Cake\Log\Engine\FileLog',
-            'path' => LOGS,
-            'file' => 'debug',
-            'levels' => ['notice', 'info', 'debug'],
+            'className' => 'DatabaseLog.Database'
         ],
         'error' => [
-            'className' => 'Cake\Log\Engine\FileLog',
-            'path' => LOGS,
-            'file' => 'error',
-            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
+            'className' => 'DatabaseLog.Database'
         ],
+    ],
+
+    'DatabaseLog' => [
+        'datasource' => 'default' // data-source to use
     ],
 
     /**
