@@ -9,7 +9,7 @@
     <description>PHP CodeSniffer Configuration</description>
 
     <!-- Coding standard to use -->
-    <rule ref="PSR2" />
+    <rule ref="./vendor/cakephp/cakephp-codesniffer/CakePHP" />
 
     <!-- Do not fail on warnings -->
     <config name="ignore_warnings_on_exit" value="1" />
