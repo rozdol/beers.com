@@ -59,6 +59,12 @@ class AppController extends Controller
         $this->Auth->config('authorize', false);
         $this->Auth->config('loginRedirect', '/');
         $this->Auth->config('flash', ['element' => 'error', 'key' => 'auth']);
+
+        // enable LDAP authentication
+        if ((bool)Configure::read('Ldap.auth')) {
+            $this->Auth->config('authenticate', ['Ldap']);
+        }
+
         $this->loadComponent('RolesCapabilities.Capability', [
             'currentRequest' => $this->request->params
         ]);
