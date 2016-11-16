@@ -11,6 +11,7 @@ use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
 use ErrorException;
+use Psr\Log\LogLevel;
 
 class LdapAuthenticate extends BaseAuthenticate
 {
@@ -93,7 +94,7 @@ class LdapAuthenticate extends BaseAuthenticate
             ldap_set_option($this->_connection, LDAP_OPT_REFERRALS, 0);
             ldap_set_option($this->_connection, LDAP_OPT_NETWORK_TIMEOUT, 5);
         } catch (Exception $e) {
-            $this->log('Unable to connect to specified LDAP Server.');
+            $this->log('Unable to connect to specified LDAP Server.', LogLevel::CRITICAL);
         }
     }
 
@@ -146,7 +147,7 @@ class LdapAuthenticate extends BaseAuthenticate
                 // on bind success return username
                 return ['username' => $request->data['username']];
             } else {
-                $this->log('LDAP server bind failed.');
+                $this->log('LDAP server bind failed.', LogLevel::CRITICAL);
             }
         } catch (Exception $e) {
             $this->log($e->getMessage());
