@@ -61,7 +61,7 @@ class AppController extends Controller
         $this->Auth->config('flash', ['element' => 'error', 'key' => 'auth']);
 
         // enable LDAP authentication
-        if ((bool)Configure::read('Ldap.auth')) {
+        if ((bool)Configure::read('Ldap.enabled')) {
             $this->Auth->config('authenticate', ['Ldap']);
         }
 

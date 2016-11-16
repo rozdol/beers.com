@@ -238,7 +238,7 @@ return [
      * LDAP configuration.
      */
     'Ldap' => [
-        'auth' => (bool)getenv('LDAP_AUTHENTICATION'),
+        'enabled' => (bool)getenv('LDAP_ENABLED'),
         'host' => getenv('LDAP_HOST'),
         'port' => (int)getenv('LDAP_PORT') ?: 389,
         'version' => (int)getenv('LDAP_VERSION') ?: 3,
