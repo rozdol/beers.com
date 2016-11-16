@@ -235,6 +235,17 @@ return [
     ],
 
     /**
+     * LDAP configuration.
+     */
+    'Ldap' => [
+        'auth' => (bool)getenv('LDAP_AUTHENTICATION'),
+        'host' => getenv('LDAP_HOST'),
+        'port' => (int)getenv('LDAP_PORT') ?: 389,
+        'version' => (int)getenv('LDAP_VERSION') ?: 3,
+        'baseDn' => getenv('LDAP_BASE_DN')
+    ],
+
+    /**
      * Connection information used by the ORM to connect
      * to your application's datastores.
      * Drivers include Mysql Postgres Sqlite Sqlserver
