@@ -213,7 +213,7 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'className' => 'Mail',
+            'className' => (bool)getenv('SMTP_ENABLED') ? 'Smtp' : 'Mail',
             // The following keys are used in SMTP transports
             'host' => getenv('SMTP_HOST') ?: 'localhost',
             'port' => getenv('SMTP_PORT') ?: 25,
