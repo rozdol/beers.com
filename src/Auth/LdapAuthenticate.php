@@ -123,10 +123,11 @@ class LdapAuthenticate extends BaseAuthenticate
     /**
      * Save LDAP user to the Database.
      *
-     * @param  array      $data User info
-     * @return array|bool       User info or false if failed.
+     * @param  array $data LDAP user info.
+     * @param \Cake\Network\Request $request Request object.
+     * @return array|bool User info or false if failed.
      */
-    protected function _saveUser(array $data = [], Request $request)
+    protected function _saveUser(array $data, Request $request)
     {
         // return false if user data empty or username field is not set
         if (empty($data)) {
@@ -171,6 +172,7 @@ class LdapAuthenticate extends BaseAuthenticate
     /**
      * Map LDAP fields to database fields.
      *
+     * @param  array $data LDAP user info.
      * @return array
      */
     protected function _mapData(array $data = [])
