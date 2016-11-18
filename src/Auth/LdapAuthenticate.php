@@ -10,6 +10,7 @@ use Cake\Network\Exception\UnauthorizedException;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 use ErrorException;
 use Psr\Log\LogLevel;
 
@@ -33,13 +34,6 @@ class LdapAuthenticate extends BaseAuthenticate
      * @var object
      */
     protected $_connection;
-
-    /**
-     * LDAP account.
-     *
-     * @var string
-     */
-    protected $_account;
 
     /**
      * {@inheritDoc}
@@ -71,13 +65,13 @@ class LdapAuthenticate extends BaseAuthenticate
      */
     public function authenticate(Request $request, Response $response)
     {
-        $this->_setAccount($request);
         $user = $this->getUser($request);
-        if ($user) {
-            $user = $this->_saveUser($user);
+
+        if (empty($user)) {
+            return false;
         }
 
-        return $user;
+        return $this->_saveUser($user, $request);
     }
 
     /**
@@ -99,55 +93,25 @@ class LdapAuthenticate extends BaseAuthenticate
     }
 
     /**
-     * Set LDAP account.
-     *
-     * @param Cake\Network\Request $request Request object
-     * @return void
-     */
-    protected function _setAccount(Request $request)
-    {
-        if (!isset($request->data['username'])) {
-            return;
-        }
-
-        $this->_account = $request->data['username'];
-
-        $baseDn = explode(',', $this->_config['baseDn']);
-
-        if (empty($baseDn)) {
-            return;
-        }
-
-        $dc = [];
-        foreach ($baseDn as $value) {
-            if (0 === stripos($value, 'dc=')) {
-                $dc[] = str_ireplace('dc=', '', $value);
-            }
-        }
-
-        if (empty($dc)) {
-            return;
-        }
-
-        $this->_account = $request->data['username'] . '@' . implode('.', $dc);
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getUser(Request $request)
     {
-        if (empty($this->_account) || !isset($request->data['password'])) {
+        if (!isset($request->data['username']) || !isset($request->data['password'])) {
             return false;
         }
 
         try {
-            $bind = @ldap_bind($this->_connection, $this->_account, $request->data['password']);
+            $bind = @ldap_bind($this->_connection, $request->data['username'], $request->data['password']);
             if ($bind) {
-                // on bind success return username
-                return ['username' => $request->data['username']];
+                $filter = '(' . $this->_config['filter'] . '=' . $request->data['username'] . ')';
+                $attributes = $this->_config['attributes']();
+                $search = ldap_search($this->_connection, $this->_config['baseDn'], $filter, array_keys($attributes));
+                $entry = ldap_first_entry($this->_connection, $search);
+
+                return ldap_get_attributes($this->_connection, $entry);
             } else {
-                $this->log('LDAP server bind failed.', LogLevel::CRITICAL);
+                $this->log('LDAP server bind failed for [' . $request->data['username'] . '].', LogLevel::CRITICAL);
             }
         } catch (Exception $e) {
             $this->log($e->getMessage());
@@ -162,18 +126,20 @@ class LdapAuthenticate extends BaseAuthenticate
      * @param  array      $data User info
      * @return array|bool       User info or false if failed.
      */
-    protected function _saveUser(array $data = [])
+    protected function _saveUser(array $data = [], Request $request)
     {
         // return false if user data empty or username field is not set
-        if (empty($data) || empty($data[$this->_config['fields']['username']])) {
+        if (empty($data)) {
             return false;
         }
+
+        $data = $this->_mapData($data);
 
         $table = TableRegistry::get($this->_config['userModel']);
 
         // look for the user in the database
         $query = $table->find('all', [
-            'conditions' => [$this->_config['fields']['username'] => $data[$this->_config['fields']['username']]]
+            'conditions' => [$this->_config['fields']['username'] => $request->data['username']]
         ]);
         $entity = $query->first();
 
@@ -182,14 +148,14 @@ class LdapAuthenticate extends BaseAuthenticate
             return $entity->toArray();
         }
 
+        // set username
+        $data[$this->_config['fields']['username']] = $request->data['username'];
+
         // use random password for local entity of ldap user
         $data[$this->_config['fields']['password']] = uniqid();
 
         // activate user by default
         $data['active'] = true;
-
-        // set email the same as username
-        $data['email'] = $this->_account;
 
         // save new user entity
         $entity = $table->newEntity();
@@ -200,6 +166,32 @@ class LdapAuthenticate extends BaseAuthenticate
         } else {
             return false;
         }
+    }
+
+    /**
+     * Map LDAP fields to database fields.
+     *
+     * @return array
+     */
+    protected function _mapData(array $data = [])
+    {
+        $result = [];
+        if (empty($data)) {
+            return $result;
+        }
+
+        $attributes = $this->_config['attributes']();
+
+        foreach ($attributes as $k => $v) {
+            // skip non-mapped fields
+            if (empty($v)) {
+                continue;
+            }
+
+            $result[$v] = Hash::get($data, $k . '.0');
+        }
+
+        return $result;
     }
 
     /**
@@ -220,5 +212,6 @@ class LdapAuthenticate extends BaseAuthenticate
     protected function _disconnect()
     {
         @ldap_unbind($this->_connection);
+        @ldap_close($this->_connection);
     }
 }
