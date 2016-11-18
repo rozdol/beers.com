@@ -242,7 +242,30 @@ return [
         'host' => getenv('LDAP_HOST'),
         'port' => (int)getenv('LDAP_PORT') ?: 389,
         'version' => (int)getenv('LDAP_VERSION') ?: 3,
-        'baseDn' => getenv('LDAP_BASE_DN')
+        'baseDn' => getenv('LDAP_BASE_DN'),
+        'filter' => getenv('LDAP_FILTER'),
+        'attributes' => function() {
+            $result = [];
+            $attributes = getenv('LDAP_ATTRIBUTES');
+            if (empty($attributes)) {
+                return $result;
+            }
+
+            $attributes = explode(',', $attributes);
+            foreach ($attributes as $attribute) {
+                $attribute = explode(':', $attribute);
+                switch (count($attribute)) {
+                    case 1:
+                        $result[$attribute[0]] = '';
+                        break;
+                    case 2:
+                        $result[$attribute[0]] = $attribute[1];
+                        break;
+                }
+            }
+
+            return $result;
+        },
     ],
 
     /**
