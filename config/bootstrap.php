@@ -38,6 +38,7 @@ if (!extension_loaded('intl')) {
     trigger_error('You must enable the intl extension to use CakePHP.', E_USER_ERROR);
 }
 
+use App\Event\Model\SearchableFieldsListener;
 use App\Event\Model\SearchResultsListener;
 use App\Event\View\LayoutMenuListener;
 use App\Event\View\ViewMenuListener;
@@ -226,6 +227,7 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
+EventManager::instance()->on(new SearchableFieldsListener());
 EventManager::instance()->on(new SearchResultsListener());
 EventManager::instance()->on(new LayoutMenuListener());
 EventManager::instance()->on(new ViewMenuListener());
