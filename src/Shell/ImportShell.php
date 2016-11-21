@@ -90,6 +90,25 @@ class ImportShell extends Shell
     ];
 
     /**
+     * List of default columns comments
+     *
+     * If the database schema does not provide a column
+     * comment, the one from this list will be used.
+     *
+     * A special table name '*' can be used to set the
+     * default comment for the column in all tables.
+     *
+     * @var array $defaultColumnComments List of table columns to ignore
+     */
+    protected $defaulColumnComments = [
+        '*' => [
+            'created' => 'Date and time the record was created.',
+            'modified' => 'Date and time the record was last modified.',
+            'trashed' => 'Date and time the record was deleted.',
+        ],
+    ];
+
+    /**
      * Shell entry point
      *
      * @return void
@@ -442,7 +461,40 @@ class ImportShell extends Shell
             $result .= "### $name\n";
             $result .= "\n";
             foreach ($properties as $property => $value) {
+                $extra = '';
+                switch ($property) {
+                    case 'comment':
+                        if (empty($value)) {
+                            $value = $this->getDefaultColumnComment($table, $name);
+                        }
+                        break;
+                    case 'null':
+                        $property = 'allow_null_values';
+                        $value = $value ? 'yes' : 'no';
+                        break;
+                    case 'default':
+                        $property = 'default_value';
+                        break;
+                    case 'type':
+                        switch ($value) {
+                            case 'uuid':
+                                $extra .= "* Format: [36 character long UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)\n";
+                                break;
+                            case 'time':
+                                $extra .= "* Format: hh:mm:ss\n";
+                                break;
+                            case 'date':
+                                $extra .= "* Format: YYYY-MM-DD\n";
+                                break;
+                            case 'datetime':
+                                $extra .= "* Format: YYYY-MM-DD hh:mm:ss\n";
+                                break;
+                        }
+                        break;
+                }
+
                 $result .= "* " . Inflector::humanize($property) . ": $value\n";
+                $result .= $extra;
             }
             $result .= "\n";
         }
@@ -475,6 +527,31 @@ class ImportShell extends Shell
                 }
             }
             $result[$column] = $properties;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get default column comment
+     *
+     * @param string $table Table name
+     * @param string $column Column name
+     * @return string
+     */
+    protected function getDefaultColumnComment($table, $column)
+    {
+        $result = '';
+
+        if (!empty($this->defaulColumnComments[$table])
+            && in_array($column, array_keys($this->defaulColumnComments[$table]))) {
+
+            $result = $this->defaulColumnComments[$table][$column];
+        }
+        elseif (!empty($this->defaulColumnComments['*'])
+            && in_array($column, array_keys($this->defaulColumnComments['*']))) {
+
+            $result = $this->defaulColumnComments['*'][$column];
         }
 
         return $result;
