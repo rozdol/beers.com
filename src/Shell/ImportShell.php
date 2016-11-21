@@ -545,12 +545,9 @@ class ImportShell extends Shell
 
         if (!empty($this->defaulColumnComments[$table])
             && in_array($column, array_keys($this->defaulColumnComments[$table]))) {
-
             $result = $this->defaulColumnComments[$table][$column];
-        }
-        elseif (!empty($this->defaulColumnComments['*'])
+        } elseif (!empty($this->defaulColumnComments['*'])
             && in_array($column, array_keys($this->defaulColumnComments['*']))) {
-
             $result = $this->defaulColumnComments['*'][$column];
         }
 
