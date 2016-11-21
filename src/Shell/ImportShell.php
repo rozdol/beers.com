@@ -3,10 +3,17 @@ namespace App\Shell;
 
 use Cake\Console\Shell;
 use Cake\Datasource\ConnectionManager;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
+use CsvMigrations\FieldHandlers\CsvField;
 
 class ImportShell extends Shell
 {
+    /**
+     * CSV definitions array key
+     */
+    const CSV_KEY = '_csv';
+
     /**
      * Current timestamp to share between files
      *
@@ -149,6 +156,7 @@ class ImportShell extends Shell
         // Get table schema
         $tables = $this->getTableSchema($tables);
         $tables = $this->getTableColumns($tables);
+        $tables = $this->getTableCsvDefinitions($tables);
 
         // Create CSV templates
         $csvResult = $this->createCsvTemplates($tables, $dest);
@@ -340,6 +348,64 @@ class ImportShell extends Shell
     }
 
     /**
+     * Get CSV field definitions for given tables
+     *
+     * @param array $tables List of tables
+     * @return array
+     */
+    protected function getTableCsvDefinitions(array $tables)
+    {
+        if (empty($tables)) {
+            return $tables;
+        }
+
+        $result = [];
+        foreach ($tables as $table => $columns) {
+            $tableName = Inflector::camelize($table);
+            $defs = [];
+            try {
+                $tableObject = TableRegistry::get($tableName);
+                $defs = $tableObject->getFieldsDefinitions($tableName);
+            } catch (\Exception $e) {
+                // Skip non-CSV based table
+            }
+            // If no field definitions from CSV, then move on
+            if (empty($defs)) {
+                $result[$table] = $columns;
+                continue;
+            }
+            $updatedColumns = [];
+            foreach ($columns as $column => $properties) {
+                $updatedColumns[$column] = $properties;
+                if (!in_array($column, array_keys($defs))) {
+                    continue;
+                }
+
+                $updatedColumns[$column][self::CSV_KEY] = $defs[$column];
+
+                // Taken from the ValidateShell
+                $type = null;
+                $limit = null;
+                // Matches:
+                // * date, time, string, and other simple types
+                // * list(something), related(Others) and other simple limits
+                // * related(Vendor/Plugin.Model) and other complex limits
+                if (preg_match('/^(\w+?)\(([\w\/\.]+?)\)$/', $defs[$column]['type'], $matches)) {
+                    $type = $matches[1];
+                    $limit = $matches[2];
+                } else {
+                    $type = $defs[$column]['type'];
+                }
+                $updatedColumns[$column][self::CSV_KEY]['type'] = $type;
+                $updatedColumns[$column][self::CSV_KEY]['limit'] = $limit;
+            }
+            $result[$table] = $updatedColumns;
+        }
+
+        return $result;
+    }
+
+    /**
      * Create CSV templates
      *
      * @throws RuntimeException When cannot write files
@@ -461,6 +527,10 @@ class ImportShell extends Shell
             $result .= "### $name\n";
             $result .= "\n";
             foreach ($properties as $property => $value) {
+                if ($property == self::CSV_KEY) {
+                    continue;
+                }
+
                 $extra = '';
                 switch ($property) {
                     case 'comment':
@@ -470,6 +540,10 @@ class ImportShell extends Shell
                         break;
                     case 'null':
                         $property = 'allow_null_values';
+                        // If DB doesn't require, but CSV does, then we require
+                        if (!$value && !empty($properties[self::CSV_KEY]) && $properties[self::CSV_KEY]['required']) {
+                            $value = true;
+                        }
                         $value = $value ? 'yes' : 'no';
                         break;
                     case 'default':
@@ -478,7 +552,18 @@ class ImportShell extends Shell
                     case 'type':
                         switch ($value) {
                             case 'uuid':
-                                $extra .= "* Format: [36 character long UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)\n";
+                                if (!empty($properties[self::CSV_KEY]) && $properties[self::CSV_KEY]['type'] == 'related') {
+                                    $value = 'string';
+                                    $extra = "* References to: `" . Inflector::tableize($properties[self::CSV_KEY]['limit']) . "` table.\n";
+                                } else {
+                                    $extra .= "* Format: [36 character long UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)\n";
+                                }
+                                break;
+                            case 'string':
+                                debug($properties);
+                                if (!empty($properties[self::CSV_KEY]) && $properties[self::CSV_KEY]['type'] == 'list') {
+                                    $extra = "* References to: `" . $properties[self::CSV_KEY]['limit'] . "` list.\n";
+                                }
                                 break;
                             case 'time':
                                 $extra .= "* Format: hh:mm:ss\n";
