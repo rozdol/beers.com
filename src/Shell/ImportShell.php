@@ -89,11 +89,22 @@ class ImportShell extends Shell
         ],
     ];
 
+    /**
+     * Shell entry point
+     *
+     * @return void
+     */
     public function main()
     {
         $this->out("Usage: cake import create_templates /tmp/folder");
     }
 
+    /**
+     * Create CSV templates and documentation
+     *
+     * @param string $dest Path to destination folder (must exist and be writeable)
+     * @return void
+     */
     public function createTemplates($dest = null)
     {
         // Set common time stamp
@@ -184,7 +195,7 @@ class ImportShell extends Shell
     {
         $result = ConnectionManager::get('default')->schemaCollection()->listTables();
 
-		return $result;
+        return $result;
     }
 
     /**
@@ -279,7 +290,7 @@ class ImportShell extends Shell
 
         $result = [];
         foreach ($tables as $table) {
-            $result[$table]  = ConnectionManager::get('default')->schemaCollection()->describe($table);
+            $result[$table] = ConnectionManager::get('default')->schemaCollection()->describe($table);
         }
 
         return $result;
@@ -305,6 +316,7 @@ class ImportShell extends Shell
                 $result[$table][$column] = $schema->column($column);
             }
         }
+
         return $result;
     }
 
@@ -433,6 +445,13 @@ class ImportShell extends Shell
         return $result;
     }
 
+    /**
+     * Filter out columns that don't need documentation
+     *
+     * @param string $table Table name
+     * @param array $columns Column definitions
+     * @return array
+     */
     protected function filterColumns($table, array $columns)
     {
         $result = [];
