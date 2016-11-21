@@ -3,15 +3,37 @@ namespace App\Shell;
 
 use Cake\Console\Shell;
 use Cake\Datasource\ConnectionManager;
+use Cake\Utility\Inflector;
 
 class ImportShell extends Shell
 {
+    /**
+     * Current timestamp to share between files
+     *
+     * @var string $timestamp Timestamp
+     */
+    protected $timeStamp;
+
     /**
      * Default folder to write files to
      *
      * @var string $defaultDest Path to folder
      */
     protected $defaultDest = '/tmp';
+
+    /**
+     * Sub-directory to save CSV files to
+     *
+     * @var string $csvDir CSV sub-directory
+     */
+    protected $csvDir = 'csv';
+
+    /**
+     * Sub-directory to save DOC files to
+     *
+     * @var string $docDir DOC sub-directory
+     */
+    protected $docDir = 'doc';
 
     /**
      * Patterns for table names to ignore
@@ -44,6 +66,29 @@ class ImportShell extends Shell
         '/^social_accounts$/',
     ];
 
+    /**
+     * List of columns to ignore in documentation
+     *
+     * Associative array of $table => $columns to ignore
+     * in generated documentation.  A special table name
+     * '*' can be used to ignore column in all tables.
+     *
+     * @var array $ignoreColumnsDocs List of table columns to ignore in documentation
+     */
+    protected $ignoreColumnsDocs = [
+        '*' => [
+            'id',
+        ],
+        'users' => [
+            'token',
+            'token_expires',
+            'api_token',
+            'activation_date',
+            'tos_date',
+            'role',
+        ],
+    ];
+
     public function main()
     {
         $this->out("Usage: cake import create_templates /tmp/folder");
@@ -51,8 +96,17 @@ class ImportShell extends Shell
 
     public function createTemplates($dest = null)
     {
+        // Set common time stamp
+        $this->timeStamp = date('Y-m-d H:i:s');
+
         if (empty($dest)) {
             $dest = $this->defaultDest;
+        }
+
+        try {
+            $this->validateDir($dest);
+        } catch (\Exception $e) {
+            $this->abort("Directory is not valid: " . $e->getMessage());
         }
 
         // Get all tables
@@ -67,14 +121,59 @@ class ImportShell extends Shell
         $tables = $this->getTableColumns($tables);
 
         // Create CSV templates
-        $result = $this->createCsvTemplates($tables, $dest);
-        if (empty($result)) {
-            throw new \RuntimeException("No CSV templates were created");
+        $csvResult = $this->createCsvTemplates($tables, $dest);
+        if (empty($csvResult)) {
+            $this->abort("No CSV templates were create");
         }
-        foreach ($result as $table => $file) {
-            $this->out("Template for table '$table' created in '$file'.");
+
+        $result = [];
+        foreach ($csvResult as $table => $file) {
+            $result[$table][] = $file;
+        }
+
+        // Create DOC files
+        $docResult = $this->createCsvDocuments($tables, $dest);
+        if (!empty($docResult)) {
+            foreach ($docResult as $table => $file) {
+                $result[$table][] = $file;
+            }
+        }
+
+        $this->out("The following files were created:\n");
+        foreach ($result as $table => $files) {
+            $this->out("For table $table:");
+            foreach ($files as $file) {
+                $this->out("\t$file");
+            }
         }
     }
+
+    /**
+     * Validate directory
+     *
+     * Directory has to exist and has to be writeable
+     *
+     * @throws InvalidArgumentException When directory is not valid
+     * @param string $dir Destination directory to check
+     * @return void
+     */
+    protected function validateDir($dir)
+    {
+        $dir = (string)$dir;
+        if (empty($dir)) {
+            throw new \InvalidArgumentException("Destination directory is not specified");
+        }
+        if (!file_exists($dir)) {
+            throw new \InvalidArgumentException("Destination directory does not exist");
+        }
+        if (!is_dir($dir)) {
+            throw new \InvalidArgumentException("Destination is not a directory");
+        }
+        if (!is_writeable($dir)) {
+            throw new \InvalidArgumentException("Destination directory is not writeable");
+        }
+    }
+
 
     /**
      * Get all database tables
@@ -217,14 +316,18 @@ class ImportShell extends Shell
      * @param string $dest Destination folder
      * @return array List of tables and files written
      */
-    protected function createCsvTemplates(array $tables, $dest = null)
+    protected function createCsvTemplates(array $tables, $dest)
     {
         if (empty($tables)) {
             return $tables;
         }
 
-        if (empty($dest)) {
-            $dest = $this->defaultDest;
+        $dest = $dest . DIRECTORY_SEPARATOR . $this->csvDir;
+        if (!file_exists($dest)) {
+            $mkdirResult = mkdir($dest);
+            if (!$mkdirResult) {
+                throw new \RuntimeException("Failed to create CSV folder [$dest]");
+            }
         }
 
         $result = [];
@@ -241,6 +344,113 @@ class ImportShell extends Shell
             }
             fclose($fh);
             $result[$table] = $csvFilePath;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Create CSV documentation
+     *
+     * @throws RuntimeException When cannot write files
+     * @param array $tables List of tables
+     * @param string $dest Destination folder
+     * @return array List of tables and files written
+     */
+    protected function createCsvDocuments(array $tables, $dest)
+    {
+        if (empty($tables)) {
+            return $tables;
+        }
+
+        $dest = $dest . DIRECTORY_SEPARATOR . $this->docDir;
+        if (!file_exists($dest)) {
+            $mkdirResult = mkdir($dest);
+            if (!$mkdirResult) {
+                throw new \RuntimeException("Failed to create DOC folder [$dest]");
+            }
+        }
+
+        $result = [];
+        foreach ($tables as $table => $columns) {
+            $markdown = $this->createTableMarkdown($table, $columns);
+            if (empty($markdown)) {
+                continue;
+            }
+
+            $docFilePath = $dest . DIRECTORY_SEPARATOR . $table . '.md';
+            $fh = fopen($docFilePath, 'w');
+            if (!is_resource($fh)) {
+                throw new \RuntimeException("Failed to open DOC file for writing: $docFilePath");
+            }
+            $docBytes = fwrite($fh, $markdown);
+            if (!$docBytes) {
+                fclose($fh);
+                throw new \RuntimeException("Failed to write to DOC file: $docFilePath");
+            }
+            fclose($fh);
+            $result[$table] = $docFilePath;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Create Markdown document for a given table scheme
+     *
+     * @param string $table Table name
+     * @param array $columns Table columns
+     * @return string Markdown document
+     */
+    protected function createTableMarkdown($table, array $columns)
+    {
+        $result = '';
+
+        $columns = $this->filterColumns($table, $columns);
+        if (empty($columns)) {
+            return $result;
+        }
+
+        $result .= "Table: $table\n";
+        $result .= "============================\n";
+        $result .= "\n";
+        $result .= "Generated on: " . $this->timeStamp . "\n";
+        $result .= "\n";
+        $result .= wordwrap("This file provides the description of fields for import into the table `$table`.\n");
+        $result .= "\n";
+        $result .= "Columns\n";
+        $result .= "-------\n";
+        $result .= "\n";
+        foreach ($columns as $name => $properties) {
+            $result .= "### $name\n";
+            $result .= "\n";
+            foreach ($properties as $property => $value) {
+                $result .= "* " . Inflector::humanize($property) . ": $value\n";
+            }
+            $result .= "\n";
+        }
+
+        return $result;
+    }
+
+    protected function filterColumns($table, array $columns)
+    {
+        $result = [];
+
+        foreach ($columns as $column => $properties) {
+            // Skip column if it is in the table ignore columns list
+            if (!empty($this->ignoreColumnsDocs[$table])) {
+                if (in_array($column, $this->ignoreColumnsDocs[$table])) {
+                    continue;
+                }
+            }
+            // Skip column if it is in the all ignore columns list
+            if (!empty($this->ignoreColumnsDocs['*'])) {
+                if (in_array($column, $this->ignoreColumnsDocs['*'])) {
+                    continue;
+                }
+            }
+            $result[$column] = $properties;
         }
 
         return $result;
