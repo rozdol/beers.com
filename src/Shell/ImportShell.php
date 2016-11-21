@@ -67,15 +67,15 @@ class ImportShell extends Shell
     ];
 
     /**
-     * List of columns to ignore in documentation
+     * List of columns to ignore
      *
-     * Associative array of $table => $columns to ignore
-     * in generated documentation.  A special table name
-     * '*' can be used to ignore column in all tables.
+     * Associative array of $table => $columns to ignore.
+     * A special table name '*' can be used to ignore
+     * column in all tables.
      *
-     * @var array $ignoreColumnsDocs List of table columns to ignore in documentation
+     * @var array $ignoreTableColumns List of table columns to ignore
      */
-    protected $ignoreColumnsDocs = [
+    protected $ignoreTableColumns = [
         '*' => [
             'id',
         ],
@@ -344,6 +344,11 @@ class ImportShell extends Shell
 
         $result = [];
         foreach ($tables as $table => $columns) {
+            $columns = $this->filterColumns($table, $columns);
+            if (empty($columns)) {
+                continue;
+            }
+
             $csvFilePath = $dest . DIRECTORY_SEPARATOR . $table . '.csv';
             $fh = fopen($csvFilePath, 'w');
             if (!is_resource($fh)) {
@@ -458,14 +463,14 @@ class ImportShell extends Shell
 
         foreach ($columns as $column => $properties) {
             // Skip column if it is in the table ignore columns list
-            if (!empty($this->ignoreColumnsDocs[$table])) {
-                if (in_array($column, $this->ignoreColumnsDocs[$table])) {
+            if (!empty($this->ignoreTableColumns[$table])) {
+                if (in_array($column, $this->ignoreTableColumns[$table])) {
                     continue;
                 }
             }
             // Skip column if it is in the all ignore columns list
-            if (!empty($this->ignoreColumnsDocs['*'])) {
-                if (in_array($column, $this->ignoreColumnsDocs['*'])) {
+            if (!empty($this->ignoreTableColumns['*'])) {
+                if (in_array($column, $this->ignoreTableColumns['*'])) {
                     continue;
                 }
             }
