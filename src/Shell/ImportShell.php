@@ -97,6 +97,27 @@ class ImportShell extends Shell
     ];
 
     /**
+     * Map of ID fields for tables
+     *
+     * This list provides a list of tables,
+     * mapping internal field names to
+     * external field names.
+     *
+     * A special table name '*' can be used
+     * to specify the defaults for all tables.
+     *
+     * @var array $tableColumnMap Table column map
+     */
+    protected $tableColumnMap = [
+        '*' => [
+            'id' => 'legacy_id',
+        ],
+        'users' => [
+            'id' => 'username',
+        ],
+    ];
+
+    /**
      * List of default columns comments
      *
      * If the database schema does not provide a column
@@ -554,15 +575,16 @@ class ImportShell extends Shell
                             case 'uuid':
                                 if (!empty($properties[self::CSV_KEY]) && $properties[self::CSV_KEY]['type'] == 'related') {
                                     $value = 'string';
-                                    $extra = "* References to: `" . Inflector::tableize($properties[self::CSV_KEY]['limit']) . "` table.\n";
+                                    $relatedToTable = Inflector::tableize($properties[self::CSV_KEY]['limit']);
+                                    $relatedToField = 'id'; // TODO : Change to table primary key
+                                    $extra = "* Values From: table `" . $relatedToTable . "` field `" . $this->mapTableField($relatedToTable, $relatedToField) . "`\n";
                                 } else {
                                     $extra .= "* Format: [36 character long UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)\n";
                                 }
                                 break;
                             case 'string':
-                                debug($properties);
                                 if (!empty($properties[self::CSV_KEY]) && $properties[self::CSV_KEY]['type'] == 'list') {
-                                    $extra = "* References to: `" . $properties[self::CSV_KEY]['limit'] . "` list.\n";
+                                    $extra = "* Values From: `" . $properties[self::CSV_KEY]['limit'] . "` list.\n";
                                 }
                                 break;
                             case 'time':
@@ -634,6 +656,36 @@ class ImportShell extends Shell
         } elseif (!empty($this->defaulColumnComments['*'])
             && in_array($column, array_keys($this->defaulColumnComments['*']))) {
             $result = $this->defaulColumnComments['*'][$column];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Map table column name
+     *
+     * Figure out the name of the column,
+     * for a given column of a given table.
+     *
+     * @param string $table Table name
+     * @param string $column Column name
+     * @return string
+     */
+    protected function mapTableField($table, $column)
+    {
+        // If no column map found, return as is
+        $result = $column;
+
+        if (!empty($this->tableColumnMap[$table][$column])) {
+            debug("Found mapping for table $table column $column");
+            $result = $this->tableColumnMap[$table][$column];
+        }
+        elseif (!empty($this->tableColumnMap['*'][$column])) {
+            debug("Found mapping for * $table column $column");
+            $result = $this->tableColumnMap['*'][$column];
+        }
+        else {
+            debug("Did not find mapping for  $table column $column");
         }
 
         return $result;
