@@ -3,12 +3,18 @@ namespace App\Shell;
 
 use Cake\Console\Shell;
 use Cake\Datasource\ConnectionManager;
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use CsvMigrations\FieldHandlers\CsvField;
 
 class ImportShell extends Shell
 {
+    public $tasks = [
+        'CsvCommon',
+        'CsvDocument',
+        'CsvImport',
+        'Schema',
+    ];
+
     /**
      * CSV definitions array key
      */
@@ -79,69 +85,6 @@ class ImportShell extends Shell
     ];
 
     /**
-     * List of columns to ignore
-     *
-     * Associative array of $table => $columns to ignore.
-     * A special table name '*' can be used to ignore
-     * column in all tables.
-     *
-     * @var array $ignoreTableColumns List of table columns to ignore
-     */
-    protected $ignoreTableColumns = [
-        '*' => [
-            'id',
-        ],
-        'users' => [
-            'token',
-            'token_expires',
-            'api_token',
-            'activation_date',
-            'tos_date',
-            'role',
-        ],
-    ];
-
-    /**
-     * Map of ID fields for tables
-     *
-     * This list provides a list of tables,
-     * mapping internal field names to
-     * external field names.
-     *
-     * A special table name '*' can be used
-     * to specify the defaults for all tables.
-     *
-     * @var array $tableColumnMap Table column map
-     */
-    protected $tableColumnMap = [
-        '*' => [
-            'id' => 'legacy_id',
-        ],
-        'users' => [
-            'id' => 'username',
-        ],
-    ];
-
-    /**
-     * List of default columns comments
-     *
-     * If the database schema does not provide a column
-     * comment, the one from this list will be used.
-     *
-     * A special table name '*' can be used to set the
-     * default comment for the column in all tables.
-     *
-     * @var array $defaultColumnComments List of table columns to ignore
-     */
-    protected $defaulColumnComments = [
-        '*' => [
-            'created' => 'Date and time the record was created.',
-            'modified' => 'Date and time the record was last modified.',
-            'trashed' => 'Date and time the record was deleted.',
-        ],
-    ];
-
-    /**
      * Shell entry point
      *
      * @return void
@@ -173,42 +116,57 @@ class ImportShell extends Shell
         }
 
         // Get all tables
-        $tables = $this->getAllTables();
+        $tables = $this->Schema->getAllTables();
 
         // Order of filters is important
         $tables = $this->filterTablesByJoin($tables);
         $tables = $this->filterTablesByPattern($tables, $this->ignoreTablesPatterns);
 
-        // Get table schema
-        $tables = $this->getTableSchema($tables);
-        $tables = $this->getTableColumns($tables);
-        $tables = $this->getTableCsvDefinitions($tables);
+        // Get database table schema and CSV definitions, if available
+        $tableSchema = $this->Schema->getTableSchema($tables);
+        $tableDefinitions = $this->Schema->getTableCsvDefinitions($tables);
+        $tables = array_merge_recursive($tableSchema, $tableDefinitions);
 
-        // Create CSV templates
-        $csvResult = $this->createCsvTemplates($tables, $dest);
-        if (empty($csvResult)) {
-            $this->abort("No CSV templates were create");
-        }
+        foreach ($tables as $table => $properties) {
+            $columns = $properties['schema']->columns();
+            $columns = $this->filterColumns($table, $columns);
 
-        $result = [];
-        foreach ($csvResult as $table => $file) {
-            $result[$table][] = $file;
-        }
-
-        // Create DOC files
-        $docResult = $this->createCsvDocuments($tables, $dest);
-        if (!empty($docResult)) {
-            foreach ($docResult as $table => $file) {
-                $result[$table][] = $file;
+            // Create CSV template
+            $csvPath = $dest . DIRECTORY_SEPARATOR . $this->csvDir;
+            if (!file_exists($csvPath)) {
+                if (!mkdir($csvPath)) {
+                    $this->abort("Failed to create path: $csvPath");
+                }
             }
-        }
-
-        $this->out("The following files were created:\n");
-        foreach ($result as $table => $files) {
-            $this->out("For table $table:");
-            foreach ($files as $file) {
-                $this->out("\t$file");
+            $csvPath .= DIRECTORY_SEPARATOR . $table . '.csv';
+            $csvBytes = 0;
+            try {
+                $csvBytes = $this->CsvImport->createTemplate($columns, $csvPath);
+            } catch (\Exception $e) {
+                $this->abort($e->getMessage());
             }
+            $this->out("Created $csvPath ($csvBytes bytes)");
+
+            // If there is no template, no need for documentation either
+            if (!$csvBytes) {
+                continue;
+            }
+
+            // Create Markdown documentation
+            $docPath = $dest . DIRECTORY_SEPARATOR . $this->docDir;
+            if (!file_exists($docPath)) {
+                if (!mkdir($docPath)) {
+                    $this->abort("Failed to create path: $docPath");
+                }
+            }
+            $docPath .= DIRECTORY_SEPARATOR . $table . '.md';
+            $docBytes = 0;
+            try {
+                $docBytes = $this->CsvDocument->createMarkdown($table, $properties, $docPath);
+            } catch (\Exception $e) {
+                $this->abort($e->getMessage());
+            }
+            $this->out("Created $docPath ($docBytes bytes)");
         }
     }
 
@@ -236,19 +194,6 @@ class ImportShell extends Shell
         if (!is_writeable($dir)) {
             throw new \InvalidArgumentException("Destination directory is not writeable");
         }
-    }
-
-
-    /**
-     * Get all database tables
-     *
-     * @return array
-     */
-    protected function getAllTables()
-    {
-        $result = ConnectionManager::get('default')->schemaCollection()->listTables();
-
-        return $result;
     }
 
     /**
@@ -329,107 +274,7 @@ class ImportShell extends Shell
         return $result;
     }
 
-    /**
-     * Get schema definitions for each table
-     *
-     * @param array $tables List of tables
-     * @return array
-     */
-    protected function getTableSchema(array $tables)
-    {
-        if (empty($tables)) {
-            return $tables;
-        }
 
-        $result = [];
-        foreach ($tables as $table) {
-            $result[$table] = ConnectionManager::get('default')->schemaCollection()->describe($table);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get detail information about table columns
-     *
-     * @param array $tables List of tables
-     * @return array
-     */
-    protected function getTableColumns(array $tables)
-    {
-        if (empty($tables)) {
-            return $tables;
-        }
-
-        $result = [];
-        foreach ($tables as $table => $schema) {
-            $columns = $schema->columns();
-            $result[$table] = [];
-            foreach ($columns as $column) {
-                $result[$table][$column] = $schema->column($column);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get CSV field definitions for given tables
-     *
-     * @param array $tables List of tables
-     * @return array
-     */
-    protected function getTableCsvDefinitions(array $tables)
-    {
-        if (empty($tables)) {
-            return $tables;
-        }
-
-        $result = [];
-        foreach ($tables as $table => $columns) {
-            $tableName = Inflector::camelize($table);
-            $defs = [];
-            try {
-                $tableObject = TableRegistry::get($tableName);
-                $defs = $tableObject->getFieldsDefinitions($tableName);
-            } catch (\Exception $e) {
-                // Skip non-CSV based table
-            }
-            // If no field definitions from CSV, then move on
-            if (empty($defs)) {
-                $result[$table] = $columns;
-                continue;
-            }
-            $updatedColumns = [];
-            foreach ($columns as $column => $properties) {
-                $updatedColumns[$column] = $properties;
-                if (!in_array($column, array_keys($defs))) {
-                    continue;
-                }
-
-                $updatedColumns[$column][self::CSV_KEY] = $defs[$column];
-
-                // Taken from the ValidateShell
-                $type = null;
-                $limit = null;
-                // Matches:
-                // * date, time, string, and other simple types
-                // * list(something), related(Others) and other simple limits
-                // * related(Vendor/Plugin.Model) and other complex limits
-                if (preg_match('/^(\w+?)\(([\w\/\.]+?)\)$/', $defs[$column]['type'], $matches)) {
-                    $type = $matches[1];
-                    $limit = $matches[2];
-                } else {
-                    $type = $defs[$column]['type'];
-                }
-                $updatedColumns[$column][self::CSV_KEY]['type'] = $type;
-                $updatedColumns[$column][self::CSV_KEY]['limit'] = $limit;
-            }
-            $result[$table] = $updatedColumns;
-        }
-
-        return $result;
-    }
 
     /**
      * Create CSV templates
@@ -582,7 +427,7 @@ class ImportShell extends Shell
                                     $value = 'string';
                                     $relatedToTable = Inflector::tableize($properties[self::CSV_KEY]['limit']);
                                     $relatedToField = 'id'; // TODO : Change to table primary key
-                                    $extra = "* Values From: table `" . $relatedToTable . "` field `" . $this->mapTableField($relatedToTable, $relatedToField) . "`\n";
+                                    $extra = "* Values From: table `" . $relatedToTable . "` field `" . $this->CsvCommon->mapTableField($relatedToTable, $relatedToField) . "`\n";
                                 } else {
                                     $extra .= "* Format: [36 character long UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)\n";
                                 }
@@ -625,16 +470,17 @@ class ImportShell extends Shell
     {
         $result = [];
 
+        $ignoreTableColumns = $this->CsvCommon->getIgnoreTableColumns();
         foreach ($columns as $column => $properties) {
             // Skip column if it is in the table ignore columns list
-            if (!empty($this->ignoreTableColumns[$table])) {
-                if (in_array($column, $this->ignoreTableColumns[$table])) {
+            if (!empty($ignoreTableColumns[$table])) {
+                if (in_array($column, $ignoreTableColumns[$table])) {
                     continue;
                 }
             }
             // Skip column if it is in the all ignore columns list
-            if (!empty($this->ignoreTableColumns['*'])) {
-                if (in_array($column, $this->ignoreTableColumns['*'])) {
+            if (!empty($ignoreTableColumns['*'])) {
+                if (in_array($column, $ignoreTableColumns['*'])) {
                     continue;
                 }
             }
@@ -644,55 +490,4 @@ class ImportShell extends Shell
         return $result;
     }
 
-    /**
-     * Get default column comment
-     *
-     * @param string $table Table name
-     * @param string $column Column name
-     * @return string
-     */
-    protected function getDefaultColumnComment($table, $column)
-    {
-        $result = '';
-
-        if (!empty($this->defaulColumnComments[$table])
-            && in_array($column, array_keys($this->defaulColumnComments[$table]))) {
-            $result = $this->defaulColumnComments[$table][$column];
-        } elseif (!empty($this->defaulColumnComments['*'])
-            && in_array($column, array_keys($this->defaulColumnComments['*']))) {
-            $result = $this->defaulColumnComments['*'][$column];
-        }
-
-        return $result;
-    }
-
-    /**
-     * Map table column name
-     *
-     * Figure out the name of the column,
-     * for a given column of a given table.
-     *
-     * @param string $table Table name
-     * @param string $column Column name
-     * @return string
-     */
-    protected function mapTableField($table, $column)
-    {
-        // If no column map found, return as is
-        $result = $column;
-
-        if (!empty($this->tableColumnMap[$table][$column])) {
-            debug("Found mapping for table $table column $column");
-            $result = $this->tableColumnMap[$table][$column];
-        }
-        elseif (!empty($this->tableColumnMap['*'][$column])) {
-            debug("Found mapping for * $table column $column");
-            $result = $this->tableColumnMap['*'][$column];
-        }
-        else {
-            debug("Did not find mapping for  $table column $column");
-        }
-
-        return $result;
-    }
 }
