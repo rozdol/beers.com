@@ -30,6 +30,11 @@ class CsvDocumentTask extends Shell
         ],
     ];
 
+    /**
+     * Main entry point
+     *
+     * @return void
+     */
     public function main()
     {
     }
@@ -58,6 +63,13 @@ class CsvDocumentTask extends Shell
         return $result;
     }
 
+    /**
+     * Build markdown
+     *
+     * @param string $table Table name
+     * @param array $properties Table properties
+     * @return string
+     */
     protected function buildMarkdown($table, $properties)
     {
         $result = '';
@@ -84,6 +96,12 @@ class CsvDocumentTask extends Shell
         return $result;
     }
 
+    /**
+     * Merge table schema and CSV definitions
+     *
+     * @param array $properties Table properties
+     * @return array
+     */
     protected function mergeColumnDefinitions(array $properties)
     {
         $result = [];
@@ -130,7 +148,7 @@ class CsvDocumentTask extends Shell
             }
 
             // Fix 'comment' and 'length' for datetime, date, and time
-            switch($result[$column]['type']) {
+            switch ($result[$column]['type']) {
                 case 'datetime':
                     $format = 'YYYY-MM-DD hh:mm:ss';
                     $result[$column]['comment'] .= " Format: $format.";
@@ -148,19 +166,19 @@ class CsvDocumentTask extends Shell
                     break;
             }
 
-			// Taken from the ValidateShell
-			$type = null;
-			$limit = null;
-			// Matches:
-			// * date, time, string, and other simple types
-			// * list(something), related(Others) and other simple limits
-			// * related(Vendor/Plugin.Model) and other complex limits
-			if (preg_match('/^(\w+?)\(([\w\/\.]+?)\)$/', $csv[$column]['type'], $matches)) {
-				$type = $matches[1];
-				$limit = $matches[2];
-			} else {
-				$type = $csv[$column]['type'];
-			}
+            // Taken from the ValidateShell
+            $type = null;
+            $limit = null;
+            // Matches:
+            // * date, time, string, and other simple types
+            // * list(something), related(Others) and other simple limits
+            // * related(Vendor/Plugin.Model) and other complex limits
+            if (preg_match('/^(\w+?)\(([\w\/\.]+?)\)$/', $csv[$column]['type'], $matches)) {
+                $type = $matches[1];
+                $limit = $matches[2];
+            } else {
+                $type = $csv[$column]['type'];
+            }
 
             switch ($type) {
                 case 'list':

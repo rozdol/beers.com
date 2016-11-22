@@ -5,6 +5,11 @@ use Cake\Console\Shell;
 
 class CsvImportTask extends Shell
 {
+    /**
+     * Main entry point
+     *
+     * @return void
+     */
     public function main()
     {
     }

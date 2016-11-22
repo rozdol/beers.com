@@ -1,8 +1,8 @@
 <?php
 namespace App\Shell\Task;
 
-use Cake\Datasource\ConnectionManager;
 use Cake\Console\Shell;
+use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 
@@ -11,6 +11,11 @@ class SchemaTask extends Shell
     const KEY_SCHEMA = 'schema';
     const KEY_CSV_DEFS = 'csvDefinitions';
 
+    /**
+     * Main entry point
+     *
+     * @return void
+     */
     public function main()
     {
     }
@@ -112,6 +117,4 @@ class SchemaTask extends Shell
 
         return $result;
     }
-
-
 }

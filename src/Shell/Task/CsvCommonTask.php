@@ -49,15 +49,30 @@ class CsvCommonTask extends Shell
         ],
     ];
 
+    /**
+     * Main entry point
+     *
+     * @return void
+     */
     public function main()
     {
     }
 
+    /**
+     * Get ignore table columns
+     *
+     * @return array
+     */
     public function getIgnoreTableColumns()
     {
         return $this->ignoreTableColumns;
     }
 
+    /**
+     * Get table column map
+     *
+     * @return array
+     */
     public function getTableColumnMap()
     {
         return $this->tableColumnMap;
@@ -81,14 +96,11 @@ class CsvCommonTask extends Shell
         $tableColumnMap = $this->getTableColumnMap();
         if (!empty($tableColumnMap[$table][$column])) {
             $result = $tableColumnMap[$table][$column];
-        }
-        elseif (!empty($tableColumnMap['*'][$column])) {
+        } elseif (!empty($tableColumnMap['*'][$column])) {
             $result = $tableColumnMap['*'][$column];
-        }
-        else {
+        } else {
         }
 
         return $result;
     }
-
 }

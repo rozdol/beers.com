@@ -489,5 +489,4 @@ class ImportShell extends Shell
 
         return $result;
     }
-
 }
