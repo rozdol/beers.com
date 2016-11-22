@@ -69,6 +69,7 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+    Configure::load('groups', 'default');
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }
@@ -188,7 +189,7 @@ Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
 Plugin::load('CsvMigrations', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Crud');
-Plugin::load('Groups', ['bootstrap' => false, 'routes' => true]);
+Plugin::load('Groups', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('RolesCapabilities', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('QoboAdminPanel', ['bootstrap' => true]);
 Plugin::load('Menu', ['bootstrap' => true]);
