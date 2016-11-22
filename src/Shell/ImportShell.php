@@ -57,6 +57,9 @@ class ImportShell extends Shell
         '/^capabilities$/',
         '/^roles$/',
         '/^groups_roles$/',
+        // DB Lists
+        '/^dblists$/',
+        '/^dblist_items$/',
         // Dashboards, saved searches, and widgets
         '/^dashboards.*$/',
         '/^saved_searches$/',
@@ -66,6 +69,8 @@ class ImportShell extends Shell
         '/^menu_items$/',
         // Messages
         '/^messages$/',
+        // Notes
+        '/^notes$/',
         // Logs
         '/^database_logs$/',
         '/^log_audit$/',
