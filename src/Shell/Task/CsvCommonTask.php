@@ -103,4 +103,34 @@ class CsvCommonTask extends Shell
 
         return $result;
     }
+
+    /**
+     * Check if given path is a writeable directory
+     *
+     * @param string $dir Destination directory to check
+     * @return boolean True on yes, false otherwise.
+     */
+    protected function isWriteableDir($dir)
+    {
+        $result = false;
+
+        $dir = (string)$dir;
+        if (empty($dir)) {
+            return $result;
+        }
+        if (!file_exists($dir)) {
+            return $result;
+        }
+        if (!is_dir($dir)) {
+            return $result;
+        }
+        if (!is_writeable($dir)) {
+            return $result;
+        }
+
+        $result = true;
+
+        return $result;
+    }
+
 }

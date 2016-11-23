@@ -109,10 +109,8 @@ class ImportShell extends Shell
             $dest = $this->defaultDest;
         }
 
-        try {
-            $this->validateDir($dest);
-        } catch (\Exception $e) {
-            $this->abort("Directory is not valid: " . $e->getMessage());
+        if (!$this->CsvCommon->isWriteableDir($dest)) {
+            $this->abort("Destination is not a writeable directory: $dest");
         }
 
         // Get all tables
@@ -170,31 +168,6 @@ class ImportShell extends Shell
         }
     }
 
-    /**
-     * Validate directory
-     *
-     * Directory has to exist and has to be writeable
-     *
-     * @throws InvalidArgumentException When directory is not valid
-     * @param string $dir Destination directory to check
-     * @return void
-     */
-    protected function validateDir($dir)
-    {
-        $dir = (string)$dir;
-        if (empty($dir)) {
-            throw new \InvalidArgumentException("Destination directory is not specified");
-        }
-        if (!file_exists($dir)) {
-            throw new \InvalidArgumentException("Destination directory does not exist");
-        }
-        if (!is_dir($dir)) {
-            throw new \InvalidArgumentException("Destination is not a directory");
-        }
-        if (!is_writeable($dir)) {
-            throw new \InvalidArgumentException("Destination directory is not writeable");
-        }
-    }
 
     /**
      * Filter out tables that match any of the given patterns
@@ -363,97 +336,6 @@ class ImportShell extends Shell
             }
             fclose($fh);
             $result[$table] = $docFilePath;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Create Markdown document for a given table scheme
-     *
-     * @param string $table Table name
-     * @param array $columns Table columns
-     * @return string Markdown document
-     */
-    protected function createTableMarkdown($table, array $columns)
-    {
-        $result = '';
-
-        $columns = $this->filterColumns($table, $columns);
-        if (empty($columns)) {
-            return $result;
-        }
-
-        $result .= "Table: $table\n";
-        $result .= "============================\n";
-        $result .= "\n";
-        $result .= "Generated on: " . $this->timeStamp . "\n";
-        $result .= "\n";
-        $result .= wordwrap("This file provides the description of fields for import into the table `$table`.\n");
-        $result .= "\n";
-        $result .= "Columns\n";
-        $result .= "-------\n";
-        $result .= "\n";
-        foreach ($columns as $name => $properties) {
-            $result .= "### $name\n";
-            $result .= "\n";
-            foreach ($properties as $property => $value) {
-                if ($property == self::CSV_KEY) {
-                    continue;
-                }
-
-                $extra = '';
-                switch ($property) {
-                    case 'comment':
-                        if (empty($value)) {
-                            $value = $this->getDefaultColumnComment($table, $name);
-                        }
-                        break;
-                    case 'null':
-                        $property = 'allow_null_values';
-                        // If DB doesn't require, but CSV does, then we require
-                        if (!$value && !empty($properties[self::CSV_KEY]) && $properties[self::CSV_KEY]['required']) {
-                            $value = true;
-                        }
-                        $value = $value ? 'yes' : 'no';
-                        break;
-                    case 'default':
-                        $property = 'default_value';
-                        break;
-                    case 'type':
-                        switch ($value) {
-                            case 'uuid':
-                                if (!empty($properties[self::CSV_KEY]) && $properties[self::CSV_KEY]['type'] == 'related') {
-                                    $value = 'string';
-                                    $relatedToTable = Inflector::tableize($properties[self::CSV_KEY]['limit']);
-                                    $relatedToField = 'id'; // TODO : Change to table primary key
-                                    $extra = "* Values From: table `" . $relatedToTable . "` field `" . $this->CsvCommon->mapTableField($relatedToTable, $relatedToField) . "`\n";
-                                } else {
-                                    $extra .= "* Format: [36 character long UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)\n";
-                                }
-                                break;
-                            case 'string':
-                                if (!empty($properties[self::CSV_KEY]) && $properties[self::CSV_KEY]['type'] == 'list') {
-                                    $extra = "* Values From: `" . $properties[self::CSV_KEY]['limit'] . "` list.\n";
-                                }
-                                break;
-                            case 'time':
-                                $extra .= "* Format: hh:mm:ss\n";
-                                break;
-                            case 'date':
-                                $extra .= "* Format: YYYY-MM-DD\n";
-                                break;
-                            case 'datetime':
-                                $extra .= "* Format: YYYY-MM-DD hh:mm:ss\n";
-                                break;
-                        }
-                        break;
-                }
-
-                $result .= "* " . Inflector::humanize($property) . ": $value\n";
-                $result .= $extra;
-            }
-            $result .= "\n";
         }
 
         return $result;
