@@ -108,7 +108,7 @@ class CsvCommonTask extends Shell
      * Check if given path is a writeable directory
      *
      * @param string $dir Destination directory to check
-     * @return boolean True on yes, false otherwise.
+     * @return bool True on yes, false otherwise.
      */
     public function isWriteableDir($dir)
     {
@@ -132,5 +132,4 @@ class CsvCommonTask extends Shell
 
         return $result;
     }
-
 }
