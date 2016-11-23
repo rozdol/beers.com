@@ -148,30 +148,15 @@ class CsvDocumentTask extends Shell
             if ($csv[$column]['required'] || $csv[$column]['unique']) {
                 $result[$column]['null'] = false;
             }
-            $result[$column]['null'] = $result[$column]['null'] ? 'yes' : 'no';
 
             // Fix 'comment'
             if (empty($result[$column]['comment'])) {
                 $result[$column]['comment'] = $this->getDefaultColumnComment($table, $column);
             }
 
-            // Fix 'comment' and 'length' for datetime, date, and time
-            switch ($result[$column]['type']) {
-                case 'datetime':
-                    $format = 'YYYY-MM-DD hh:mm:ss';
-                    $result[$column]['comment'] .= " Format: $format.";
-                    $result[$column]['length'] = strlen($format);
-                    break;
-                case 'date':
-                    $format = 'YYYY-MM-DD';
-                    $result[$column]['comment'] .= " Format: $format.";
-                    $result[$column]['length'] = strlen($format);
-                    break;
-                case 'time':
-                    $format = 'hh:mm:ss';
-                    $result[$column]['comment'] .= " Format: $format.";
-                    $result[$column]['length'] = strlen($format);
-                    break;
+            // If 'comment' is still empty, stick table and field in there
+            if (empty($result[$column]['comment'])) {
+                $result[$column]['comment'] = Inflector::humanize(Inflector::singularize($table)) . ' ' . Inflector::humanize($column) . '.';
             }
 
             // Taken from the ValidateShell
@@ -193,6 +178,7 @@ class CsvDocumentTask extends Shell
                     $result[$column]['comment'] .= " Values from: `$limit` list.";
                     $result[$column]['length'] = 255;
                     $result[$column]['type'] = 'string';
+                    $result[$column]['fixed'] = false;
                     break;
                 case 'related':
                     $relatedTable = Inflector::tableize($limit);
@@ -204,15 +190,72 @@ class CsvDocumentTask extends Shell
                     $result[$column]['comment'] .= " Values from: `" . $relatedTable . "` table, `" . $related . "` field.";
                     $result[$column]['length'] = 255;
                     $result[$column]['type'] = 'string';
+                    $result[$column]['fixed'] = false;
+                    break;
+            }
+
+            // Fix 'comment' and 'length' for datetime, date, time, etc
+            switch ($result[$column]['type']) {
+                case 'uuid':
+                    $result[$column]['comment'] .= " Format: https://en.wikipedia.org/wiki/Universally_unique_identifier .";
+                    $result[$column]['length'] = 36;
+                    $result[$column]['fixed'] = true;
+                    break;
+                case 'datetime':
+                    $format = 'YYYY-MM-DD hh:mm:ss';
+                    $result[$column]['comment'] .= " Format: $format.";
+                    $result[$column]['length'] = strlen($format);
+                    break;
+                case 'date':
+                    $format = 'YYYY-MM-DD';
+                    $result[$column]['comment'] .= " Format: $format.";
+                    $result[$column]['length'] = strlen($format);
+                    break;
+                case 'time':
+                    $format = 'hh:mm:ss';
+                    $result[$column]['comment'] .= " Format: $format.";
+                    $result[$column]['length'] = strlen($format);
                     break;
             }
 
             // Rename 'null' for easier humanizing
+            $result[$column]['null'] = $result[$column]['null'] ? 'yes' : 'no';
             $result[$column]['allow_null_values'] = $result[$column]['null'];
             unset($result[$column]['null']);
 
+            // Rename 'default' for easier humanizing
+            $result[$column]['default_value'] = $result[$column]['default'];
+            unset($result[$column]['default']);
+
+            // Rename 'fixed' for easier humanizing
+            if (array_key_exists('fixed', $result[$column])) {
+                $result[$column]['fixed'] = $result[$column]['fixed'] ? 'yes' : 'no';
+                $result[$column]['fixed_length'] = $result[$column]['fixed'];
+                unset($result[$column]['fixed']);
+            }
+
+            // Remove unnecessary 'precision'
+            if (array_key_exists('precision', $result[$column]) && empty($result[$column]['precision'])) {
+                unset($result[$column]['precision']);
+            }
+
+            // Remove 'collate' always
+            if (array_key_exists('collate', $result[$column])) {
+                unset($result[$column]['collate']);
+            }
+
+            // Remove unnecessary 'unsigned'
+            if (array_key_exists('unsigned', $result[$column])) {
+                if (empty($result[$column]['unsigned'])) {
+                    unset($result[$column]['unsigned']);
+                } else {
+                    $result[$column]['unsigned'] = $result[$column]['unsigned'] ? 'yes' : 'no';
+                }
+            }
+
             // Make 'length' human friendly
             $result[$column]['length'] = Number::toReadableSize((int)$result[$column]['length']);
+
         }
 
         return $result;
