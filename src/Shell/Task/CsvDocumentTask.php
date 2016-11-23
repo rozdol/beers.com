@@ -29,6 +29,7 @@ class CsvDocumentTask extends Shell
             'created' => 'Date and time the record was created.',
             'modified' => 'Date and time the record was last modified.',
             'trashed' => 'Date and time the record was deleted.',
+            'legacy_id' => 'Record ID in the system from which the data was exported.',
         ],
     ];
 
