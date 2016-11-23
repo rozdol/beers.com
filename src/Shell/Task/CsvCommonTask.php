@@ -110,7 +110,7 @@ class CsvCommonTask extends Shell
      * @param string $dir Destination directory to check
      * @return boolean True on yes, false otherwise.
      */
-    protected function isWriteableDir($dir)
+    public function isWriteableDir($dir)
     {
         $result = false;
 
