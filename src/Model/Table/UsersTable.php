@@ -3,6 +3,7 @@ namespace App\Model\Table;
 
 use CakeDC\Users\Model\Table\UsersTable as Table;
 use CsvMigrations\ConfigurationTrait;
+use CsvMigrations\FieldTrait;
 
 /**
  * Users Model
@@ -10,6 +11,7 @@ use CsvMigrations\ConfigurationTrait;
 class UsersTable extends Table
 {
     use ConfigurationTrait;
+    use FieldTrait;
 
     /**
      * Initialize method
