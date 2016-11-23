@@ -255,7 +255,6 @@ class CsvDocumentTask extends Shell
 
             // Make 'length' human friendly
             $result[$column]['length'] = Number::toReadableSize((int)$result[$column]['length']);
-
         }
 
         return $result;
