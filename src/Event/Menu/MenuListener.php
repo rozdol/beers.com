@@ -51,6 +51,7 @@ class MenuListener implements EventListenerInterface
     {
         $result = [];
         foreach ($menu as $item) {
+            // this is for label like menu items without a url or children
             if (empty($item['url']) && empty($item['children'])) {
                 $result[] = $item;
                 continue;
