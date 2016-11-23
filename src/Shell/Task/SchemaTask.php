@@ -90,4 +90,28 @@ class SchemaTask extends Shell
 
         return $result;
     }
+
+    /**
+     * Check if a given table has given column
+     *
+     * @param string $table Table name
+     * @param string $column Column name
+     * @return bool True if has, false otherwise
+     */
+    public function hasTableColumn($table, $column)
+    {
+        $result = false;
+
+        $table = (string)$table;
+        $column = (string)$column;
+
+        if (empty($table) || empty($column)) {
+            throw new \InvalidArgumentException("Table and column are required parameters");
+        }
+        $schema = $this->getTableSchema($table);
+        $columns = $schema[$table][self::KEY_SCHEMA]->columns();
+        $result = in_array($column, $columns);
+
+        return $result;
+    }
 }

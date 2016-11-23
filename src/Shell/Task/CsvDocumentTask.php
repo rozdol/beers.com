@@ -9,6 +9,7 @@ class CsvDocumentTask extends Shell
 {
     public $tasks = [
         'CsvCommon',
+        'Schema',
     ];
 
     /**
@@ -190,6 +191,9 @@ class CsvDocumentTask extends Shell
                     $relatedTable = Inflector::tableize($limit);
                     $relatedField = 'id';
                     $related = $this->CsvCommon->mapTableField($relatedTable, $relatedField);
+                    if (!$this->Schema->hasTableColumn($relatedTable, $related)) {
+                        $this->err("Documentation for table $table.$column references non-existing field $relatedTable.$related");
+                    }
                     $result[$column]['comment'] .= " Values from: `" . $relatedTable . "` table, `" . $related . "` field.";
                     $result[$column]['length'] = 255;
                     $result[$column]['type'] = 'string';
