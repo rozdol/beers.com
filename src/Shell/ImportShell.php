@@ -1,6 +1,7 @@
 <?php
 namespace App\Shell;
 
+use App\Shell\Task\SchemaTask;
 use Cake\Console\Shell;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Inflector;
@@ -111,7 +112,7 @@ class ImportShell extends Shell
         $tables = array_merge_recursive($tableSchema, $tableDefinitions);
 
         foreach ($tables as $table => $properties) {
-            $columns = $properties['schema']->columns();
+            $columns = $properties[SchemaTask::KEY_SCHEMA]->columns();
             $columns = $this->filterColumns($table, $columns);
 
             // Create CSV template
@@ -145,7 +146,7 @@ class ImportShell extends Shell
             $docPath .= DIRECTORY_SEPARATOR . $table . '.md';
             $docBytes = 0;
             try {
-                $docBytes = $this->CsvDocument->createMarkdown($table, $properties, $docPath);
+                $docBytes = $this->CsvDocument->createMarkdown($table, $properties, $docPath, $columns);
             } catch (\Exception $e) {
                 $this->abort($e->getMessage());
             }

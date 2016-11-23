@@ -1,6 +1,7 @@
 <?php
 namespace App\Shell\Task;
 
+use App\Shell\Task\SchemaTask;
 use Cake\Console\Shell;
 use Cake\I18n\Number;
 use Cake\Utility\Inflector;
@@ -46,16 +47,17 @@ class CsvDocumentTask extends Shell
      * @param string $table Table name
      * @param array $properties Table properties
      * @param string $path Path to write the documentation file to
+     * @param array $limitColumns Limit to only these columns
      * @return int Number of bytes written to the file
      */
-    public function createMarkdown($table, array $properties, $path)
+    public function createMarkdown($table, array $properties, $path, array $limitColumns = [])
     {
         $result = 0;
 
         if (empty($table) || empty($properties) || empty($path)) {
             return $result;
         }
-        $markdown = $this->buildMarkdown($table, $properties);
+        $markdown = $this->buildMarkdown($table, $properties, $limitColumns);
         $result = file_put_contents($path, $markdown);
         if ($result === false) {
             throw new \RuntimeException("Failed to write to file: $path");
@@ -69,9 +71,10 @@ class CsvDocumentTask extends Shell
      *
      * @param string $table Table name
      * @param array $properties Table properties
+     * @param array $limitColumns Limit to only these columns
      * @return string
      */
-    protected function buildMarkdown($table, $properties)
+    protected function buildMarkdown($table, array $properties, array $limitColumns = [])
     {
         $result = '';
 
@@ -87,6 +90,10 @@ class CsvDocumentTask extends Shell
         $columns = $this->mergeColumnDefinitions($properties);
 
         foreach ($columns as $column => $properties) {
+            // If $limitColumns are defined and the column is not in there, skip
+            if (!empty($limitColumns) && !in_array($column, $limitColumns)) {
+                continue;
+            }
             $result .= "### $column\n\n";
             foreach ($properties as $property => $value) {
                 $result .= "* " . Inflector::humanize($property) . ": " . $value . "\n";
@@ -109,16 +116,16 @@ class CsvDocumentTask extends Shell
 
         // TODO : check if $properties['schema'] contains Cake\Database\Schema\Table instance
 
-        $table = $properties['schema']->name();
+        $table = $properties[SchemaTask::KEY_SCHEMA]->name();
         $schema = [];
         $columns = $properties['schema']->columns();
         foreach ($columns as $column) {
-            $schema[$column] = $properties['schema']->column($column);
+            $schema[$column] = $properties[SchemaTask::KEY_SCHEMA]->column($column);
         }
 
         $csv = [];
-        if (!empty($properties['csvDefinitions'])) {
-            $csv = $properties['csvDefinitions'];
+        if (!empty($properties[SchemaTask::KEY_CSV_DEFS])) {
+            $csv = $properties[SchemaTask::KEY_CSV_DEFS];
         }
         foreach ($columns as $column) {
             if (empty($csv[$column])) {
