@@ -86,33 +86,6 @@ class SchemaTask extends Shell
                 // Skip non-CSV based table
             }
             $result[$table][self::KEY_CSV_DEFS] = $defs;
-
-            //$updatedColumns = [];
-            //foreach ($columns as $column => $properties) {
-            //    $updatedColumns[$column] = $properties;
-            //    if (!in_array($column, array_keys($defs))) {
-            //        continue;
-            //    }
-            //
-            //    $updatedColumns[$column][self::CSV_KEY] = $defs[$column];
-            //
-            //    // Taken from the ValidateShell
-            //    $type = null;
-            //    $limit = null;
-            //    // Matches:
-            //    // * date, time, string, and other simple types
-            //    // * list(something), related(Others) and other simple limits
-            //    // * related(Vendor/Plugin.Model) and other complex limits
-            //    if (preg_match('/^(\w+?)\(([\w\/\.]+?)\)$/', $defs[$column]['type'], $matches)) {
-            //        $type = $matches[1];
-            //        $limit = $matches[2];
-            //    } else {
-            //        $type = $defs[$column]['type'];
-            //    }
-            //    $updatedColumns[$column][self::CSV_KEY]['type'] = $type;
-            //    $updatedColumns[$column][self::CSV_KEY]['limit'] = $limit;
-            //}
-            //$result[$table] = $updatedColumns;
         }
 
         return $result;
