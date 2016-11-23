@@ -16,18 +16,6 @@ class ImportShell extends Shell
     ];
 
     /**
-     * CSV definitions array key
-     */
-    const CSV_KEY = '_csv';
-
-    /**
-     * Current timestamp to share between files
-     *
-     * @var string $timestamp Timestamp
-     */
-    protected $timeStamp;
-
-    /**
      * Default folder to write files to
      *
      * @var string $defaultDest Path to folder
@@ -102,9 +90,6 @@ class ImportShell extends Shell
      */
     public function createTemplates($dest = null)
     {
-        // Set common time stamp
-        $this->timeStamp = date('Y-m-d H:i:s');
-
         if (empty($dest)) {
             $dest = $this->defaultDest;
         }
@@ -242,100 +227,6 @@ class ImportShell extends Shell
             if ($partTableCounter < count($parts)) {
                 $result[] = $table;
             }
-        }
-
-        return $result;
-    }
-
-
-
-    /**
-     * Create CSV templates
-     *
-     * @throws RuntimeException When cannot write files
-     * @param array $tables List of tables
-     * @param string $dest Destination folder
-     * @return array List of tables and files written
-     */
-    protected function createCsvTemplates(array $tables, $dest)
-    {
-        if (empty($tables)) {
-            return $tables;
-        }
-
-        $dest = $dest . DIRECTORY_SEPARATOR . $this->csvDir;
-        if (!file_exists($dest)) {
-            $mkdirResult = mkdir($dest);
-            if (!$mkdirResult) {
-                throw new \RuntimeException("Failed to create CSV folder [$dest]");
-            }
-        }
-
-        $result = [];
-        foreach ($tables as $table => $columns) {
-            $columns = $this->filterColumns($table, $columns);
-            if (empty($columns)) {
-                continue;
-            }
-
-            $csvFilePath = $dest . DIRECTORY_SEPARATOR . $table . '.csv';
-            $fh = fopen($csvFilePath, 'w');
-            if (!is_resource($fh)) {
-                throw new \RuntimeException("Failed to open CSV file for writing: $csvFilePath");
-            }
-            $csvBytes = fputcsv($fh, array_keys($columns));
-            if (!$csvBytes) {
-                fclose($fh);
-                throw new \RuntimeException("Failed to write to CSV file: $csvFilePath");
-            }
-            fclose($fh);
-            $result[$table] = $csvFilePath;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Create CSV documentation
-     *
-     * @throws RuntimeException When cannot write files
-     * @param array $tables List of tables
-     * @param string $dest Destination folder
-     * @return array List of tables and files written
-     */
-    protected function createCsvDocuments(array $tables, $dest)
-    {
-        if (empty($tables)) {
-            return $tables;
-        }
-
-        $dest = $dest . DIRECTORY_SEPARATOR . $this->docDir;
-        if (!file_exists($dest)) {
-            $mkdirResult = mkdir($dest);
-            if (!$mkdirResult) {
-                throw new \RuntimeException("Failed to create DOC folder [$dest]");
-            }
-        }
-
-        $result = [];
-        foreach ($tables as $table => $columns) {
-            $markdown = $this->createTableMarkdown($table, $columns);
-            if (empty($markdown)) {
-                continue;
-            }
-
-            $docFilePath = $dest . DIRECTORY_SEPARATOR . $table . '.md';
-            $fh = fopen($docFilePath, 'w');
-            if (!is_resource($fh)) {
-                throw new \RuntimeException("Failed to open DOC file for writing: $docFilePath");
-            }
-            $docBytes = fwrite($fh, $markdown);
-            if (!$docBytes) {
-                fclose($fh);
-                throw new \RuntimeException("Failed to write to DOC file: $docFilePath");
-            }
-            fclose($fh);
-            $result[$table] = $docFilePath;
         }
 
         return $result;
