@@ -197,6 +197,24 @@ group('cakephp', function() {
 		doShellCommand($command);
 	});
 
+	desc('Run CakePHP shell scripts task');
+	task('shell-scripts', ':builder:init', function () {
+		printSeparator();
+		printInfo("Task: cakephp:shell-scripts (Run CakePHP shell scripts task)");
+
+		$scripts = [
+			'group import',
+			'group assign',
+			'role import',
+			'capability assign'
+		];
+
+		foreach ($scripts as $script) {
+			$command = getenv('CAKE_CONSOLE') . ' ' . $script;
+			doShellCommand($command);
+		}
+	});
+
 	desc('Create dev user');
 	task('dev-user-create', ':builder:init', function() {
 		printSeparator();
@@ -227,6 +245,7 @@ group('cakephp', function() {
 		':builder:init',
 		':cakephp:clear-cache',
 		':cakephp:migrations',
+		':cakephp:shell-scripts',
 		':cakephp:set-folder-permissions',
 		function($app) {
 			printSeparator();
@@ -242,6 +261,7 @@ group('cakephp', function() {
 		'install',
 		':builder:init',
 		':cakephp:migrations',
+		':cakephp:shell-scripts',
 		':cakephp:dev-user-create',
 		':cakephp:set-folder-permissions',
 		function($app) {
