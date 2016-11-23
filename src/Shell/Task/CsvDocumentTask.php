@@ -201,6 +201,11 @@ class CsvDocumentTask extends Shell
                     $result[$column]['length'] = 36;
                     $result[$column]['fixed'] = true;
                     break;
+                case 'boolean':
+                    $result[$column]['comment'] .= " Format: 1 for true, 0 for false.";
+                    $result[$column]['length'] = 1;
+                    $result[$column]['fixed'] = true;
+                    break;
                 case 'datetime':
                     $format = 'YYYY-MM-DD hh:mm:ss';
                     $result[$column]['comment'] .= " Format: $format.";
