@@ -38,6 +38,7 @@ if (!extension_loaded('intl')) {
     trigger_error('You must enable the intl extension to use CakePHP.', E_USER_ERROR);
 }
 
+use App\Event\Menu\MenuListener;
 use App\Event\Model\SearchableFieldsListener;
 use App\Event\Model\SearchResultsListener;
 use App\Event\View\LayoutMenuListener;
@@ -70,6 +71,7 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+    Configure::load('groups', 'default');
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }
@@ -189,7 +191,7 @@ Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
 Plugin::load('CsvMigrations', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Crud');
-Plugin::load('Groups', ['bootstrap' => false, 'routes' => true]);
+Plugin::load('Groups', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('RolesCapabilities', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('QoboAdminPanel', ['bootstrap' => true]);
 Plugin::load('Menu', ['bootstrap' => true]);
@@ -209,6 +211,7 @@ if (Configure::read('API.auth')) {
  * before any of our plugins that use routes, it breaks
  * them, needs to be investigated further.
  */
+Configure::write('Users.config', ['users']);
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 
 // Only try to load DebugKit in development mode
@@ -227,6 +230,7 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
+EventManager::instance()->on(new MenuListener());
 EventManager::instance()->on(new SearchableFieldsListener());
 EventManager::instance()->on(new SearchResultsListener());
 EventManager::instance()->on(new LayoutMenuListener());
