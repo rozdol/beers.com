@@ -72,6 +72,7 @@ try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
     Configure::load('groups', 'default');
+    Configure::load('menu', 'default');
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }
