@@ -39,6 +39,7 @@ if (!extension_loaded('intl')) {
 }
 
 use App\Event\Menu\MenuListener;
+use App\Event\Model\SearchableFieldsListener;
 use App\Event\Model\SearchResultsListener;
 use App\Event\View\LayoutMenuListener;
 use App\Event\View\ViewMenuListener;
@@ -230,6 +231,7 @@ DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
 EventManager::instance()->on(new MenuListener());
+EventManager::instance()->on(new SearchableFieldsListener());
 EventManager::instance()->on(new SearchResultsListener());
 EventManager::instance()->on(new LayoutMenuListener());
 EventManager::instance()->on(new ViewMenuListener());
