@@ -11,18 +11,25 @@ use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 class SearchableFieldsListener implements EventListenerInterface
 {
     /**
-     * Searchable parameter name
+     * Searchable parameter name.
      */
     const PARAM_NON_SEARCHABLE = 'non-searchable';
 
     /**
-     * Skipped field types
+     * Field handler factory instance.
+     *
+     * @var \CsvMigrations\FieldHandlers\FieldHandlerFactory
+     */
+    protected $_fhf;
+
+    /**
+     * Skipped field types.
      *
      * @var array
      */
     protected $_skipTypes = ['uuid'];
 
-    protected $_combinedTypes = [
+    protected $_combinedFields = [
         'money',
         'metric'
     ];
@@ -46,37 +53,153 @@ class SearchableFieldsListener implements EventListenerInterface
      */
     public function getSearchableFields(Event $event, Table $table)
     {
-        $result = [];
         $method = 'getFieldsDefinitions';
         // skip if method cannot be called
         if (!method_exists($table, $method) || !is_callable([$table, $method])) {
             return;
         }
 
-        $fhf = new FieldHandlerFactory();
+        $this->_fhf = new FieldHandlerFactory();
 
+        $result = [];
         foreach ($table->{$method}($table->alias()) as $field) {
             // skip non-searchable fields and fields with type defined in _skipTypes array
             if ($field[static::PARAM_NON_SEARCHABLE] || in_array($field['type'], $this->_skipTypes)) {
                 continue;
             }
-
             $csvField = new CsvField($field);
-            $dbFields = $fhf->fieldToDb($csvField);
 
-            // get field names from DbField objects
-            foreach ($dbFields as $dbField) {
-                $type = $csvField->getType();
-                $propMethod = '_get' . ucfirst($type) . 'Properties';
-                if (method_exists($this, $propMethod)) {
-                    $result[$dbField->getName()] = $this->{$propMethod}($table, $csvField, $dbField);
-                } else {
-                    $result[$dbField->getName()] = ['type' => $type];
-                }
+            // skip non-searchable fields
+            if ($csvField->getNonSearchable()) {
+                continue;
             }
+
+            // get field type
+            $type = $csvField->getType();
+            if (!$type) {
+                continue;
+            }
+
+            if (!in_array($type, $this->_combinedFields)) {
+                $properties = $this->_getFieldProperties($table, $csvField);
+            } else {
+                $properties = $this->_getCombinedFieldProperties($table, $csvField);
+            }
+
+            if (empty($properties)) {
+                continue;
+            }
+
+            $result = array_merge($result, $properties);
         }
 
         $event->result = $result;
+    }
+
+    /**
+     * Get searchable field properties.
+     *
+     * @param  \Cake\ORM\Table $table Table instance
+     * @param  \CsvMigrations\FieldHandlers\CsvField $csvField CsvField instance
+     * @return array
+     */
+    protected function _getFieldProperties(Table $table, CsvField $csvField)
+    {
+        // get field type
+        $type = $csvField->getType();
+        if (!$type) {
+            return [];
+        }
+
+        // get field name
+        $name = $csvField->getName();
+        if (!$name) {
+            return [];
+        }
+
+        // get search input
+        $input = $this->_fhf->renderSearchInput($table, $name);
+        if (!$input) {
+            return [];
+        }
+
+        // get search operators
+        $operators = $this->_fhf->getSearchOperators($table, $name);
+        if (!$operators) {
+            return [];
+        }
+
+        // get field label
+        $label = $this->_fhf->getSearchLabel($table, $name);
+        if (empty($label)) {
+            $label = Inflector::humanize($name);
+        }
+
+        $result[$name] = [
+            'type' => $type,
+            'label' => $label,
+            'operators' => $operators,
+            'input' => $input
+        ];
+
+        return $result;
+    }
+
+    /**
+     * Get searchable field properties.
+     *
+     * @param  \Cake\ORM\Table $table Table instance
+     * @param  \CsvMigrations\FieldHandlers\CsvField $csvField CsvField instance
+     * @return array
+     */
+    protected function _getCombinedFieldProperties(Table $table, CsvField $csvField)
+    {
+        $result = [];
+        // get field type
+        $type = $csvField->getType();
+        if (!$type) {
+            return $result;
+        }
+
+        // get csv field name
+        $name = $csvField->getName();
+        if (!$name) {
+            return $result;
+        }
+        // get combined field search inputs
+        $inputs = $this->_fhf->renderSearchInput($table, $name);
+        if (!$inputs) {
+            return $result;
+        }
+
+        // get combined field search operators
+        $operators = $this->_fhf->getSearchOperators($table, $name);
+        if (!$operators) {
+            return $result;
+        }
+
+        // get combined field labels
+        $labels = $this->_fhf->getSearchLabel($table, $name);
+
+        $dbFields = $this->_fhf->fieldToDb($csvField);
+
+        // get field names from DbField objects
+        foreach ($dbFields as $dbField) {
+            // get db field name
+            $name = $dbField->getName();
+            if (!$name || empty($operators[$name]) || empty($inputs[$name])) {
+                continue;
+            }
+
+            $result[$name] = [
+                'type' => $type,
+                'label' => !empty($labels) ? $labels[$name] : Inflector::humanize($name),
+                'operators' => $operators[$name],
+                'input' => $inputs[$name]
+            ];
+        }
+
+        return $result;
     }
 
     /**
