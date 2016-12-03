@@ -331,6 +331,23 @@ return [
             'quoteIdentifiers' => true,
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
         ],
+
+        /**
+         * SQLite connection for DebugKit plugin.  Even if the plugin
+         * is disabled, this is useful for when plugin migrations are
+         * running.
+         *
+         * Connection details are copied verbatim from the bootstrap.php
+         * file of the DebugKit plugin.
+         */
+        'debug_kit' => [
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Sqlite',
+            'database' => TMP . 'debug_kit.sqlite',
+            'encoding' => 'utf8',
+            'cacheMetadata' => true,
+            'quoteIdentifiers' => false,
+        ],
     ],
 
     /**
