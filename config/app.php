@@ -22,7 +22,17 @@ $sessionCookieSecure = (bool)env('APP_SESSION_SECURE_COOKIE');
 $sessionCookieSecure = $https ?: $sessionCookieSecure;
 $cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY');
 $useOnlyCookies = (bool)env('APP_SESSION_USE_ONLY_COOKIES');
-$sessionTimeout = (bool)env('APP_SESSION_TIMEOUT');
+$sessionTimeout = (int)env('APP_SESSION_TIMEOUT');
+
+// If the configuration is missing, fallback on
+// PHP configuration.  If that is missing too,
+// assume default.
+if (!$sessionTimeout) {
+    $sessionTimeout = (int)ini_get('session.gc_maxlifetime');
+    if (!$sessionTimeout) {
+        $sessionTimeout = 1800; // 30 minutes
+    }
+}
 
 return [
     /**
@@ -411,14 +421,11 @@ return [
         'ini' => [
             'session.cookie_secure' => $sessionCookieSecure,
             'session.cookie_httponly' => $cookieHttpOnly,
-            'session.use_only_cookies' => $useOnlyCookies
+            'session.use_only_cookies' => $useOnlyCookies,
+            'session.gc_maxlifetime' => $sessionTimeout,
         ]
     ],
     'AuditStash' => [
         'persister' => 'App\Persister\MysqlPersister'
     ],
 ];
-
-if (!Configure::read('Session.timeout') && is_numeric($sessionTimeout)) {
-    Configure::write('Session.timeout', $sessionTimeout);
-}
