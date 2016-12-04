@@ -419,11 +419,13 @@ return [
     'Session' => [
         'defaults' => 'php',
         'ini' => [
+            'session.use_only_cookies' => $useOnlyCookies,
             'session.cookie_secure' => $sessionCookieSecure,
             'session.cookie_httponly' => $cookieHttpOnly,
-            'session.use_only_cookies' => $useOnlyCookies,
+            'session.cookie_lifetime' => $sessionTimeout,
             'session.gc_maxlifetime' => $sessionTimeout,
-        ]
+        ],
+        'timeout' => (int)$sessionTimeout/60,
     ],
     'AuditStash' => [
         'persister' => 'App\Persister\MysqlPersister'
