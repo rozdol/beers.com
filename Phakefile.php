@@ -162,39 +162,31 @@ group('cakephp', function() {
 
 	desc('Run migrations for the test database');
 	task('test-database-migrate', ':builder:init', function($app) {
-		printSeparator();
-		printInfo("Task: cakephp:test-database-migrate (Run migrations for the test database)");
+        printSeparator();
+        printInfo("Task: cakephp:test-database-migrate (Run migrations for the test database)");
 
-		$command = getenv('CAKE_CONSOLE') . ' migrations migrate --connection=test';
-		doShellCommand($command);
+        // Run plugin migrations
+        $command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate --connection=test';
+        doShellCommand($command);
 
-		/**
-		 * shell command for running loaded plugins migrations
-		 * @var string
-		 */
-		$command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate --connection=test';
-		doShellCommand($command);
+        // Run app migrations
+        $command = getenv('CAKE_CONSOLE') . ' migrations migrate --connection=test';
+        doShellCommand($command);
 	});
 
 
 	desc('Run CakePHP migrations task');
 	task('migrations', ':builder:init', function() {
-		printSeparator();
-		printInfo("Task: cakephp:migrations (Run CakePHP migrations task)");
+        printSeparator();
+        printInfo("Task: cakephp:migrations (Run CakePHP migrations task)");
 
-		/**
-		 * shell command for running application migrations
-		 * @var string
-		 */
-		$command = getenv('CAKE_CONSOLE') . ' migrations migrate';
-		doShellCommand($command);
+        // Run plugin migrations
+        $command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate';
+        doShellCommand($command);
 
-		/**
-		 * shell command for running loaded plugins migrations
-		 * @var string
-		 */
-		$command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate';
-		doShellCommand($command);
+        // Run app migrations
+        $command = getenv('CAKE_CONSOLE') . ' migrations migrate';
+        doShellCommand($command);
 	});
 
 	desc('Run CakePHP shell scripts task');
