@@ -25,7 +25,7 @@ class SearchResultsListener implements EventListenerInterface
      * @param \Cake\Event\Event $event Event instance
      * @param \Cake\ORM\ResultSet $entities the ResultSet
      * @param \Cake\ORM\Table $table  Table instance
-     * @return void
+     * @return \Cake\ORM\ResultSet
      */
     public function afterFind(Event $event, ResultSet $entities, Table $table)
     {
