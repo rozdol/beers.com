@@ -13,15 +13,14 @@
  */
 namespace App\View;
 
-use BootstrapUI\View\UIView;
+//use BootstrapUI\View\UIView;
+use Cake\View\View;
 
 /**
  * App View class
  */
-class AppView extends UIView
+class AppView extends View
 {
-    public $layout = 'QoboAdminPanel.basic';
-
     /**
      * Initialization hook method.
      *
@@ -34,5 +33,6 @@ class AppView extends UIView
     {
         parent::initialize();
         $this->loadHelper('Menu.Menu');
+        $this->loadHelper('Form', ['className' => 'AdminLTE.Form']);
     }
 }

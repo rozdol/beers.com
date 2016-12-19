@@ -1,7 +1,7 @@
 <?php
 use Cake\Core\Configure;
 
-$this->layout = 'QoboAdminPanel.plain';
+//$this->layout = 'QoboAdminPanel.plain';
 ?>
 <div class="container">
     <div class="row">

@@ -71,6 +71,20 @@ class AppController extends Controller
     }
 
     /**
+     * beforeRender callback
+     *
+     * * Load AdminLTE theme
+     * * Load theme settings
+     *
+     * @param Cake\Event\Event $event Event
+     * @return void
+     */
+    public function beforeRender(Event $event)
+    {
+        $this->viewBuilder()->theme('AdminLTE');
+        $this->set('theme', Configure::read('Theme'));
+    }
+    /**
      * Callack method.
      *
      * @param  Cake\Event\Event $event Event object

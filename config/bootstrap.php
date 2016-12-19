@@ -196,13 +196,14 @@ Plugin::load('CsvMigrations', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Crud');
 Plugin::load('Groups', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('RolesCapabilities', ['bootstrap' => true, 'routes' => true]);
-Plugin::load('QoboAdminPanel', ['bootstrap' => true]);
+//Plugin::load('QoboAdminPanel', ['bootstrap' => true]);
 Plugin::load('Menu', ['bootstrap' => true]);
 Plugin::load('AuditStash');
 Plugin::load('DatabaseLog', ['routes' => true]);
 Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Burzum/FileStorage');
 Plugin::load('Alt3/Swagger', ['routes' => true]);
+Plugin::load('AdminLTE', ['bootstrap' => true, 'routes' => true]);
 
 // Only load JwtAuth plugin if API authentication is enabled
 if (Configure::read('API.auth')) {
@@ -245,3 +246,18 @@ EventManager::instance()->on(new LocalListener([
         'pathPrefix' => 'uploads'
     ]
 ]));
+
+// Theme settings
+Configure::write('Theme', [
+    'folder' => ROOT,
+    'title' => 'AdminLTE',
+    'logo' => [
+        'mini' => getenv('PROJECT_NAME'),
+        'large' => getenv('PROJECT_NAME'),
+    ],
+    'login' => [
+        'show_remember' => true,
+        'show_register' => false,
+        'show_social' => false,
+    ]
+]);
