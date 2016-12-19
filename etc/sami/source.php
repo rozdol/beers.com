@@ -26,6 +26,7 @@ catch (\Exception $e) {
 $iterator = Finder::create()
     ->files()
     ->name('*.php')
+    ->exclude('config')
     ->exclude('tests')
     ->exclude('Test')
     ->in(['./src'])
