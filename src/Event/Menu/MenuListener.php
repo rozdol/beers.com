@@ -38,14 +38,6 @@ class MenuListener implements EventListenerInterface
      */
     public function getMenu(Event $event, $name, array $user, $fullBaseUrl)
     {
-        // Set user display name
-        if (empty($user['display_name'])) {
-            $user['display_name'] = $user['first_name'] . ' ' . $user['last_name'];
-            if (empty(trim($user['display_name']))) {
-                $user['display_name'] = $user['username'];
-            }
-        }
-
         $menus = [
             'sidebar' => [
                 [
@@ -65,7 +57,7 @@ class MenuListener implements EventListenerInterface
                         ['label' => 'Information', 'url' => '/System/info', 'icon' => 'info-circle']
                     ]
                 ],
-                ['label' => $user['display_name'], 'url' => '/users/profile', 'icon' => 'user', 'children' => [
+                ['label' => $user['name'], 'url' => '/users/profile', 'icon' => 'user', 'children' => [
                         ['label' => 'Profile', 'url' => '/users/profile', 'icon' => 'user'],
                         ['label' => 'Settings', 'url' => '#', 'icon' => 'cog'],
                         ['label' => 'Logout', 'url' => '/users/logout', 'icon' => 'sign-out'],
