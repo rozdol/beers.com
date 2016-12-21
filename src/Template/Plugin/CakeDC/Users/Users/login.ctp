@@ -10,8 +10,8 @@ use Cake\Core\Configure;
                 <?= $this->Form->create() ?>
                 <p class="text-center">
                     <?php
-                        if ($this->elementExists('QoboAdminPanel.logo')) {
-                            echo $this->element('QoboAdminPanel.logo');
+                        if ($this->elementExists('logo')) {
+                            echo $this->element('logo');
                         }
                     ?>
                 </p>
