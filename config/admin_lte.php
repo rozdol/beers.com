@@ -19,7 +19,7 @@ $logo = '<img src="' . $base64 . '" alt="Site Logo" />';
 return [
     'Theme' => [
         'folder' => ROOT,
-        'title' => 'AdminLTE',
+        'title' => getenv('PROJECT_NAME'),
         'logo' => [
             'mini' => $logo,
             'large' => $logo,
