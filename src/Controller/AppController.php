@@ -83,7 +83,9 @@ class AppController extends Controller
     {
         $this->viewBuilder()->theme('AdminLTE');
         $this->set('theme', Configure::read('Theme'));
+        $this->set('user', $this->Auth->user());
     }
+
     /**
      * Callack method.
      *
