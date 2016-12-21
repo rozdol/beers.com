@@ -53,21 +53,6 @@ class MenuListener implements EventListenerInterface
                     'url' => '/search/dashboards/',
                     'icon' => 'tachometer',
                     'children' => $this->_getDashboardLinks($user)
-                ],
-                ['label' => 'Leads', 'url' => '/leads/', 'icon' => 'user-secret', 'children' => [
-                        ['label' => 'List', 'url' => '/leads/', 'icon' => 'list'],
-                        ['label' => 'Create', 'url' => '/leads/add', 'icon' => 'plus']
-                    ]
-                ],
-                ['label' => 'Contacts', 'url' => '/contacts/', 'icon' => 'phone', 'children' => [
-                        ['label' => 'List', 'url' => '/contacts/', 'icon' => 'list'],
-                        ['label' => 'Create', 'url' => '/contacts/add', 'icon' => 'plus']
-                    ]
-                ],
-                ['label' => 'Accounts', 'url' => '/accounts/', 'icon' => 'building', 'children' => [
-                        ['label' => 'List', 'url' => '/accounts/', 'icon' => 'list'],
-                        ['label' => 'Create', 'url' => '/accounts/add', 'icon' => 'plus']
-                    ]
                 ]
             ],
             'top' => [
