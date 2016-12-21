@@ -1,11 +1,28 @@
 <?php
+/**
+ * AdminLTE plugin configuration
+ */
+
+// get logo path
+$path = WWW_ROOT . 'img' . DS . 'logo.default.png';
+if (file_exists(WWW_ROOT . 'img' . DS . 'logo.png')) {
+    $path = WWW_ROOT . 'img' . DS . 'logo.png';
+}
+
+// convert to base64 image
+$data = file_get_contents($path);
+$base64 = 'data:image/png;base64,' . base64_encode($data);
+
+// create logo html img
+$logo = '<img src="' . $base64 . '" alt="Site Logo" />';
+
 return [
     'Theme' => [
         'folder' => ROOT,
         'title' => 'AdminLTE',
         'logo' => [
-            'mini' => getenv('PROJECT_NAME'),
-            'large' => getenv('PROJECT_NAME'),
+            'mini' => $logo,
+            'large' => $logo,
         ],
         'login' => [
             'show_remember' => true,
