@@ -4,10 +4,7 @@
  */
 
 // get logo path
-$path = WWW_ROOT . 'img' . DS . 'logo.default.png';
-if (file_exists(WWW_ROOT . 'img' . DS . 'logo.png')) {
-    $path = WWW_ROOT . 'img' . DS . 'logo.png';
-}
+$path = WWW_ROOT . 'img' . DS . 'logo.png';
 
 // convert to base64 image
 $data = file_get_contents($path);
