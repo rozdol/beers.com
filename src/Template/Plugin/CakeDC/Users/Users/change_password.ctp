@@ -1,37 +1,36 @@
-<div class="row">
-    <div class="col-xs-12">
-        <?= $this->Flash->render('auth') ?>
-        <?= $this->Form->create($user) ?>
-        <fieldset>
-            <legend><?= __('Please enter the new password') ?></legend>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">&nbsp;</h3>
+<section class="content-header">
+    <h1>Change Password</h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?= __('Please enter the new password') ?></h3>
                 </div>
-                <div class="panel-body">
+                <?= $this->Form->create(); ?>
+                <div class="box-body">
                     <?php if ($validatePassword) : ?>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <?= $this->Form->input('current_password', [
-                                    'type' => 'password',
-                                    'required' => true,
-                                    'label' => __d('Users', 'Current password')]);
-                            ?>
-                        </div>
-                    </div>
+                        <?= $this->Form->input('Users.current_password', [
+                            'type' => 'password',
+                            'required' => true,
+                            'placeholder' => __('Current Password')
+                        ]); ?>
                     <?php endif; ?>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <?= $this->Form->input('password'); ?>
-                        </div>
-                        <div class="col-xs-6">
-                            <?= $this->Form->input('password_confirm', ['type' => 'password', 'required' => true]); ?>
-                        </div>
-                    </div>
+                    <?= $this->Form->input('Users.password', [
+                        'type' => 'password',
+                        'required' => true,
+                        'placeholder' => __('Password')
+                    ]); ?>
+                    <?= $this->Form->input('Users.password_confirm', [
+                        'type' => 'password',
+                        'required' => true,
+                        'placeholder' => __('Password Confirm')
+                    ]); ?>
+                    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
                 </div>
+                <?= $this->Form->end() ?>
             </div>
-        </fieldset>
-        <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
-        <?= $this->Form->end() ?>
+        </div>
     </div>
-</div>
+</section>
