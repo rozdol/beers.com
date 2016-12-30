@@ -48,21 +48,13 @@ class MenuListener implements EventListenerInterface
                 ]
             ],
             'top' => [
-                ['label' => 'System', 'url' => '/users/', 'icon' => 'cog', 'children' => [
-                        ['label' => 'Users', 'url' => '/users/', 'icon' => 'user'],
-                        ['label' => 'Groups', 'url' => '/groups/groups/', 'icon' => 'users'],
-                        ['label' => 'Roles', 'url' => '/roles-capabilities/Roles/', 'icon' => 'unlock'],
-                        ['label' => 'Lists', 'url' => '/csv-migrations/dblists/', 'icon' => 'list'],
-                        ['label' => 'Logs', 'url' => '/Logs/', 'icon' => 'list-alt'],
-                        ['label' => 'Information', 'url' => '/System/info', 'icon' => 'info-circle']
-                    ]
-                ],
-                ['label' => $user['name'], 'url' => '/users/profile', 'icon' => 'user', 'children' => [
-                        ['label' => 'Profile', 'url' => '/users/profile', 'icon' => 'user'],
-                        ['label' => 'Settings', 'url' => '#', 'icon' => 'cog'],
-                        ['label' => 'Logout', 'url' => '/users/logout', 'icon' => 'sign-out'],
-                    ]
-                ]
+                ['label' => 'Users', 'desc' => 'Manage system users', 'url' => '/users/', 'icon' => 'user bg-yellow'],
+                ['label' => 'Groups', 'desc' => 'Manage system groups', 'url' => '/groups/groups/', 'icon' => 'users bg-orange'],
+                ['label' => 'Roles', 'desc' => 'Manage system roles', 'url' => '/roles-capabilities/Roles/', 'icon' => 'unlock bg-green'],
+                ['label' => 'Lists', 'desc' => 'Manage database lists', 'url' => '/csv-migrations/dblists/', 'icon' => 'list bg-blue'],
+                ['label' => 'Logs', 'desc' => 'View system logs', 'url' => '/Logs/', 'icon' => 'list-alt bg-red'],
+                ['label' => 'Information', 'desc' => 'System information screen', 'url' => '/System/info', 'icon' => 'info-circle bg-light-blue'],
+                ['label' => 'Settings', 'desc' => 'System settings', 'url' => '#', 'icon' => 'cog bg-olive']
             ]
         ];
 
