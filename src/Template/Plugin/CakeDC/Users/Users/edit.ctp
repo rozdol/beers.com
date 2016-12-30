@@ -26,25 +26,6 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-md-6">
-                                <?= $this->Form->input('token'); ?>
-                            </div>
-                            <div class="col-xs-12 col-md-6">
-                                <?= $this->Form->input('token_expires'); ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-md-6">
-                                <?= $this->Form->input('api_token'); ?>
-                            </div>
-                            <div class="col-xs-12 col-md-6">
-                                <?= $this->Form->input('activation_date'); ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-md-6">
-                                <?= $this->Form->input('tos_date'); ?>
-                            </div>
-                            <div class="col-xs-12 col-md-6">
                                 <?= $this->Form->input('active'); ?>
                             </div>
                         </div>
