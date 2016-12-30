@@ -1,130 +1,109 @@
-<div class="row">
-    <div class="col-xs-12">
-        <h3><strong><?= $this->Html->link(__('Users'), ['action' => 'index']) . ' &raquo; ' . h($Users->username) ?></strong></h3>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">&nbsp;</h3>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Id') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->id) ? h($Users->id) : '&nbsp;' ?></div>
-                    <div class="clearfix visible-xs visible-sm"></div>
-                    <div class="col-xs-4 col-md-2 text-right">&nbsp;</div>
-                    <div class="col-xs-8 col-md-4">&nbsp;</div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Username') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->username) ? h($Users->username) : '&nbsp;' ?></div>
-                    <div class="clearfix visible-xs visible-sm"></div>
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Email') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->email) ? h($Users->email) : '&nbsp;' ?></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('First Name') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->first_name) ? h($Users->first_name) : '&nbsp;' ?></div>
-                    <div class="clearfix visible-xs visible-sm"></div>
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Last Name') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->last_name) ? h($Users->last_name) : '&nbsp;' ?></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Token') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->token) ? h($Users->token) : '&nbsp;' ?></div>
-                    <div class="clearfix visible-xs visible-sm"></div>
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Api Token') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->api_token) ? h($Users->api_token) : '&nbsp;' ?></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Active') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->active) ? h($Users->active) : '&nbsp;' ?></div>
-                    <div class="clearfix visible-xs visible-sm"></div>
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Token Expires') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->token_expires) ? h($Users->token_expires) : '&nbsp;' ?></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Activation Date') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->activation_date) ? h($Users->activation_date) : '&nbsp;' ?></div>
-                    <div class="clearfix visible-xs visible-sm"></div>
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Tos Date') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->tos_date) ? h($Users->tos_date) : '&nbsp;' ?></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Created') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->created) ? h($Users->created) : '&nbsp;' ?></div>
-                    <div class="clearfix visible-xs visible-sm"></div>
-                    <div class="col-xs-4 col-md-2 text-right">
-                        <strong><?= __('Modified') ?>:</strong>
-                    </div>
-                    <div class="col-xs-8 col-md-4"><?= !empty($Users->modified) ? h($Users->modified) : '&nbsp;' ?></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<section class="content-header">
+    <h1><?= $this->Html->link(__('Users'), ['action' => 'index']) . ' &raquo; ' . h($Users->username) ?></h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <i class="fa fa-user"></i>
 
-<div class="row">
-    <div class="col-xs-12">
-        <h3><?= __('Associated Records'); ?></h3>
-        <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-                <a href="#accounts" aria-controls="accounts" role="tab" data-toggle="tab">
-                    <?= __('Accounts'); ?>
-                </a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="accounts">
-                <?php if (!empty($Users->social_accounts)): ?>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th><?= $this->Paginator->sort(__('Id')) ?></th>
-                                <th><?= $this->Paginator->sort(__('Provider')) ?></th>
-                                <th><?= $this->Paginator->sort(__('Username')) ?></th>
-                                <th><?= $this->Paginator->sort(__('Reference')) ?></th>
-                                <th><?= $this->Paginator->sort(__('Active')) ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($Users->social_accounts as $socialAccount): ?>
-                            <tr>
-                                <td><?= h($socialAccount->id) ?></td>
-                                <td><?= h($socialAccount->provider) ?></td>
-                                <td><?= h($socialAccount->username) ?></td>
-                                <td><?= h($socialAccount->reference) ?></td>
-                                <td><?= h($socialAccount->active) ?></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                    <h3 class="box-title">Details</h3>
                 </div>
-                <?php endif; ?>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <dl class="dl-horizontal">
+                        <dt><?= __('Id') ?></dt>
+                        <dd><?= !empty($Users->id) ? h($Users->id) : '&nbsp;' ?></dd>
+                        <dt><?= __('Username') ?></dt>
+                        <dd><?= !empty($Users->username) ? h($Users->username) : '&nbsp;' ?></dd>
+                        <dt><?= __('Email') ?></dt>
+                        <dd><?= !empty($Users->email) ? h($Users->email) : '&nbsp;' ?></dd>
+                        <dt><?= __('First Name') ?></dt>
+                        <dd><?= !empty($Users->first_name) ? h($Users->first_name) : '&nbsp;' ?></dd>
+                        <dt><?= __('Last Name') ?></dt>
+                        <dd><?= !empty($Users->last_name) ? h($Users->last_name) : '&nbsp;' ?></dd>
+                        <dt><?= __('Active') ?></dt>
+                        <dd><?= !empty($Users->active) ? h($Users->active) : '&nbsp;' ?></dd>
+                    </dl>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <div class="col-md-6">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <i class="fa fa-info-circle"></i>
+
+                    <h3 class="box-title">Other</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <dl class="dl-horizontal">
+                        <dt><?= __('Token') ?></dt>
+                        <dd><?= !empty($Users->token) ? h($Users->token) : '&nbsp;' ?></dd>
+                        <dt><?= __('Api Token') ?></dt>
+                        <dd><?= !empty($Users->api_token) ? h($Users->api_token) : '&nbsp;' ?></dd>
+                        <dt><?= __('Token Expires') ?></dt>
+                        <dd><?= !empty($Users->token_expires) ? h($Users->token_expires) : '&nbsp;' ?></dd>
+                        <dt><?= __('Activation Date') ?></dt>
+                        <dd><?= !empty($Users->activation_date) ? h($Users->activation_date) : '&nbsp;' ?></dd>
+                        <dt><?= __('Tos Date') ?></dt>
+                        <dd><?= !empty($Users->tos_date) ? h($Users->tos_date) : '&nbsp;' ?></dd>
+                        <dt><?= __('Created') ?></dt>
+                        <dd><?= !empty($Users->created) ? h($Users->created) : '&nbsp;' ?></dd>
+                        <dt><?= __('Modified') ?></dt>
+                        <dd><?= !empty($Users->modified) ? h($Users->modified) : '&nbsp;' ?></dd>
+                    </dl>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    <h2 class="page-header"><i class="fa fa-link"></i> <?= __('Associated Records'); ?></h2>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="nav-tabs-custom">
+                <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#accounts" aria-controls="accounts" role="tab" data-toggle="tab">
+                            <?= __('Accounts'); ?>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="accounts">
+                        <?php if (!empty($Users->social_accounts)): ?>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><?= $this->Paginator->sort(__('Id')) ?></th>
+                                        <th><?= $this->Paginator->sort(__('Provider')) ?></th>
+                                        <th><?= $this->Paginator->sort(__('Username')) ?></th>
+                                        <th><?= $this->Paginator->sort(__('Reference')) ?></th>
+                                        <th><?= $this->Paginator->sort(__('Active')) ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($Users->social_accounts as $socialAccount): ?>
+                                    <tr>
+                                        <td><?= h($socialAccount->id) ?></td>
+                                        <td><?= h($socialAccount->provider) ?></td>
+                                        <td><?= h($socialAccount->username) ?></td>
+                                        <td><?= h($socialAccount->reference) ?></td>
+                                        <td><?= h($socialAccount->active) ?></td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
