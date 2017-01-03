@@ -21,8 +21,7 @@ class ViewMenuListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'View.View.Menu.Top' => 'getViewMenuTop',
-            'View.Changelog.Menu.Top' => 'getChangelogMenuTop'
+            'View.View.Menu.Top' => 'getViewMenuTop'
         ];
     }
 
@@ -62,49 +61,6 @@ class ViewMenuListener implements EventListenerInterface
             $html = $event->subject()->element(static::MENU_ELEMENT, ['menu' => $menu, 'renderAs' => 'provided']);
         } else {
             $html .= $btnChangelog;
-        }
-
-        $event->result = $html . $event->result;
-
-        return $event->result;
-    }
-
-    /**
-     * Method that adds elements to changelog View top menu.
-     *
-     * @param  \Cake\Event\Event     $event   Event object
-     * @param  \Cake\Network\Request $request Request object
-     * @param  \Cake\ORM\Entity      $entity Entity options
-     * @return string
-     */
-    public function getChangelogMenuTop(Event $event, Request $request, Entity $entity)
-    {
-        $menu = [];
-        $html = null;
-
-        $urlView = [
-            'plugin' => $request->plugin,
-            'controller' => $request->controller,
-            'action' => 'view',
-            $entity->id
-        ];
-
-        $btnView = $event->subject()->Html->link(
-            '',
-            $urlView,
-            ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']
-        );
-
-        $menu[] = [
-            'label' => $btnView,
-            'url' => $urlView,
-            'capabilities' => 'fromUrl'
-        ];
-
-        if ($event->subject()->elementExists(static::MENU_ELEMENT)) {
-            $html = $event->subject()->element(static::MENU_ELEMENT, ['menu' => $menu, 'renderAs' => 'provided']);
-        } else {
-            $html .= $btnView;
         }
 
         $event->result = $html . $event->result;
