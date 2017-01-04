@@ -1,5 +1,5 @@
 <section class="content-header">
-    <h1><?= __('Create {0}', ['User']) ?></h1>
+    <h1><?= __('Edit {0}', ['User']) ?></h1>
 </section>
 <section class="content">
     <div class="row">
