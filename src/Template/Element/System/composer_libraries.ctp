@@ -7,27 +7,40 @@ $composer = null;
 if (is_readable($composerLock)) {
     $composer = json_decode(file_get_contents($composerLock), true);
 }
+$packages = !empty($composer['packages']) ? $composer['packages'] : [];
+$count = count($packages);
 ?>
-<h4>Composer Libraries</h4>
-<p>There are currently <strong><?php echo count($composer['packages']); ?> composer libraries</strong> installed.</p>
-<table class="table table-striped table-hover table-condensed">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Version</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-            foreach ($composer['packages'] as $package) {
-                print '<tr>';
-                print '<td>' . $package['name'] . '</td>';
-                print '<td>' . $package['version'] . '</td>';
-                print '<td>' . (empty($package['description']) ? '&nbsp;' : $package['description']) . '</td>';
-                print '</td>';
-                print '</tr>';
-            }
-        ?>
-    </tbody>
-</table>
+<div class="box box-default">
+    <div class="box-header with-border">
+        <i class="fa fa-th-list"></i>
+        <h3 class="box-title"><?= __('Composer Libraries') ?></h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <p>There are currently <strong><?= $count ?> composer libraries</strong> installed.</p>
+        <?php if (0 < $count) : ?>
+            <table class="table table-hover table-condensed table-vertical-align">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Version</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($packages as $package) : ?>
+                        <tr>
+                            <td><?= $package['name'] ?></td>
+                            <td><?= $package['version'] ?></td>
+                            <td><?= empty($package['description']) ? '&nbsp;' : $package['description'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+</div>
