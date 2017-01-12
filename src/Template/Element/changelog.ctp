@@ -46,13 +46,19 @@ $countHalf = count($bgColors) / 2;
     $date = $record->timestamp->i18nFormat('d MMM. YYY');
 
     if (!isset($meta->user)) {
-        $meta->user = __('Unknown');
+        $username = __('Unknown');
     } else {
         $user = $usersTable->findById($meta->user)->first();
-        $meta->user = empty($user) ? $meta->user : $user->name;
+        $username = empty($user) ? $meta->user : $user->name;
     }
+    $url = $this->Url->build([
+        'plugin' => 'CakeDC/Users',
+        'controller' => 'Users',
+        'action' => 'view',
+        $meta->user
+    ]);
     ?>
-    <?php if ($meta->user !== $oldUser || $date !== $oldDate) : ?>
+    <?php if ($username !== $oldUser || $date !== $oldDate) : ?>
         <li class="time-label"><span class="bg-<?= current($bgColors) ?>"><?= $date ?></span></li>
     <?php endif; ?>
         <li>
@@ -65,7 +71,7 @@ $countHalf = count($bgColors) / 2;
                     ]) ?>
                 </span>
                 <h3 class="timeline-header">
-                    <a href="#"><?= $meta->user; ?></a> made the following changes:
+                    <a href="<?= $url ?>"><?= $username; ?></a> made the following changes:
                 </h3>
                 <div class="timeline-body">
                     <table class="table table-hover table-condensed table-vertical-align">
@@ -109,14 +115,11 @@ $countHalf = count($bgColors) / 2;
         </div>
     </li>
 <?php
-$oldUser = $meta->user;
+$oldUser = $username;
 $oldDate = $date;
 next($bgColors);
 ?>
 <?php endforeach; ?>
         </ul>
-        <div class="body well table-responsive">
-            <?= $result ?>
-        </div>
     </div>
 </div>
