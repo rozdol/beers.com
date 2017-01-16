@@ -1,4 +1,10 @@
+<?php
+use Cake\Core\Configure;
+?>
 <div class="row">
+    <div class="col-xs-12">
+        <?= $this->Flash->render() ?>
+    </div>
     <div class="col-xs-12">
         <?= $this->Form->create($Users) ?>
         <fieldset>
@@ -30,9 +36,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
+                                <?= $this->Form->end() ?>
+                                <?php if (Configure::read('Users.GoogleAuthenticator.login')) : ?>
+                                <?= $this->Form->postLink(
+                                    __d('CakeDC/Users', 'Reset Google Authenticator Token'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'resetGoogleAuthenticator', $Users->id], [
+                                        'class' => 'btn btn-danger',
+                                        'confirm' => __d('CakeDC/Users', 'Are you sure you want to reset token for user "{0}"?', $Users->username)
+                                    ]);
+                                ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
         </fieldset>
-        <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
-        <?= $this->Form->end() ?>
     </div>
 </div>

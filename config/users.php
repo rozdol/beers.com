@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'Users.table' => 'Users'
+    'Users.table' => 'Users',
+    'Users.GoogleAuthenticator.login' => false,
 ];
