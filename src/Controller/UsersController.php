@@ -25,10 +25,10 @@ class UsersController extends AppController
      * @param mixed $id user id
      * @return void
      */
-    public function changeUserPassword($id = null)
+    public function changeUserPassword($id)
     {
         $user = $this->getUsersTable()->newEntity();
-        $user->id = empty($id) ? $this->Auth->user('id') : $id;
+        $user->id = $id;
         $redirect = ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index'];
 
         if ($this->request->is('post')) {
