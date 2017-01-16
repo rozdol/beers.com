@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\CustomUsersTableTrait;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
