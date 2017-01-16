@@ -3,6 +3,7 @@ namespace App\Event\View;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use Search\Controller\Traits\SearchableTrait;
 
