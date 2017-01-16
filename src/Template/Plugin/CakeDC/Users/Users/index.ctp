@@ -11,7 +11,7 @@
 </section>
 <section class="content">
     <div class="box">
-        <div class="box-body table-responsive no-padding">
+        <div class="box-body table-responsive">
             <table class="table table-hover table-condensed table-vertical-align">
                 <thead>
                     <tr>
@@ -40,6 +40,10 @@
                                 ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'edit', $user->id],
                                 ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]
                             ); ?>
+                            <?= $this->Html->link(
+                                '<i class="fa fa-lock"></i>',
+                                ['action' => 'change-user-password', $user->id],
+                                ['title' => __('Change User Password'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                             <?= $this->Form->postLink(
                                 '<i class="fa fa-trash"></i>',
                                 ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'delete', $user->id],
