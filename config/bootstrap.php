@@ -42,6 +42,7 @@ use App\Event\Component\UserIdentifyListener;
 use App\Event\Menu\MenuListener;
 use App\Event\Model\SearchableFieldsListener;
 use App\Event\Model\SearchResultsListener;
+use App\Event\View\IndexMenuListener;
 use App\Event\View\LayoutMenuListener;
 use App\Event\View\ViewMenuListener;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
@@ -238,6 +239,7 @@ EventManager::instance()->on(new UserIdentifyListener());
 EventManager::instance()->on(new MenuListener());
 EventManager::instance()->on(new SearchableFieldsListener());
 EventManager::instance()->on(new SearchResultsListener());
+EventManager::instance()->on(new IndexMenuListener());
 EventManager::instance()->on(new LayoutMenuListener());
 EventManager::instance()->on(new ViewMenuListener());
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
