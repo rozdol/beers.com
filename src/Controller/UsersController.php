@@ -10,6 +10,7 @@ use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
 use Cake\Validation\Validator;
 use Exception;
+
 /**
  * Users Controller
  */
@@ -17,6 +18,14 @@ class UsersController extends AppController
 {
     use CustomUsersTableTrait;
 
+    /**
+     * changeUserPassword method
+     *
+     * change user passwords by the superusers
+     *
+     * @param mixed $id user id
+     * @return void
+     */
     public function changeUserPassword($id = null)
     {
         $user = $this->getUsersTable()->newEntity();
@@ -24,7 +33,7 @@ class UsersController extends AppController
         $redirect = ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index'];
 
         if ($this->request->is('post')) {
-             try {
+            try {
                 $validator = $this->getUsersTable()->validationPasswordConfirm(new Validator());
                 $user = $this->getUsersTable()->patchEntity($user, $this->request->data(), ['validate' => $validator]);
 
