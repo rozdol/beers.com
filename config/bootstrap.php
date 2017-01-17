@@ -38,9 +38,11 @@ if (!extension_loaded('intl')) {
     trigger_error('You must enable the intl extension to use CakePHP.', E_USER_ERROR);
 }
 
+use App\Event\Component\UserIdentifyListener;
 use App\Event\Menu\MenuListener;
 use App\Event\Model\SearchableFieldsListener;
 use App\Event\Model\SearchResultsListener;
+use App\Event\View\IndexMenuListener;
 use App\Event\View\LayoutMenuListener;
 use App\Event\View\ViewMenuListener;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
@@ -196,13 +198,13 @@ Plugin::load('CsvMigrations', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Crud');
 Plugin::load('Groups', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('RolesCapabilities', ['bootstrap' => true, 'routes' => true]);
-Plugin::load('QoboAdminPanel', ['bootstrap' => true]);
 Plugin::load('Menu', ['bootstrap' => true]);
 Plugin::load('AuditStash');
 Plugin::load('DatabaseLog', ['routes' => true]);
 Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Burzum/FileStorage');
 Plugin::load('Alt3/Swagger', ['routes' => true]);
+Plugin::load('AdminLTE', ['bootstrap' => true, 'routes' => true]);
 
 // Only load JwtAuth plugin if API authentication is enabled
 if (Configure::read('API.auth')) {
@@ -233,9 +235,11 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
+EventManager::instance()->on(new UserIdentifyListener());
 EventManager::instance()->on(new MenuListener());
 EventManager::instance()->on(new SearchableFieldsListener());
 EventManager::instance()->on(new SearchResultsListener());
+EventManager::instance()->on(new IndexMenuListener());
 EventManager::instance()->on(new LayoutMenuListener());
 EventManager::instance()->on(new ViewMenuListener());
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
@@ -245,3 +249,6 @@ EventManager::instance()->on(new LocalListener([
         'pathPrefix' => 'uploads'
     ]
 ]));
+
+// load AdminLTE theme settings
+Configure::load('admin_lte', 'default');

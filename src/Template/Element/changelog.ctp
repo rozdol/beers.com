@@ -4,90 +4,122 @@ use Cake\I18n\Time;
 use Cake\Utility\Inflector;
 
 $oldUser = null;
-$oldTime = null;
-$result = null;
-foreach ($changelog as $record) {
+$oldDate = null;
+$bgColors = [
+    'red',
+    'yellow',
+    'aqua',
+    'blue',
+    'light-blue',
+    'green',
+    'navy',
+    'teal',
+    'olive',
+    'lime',
+    'orange',
+    'fuchsia',
+    'purple',
+    'maroon',
+    'black'
+];
+$countHalf = count($bgColors) / 2;
+?>
+<section class="content-header">
+    <h1>
+        <?= __('Changelog')?> &raquo; <?= $this->Html->link(
+            $entity->{$displayField},
+            ['plugin' => $this->plugin, 'controller' => $this->name, 'action' => 'view', $entity->id],
+            ['escape' => false]
+        ); ?>
+    </h1>
+</section>
+<section class="content">
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="timeline">
+<?php foreach ($changelog as $record) : ?>
+    <?php
     $meta = json_decode($record->meta);
     if (empty($meta)) {
         $meta = new StdClass();
     }
-    $timestamp = $record->timestamp->nice();
+    $date = $record->timestamp->i18nFormat('d MMM. YYY');
 
     if (!isset($meta->user)) {
-        $meta->user = __('Unknown');
+        $username = __('Unknown');
     } else {
         $user = $usersTable->findById($meta->user)->first();
-        $meta->user = empty($user) ? $meta->user : $meta->user->username;
+        $username = empty($user) ? $meta->user : $user->name;
     }
-    if ($meta->user !== $oldUser || $timestamp !== $oldTime) {
-        $result .= '<table class="table table-condensed">';
-        $result .= '<thead>';
-            $result .= '<tr>';
-                $result .= '<th colspan="3">Changed by ' . $meta->user . ' on ' . $timestamp . '</th>';
-            $result .= '</tr>';
-            $result .= '<tr>';
-                $result .= '<th class="col-xs-2">Field</th>';
-                $result .= '<th class="col-xs-5">Old Value</th>';
-                $result .= '<th class="col-xs-5">New Value</th>';
-            $result .= '</tr>';
-        $result .= '</head>';
-    }
-    $oldUser = $meta->user;
-    $oldTime = $timestamp;
-
-    $result .= '<tbody>';
+    $url = $this->Url->build([
+        'plugin' => 'CakeDC/Users',
+        'controller' => 'Users',
+        'action' => 'view',
+        $meta->user
+    ]);
+    ?>
+    <?php if ($username !== $oldUser || $date !== $oldDate) : ?>
+        <li class="time-label"><span class="bg-<?= current($bgColors) ?>"><?= $date ?></span></li>
+    <?php endif; ?>
+        <li>
+            <i class="fa fa-book bg-<?= $bgColors[key($bgColors) + $countHalf] ?>"></i>
+            <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i>
+                    <?= $record->timestamp->timeAgoInWords([
+                        'format' => 'MMM d, YYY | HH:mm:ss',
+                        'end' => '1 month'
+                    ]) ?>
+                </span>
+                <h3 class="timeline-header">
+                    <a href="<?= $url ?>"><?= $username; ?></a> made the following changes:
+                </h3>
+                <div class="timeline-body">
+                    <table class="table table-hover table-condensed table-vertical-align">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-2">Field</th>
+                                <th class="col-xs-5">Old Value</th>
+                                <th class="col-xs-5">New Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+    <?php
     $changed = json_decode($record->changed);
     $original = json_decode($record->original);
-    foreach ($changed as $k => $v) {
+    foreach ($changed as $k => $v) :
         $old = '';
         if ($original !== null && isset($original->{$k})) {
             if ($original->{$k} !== $v) {
                 $old = $original->{$k};
             }
         }
-        $result .= '<tr>';
-            $result .= '<td>' . Inflector::humanize($k) . '</td>';
-            $result .= '<td>' . $old . '</td>';
-            if (is_object($v)) {
-                if (!empty($v->date) && !empty($v->timezone)) {
-                    $v = new Time($v->date, $v->timezone);
-                } else {
-                    $v = __('Unknown value');
-                }
+    ?>
+    <tr>
+        <td><?= Inflector::humanize($k) ?></td>
+        <td><?= $old ?></td>
+        <?php
+        if (is_object($v)) {
+            if (!empty($v->date) && !empty($v->timezone)) {
+                $v = new Time($v->date, $v->timezone);
+            } else {
+                $v = __('Unknown value');
             }
-            $result .= '<td>' . $v . '</td>';
-        $result .= '</tr>';
-    }
-    $result .= '</tbody>';
-    $result .= '</table>';
-}
-
-$title = __('Changelog') . ' &raquo; ' . $modelAlias . ' &raquo; ' . $entity->{$displayField};
+        }
+        ?>
+        <td><?= $v ?></td>
+    </tr>
+    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </li>
+<?php
+$oldUser = $username;
+$oldDate = $date;
+next($bgColors);
 ?>
-
-<div class="row">
-    <div class="col-xs-12">
-        <div class="row">
-            <div class="col-xs-6">
-                <h3><strong><?= $title ?></strong></h3>
-            </div>
-            <div class="col-xs-6">
-                <div class="h3 text-right">
-                    <?php
-                        $event = new Event('View.Changelog.Menu.Top', $this, [
-                            'request' => $this->request,
-                            'entity' => $entity
-                        ]);
-                        $this->eventManager()->dispatch($event);
-                        if (!empty($event->result)) {
-                            echo $event->result;
-                        }
-                    ?>
-                </div>
-            </div>
-        </div>
-        <div class="body well table-responsive">
-            <?= $result ?>
-        </div>
+<?php endforeach; ?>
+        </ul>
     </div>
 </div>

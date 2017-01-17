@@ -22,8 +22,84 @@ class MenuListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
+            'Menu.Menu.getMenu' => 'getMenu',
             'Menu.Menu.beforeRender' => 'beforeRender'
         ];
+    }
+
+    /**
+     * Method that returns menu nested array based on provided menu name
+     *
+     * @param \Cake\Event\Event $event Event object
+     * @param string $name Menu name
+     * @param array $user Current user
+     * @param bool $fullBaseUrl Flag for fullbase url on menu links
+     * @return void
+     */
+    public function getMenu(Event $event, $name, array $user, $fullBaseUrl)
+    {
+        $menus = [
+            'sidebar' => [
+                [
+                    'label' => 'Dashboards',
+                    'url' => '/search/dashboards/',
+                    'icon' => 'tachometer',
+                    'children' => $this->_getDashboardLinks($user)
+                ]
+            ],
+            'top' => [
+                ['label' => 'Users', 'desc' => 'Manage system users', 'url' => '/users/', 'icon' => 'user bg-yellow'],
+                ['label' => 'Groups', 'desc' => 'Manage system groups', 'url' => '/groups/groups/', 'icon' => 'users bg-orange'],
+                ['label' => 'Roles', 'desc' => 'Manage system roles', 'url' => '/roles-capabilities/Roles/', 'icon' => 'unlock bg-green'],
+                ['label' => 'Lists', 'desc' => 'Manage database lists', 'url' => '/csv-migrations/dblists/', 'icon' => 'list bg-blue'],
+                ['label' => 'Logs', 'desc' => 'View system logs', 'url' => '/Logs/', 'icon' => 'list-alt bg-red'],
+                ['label' => 'Information', 'desc' => 'System information screen', 'url' => '/System/info', 'icon' => 'info-circle bg-light-blue'],
+                ['label' => 'Settings', 'desc' => 'System settings', 'url' => '#', 'icon' => 'cog bg-olive']
+            ]
+        ];
+
+        if (empty($menus[$name])) {
+            return;
+        }
+
+        if ((bool)$fullBaseUrl) {
+            $menus[$name] = $event->subject()->Menu->setFullBaseUrl($menus[$name]);
+        }
+
+        $event->result = $menus[$name];
+    }
+
+    /**
+     * Get dashboard links for the menu.
+     *
+     * @param array $user Current user
+     * @return array
+     */
+    protected function _getDashboardLinks(array $user)
+    {
+        $dashboards = TableRegistry::get('Search.Dashboards')->getUserDashboards($user);
+
+        $result = [];
+        foreach ($dashboards as $dashboard) {
+            $result[] = [
+                'label' => $dashboard->name,
+                'url' => [
+                    'plugin' => 'Search',
+                    'controller' => 'Dashboards',
+                    'action' => 'view',
+                    $dashboard->id
+                ],
+                'icon' => 'tachometer'
+            ];
+        }
+
+        $result[] = [
+            'label' => 'Create',
+            'url' => '/search/dashboards/add',
+            'icon' => 'plus'
+        ];
+
+        return $result;
     }
 
     /**
@@ -87,11 +163,13 @@ class MenuListener implements EventListenerInterface
      */
     protected function _checkItemAccess(array $items, array $user)
     {
+        $fullBaseUrl = Router::fullBaseUrl();
         foreach ($items as $k => &$item) {
-            if (is_string($item['url'])) {
-                $url = Router::parse($item['url']);
-            } else {
-                $url = $item['url'];
+            $url = $item['url'];
+            if (is_string($url)) {
+                // strip out full base URL if is part of menu item's URL
+                $url = false !== strpos($url, $fullBaseUrl) ? str_replace($fullBaseUrl, '', $url) : $url;
+                $url = Router::parse($url);
             }
 
             try {

@@ -62,33 +62,4 @@ class PagesController extends AppController
             throw new NotFoundException();
         }
     }
-
-    /**
-     * Define menu tasks.
-     *
-     * @param  string $name of the string
-     * @return array
-     */
-    public static function getMenu($name)
-    {
-        $result = [];
-
-        $menus = [
-            'sidebar' => [
-                ['label' => 'Sidebar element 1', 'url' => '/'],
-                ['label' => 'Sidebar element 2', 'url' => '/']
-            ],
-            'top' => [
-                ['label' => 'Top item 1', 'url' => '/' ],
-                ['label' => 'Top item 2', 'url' => '/'],
-            ]
-        ];
-
-
-        if (!empty($menus[$name])) {
-            $result = $menus[$name];
-        }
-
-        return $result;
-    }
 }

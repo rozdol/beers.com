@@ -3,6 +3,7 @@ namespace App\Event\View;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use Search\Controller\Traits\SearchableTrait;
 
@@ -10,12 +11,7 @@ class LayoutMenuListener implements EventListenerInterface
 {
     use SearchableTrait;
 
-    /**
-     * Menu element name
-     */
-    const MENU_ELEMENT = 'Menu.menu';
-
-    const SEARCH_FORM_ELEMENT = 'Search.search_form';
+    const SEARCH_FORM_ELEMENT = 'search-form';
 
     /**
      * Implemented Events
@@ -25,17 +21,18 @@ class LayoutMenuListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'QoboAdminPanel.Element.Navbar.Menu.Top' => 'getSearchForm'
+            'Element.MainSidebar.Form' => 'getSearchForm'
         ];
     }
 
     /**
-     * Method that adds elements to index View top menu.
+     * Add search form if current model is searchable and user has search access to it.
      *
-     * @param  Cake\Event\Event     $event   Event object
+     * @param Cake\Event\Event $event Event object
+     * @param array $user User info
      * @return void
      */
-    public function getSearchForm(Event $event)
+    public function getSearchForm(Event $event, array $user)
     {
         if (!$event->subject()->elementExists(static::SEARCH_FORM_ELEMENT)) {
             return;
@@ -50,26 +47,19 @@ class LayoutMenuListener implements EventListenerInterface
             return;
         }
 
-        $searchFormUrl = [
+        $url = [
             'plugin' => $event->subject()->request->plugin,
             'controller' => $event->subject()->request->controller,
             'action' => 'search'
         ];
 
-        $menu[] = [
-            'label' => $event->subject()->element(static::SEARCH_FORM_ELEMENT),
-            'url' => $searchFormUrl,
-            'capabilities' => 'fromUrl'
-        ];
-
-        if ($event->subject()->elementExists(static::MENU_ELEMENT)) {
-            $html = $event->subject()->element(static::MENU_ELEMENT, ['menu' => $menu, 'renderAs' => 'provided']);
-        } else {
-            $html = $event->subject()->element(static::SEARCH_FORM_ELEMENT);
+        $aclTable = TableRegistry::get('RolesCapabilities.Capabilities');
+        try {
+            $aclTable->checkAccess($url, $user);
+        } catch (ForbiddenException $e) {
+            return;
         }
 
-        $event->result = $html . $event->result;
-
-        return $event->result;
+        $event->result = $event->subject()->element(static::SEARCH_FORM_ELEMENT);
     }
 }
