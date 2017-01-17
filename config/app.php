@@ -254,7 +254,7 @@ return [
         'version' => (int)getenv('LDAP_VERSION') ?: 3,
         'baseDn' => getenv('LDAP_BASE_DN'),
         'filter' => getenv('LDAP_FILTER'),
-        'attributes' => function() {
+        'attributes' => function () {
             $result = [];
             $attributes = getenv('LDAP_ATTRIBUTES');
             if (empty($attributes)) {
@@ -425,7 +425,7 @@ return [
             'session.cookie_lifetime' => $sessionTimeout,
             'session.gc_maxlifetime' => $sessionTimeout,
         ],
-        'timeout' => (int)$sessionTimeout/60,
+        'timeout' => (int)$sessionTimeout / 60,
     ],
     'AuditStash' => [
         'persister' => 'App\Persister\MysqlPersister'
