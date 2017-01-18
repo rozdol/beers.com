@@ -13,32 +13,35 @@ $typeLabels = [
 ];
 ?>
 <section class="content-header">
-    <h1>
-        <?= __('Logs'); ?>
-        <small><?= $this->Form->postLink(
-            '<i class="fa fa-trash"></i>',
-            ['plugin' => false, 'controller' => 'Logs', 'action' => 'removeDuplicates'],
-            [
-                'title' => __('Delete duplicates'),
-                'confirm' => 'Are you sure? This action will truncate all duplicate logs from the database.',
-                'escape' => false,
-                'class' => 'text-danger'
-            ]
-        ); ?>
-        <?php
-        if ('localhost' === $this->request->env('SERVER_NAME')) {
-            echo $this->Form->postLink(
-                '<i class="fa fa-trash-o"></i>',
-                ['plugin' => false, 'controller' => 'Logs', 'action' => 'reset'],
+    <h1><?= __('Logs'); ?>
+        <div class="pull-right">
+            <div class="btn-group btn-group-sm" role="group">
+            <?php echo $this->Form->postLink(
+                '<i class="fa fa-trash"></i> ' . __('Delete duplicates'),
+                ['plugin' => false, 'controller' => 'Logs', 'action' => 'removeDuplicates'],
                 [
-                    'title' => __('Truncate all logs'),
-                    'confirm' => 'Are you sure? This action will truncate all logs from the database.',
+                    'title' => __('Delete duplicates'),
+                    'confirm' => 'Are you sure? This action will truncate all duplicate logs from the database.',
                     'escape' => false,
-                    'class' => 'text-danger'
+                    'class' => 'btn btn-danger'
                 ]
             );
-        }
-        ?></small>
+
+            if ('localhost' === $this->request->env('SERVER_NAME')) {
+                echo $this->Form->postLink(
+                    '<i class="fa fa-trash-o"></i> ' . __('Truncate all logs'),
+                    ['plugin' => false, 'controller' => 'Logs', 'action' => 'reset'],
+                    [
+                        'title' => __('Truncate all logs'),
+                        'confirm' => 'Are you sure? This action will truncate all logs from the database.',
+                        'escape' => false,
+                        'class' => 'btn btn-danger'
+                    ]
+                );
+            }
+            ?>
+            </div>
+        </div>
     </h1>
 </section>
 <section class="content">

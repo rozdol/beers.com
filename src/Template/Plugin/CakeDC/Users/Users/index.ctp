@@ -1,12 +1,14 @@
 <section class="content-header">
     <h1>Users
-        <small>
+        <div class="pull-right">
+            <div class="btn-group btn-group-sm" role="group">
             <?= $this->Html->link(
-                '<i class="fa fa-plus"></i>',
+                '<i class="fa fa-plus"></i> ' . __('Add'),
                 ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'add'],
-                ['escape' => false]
+                ['escape' => false, 'title' => __('Add'), 'class' => 'btn btn-default']
             ); ?>
-        </small>
+            </div>
+        </div>
     </h1>
 </section>
 <section class="content">
@@ -30,6 +32,7 @@
                         <td><?= h($user->first_name) ?></td>
                         <td><?= h($user->last_name) ?></td>
                         <td class="actions">
+                            <div class="btn-group btn-group-xs" role="group">
                             <?= $this->Html->link(
                                 '<i class="fa fa-eye"></i>',
                                 ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'view', $user->id],
@@ -54,6 +57,7 @@
                                     'escape' => false
                                 ]
                             ) ?>
+                            </div>
                         </td>
                     </tr>
                     <?php endforeach; ?>
