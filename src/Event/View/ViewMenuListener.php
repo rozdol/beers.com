@@ -48,9 +48,9 @@ class ViewMenuListener extends BaseMenuListener
         ];
 
         $html = $event->subject()->Html->link(
-            '<i class="fa fa-book"></i>',
+            '<i class="fa fa-book"></i> ' . __('Changelog'),
             $url,
-            ['title' => __('Changelog'), 'escape' => false]
+            ['title' => __('Changelog'), 'escape' => false, 'class' => 'btn btn-default']
         );
 
         array_unshift($menu, [
@@ -78,9 +78,9 @@ class ViewMenuListener extends BaseMenuListener
             $entity->id
         ];
         $btnEdit = ' ' . $event->subject()->Html->link(
-            '<i class="fa fa-pencil"></i>',
+            '<i class="fa fa-pencil"></i> ' . __('Edit'),
             $urlEdit,
-            ['escape' => false, 'title' => __('Edit')]
+            ['escape' => false, 'title' => __('Edit'), 'class' => 'btn btn-default']
         );
 
         $urlDel = [
@@ -90,12 +90,13 @@ class ViewMenuListener extends BaseMenuListener
             $entity->id
         ];
         $btnDel = ' ' . $event->subject()->Form->postLink(
-            '<i class="fa fa-trash"></i>',
+            '<i class="fa fa-trash"></i> ' . __('Delete'),
             $urlDel,
             [
                 'confirm' => __('Are you sure you want to delete {0}?', $entity->name),
                 'title' => __('Delete'),
-                'escape' => false
+                'escape' => false,
+                'class' => 'btn btn-default'
             ]
         );
 
@@ -136,9 +137,9 @@ class ViewMenuListener extends BaseMenuListener
         list($plugin, $controller) = pluginSplit($model);
 
         $btnView = $event->subject()->Html->link(
-            '<i class="fa fa-eye"></i>',
+            '<i class="fa fa-eye"></i> ',
             ['plugin' => $plugin, 'controller' => $controller, 'action' => 'view', $entity['id']],
-            ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]
+            ['title' => __('View'), 'class' => 'btn btn-default', 'escape' => false]
         );
 
         $menu = [
