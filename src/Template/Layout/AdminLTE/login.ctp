@@ -27,7 +27,6 @@
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg"><?php echo __('Sign in to start your session') ?></p>
     <p> <?php echo $this->Flash->render(); ?> </p>
     <p> <?php echo $this->Flash->render('auth'); ?> </p>
 
