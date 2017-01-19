@@ -1,5 +1,5 @@
 <?php
-$this->layout = 'AdminLTE/login';
+$this->layout = 'AdminLTE/verify';
 echo $this->Form->create();
 ?>
 <fieldset>
