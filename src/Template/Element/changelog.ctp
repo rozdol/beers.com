@@ -5,24 +5,16 @@ use Cake\Utility\Inflector;
 
 $oldUser = null;
 $oldDate = null;
-$bgColors = [
+$dateColors = [
     'red',
-    'yellow',
-    'aqua',
-    'blue',
-    'light-blue',
-    'green',
-    'navy',
-    'teal',
-    'olive',
-    'lime',
-    'orange',
-    'fuchsia',
-    'purple',
-    'maroon',
-    'black'
+    'green'
 ];
-$countHalf = count($bgColors) / 2;
+$iconColors = [
+    'light-blue',
+    'navy',
+    'blue',
+    'aqua'
+];
 ?>
 <section class="content-header">
     <h1>
@@ -59,10 +51,22 @@ $countHalf = count($bgColors) / 2;
     ]);
     ?>
     <?php if ($username !== $oldUser || $date !== $oldDate) : ?>
-        <li class="time-label"><span class="bg-<?= current($bgColors) ?>"><?= $date ?></span></li>
+        <li class="time-label"><span class="bg-<?= current($dateColors) ?>"><?= $date ?></span></li>
+        <?php
+        reset($iconColors);
+        next($dateColors);
+        if (!current($dateColors)) {
+            reset($dateColors);
+        }
+        ?>
     <?php endif; ?>
         <li>
-            <i class="fa fa-book bg-<?= $bgColors[key($bgColors) + $countHalf] ?>"></i>
+            <i class="fa fa-book bg-<?= current($iconColors) ?>"></i>
+            <?php
+            next($iconColors);
+            if (!current($iconColors)) {
+                reset($iconColors);
+            } ?>
             <div class="timeline-item">
                 <span class="time"><i class="fa fa-clock-o"></i>
                     <?= $record->timestamp->timeAgoInWords([
@@ -117,7 +121,6 @@ $countHalf = count($bgColors) / 2;
 <?php
 $oldUser = $username;
 $oldDate = $date;
-next($bgColors);
 ?>
 <?php endforeach; ?>
         </ul>
