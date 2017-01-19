@@ -8,8 +8,6 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
   <?php echo $this->Html->css('AdminLTE./bootstrap/css/bootstrap'); ?>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <!-- Theme style -->
   <?php echo $this->Html->css('AdminLTE.AdminLTE.min'); ?>
 
@@ -31,20 +29,7 @@
     <p> <?php echo $this->Flash->render(); ?> </p>
     <p> <?php echo $this->Flash->render('auth'); ?> </p>
 
-<?php echo $this->fetch('content'); ?>
-
-    <?php
-    if (isset($theme['login']['show_social']) && $theme['login']['show_social']) {
-        ?>
-        <div class="social-auth-links text-center">
-          <p>- <?php echo __('OR') ?> -</p>
-          <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> <?php echo __('Sign in using Facebook') ?></a>
-          <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> <?php echo __('Sign in using Google+') ?></a>
-        </div>
-        <?php
-    }
-    ?>
-
+    <?php echo $this->fetch('content'); ?>
   </div>
   <!-- /.login-box-body -->
 </div>
