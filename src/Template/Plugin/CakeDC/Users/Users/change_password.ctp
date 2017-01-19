@@ -1,5 +1,5 @@
 <?php if (!$validatePassword) : ?>
-<?php $this->layout = 'AdminLTE/change-password'; ?>
+<?php $this->layout = 'AdminLTE/login'; ?>
 <?= $this->Form->create('User') ?>
 <?= $this->Flash->render('auth') ?>
 <?= $this->Flash->render() ?>
