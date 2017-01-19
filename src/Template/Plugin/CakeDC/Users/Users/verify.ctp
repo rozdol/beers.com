@@ -3,8 +3,6 @@ $this->layout = 'AdminLTE/login';
 echo $this->Form->create();
 ?>
 <fieldset>
-    <?= $this->Flash->render('auth') ?>
-    <?= $this->Flash->render() ?>
     <?php if (!empty($secretDataUri)):?>
         <p class='text-center'><img src="<?php echo $secretDataUri;?>"/></p>
     <?php endif;?>
