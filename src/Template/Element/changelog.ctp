@@ -90,13 +90,15 @@ $iconColors = [
     <?php
     $changed = json_decode($record->changed);
     $original = json_decode($record->original);
-    foreach ($changed as $k => $v) :
-        $old = '';
-        if ($original !== null && isset($original->{$k})) {
-            if ($original->{$k} !== $v) {
-                $old = $original->{$k};
-            }
+    ?>
+    <?php foreach ($changed as $k => $v) : ?>
+    <?php
+    $old = '';
+    if ($original !== null && isset($original->{$k})) {
+        if ($original->{$k} !== $v) {
+            $old = $original->{$k};
         }
+    }
     ?>
     <tr>
         <td><?= Inflector::humanize($k) ?></td>
