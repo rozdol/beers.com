@@ -1,4 +1,4 @@
-<?php $this->layout = 'AdminLTE/forgot-password'; ?>
+<?php $this->layout = 'AdminLTE/login'; ?>
 <?= $this->Form->create('User') ?>
 <?= $this->Flash->render('auth') ?>
 <?= $this->Flash->render() ?>
