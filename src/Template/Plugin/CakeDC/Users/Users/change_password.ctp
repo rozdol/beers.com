@@ -39,10 +39,7 @@
 <section class="content">
     <div class="row">
         <div class="col-md-6">
-            <div class="box box-default">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= __('Please enter the new password') ?></h3>
-                </div>
+            <div class="box box-solid">
                 <?= $this->Form->create(); ?>
                 <div class="box-body">
                     <?= $this->Form->input('Users.current_password', [

@@ -37,18 +37,18 @@ $iconColors = [
     }
     $date = $record->timestamp->i18nFormat('d MMM. YYY');
 
-    if (!isset($meta->user)) {
-        $username = __('Unknown');
-    } else {
+    $url = '#';
+    $username = __('Unknown');
+    if (isset($meta->user)) {
         $user = $usersTable->findById($meta->user)->first();
         $username = empty($user) ? $meta->user : $user->name;
+        $url = $this->Url->build([
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'view',
+            $meta->user
+        ]);
     }
-    $url = $this->Url->build([
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'Users',
-        'action' => 'view',
-        $meta->user
-    ]);
     ?>
     <?php if ($username !== $oldUser || $date !== $oldDate) : ?>
         <li class="time-label"><span class="bg-<?= current($dateColors) ?>"><?= $date ?></span></li>
