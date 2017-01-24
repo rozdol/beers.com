@@ -6,7 +6,7 @@ use Cake\Core\Configure;
         <?= $this->Flash->render() ?>
     </div>
     <div class="col-xs-12">
-        <?= $this->Form->create($user) ?>
+        <?= $this->Form->create('User') ?>
         <fieldset>
             <legend><?= __('Please enter the new password') ?></legend>
                 <div class="panel panel-default">
