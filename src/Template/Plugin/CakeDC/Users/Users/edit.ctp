@@ -32,6 +32,7 @@
                 </div>
                 <div class="box-footer">
                     <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
+                    <?= $this->Form->end() ?>
                     <?php if (Configure::read('Users.GoogleAuthenticator.login')) : ?>
                     <?= $this->Form->postLink(
                         __d('CakeDC/Users', 'Reset Google Authenticator Token'),
@@ -50,7 +51,6 @@
                     ); ?>
                     <?php endif; ?>
                 </div>
-                <?= $this->Form->end() ?>
             </div>
         </div>
     </div>
