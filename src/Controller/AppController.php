@@ -130,6 +130,10 @@ class AppController extends Controller
         ));
 
         Configure::write('CsvMigrations.api.token', Configure::read('API.token'));
+        Configure::write(
+            'CsvMigrations.BootstrapFileInput.defaults.ajaxSettings.headers.Authorization',
+            'Bearer ' . Configure::read('API.token')
+        );
     }
 
     /**

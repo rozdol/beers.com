@@ -31,7 +31,7 @@ $this->layout = 'AdminLTE/login';
         <div class="col-xs-8">
             <div class="checkbox icheck">
                 <?php
-                if (Configure::check('Users.RememberMe.active')) {
+                if (Configure::read('Users.RememberMe.active')) {
                     echo $this->Form->input(Configure::read('Users.Key.Data.rememberMe'), [
                         'type' => 'checkbox',
                         'label' => ' ' . __d('Users', 'Remember Me'),
