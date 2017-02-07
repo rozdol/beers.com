@@ -20,8 +20,8 @@
         "friendsofcake/crud": "^4.3",
         "lorenzo/audit-stash": "^1.0",
         "dereuromark/cakephp-databaselog": "^2.1",
-        "qobo/cakephp-csv-migrations": "^12.0",
-        "qobo/cakephp-search": "^5.0",
+        "qobo/cakephp-csv-migrations": "^13.0",
+        "qobo/cakephp-search": "^6.0",
         "qobo/cakephp-menu": "^3.0",
         "alt3/cakephp-swagger": "^1.0",
         "maiconpinto/cakephp-adminlte-theme": "^1.0"
