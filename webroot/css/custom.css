@@ -7,3 +7,8 @@
 .table-vertical-align > tfoot > tr > td {
     vertical-align: middle;
 }
+
+.required label::after {
+    content: " *";
+    color: red;
+}
