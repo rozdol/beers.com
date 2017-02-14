@@ -216,7 +216,7 @@ group('cakephp', function () {
         printSeparator();
         printInfo("Task: cakephp:dev-user-create (Create dev user)");
 
-        $command = getenv('CAKE_CONSOLE') . ' users addUser';
+        $command = getenv('CAKE_CONSOLE') . ' users addSuperuser';
         $command .= ' --username=' . getenv('DEV_USER');
         $command .= ' --password=' . getenv('DEV_PASS');
         $command .= ' --email=' . getenv('DEV_EMAIL');
