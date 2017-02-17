@@ -42,11 +42,11 @@ group('app', function () {
         printInfo("Task: app:install (Install application)");
     });
     task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
-    task('install', ':mysql:database-create');
     // test that the migrations can run
     task('install', ':cakephp:test-migrations');
     // re-create empty test database for unit tests to run
     task('install', ':cakephp:test-database-create');
+    task('install', ':mysql:database-create');
     task('install', ':cakephp:install');
 
     desc('Update application');
@@ -63,8 +63,8 @@ group('app', function () {
         printInfo("Task: app:remove (Update application)");
     });
     task('remove', ':dotenv:delete');
-    task('remove', ':mysql:database-drop');
     task('remove', ':cakephp:test-database-drop');
+    task('remove', ':mysql:database-drop');
 });
 
 /**
