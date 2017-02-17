@@ -26,10 +26,10 @@ server {
 	#
 
 	# Non-aggressive Expires header for JavaScript, CSS, and images
-	#location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
-	#	expires 5m;
-	#	log_not_found off;
-	#}
+	location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+		expires 5m;
+		log_not_found off;
+	}
 
 	#
 	# Restrictions
@@ -50,9 +50,9 @@ server {
 	}
 
 	# Disable all methods besides HEAD, GET, and POST
-	#if ($request_method !~ ^(GET|HEAD|POST)$) {
-	#		return 444;
-	#}
+	if ($request_method !~ ^(GET|HEAD|POST)$) {
+			return 444;
+	}
 
 	# Do not hanndle Let's Encrypt validations
 	# Thanks to: http://stackoverflow.com/a/34262192/151647
@@ -64,17 +64,6 @@ server {
 	location ~ /\. {
 			deny all;
 	}
-	# Deny all attempts to access Composer files
-	location = /composer.json { deny all; }
-	location = /composer.lock { deny all; }
-	location ~ ^/vendor/ { deny all; }
-
-	# Deny all attempts to access template-project files
-	location ~ ^/(bin|etc|src|tests)/ { deny all; }
-	location = /Phakefile.php { deny all; }
-	location = /phpunit.xml.dist { deny all; }
-	location = /phpunit.xml { deny all; }
-	location = /README.md { deny all; }
 
 	# Try to serve file directly, fallback on index.php
 	index index.php;
