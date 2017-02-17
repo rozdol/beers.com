@@ -211,10 +211,12 @@ group('cakephp', function () {
         printInfo("Task: cakephp:migrations (Run CakePHP migrations task)");
 
         // Run plugin migrations
+        printInfo("Running plugin migrations");
         $command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate';
         doShellCommand($command);
 
         // Run app migrations
+        printInfo("Running application migrations");
         $command = getenv('CAKE_CONSOLE') . ' migrations migrate';
         doShellCommand($command);
     });
