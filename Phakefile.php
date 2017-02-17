@@ -44,7 +44,11 @@ group('app', function () {
     task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
     task('install', ':mysql:database-create');
     task('install', ':cakephp:test-database-create');
+    // test that the migrations can run
     task('install', ':cakephp:test-database-migrate');
+    // re-create empty test database for unit tests to run
+    task('install', ':cakephp:test-database-drop');
+    task('install', ':cakephp:test-database-create');
     task('install', ':cakephp:install');
 
     desc('Update application');
