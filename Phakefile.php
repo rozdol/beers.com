@@ -43,11 +43,9 @@ group('app', function () {
     });
     task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
     task('install', ':mysql:database-create');
-    task('install', ':cakephp:test-database-create');
     // test that the migrations can run
-    task('install', ':cakephp:test-database-migrate');
+    task('install', ':cakephp:test-migrations');
     // re-create empty test database for unit tests to run
-    task('install', ':cakephp:test-database-drop');
     task('install', ':cakephp:test-database-create');
     task('install', ':cakephp:install');
 
@@ -169,17 +167,41 @@ group('cakephp', function () {
     });
 
     desc('Run migrations for the test database');
-    task('test-database-migrate', ':builder:init', function ($app) {
+    task('test-migrations', ':builder:init', function ($app) {
         printSeparator();
-        printInfo("Task: cakephp:test-database-migrate (Run migrations for the test database)");
+        printInfo("Task: cakephp:test-migrations (Run migrations for the test database)");
+
+        // setup database
+        $dsn = [
+            'host' => getValue('DB_HOST', $app),
+            'user' => getValue('DB_ADMIN_USER', $app),
+            'pass' => getValue('DB_ADMIN_PASS', $app),
+        ];
+
+        $mysql = new \PhakeBuilder\MySQL(requireValue('SYSTEM_COMMAND_MYSQL', $app));
+        $mysql->setDSN($dsn);
+
+        // create test database
+        printInfo("Creating test database");
+        $command = $mysql->query('CREATE DATABASE IF NOT EXISTS ' . requireValue('DB_NAME', $app) . '_test');
+        $secureStrings = ['DB_PASS', 'DB_ADMIN_PASS'];
+        doShellCommand($command, $secureStrings);
 
         // Run plugin migrations
+        printInfo("Testing plugin migrations");
         $command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate --connection=test';
         doShellCommand($command);
 
         // Run app migrations
+        printInfo("Testing application migrations");
         $command = getenv('CAKE_CONSOLE') . ' migrations migrate --connection=test';
         doShellCommand($command);
+
+        // drop test database
+        printInfo("Dropping test database");
+        $command = $mysql->query('DROP DATABASE IF EXISTS ' . requireValue('DB_NAME', $app) . '_test');
+        $secureStrings = ['DB_PASS', 'DB_ADMIN_PASS'];
+        doShellCommand($command, $secureStrings);
     });
 
 
