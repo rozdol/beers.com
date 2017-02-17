@@ -21,9 +21,21 @@ use Cake\Core\Plugin;
  * be put here.
  */
 
-// Set logs to different files so they don't have permission conflicts.
-Configure::write('Log.debug.file', 'cli-debug');
-Configure::write('Log.error.file', 'cli-error');
+// Set logs to default file mode.
+Configure::write('Log', [
+    'debug' => [
+        'className' => 'Cake\Log\Engine\FileLog',
+        'path' => LOGS,
+        'file' => 'cli-debug',
+        'levels' => ['debug'],
+    ],
+    'error' => [
+        'className' => 'Cake\Log\Engine\FileLog',
+        'path' => LOGS,
+        'file' => 'cli-error',
+        'levels' => ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency']
+    ],
+]);
 
 try {
     Plugin::load('Bake');
