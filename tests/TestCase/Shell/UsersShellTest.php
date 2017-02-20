@@ -90,13 +90,11 @@ class UsersShellTest extends TestCase
         $output = $this->out->messages();
 
         $expected = [
-            'Superuser added:',
-            'Id: ',
             'Username: ' . $data['username'],
             'Email: ' . $data['email'],
             'Password: ' . $data['password']
         ];
 
-        $this->assertSame($expected, $output);
+        $this->assertContains(join('', $expected), join('', $output));
     }
 }
