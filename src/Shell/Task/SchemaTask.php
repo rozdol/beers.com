@@ -81,7 +81,7 @@ class SchemaTask extends Shell
             $defs = [];
             try {
                 $tableObject = TableRegistry::get($tableName);
-                $defs = $tableObject->getFieldsDefinitions($tableName);
+                $defs = $tableObject->getFieldsDefinitions();
             } catch (\Exception $e) {
                 // Skip non-CSV based table
             }
