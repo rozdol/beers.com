@@ -78,6 +78,17 @@ class FakerShell extends Shell
         }
     }
 
+    /**
+     * Extract and return selected options from user input.
+     * Extracted options number can be limited by passing
+     * a value to the optional limit parameter. If limit is
+     * set to zero then everything is extracted.
+     *
+     * @param string $selection User input
+     * @param array $options Provided options
+     * @param int $limit Limit number of extracted options
+     * @return array
+     */
     protected function _extractSelected($selection, array $options, $limit = 0)
     {
         $result = [];
@@ -110,6 +121,13 @@ class FakerShell extends Shell
         return $result;
     }
 
+    /**
+     * Method that interactively retrieves and returns
+     * faker field formatters for the selected field(s).
+     *
+     * @param array $fields Selected field(s)
+     * @return array
+     */
     protected function _setFieldFormatter(array $fields)
     {
         if (empty($fields)) {
@@ -176,6 +194,13 @@ class FakerShell extends Shell
         return $fields;
     }
 
+    /**
+     * Append options to interactive message.
+     *
+     * @param string $message Interactive shell message
+     * @param array $options Options to append
+     * @return string
+     */
     protected function _appendOptions($message, array $options)
     {
         $result = $message;
@@ -186,6 +211,11 @@ class FakerShell extends Shell
         return $result;
     }
 
+    /**
+     * Retrieves faker supported providers.
+     *
+     * @return array
+     */
     protected function _getProviders()
     {
         $generator = Factory::create();
@@ -204,6 +234,14 @@ class FakerShell extends Shell
         return $result;
     }
 
+    /**
+     * Generates fake data based on selected field(s) and respective
+     * formatter(s). Returns count of newly created records.
+     *
+     * @param \Cake\ORM\Table $table Table instance
+     * @param array $fields Selected field(s) and formatter(s)
+     * @return int
+     */
     protected function _generateFakeData(Table $table, array $fields)
     {
         $result = 0;
