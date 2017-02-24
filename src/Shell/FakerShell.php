@@ -78,9 +78,10 @@ class FakerShell extends Shell
         }
     }
 
-    protected function _extractSelected($selection, array $options)
+    protected function _extractSelected($selection, array $options, $limit = 0)
     {
         $result = [];
+        $limit = (int)$limit;
 
         $selection = trim($selection);
         $fields = explode(',', $selection);
@@ -89,14 +90,21 @@ class FakerShell extends Shell
             return $result;
         }
 
+        $count = 1;
         foreach ($fields as $field) {
             $field = trim($field) - 1;
             // skip invalid fields
-            if (!array_key_exists($field, $columns)) {
+            if (!array_key_exists($field, $options)) {
                 continue;
             }
 
-            $result[$columns[$field]] = [];
+            $result[$options[$field]] = [];
+            // return result if limit is reached
+            if ($limit !== 0 && $limit === $count) {
+                return $result;
+            }
+
+            $count++;
         }
 
         return $result;
