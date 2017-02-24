@@ -121,7 +121,20 @@ class FakerShell extends Shell
 
             $options = array_keys($providers);
             sort($options);
-            $provider = $this->in($this->_appendOptions('What category applies to:', $options), $options);
+            $provider = $this->in($this->_appendOptions('What category applies to:', $options));
+
+            if (empty($provider)) {
+                $this->abort('Aborting, no category selected.');
+            }
+
+            $provider = $this->_extractSelected($provider, $options, 1);
+
+            if (empty($provider)) {
+                $this->abort('Aborting, no category selected.');
+            }
+            // get key as provider
+            $provider = key($provider);
+
             $className = $providers[$provider]['className'];
             $class = new ReflectionClass($className);
 
@@ -135,7 +148,20 @@ class FakerShell extends Shell
 
             $options = array_keys($methods);
             sort($options);
-            $formatter = $this->in('What type of field is:', $options);
+            $formatter = $this->in($this->_appendOptions('What type of field is:', $options));
+
+            if (empty($formatter)) {
+                $this->abort('Aborting, no field type selected.');
+            }
+
+            $formatter = $this->_extractSelected($formatter, $options, 1);
+
+            if (empty($formatter)) {
+                $this->abort('Aborting, no field type selected.');
+            }
+            // get key as formatter
+            $formatter = key($formatter);
+
             $formatter = $methods[$formatter];
         }
 
