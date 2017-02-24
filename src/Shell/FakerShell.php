@@ -61,7 +61,7 @@ class FakerShell extends Shell
             $this->abort('Aborting, no columns selected.');
         }
 
-        $fields = $this->_extractFields($fields, $columns);
+        $fields = $this->_extractSelected($fields, $columns);
 
         if (empty($fields)) {
             $this->abort('Aborting, no columns selected.');
@@ -78,7 +78,7 @@ class FakerShell extends Shell
         }
     }
 
-    protected function _extractFields($selection, array $columns)
+    protected function _extractSelected($selection, array $options)
     {
         $result = [];
 
