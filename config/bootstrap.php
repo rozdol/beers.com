@@ -75,6 +75,7 @@ try {
     Configure::load('app', 'default', false);
     Configure::load('groups', 'default');
     Configure::load('menu', 'default');
+    Configure::load('csv_migrations', 'default');
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }
@@ -224,9 +225,6 @@ Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
-
-// include configration file(s)
-include 'csv_migrations.php';
 
 /**
  * Connect middleware/dispatcher filters.
