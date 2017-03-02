@@ -14,6 +14,7 @@
         "dereuromark/cakephp-databaselog": "^2.1",
         "friendsofcake/bootstrap-ui": "~0.3",
         "friendsofcake/crud": "^4.3",
+        "fzaninotto/faker": "^1.0",
         "lorenzo/audit-stash": "^1.0",
         "maiconpinto/cakephp-adminlte-theme": "^1.0",
         "mobiledetect/mobiledetectlib": "2.*",
