@@ -154,7 +154,6 @@ class ImportShell extends Shell
         }
     }
 
-
     /**
      * Filter out tables that match any of the given patterns
      *

@@ -204,7 +204,6 @@ group('cakephp', function () {
         doShellCommand($command, $secureStrings);
     });
 
-
     desc('Run CakePHP migrations task');
     task('migrations', ':builder:init', function () {
         printSeparator();
