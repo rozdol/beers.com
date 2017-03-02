@@ -191,7 +191,7 @@ Request::addDetector('tablet', function ($request) {
  * Plugin::load('Migrations'); //Loads a single plugin named Migrations
  *
  */
-
+Plugin::load('Qobo/Utils', ['bootstrap' => true]);
 Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
 Plugin::load('CsvMigrations', ['bootstrap' => true, 'routes' => true]);
