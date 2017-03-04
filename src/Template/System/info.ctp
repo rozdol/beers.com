@@ -21,6 +21,9 @@
                     <li>
                         <a href="#server" data-toggle="tab" aria-expanded="true"><i class="fa fa-linux"></i> Server</a>
                     </li>
+                    <li>
+                        <a href="#developer" data-toggle="tab" aria-expanded="true"><i class="fa fa-wrench"></i> Developer</a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="project">
@@ -37,6 +40,9 @@
                     </div>
                     <div class="tab-pane" id="server">
                         <?php echo $this->element('System/server'); ?>
+                    </div>
+                    <div class="tab-pane" id="developer">
+                        <?php echo $this->element('System/developer'); ?>
                     </div>
                 </div>
             </div>
