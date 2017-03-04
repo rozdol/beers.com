@@ -22,6 +22,9 @@
                         <a href="#server" data-toggle="tab" aria-expanded="true"><i class="fa fa-linux"></i> Server</a>
                     </li>
                     <li>
+                        <a href="#database" data-toggle="tab" aria-expanded="true"><i class="fa fa-database"></i> Database</a>
+                    </li>
+                    <li>
                         <a href="#developer" data-toggle="tab" aria-expanded="true"><i class="fa fa-wrench"></i> Developer</a>
                     </li>
                 </ul>
@@ -43,6 +46,9 @@
                     </div>
                     <div class="tab-pane" id="developer">
                         <?php echo $this->element('System/developer'); ?>
+                    </div>
+                    <div class="tab-pane" id="database">
+                        <?php echo $this->element('System/database'); ?>
                     </div>
                 </div>
             </div>
