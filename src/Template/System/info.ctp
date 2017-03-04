@@ -24,19 +24,19 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="project">
-                        <?php echo $this->element('System/project_version'); ?>
+                        <?php echo $this->element('System/project'); ?>
                     </div>
                      <div class="tab-pane" id="cakephp">
-                        <?php echo $this->element('System/cakephp_plugins'); ?>
+                        <?php echo $this->element('System/cakephp'); ?>
                     </div>
                      <div class="tab-pane" id="composer">
-                        <?php echo $this->element('System/composer_libraries'); ?>
+                        <?php echo $this->element('System/composer'); ?>
                     </div>
                      <div class="tab-pane" id="php">
-                        <?php echo $this->element('System/php_extensions'); ?>
+                        <?php echo $this->element('System/php'); ?>
                     </div>
                     <div class="tab-pane" id="server">
-                        <?php echo $this->element('System/server_environment'); ?>
+                        <?php echo $this->element('System/server'); ?>
                     </div>
                 </div>
             </div>
