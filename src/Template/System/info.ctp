@@ -1,3 +1,39 @@
+<?php
+// Tabs
+//
+// Key is used as element name, href link and
+// div id, so pick wisely.
+$tabs = [
+    'project' => [
+        'label' => 'Project',
+        'icon' => 'fa-info-circle',
+    ],
+    'cakephp' => [
+        'label' => 'CakePHP',
+        'icon' => 'fa-birthday-cake',
+    ],
+    'composer' => [
+        'label' => 'Composer',
+        'icon' => 'fa-book',
+    ],
+    'php' => [
+        'label' => 'PHP',
+        'icon' => 'fa-heart',
+    ],
+    'server' => [
+        'label' => 'Server',
+        'icon' => 'fa-linux',
+    ],
+    'database' => [
+        'label' => 'Database',
+        'icon' => 'fa-database',
+    ],
+    'developer' => [
+        'label' => 'Developer',
+        'icon' => 'fa-wrench',
+    ],
+];
+?>
 <section class="content-header">
     <h1><?= __('System Information'); ?></h1>
 </section>
@@ -6,50 +42,30 @@
         <div class="col-md-12">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#project" data-toggle="tab" aria-expanded="true"><i class="fa fa-info-circle"></i> Project</a>
-                    </li>
-                    <li>
-                        <a href="#cakephp" data-toggle="tab" aria-expanded="true"><i class="fa fa-birthday-cake"></i> CakePHP</a>
-                    </li>
-                    <li>
-                        <a href="#composer" data-toggle="tab" aria-expanded="true"><i class="fa fa-book"></i> Composer</a>
-                    </li>
-                    <li>
-                        <a href="#php" data-toggle="tab" aria-expanded="true"><i class="fa fa-heart"></i> PHP</a>
-                    </li>
-                    <li>
-                        <a href="#server" data-toggle="tab" aria-expanded="true"><i class="fa fa-linux"></i> Server</a>
-                    </li>
-                    <li>
-                        <a href="#database" data-toggle="tab" aria-expanded="true"><i class="fa fa-database"></i> Database</a>
-                    </li>
-                    <li>
-                        <a href="#developer" data-toggle="tab" aria-expanded="true"><i class="fa fa-wrench"></i> Developer</a>
-                    </li>
+                    <?php
+                        $first = true;
+                        foreach ($tabs as $tab => $settings) {
+                           echo $first ? '<li class="active">' : '<li>';
+                           echo '<a href="#' . $tab . '" data-toggle="tab" aria-expanded="true">';
+                           echo '<i class="fa ' . $settings['icon'] . '"></i>';
+                           echo ' ';
+                           echo $settings['label'];
+                           echo '</a>';
+                           echo '</li>';
+                           $first = false;
+                        }
+                    ?>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="project">
-                        <?php echo $this->element('System/project'); ?>
-                    </div>
-                     <div class="tab-pane" id="cakephp">
-                        <?php echo $this->element('System/cakephp'); ?>
-                    </div>
-                     <div class="tab-pane" id="composer">
-                        <?php echo $this->element('System/composer'); ?>
-                    </div>
-                     <div class="tab-pane" id="php">
-                        <?php echo $this->element('System/php'); ?>
-                    </div>
-                    <div class="tab-pane" id="server">
-                        <?php echo $this->element('System/server'); ?>
-                    </div>
-                    <div class="tab-pane" id="developer">
-                        <?php echo $this->element('System/developer'); ?>
-                    </div>
-                    <div class="tab-pane" id="database">
-                        <?php echo $this->element('System/database'); ?>
-                    </div>
+                    <?php
+                        $first = true;
+                        foreach ($tabs as $tab => $settings) {
+                            echo $first ? '<div class="tab-pane active" id="' . $tab . '">' : '<div class="tab-pane" id="' . $tab . '">';
+                            echo $this->element('System/' . $tab);
+                            echo '</div>';
+                            $first = false;
+                        }
+                    ?>
                 </div>
             </div>
         </div>
