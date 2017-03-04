@@ -4,19 +4,26 @@
 //
 $plugins = \Cake\Core\Plugin::loaded();
 ?>
-<div class="box box-default">
-    <div class="box-header with-border">
-        <i class="fa fa-plug"></i>
-        <h3 class="box-title"><?= __('CakePHP Plugins') ?></h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-            </button>
+<div class="row">
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-birthday-cake"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">CakePHP version</span>
+                <span class="info-box-number"><?php echo \Cake\Core\Configure::version(); ?></span>
+            </div>
+        </div>
+        <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-plug"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">CakePHP plugins</span>
+                <span class="info-box-number"><?php echo number_format(count($plugins)); ?></span>
+            </div>
         </div>
     </div>
-    <div class="box-body">
-        <p>There are currently <strong><?php echo count($plugins); ?> plugins</strong> installed.</p>
-        <ul class="list-inline">
+    <div class="col-md-9">
+        <b>Loaded plugins:</b>
+        <ul>
         <?php foreach ($plugins as $plugin) : ?>
             <li><?= $plugin ?></li>
         <?php endforeach; ?>

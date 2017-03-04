@@ -9,19 +9,45 @@ if (is_readable($composerLock)) {
 }
 $packages = !empty($composer['packages']) ? $composer['packages'] : [];
 $count = count($packages);
+
+$matchWords = ['cakephp', 'qobo'];
+$matchCounts = [];
+foreach ($packages as $package) {
+    // Concatenate all fields that we'll be matching against
+    $matchString = $package['name'];
+    if (!empty($package['description'])) {
+        $matchString .= $package['description'];
+    }
+    foreach ($matchWords as $word) {
+        if (empty($matchCounts[$word])) {
+            $matchCounts[$word] = 0;
+        }
+        if (preg_match('/' . $word . '/', $matchString)) {
+            $matchCounts[$word]++;
+        }
+    }
+}
 ?>
-<div class="box box-default">
-    <div class="box-header with-border">
-        <i class="fa fa-th-list"></i>
-        <h3 class="box-title"><?= __('Composer Libraries') ?></h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-            </button>
+<div class="row">
+     <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-book"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Composer libraries</span>
+                <span class="info-box-number"><?php echo number_format($count); ?></span>
+            </div>
         </div>
+        <?php foreach ($matchCounts as $word => $count) : ?>
+            <div class="info-box">
+                <span class="info-box-icon bg-blue"><i class="fa fa-check-square"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Match <?php echo $word; ?></span>
+                    <span class="info-box-number"><?php echo number_format($count); ?></span>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
-    <div class="box-body">
-        <p>There are currently <strong><?= $count ?> composer libraries</strong> installed.</p>
+    <div class="col-md-9">
         <?php if (0 < $count) : ?>
             <table class="table table-hover table-condensed table-vertical-align">
                 <thead>

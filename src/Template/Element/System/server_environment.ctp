@@ -3,37 +3,47 @@
 // Server environment
 //
 $server = [
-    'Server Operating System' => implode(' ', [
+    'Operating System' => implode(' ', [
         php_uname('s'),
         php_uname('r'),
     ]),
-    'Server Architecture' => php_uname('m'),
-    'PHP Version' => PHP_VERSION,
-    'PHP Server API' => PHP_SAPI,
-    'PHP Server User' => get_current_user(),
-    'PHP Binary' => PHP_BINARY,
-    'PHP Configuration File' => php_ini_loaded_file(),
-    'PHP Memory Limit' => ini_get('memory_limit'),
-    'PHP Maximum Execution Time' => ini_get('max_execution_time') . ' seconds',
+    'Machine Type' => php_uname('m'),
 ];
+
+// Number of CPUs
+$cpuInfoFile = '/proc/cpuinfo';
+if (is_file($cpuInfoFile) && is_readable($cpuInfoFile)) {
+    $cpuInfoFile = file($cpuInfoFile);
+    $cpus = preg_grep("/^processor/", $cpuInfoFile);
+    $server['Number of CPUs'] = count($cpus);
+}
+
+// RAM
+$memoryInfoFile = '/proc/meminfo';
+if (is_file($memoryInfoFile) && is_readable($memoryInfoFile)) {
+    $memoryInfoFile = file($memoryInfoFile);
+    $totalMemory = preg_grep("/^MemTotal:/", $memoryInfoFile);
+    list($key, $size, $unit) = preg_split('/\s+/', $totalMemory[0], 3);
+    $server['Total RAM'] = number_format($size) . ' ' . $unit;
+}
 ?>
-<div class="box box-default">
-    <div class="box-header with-border">
-        <i class="fa fa-server"></i>
-        <h3 class="box-title"><?= __('Server Environment') ?></h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-            </button>
+<div class="row">
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-linux"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Operating System</span>
+                <span class="info-box-number"><?php echo PHP_OS; ?></span>
+            </div>
         </div>
     </div>
-    <div class="box-body">
-        <ul>
+    <div class="col-md-9">
+        <dl class="dl-horizontal">
         <?php
             foreach ($server as $name => $value) {
-                print '<li><b>' . $name . ':</b> ' . $value . '</li>';
+                print '<dt>' . $name . ':</dt><dd>' . $value . '</dd>';
             }
         ?>
-        </ul>
+        </dl>
     </div>
 </div>
