@@ -3,6 +3,7 @@
 // Server environment
 //
 $server = [
+    'Hostname' => gethostname(),
     'Operating System' => implode(' ', [
         php_uname('s'),
         php_uname('r'),
