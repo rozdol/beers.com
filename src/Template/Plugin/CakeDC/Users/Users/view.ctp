@@ -41,16 +41,6 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <dl class="dl-horizontal">
-                        <dt><?= __('Token') ?></dt>
-                        <dd><?= !empty($Users->token) ? h($Users->token) : '&nbsp;' ?></dd>
-                        <dt><?= __('Api Token') ?></dt>
-                        <dd><?= !empty($Users->api_token) ? h($Users->api_token) : '&nbsp;' ?></dd>
-                        <dt><?= __('Token Expires') ?></dt>
-                        <dd><?= !empty($Users->token_expires) ? h($Users->token_expires) : '&nbsp;' ?></dd>
-                        <dt><?= __('Activation Date') ?></dt>
-                        <dd><?= !empty($Users->activation_date) ? h($Users->activation_date) : '&nbsp;' ?></dd>
-                        <dt><?= __('Tos Date') ?></dt>
-                        <dd><?= !empty($Users->tos_date) ? h($Users->tos_date) : '&nbsp;' ?></dd>
                         <dt><?= __('Created') ?></dt>
                         <dd><?= !empty($Users->created) ? h($Users->created) : '&nbsp;' ?></dd>
                         <dt><?= __('Modified') ?></dt>
@@ -60,50 +50,6 @@
                 <!-- /.box-body -->
             </div>
             <!-- /.box -->
-        </div>
-    </div>
-    <h2 class="page-header"><i class="fa fa-link"></i> <?= __('Associated Records'); ?></h2>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="nav-tabs-custom">
-                <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#accounts" aria-controls="accounts" role="tab" data-toggle="tab">
-                            <?= __('Accounts'); ?>
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="accounts">
-                        <?php if (!empty($Users->social_accounts)): ?>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th><?= $this->Paginator->sort(__('Id')) ?></th>
-                                        <th><?= $this->Paginator->sort(__('Provider')) ?></th>
-                                        <th><?= $this->Paginator->sort(__('Username')) ?></th>
-                                        <th><?= $this->Paginator->sort(__('Reference')) ?></th>
-                                        <th><?= $this->Paginator->sort(__('Active')) ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($Users->social_accounts as $socialAccount): ?>
-                                    <tr>
-                                        <td><?= h($socialAccount->id) ?></td>
-                                        <td><?= h($socialAccount->provider) ?></td>
-                                        <td><?= h($socialAccount->username) ?></td>
-                                        <td><?= h($socialAccount->reference) ?></td>
-                                        <td><?= h($socialAccount->active) ?></td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
