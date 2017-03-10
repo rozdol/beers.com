@@ -1,5 +1,6 @@
 <?php
 use Cake\Core\Configure;
+use CsvMigrations\Swagger\Analyser;
 
 return [
     'Swagger' => [
@@ -22,17 +23,10 @@ return [
         'library' => [
             'api' => [
                 'include' => [
-                    ROOT . DS . 'src' . DS . 'Controller' . DS . 'Api',
-                    ROOT . DS . 'src' . DS . 'Model' . DS . 'Table'
-                ]
-            ],
-            'editor' => [
-                'include' => [
-                    ROOT . DS . 'src' . DS . 'Controller' . DS . 'AppController.php',
-                    ROOT . DS . 'src' . DS . 'Controller' . DS . 'Editor',
-                    ROOT . DS . 'src' . DS . 'Model'
+                    ROOT . DS . 'src' . DS . 'Controller' . DS . 'Api'
                 ]
             ]
-        ]
+        ],
+        'analyser' => new Analyser()
     ]
 ];
