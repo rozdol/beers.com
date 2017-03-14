@@ -22,7 +22,7 @@
         "qobo/cakephp-csv-migrations": "^15.0",
         "qobo/cakephp-groups": "^4.0",
         "qobo/cakephp-menu": "^4.0",
-        "qobo/cakephp-roles-capabilities": "^6.0",
+        "qobo/cakephp-roles-capabilities": "^7.0",
         "qobo/cakephp-search": "^7.0",
         "qobo/cakephp-utils": "^1.0",
         "qobo/phake-builder": "~2.0"

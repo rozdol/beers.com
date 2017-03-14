@@ -97,8 +97,13 @@ class AppController extends Controller
     public function beforeFilter(Event $event)
     {
         // if user not logged in, redirect him to login page
-        try {
-            $this->_checkAccess($event);
+
+        $url = $event->subject()->request->params;
+         try {
+            $result = $this->_checkAccess($url, $this->Auth->user());
+            if (!$result) {
+                throw new ForbiddenException();
+            }
         } catch (ForbiddenException $e) {
             if (empty($this->Auth->user())) {
                 $this->redirect('/login');

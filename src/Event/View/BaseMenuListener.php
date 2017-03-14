@@ -6,9 +6,12 @@ use Cake\Event\EventListenerInterface;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use RolesCapabilities\CapabilityTrait;
 
 abstract class BaseMenuListener implements EventListenerInterface
 {
+    use CapabilityTrait;
+    
     /**
      * Method that does acl check on flat (single level) menu items.
      *
@@ -36,7 +39,6 @@ abstract class BaseMenuListener implements EventListenerInterface
             }
         }
 
-        $table = TableRegistry::get('RolesCapabilities.Capabilities');
         foreach ($menu as $item) {
             // this is for label like menu items without a url
             if (empty($item['url'])) {
@@ -45,7 +47,7 @@ abstract class BaseMenuListener implements EventListenerInterface
             }
 
             try {
-                $table->checkAccess($item['url'], $user);
+                $this->_checkAccess($item['url'], $user);
                 $event->result .= $item['html'] . ' ';
             } catch (ForbiddenException $e) {
                 // do nothing
