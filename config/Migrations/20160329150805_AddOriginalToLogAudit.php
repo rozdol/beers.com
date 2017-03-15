@@ -14,7 +14,7 @@ class AddOriginalToLogAudit extends AbstractMigration
     public function change()
     {
         $table = $this->table('log_audit');
-        $table->addColumn('original', 'string', [
+        $table->addColumn('original', 'text', [
             'default' => null,
             'limit' => MysqlAdapter::TEXT_LONG,
             'null' => true,
