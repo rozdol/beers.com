@@ -11,7 +11,7 @@ use RolesCapabilities\CapabilityTrait;
 abstract class BaseMenuListener implements EventListenerInterface
 {
     use CapabilityTrait;
-    
+
     /**
      * Method that does acl check on flat (single level) menu items.
      *

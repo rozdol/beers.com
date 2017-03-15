@@ -5,13 +5,13 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
-use Search\Controller\Traits\SearchableTrait;
 use RolesCapabilities\CapabilityTrait;
+use Search\Controller\Traits\SearchableTrait;
 
 class LayoutMenuListener implements EventListenerInterface
 {
-    use SearchableTrait;
     use CapabilityTrait;
+    use SearchableTrait;
 
     const SEARCH_FORM_ELEMENT = 'search-form';
 

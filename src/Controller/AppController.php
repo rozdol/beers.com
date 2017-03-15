@@ -99,7 +99,7 @@ class AppController extends Controller
         // if user not logged in, redirect him to login page
 
         $url = $event->subject()->request->params;
-         try {
+        try {
             $result = $this->_checkAccess($url, $this->Auth->user());
             if (!$result) {
                 throw new ForbiddenException();
