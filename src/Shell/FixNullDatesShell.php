@@ -14,7 +14,7 @@ class FixNullDatesShell extends Shell
      *  Default datetime field name
      */
     const DATETIME_FIELD = 'trashed';
-    
+
     /**
      *  Run update process
      */
@@ -45,7 +45,7 @@ class FixNullDatesShell extends Shell
             }
         }
     }
-    
+
     /**
      * Configure option parser
      *
@@ -59,8 +59,7 @@ class FixNullDatesShell extends Shell
             'help' => 'Target field to fix datetime null value (required)',
             'required' => true,
         ]);
-        
+
         return $parser;
     }
-
 }
