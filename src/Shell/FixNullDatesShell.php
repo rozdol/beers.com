@@ -14,11 +14,11 @@ class FixNullDatesShell extends Shell
      *  Default datetime field name
      */
     const DEFAULT_COLUMN_NAME = 'trashed';
-    
+
     /**
      *  Default field type
      */
-    const TARGET_COLUMN_TYPE = 'datetime'; 
+    const TARGET_COLUMN_TYPE = 'datetime';
 
     /**
      *  Run update process
@@ -30,20 +30,20 @@ class FixNullDatesShell extends Shell
 
         $db = ConnectionManager::get('default');
         $collection = $db->schemaCollection();
-        
+
         if (!empty($targetTable)) {
             $tables = [$targetTable];
         } else {
             $tables = $collection->listTables();
-        }    
+        }
 
         $this->out('List of tables: ' . print_r($tables, true));
 
         foreach ($tables as $tbl) {
             $tblSchema = $collection->describe($tbl);
 
-            $columns = $tblSchema->columns();            
-            
+            $columns = $tblSchema->columns();
+
             if (in_array($targetColumn, $columns)) {
                 $columnType = $tblSchema->columnType($targetColumn);
                 $this->out("Type of column '$targetColumn' has type '$columnType'");
@@ -57,7 +57,7 @@ class FixNullDatesShell extends Shell
             }
         }
     }
-    
+
     /**
      * Configure option parser
      *
@@ -75,6 +75,7 @@ class FixNullDatesShell extends Shell
             'help' => 'Target field to fix datetime null value (optional)',
             'required' => false,
         ]);
+
         return $parser;
     }
 }
