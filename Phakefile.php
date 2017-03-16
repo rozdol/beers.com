@@ -188,9 +188,15 @@ group('cakephp', function () {
         doShellCommand($command, $secureStrings);
 
         // Run plugin migrations
-        printInfo("Testing plugin migrations");
-        $command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate --connection=test';
-        doShellCommand($command);
+        printInfo("Testing ;plugin migrations");
+        $result = doShellCommand(getenv('CAKE_CONSOLE') . ' plugin loaded');
+        $result = preg_replace('/^.*\-\n/s', '', $result);
+        $loadedPlugins = (explode("\n", $result));
+        foreach ($loadedPlugins as $plugin) {
+            printInfo("Testing migration for plugin $plugin");
+            $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin --connection=test";
+            doShellCommand($command);
+        }
 
         // Run app migrations
         printInfo("Testing application migrations");
