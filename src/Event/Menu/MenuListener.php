@@ -6,9 +6,12 @@ use Cake\Event\EventListenerInterface;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
+use RolesCapabilities\CapabilityTrait;
 
 class MenuListener implements EventListenerInterface
 {
+    use CapabilityTrait;
+
     /**
      * ACL instance
      *
@@ -173,7 +176,16 @@ class MenuListener implements EventListenerInterface
             }
 
             try {
-                $this->_aclInstance->checkAccess($url, $user);
+                $result = $this->_checkAccess($url, $user);
+                if (!$result) {
+                    if (!empty($item['children'])) {
+                        // remove url from parent item on access check fail
+                        unset($item['url']);
+                    } else {
+                        // remove child item on access check fail
+                        unset($items[$k]);
+                    }
+                }
             } catch (ForbiddenException $e) {
                 if (!empty($item['children'])) {
                     // remove url from parent item on access check fail

@@ -5,10 +5,12 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
+use RolesCapabilities\CapabilityTrait;
 use Search\Controller\Traits\SearchableTrait;
 
 class LayoutMenuListener implements EventListenerInterface
 {
+    use CapabilityTrait;
     use SearchableTrait;
 
     const SEARCH_FORM_ELEMENT = 'search-form';
@@ -53,9 +55,8 @@ class LayoutMenuListener implements EventListenerInterface
             'action' => 'search'
         ];
 
-        $aclTable = TableRegistry::get('RolesCapabilities.Capabilities');
         try {
-            $aclTable->checkAccess($url, $user);
+            $this->_checkAccess($url, $user);
         } catch (ForbiddenException $e) {
             return;
         }
