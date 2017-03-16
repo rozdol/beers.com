@@ -187,9 +187,10 @@ group('cakephp', function () {
         $secureStrings = ['DB_PASS', 'DB_ADMIN_PASS'];
         doShellCommand($command, $secureStrings);
 
-        // Run plugin migrations
+        // Run plugin migrations separately for each plugin
         printInfo("Testing ;plugin migrations");
-        $result = doShellCommand(getenv('CAKE_CONSOLE') . ' plugin loaded');
+        $command = getenv('CAKE_CONSOLE') . ' plugin loaded';
+        $result = doShellCommand($command);
         $result = preg_replace('/^.*\-\n/s', '', $result);
         $loadedPlugins = (explode("\n", $result));
         foreach ($loadedPlugins as $plugin) {
@@ -197,7 +198,6 @@ group('cakephp', function () {
             $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin --connection=test";
             doShellCommand($command);
         }
-
         // Run app migrations
         printInfo("Testing application migrations");
         $command = getenv('CAKE_CONSOLE') . ' migrations migrate --connection=test';
@@ -215,11 +215,17 @@ group('cakephp', function () {
         printSeparator();
         printInfo("Task: cakephp:migrations (Run CakePHP migrations task)");
 
-        // Run plugin migrations
+        // Run plugin migrations separately for each loaded plugin
         printInfo("Running plugin migrations");
-        $command = getenv('CAKE_CONSOLE') . ' plugin migrations migrate';
-        doShellCommand($command);
-
+        $command = getenv('CAKE_CONSOLE') . ' plugin loaded';
+        $result = doShellCommand($command);
+        $result = preg_replace('/^.*\-\n/s', '', $result);
+        $loadedPlugins = (explode("\n", $result));
+        foreach ($loadedPlugins as $plugin) {
+            printInfo("Testing migration for plugin $plugin");
+            $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin --connection=test";
+            doShellCommand($command);
+        }
         // Run app migrations
         printInfo("Running application migrations");
         $command = getenv('CAKE_CONSOLE') . ' migrations migrate';
