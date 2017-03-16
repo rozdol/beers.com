@@ -284,8 +284,8 @@ group('cakephp', function () {
         'install',
         ':builder:init',
         ':cakephp:migrations',
-        ':cakephp:shell-scripts',
         ':cakephp:dev-user-create',
+        ':cakephp:shell-scripts',
         ':cakephp:set-folder-permissions',
         function ($app) {
             printSeparator();
