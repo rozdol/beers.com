@@ -223,7 +223,7 @@ group('cakephp', function () {
         $loadedPlugins = (explode("\n", $result));
         foreach ($loadedPlugins as $plugin) {
             printInfo("Testing migration for plugin $plugin");
-            $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin --connection=test";
+            $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin";
             doShellCommand($command);
         }
         // Run app migrations
