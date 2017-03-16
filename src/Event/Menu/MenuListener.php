@@ -111,7 +111,6 @@ class MenuListener implements EventListenerInterface
      * @param  \Cake\Event\Event $event Event object
      * @param  array             $menu  Menu
      * @param  array             $user  User
-use RolesCapabilities\CapabilityTrait;
      * @return void
      */
     public function beforeRender(Event $event, array $menu, array $user)
