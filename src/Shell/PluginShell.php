@@ -37,4 +37,13 @@ class PluginShell extends CorePluginShell
 
         return $parser;
     }
+
+    /**
+     *  No welcome message in the cake shell output
+     *
+     * @return void
+     */
+    protected function _welcome()
+    {
+    }
 }
