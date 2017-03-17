@@ -191,7 +191,6 @@ group('cakephp', function () {
         printInfo("Testing plugin migrations");
         $command = getenv('CAKE_CONSOLE') . ' plugin loaded';
         $result = doShellCommand($command);
-        $result = preg_replace('/^.*\-\n/s', '', $result);
         $loadedPlugins = (explode("\n", $result));
         foreach ($loadedPlugins as $plugin) {
             printInfo("Testing migration for plugin $plugin");
@@ -219,7 +218,6 @@ group('cakephp', function () {
         printInfo("Running plugin migrations");
         $command = getenv('CAKE_CONSOLE') . ' plugin loaded';
         $result = doShellCommand($command);
-        $result = preg_replace('/^.*\-\n/s', '', $result);
         $loadedPlugins = (explode("\n", $result));
         foreach ($loadedPlugins as $plugin) {
             printInfo("Testing migration for plugin $plugin");

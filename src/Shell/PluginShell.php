@@ -41,7 +41,7 @@ class PluginShell extends CorePluginShell
     /**
      *  No welcome message in the cake shell output
      *
-     *  @return void
+     * @return void
      */
     protected function _welcome()
     {
