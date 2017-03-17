@@ -188,7 +188,7 @@ group('cakephp', function () {
         doShellCommand($command, $secureStrings);
 
         // Run plugin migrations separately for each plugin
-        printInfo("Testing ;plugin migrations");
+        printInfo("Testing plugin migrations");
         $command = getenv('CAKE_CONSOLE') . ' plugin loaded';
         $result = doShellCommand($command);
         $result = preg_replace('/^.*\-\n/s', '', $result);
