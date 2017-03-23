@@ -47,7 +47,9 @@ abstract class BaseMenuListener implements EventListenerInterface
             }
 
             try {
-                $this->_checkAccess($item['url'], $user);
+                if (!$this->_checkAccess($item['url'], $user)) {
+                    continue;
+                }
                 $event->result .= $item['html'] . ' ';
             } catch (ForbiddenException $e) {
                 // do nothing
