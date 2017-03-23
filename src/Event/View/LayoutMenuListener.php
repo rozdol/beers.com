@@ -56,7 +56,9 @@ class LayoutMenuListener implements EventListenerInterface
         ];
 
         try {
-            $this->_checkAccess($url, $user);
+            if (!$this->_checkAccess($url, $user)) {
+                return;
+            }
         } catch (ForbiddenException $e) {
             return;
         }
