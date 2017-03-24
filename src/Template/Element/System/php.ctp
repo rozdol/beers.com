@@ -4,12 +4,14 @@
 //
 $setup = [
     'PHP Version' => PHP_VERSION,
-    'PHP Server API' => PHP_SAPI,
+    'Server API' => PHP_SAPI,
     'PHP Server User' => get_current_user(),
     'PHP Binary' => PHP_BINARY,
     'PHP Configuration File' => php_ini_loaded_file(),
-    'PHP Memory Limit' => ini_get('memory_limit'),
-    'PHP Max Execution Time' => ini_get('max_execution_time') . ' seconds',
+    'Memory Limit' => ini_get('memory_limit'),
+    'Max Execution Time' => ini_get('max_execution_time') . ' seconds',
+    'Upload Max Filesize' => $this->Number->toReadableSize(sizeToBytes(ini_get('upload_max_filesize'))),
+    'Post Max Size' => $this->Number->toReadableSize(sizeToBytes(ini_get('post_max_size'))),
 ];
 
 //
