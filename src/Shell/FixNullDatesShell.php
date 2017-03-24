@@ -22,6 +22,8 @@ class FixNullDatesShell extends Shell
 
     /**
      *  Run update process
+     *
+     * @return void
      */
     public function main()
     {
