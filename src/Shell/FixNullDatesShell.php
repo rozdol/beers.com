@@ -37,8 +37,6 @@ class FixNullDatesShell extends Shell
             $tables = $collection->listTables();
         }
 
-        $this->out('List of tables: ' . print_r($tables, true));
-
         foreach ($tables as $tbl) {
             $tblSchema = $collection->describe($tbl);
 
