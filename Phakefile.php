@@ -236,6 +236,7 @@ group('cakephp', function () {
         printInfo("Task: cakephp:shell-scripts (Run CakePHP shell scripts task)");
 
         $scripts = [
+            'fix_null_dates',
             'group import',
             'group assign',
             'role import',

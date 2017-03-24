@@ -22,6 +22,8 @@ class FixNullDatesShell extends Shell
 
     /**
      *  Run update process
+     *
+     * @return void
      */
     public function main()
     {
@@ -36,8 +38,6 @@ class FixNullDatesShell extends Shell
         } else {
             $tables = $collection->listTables();
         }
-
-        $this->out('List of tables: ' . print_r($tables, true));
 
         foreach ($tables as $tbl) {
             $tblSchema = $collection->describe($tbl);
