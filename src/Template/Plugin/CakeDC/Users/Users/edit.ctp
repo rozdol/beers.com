@@ -35,7 +35,39 @@ echo $this->Html->scriptBlock(
 </section>
 <section class="content">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-3">
+            <!-- Profile Image -->
+            <div class="box box-solid">
+                <div class="box-body">
+                    <?php
+                    $userImage = $Users->get('image');
+                    if ($userImage) {
+                        echo '<img src="' . $userImage . '" class="profile-user-img img-responsive img-circle" />';
+                    } else {
+                        echo $this->Html->image('user-image-160x160.png', [
+                            'class' => 'profile-user-img img-responsive img-circle',
+                            'alt' => 'User profile picture'
+                        ]);
+                    }
+                    ?>
+                    <h3 class="profile-username text-center"><?= $Users->username; ?></h3>
+                    <?= $this->Form->create($Users, [
+                        'type' => 'file',
+                        'url' => ['plugin' => null, 'controller' => 'Users', 'action' => 'upload-image', $Users->id]
+                    ]) ?>
+                    <div class="form-group">
+                        <?= $this->Form->label($userImage ? __('Replace image') : __('Upload image')) ?>
+                        <?= $this->Form->file('Users.image') ?>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <?= $this->Form->button(__('Upload'), ['class' => 'btn btn-primary']) ?>
+                </div>
+                <?= $this->Form->end() ?>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-md-9">
             <?= $this->Form->create($Users) ?>
             <div class="box box-solid">
                 <div class="box-header with-border">
