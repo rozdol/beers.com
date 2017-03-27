@@ -1,5 +1,8 @@
 <?php
 use Cake\Core\Configure;
+use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+
+$fhf = new FieldHandlerFactory($this);
 
 echo $this->Html->css(
     [
@@ -33,14 +36,34 @@ echo $this->Html->scriptBlock(
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
+            <?= $this->Form->create($Users) ?>
             <div class="box box-solid">
-                <?= $this->Form->create($Users) ?>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?= __('User Information') ?></h3>
+                </div>
                 <div class="box-body">
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('username'); ?>
                         </div>
+                        <div class="col-xs-12 col-md-6">
+                            <?= $this->Form->input('active', [
+                                'type' => 'checkbox',
+                                'class' => 'square',
+                                'label' => false,
+                                'templates' => [
+                                    'inputContainer' => '<div class="{{required}}">' . $this->Form->label('Users.active') . '<div class="clearfix"></div>{{content}}</div>'
+                                ]
+                            ]); ?>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?= __('Personal Details') ?></h3>
+                </div>
+                <div class="box-body">
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('first_name'); ?>
@@ -51,29 +74,32 @@ echo $this->Html->scriptBlock(
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
-                            <?= $this->Form->input('email'); ?>
+                            <?php
+                                $definition = [
+                                    'name' => 'country',
+                                    'type' => 'list(countries)',
+                                    'required' => false,
+                                ];
+
+                                $inputField = $fhf->renderInput('Users', 'country', null, ['fieldDefinitions' => $definition]);
+                                echo $inputField;
+                            ?>
                         </div>
                         <div class="col-xs-12 col-md-6">
-                            <?= $this->Form->input('active', [
-                                'type' => 'checkbox',
-                                'class' => 'square',
-                                'label' => false,
-                                'templates' => [
-                                    'inputContainer' => '<div class="{{required}}">' . $this->Form->label('active') . '<div class="clearfix"></div>{{content}}</div>'
-                                ]
-                            ]); ?>
+                            <?= $this->Form->input('initials'); ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
-                                <?= $this->Form->label('gender') ?>
-                                <?= $this->Form->select(
-                                    'gender',
-                                    ['male' => 'Male', 'female' => 'Female'],
-                                    ['class' => 'form-control', 'empty' => true]
-                                ); ?>
-                            </div>
+                            <?php
+                                $definition = [
+                                    'name' => 'gender',
+                                    'type' => 'list(genders)',
+                                    'required' => false,
+                                ];
+
+                                echo $fhf->renderInput('Users', 'gender', null, ['fieldDefinitions' => $definition]);
+                            ?>
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('birthdate', [
@@ -95,15 +121,25 @@ echo $this->Html->scriptBlock(
                             ]); ?>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?= __('Contact Details') ?></h3>
+                </div>
+                <div class="box-body">
                     <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <?= $this->Form->input('email'); ?>
+                        </div>
                         <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('phone_office'); ?>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('phone_home'); ?>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('phone_mobile'); ?>
                         </div>

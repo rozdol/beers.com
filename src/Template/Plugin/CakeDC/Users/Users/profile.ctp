@@ -1,13 +1,10 @@
 <?php
+use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+
+$fhf = new FieldHandlerFactory($this);
+
 echo $this->Html->css('AdminLTE./plugins/datepicker/datepicker3', ['block' => 'css']);
 echo $this->Html->script('AdminLTE./plugins/datepicker/bootstrap-datepicker', ['block' => 'scriptBotton']);
-echo $this->Html->scriptBlock(
-    '$(\'input[type="checkbox"].square, input[type="radio"].square\').iCheck({
-        checkboxClass: "icheckbox_square",
-        radioClass: "iradio_square"
-    });',
-    ['block' => 'scriptBotton']
-);
 ?>
 <section class="content-header">
     <h1>User Profile</h1>
@@ -50,8 +47,30 @@ echo $this->Html->scriptBlock(
                             <dd><?= !empty($user['first_name']) ? h($user['first_name']) : '&nbsp;' ?></dd>
                             <dt><?= __('Last Name') ?></dt>
                             <dd><?= !empty($user['last_name']) ? h($user['last_name']) : '&nbsp;' ?></dd>
+                            <dt><?= __('Country') ?></dt>
+                            <dd><?php
+                            if (!empty($user['country'])) {
+                                $definition = [
+                                    'name' => 'country',
+                                    'type' => 'list(countries)',
+                                    'required' => false
+                                ];
+                                echo $fhf->renderValue('Users', 'country', $user['country'], ['fieldDefinitions' => $definition]);
+                            }
+                            ?></dd>
+                            <dt><?= __('Initials') ?></dt>
+                            <dd><?= !empty($user['initials']) ? h($user['initials']) : '&nbsp;' ?></dd>
                             <dt><?= __('Gender') ?></dt>
-                            <dd><?= !empty($user['gender']) ? h($user['gender']) : '&nbsp;' ?></dd>
+                            <dd><?php
+                            if (!empty($user['gender'])) {
+                                $definition = [
+                                    'name' => 'gender',
+                                    'type' => 'list(genders)',
+                                    'required' => false
+                                ];
+                                echo $fhf->renderValue('Users', 'gender', $user['gender'], ['fieldDefinitions' => $definition]);
+                            }
+                            ?></dd>
                             <dt><?= __('Birthdate') ?></dt>
                             <dd><?= !empty($user['birthdate']) ? $user['birthdate']->i18nFormat('yyyy-MM-dd') : '&nbsp;' ?></dd>
                             <dt><?= __('Phone Office') ?></dt>
@@ -95,11 +114,32 @@ echo $this->Html->scriptBlock(
                                 'placeholder' => __('Last Name'),
                                 'value' => !empty($user['last_name']) ? h($user['last_name']) : null
                             ]); ?>
-                            <?= $this->Form->input('gender', [
-                                'type' => 'select',
-                                'options' => ['male' => 'Male', 'female' => 'Female'],
-                                'empty' => true,
+                            <?= $this->Form->label('Users.country'); ?>
+                            <div class="col-md-10">
+                                <?= $fhf->renderInput('Users', 'country', $user, [
+                                    'fieldDefinitions' => [
+                                        'name' => 'country',
+                                        'type' => 'list(countries)',
+                                        'required' => false,
+                                    ],
+                                    'label' => false
+                                ]); ?>
+                            </div>
+                            <?= $this->Form->input('Users.initials', [
+                                'placeholder' => __('Initials'),
+                                'value' => !empty($user['initials']) ? h($user['initials']) : null
                             ]); ?>
+                            <?= $this->Form->label('Users.gender'); ?>
+                            <div class="col-md-10">
+                                <?= $fhf->renderInput('Users', 'gender', $user['gender'], [
+                                    'fieldDefinitions' => [
+                                        'name' => 'gender',
+                                        'type' => 'list(genders)',
+                                        'required' => false,
+                                    ],
+                                    'label' => false
+                                ]); ?>
+                            </div>
                             <?= $this->Form->input('Users.birthdate', [
                                 'type' => 'text',
                                 'label' => 'Birthdate',

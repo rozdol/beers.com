@@ -1,4 +1,8 @@
 <?php
+use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+
+$fhf = new FieldHandlerFactory($this);
+
 echo $this->Html->css(
     [
         'AdminLTE./plugins/iCheck/all',
@@ -31,8 +35,11 @@ echo $this->Html->scriptBlock(
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
+            <?= $this->Form->create($Users) ?>
             <div class="box box-solid">
-                <?= $this->Form->create($Users) ?>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?= __('User Information') ?></h3>
+                </div>
                 <div class="box-body">
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
@@ -44,17 +51,6 @@ echo $this->Html->scriptBlock(
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
-                            <?= $this->Form->input('first_name'); ?>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <?= $this->Form->input('last_name'); ?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <?= $this->Form->input('email'); ?>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('active', [
                                 'type' => 'checkbox',
                                 'class' => 'square',
@@ -65,15 +61,50 @@ echo $this->Html->scriptBlock(
                             ]); ?>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?= __('Personal Details') ?></h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <?= $this->Form->input('first_name'); ?>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <?= $this->Form->input('last_name'); ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <?php
+                                $definition = [
+                                    'name' => 'country',
+                                    'type' => 'list(countries)',
+                                    'required' => false,
+                                ];
+
+                                echo $fhf->renderInput('Users', 'country', null, ['fieldDefinitions' => $definition]);
+                            ?>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <?= $this->Form->input('initials'); ?>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
-                                <?= $this->Form->label('Users.gender') ?>
-                                <?= $this->Form->select(
-                                    'gender',
-                                    ['male' => 'Male', 'female' => 'Female'],
-                                    ['class' => 'form-control', 'empty' => true]
-                                ); ?>
+                            <?php
+                                $definition = [
+                                    'name' => 'gender',
+                                    'type' => 'list(genders)',
+                                    'required' => false,
+                                ];
+
+                                $inputField = $fhf->renderInput('Users', 'gender', null, ['fieldDefinitions' => $definition]);
+                                echo $inputField;
+                            ?>
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-6">
@@ -95,25 +126,33 @@ echo $this->Html->scriptBlock(
                             ]); ?>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?= __('Contact Details') ?></h3>
+                </div>
+                <div class="box-body">
                     <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <?= $this->Form->input('email'); ?>
+                        </div>
                         <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('phone_office'); ?>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('phone_home'); ?>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('phone_mobile'); ?>
                         </div>
                     </div>
                 </div>
-                <div class="box-footer">
-                    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
-                </div>
-            <?= $this->Form->end() ?>
             </div>
+            <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
+            <?= $this->Form->end() ?>
         </div>
     </div>
 </section>

@@ -1,4 +1,8 @@
-<?php use Cake\Utility\Inflector; ?>
+<?php
+use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+
+$fhf = new FieldHandlerFactory($this);
+?>
 <section class="content-header">
     <h1>Users
         <div class="pull-right">
@@ -34,7 +38,14 @@
                         <td><?= h($user->email) ?></td>
                         <td><?= h($user->first_name) ?></td>
                         <td><?= h($user->last_name) ?></td>
-                        <td><?= Inflector::humanize(h($user->gender)) ?></td>
+                        <td><?php
+                            $definition = [
+                                'name' => 'gender',
+                                'type' => 'list(genders)',
+                                'required' => false
+                            ];
+                            echo $fhf->renderValue('Users', 'gender', $user, ['fieldDefinitions' => $definition]);
+                        ?></td>
                         <td><?= $user->has('birthdate') ? $user->birthdate->i18nFormat('yyyy-MM-dd') : '' ?></td>
                         <td class="actions">
                             <div class="btn-group btn-group-xs" role="group">
