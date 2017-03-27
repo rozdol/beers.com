@@ -1,3 +1,4 @@
+<?php use Cake\Utility\Inflector; ?>
 <section class="content-header">
     <h1><?= $this->Html->link(__('Users'), ['action' => 'index']) . ' &raquo; ' . h($Users->username) ?></h1>
 </section>
@@ -13,18 +14,22 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <dl class="dl-horizontal">
-                        <dt><?= __('Id') ?></dt>
-                        <dd><?= !empty($Users->id) ? h($Users->id) : '&nbsp;' ?></dd>
+                        <dt><?= __('ID') ?></dt>
+                        <dd><?= $Users->has('id') ? h($Users->id) : '&nbsp;' ?></dd>
                         <dt><?= __('Username') ?></dt>
-                        <dd><?= !empty($Users->username) ? h($Users->username) : '&nbsp;' ?></dd>
+                        <dd><?= $Users->has('username') ? h($Users->username) : '&nbsp;' ?></dd>
                         <dt><?= __('Email') ?></dt>
-                        <dd><?= !empty($Users->email) ? h($Users->email) : '&nbsp;' ?></dd>
+                        <dd><?= $Users->has('email') ? h($Users->email) : '&nbsp;' ?></dd>
                         <dt><?= __('First Name') ?></dt>
-                        <dd><?= !empty($Users->first_name) ? h($Users->first_name) : '&nbsp;' ?></dd>
+                        <dd><?= $Users->has('first_name') ? h($Users->first_name) : '&nbsp;' ?></dd>
                         <dt><?= __('Last Name') ?></dt>
-                        <dd><?= !empty($Users->last_name) ? h($Users->last_name) : '&nbsp;' ?></dd>
+                        <dd><?= $Users->has('last_name') ? h($Users->last_name) : '&nbsp;' ?></dd>
                         <dt><?= __('Active') ?></dt>
-                        <dd><?= !empty($Users->active) ? h($Users->active) : '&nbsp;' ?></dd>
+                        <dd><?= $Users->has('active') && $Users->active ? __('Yes') : __('No') ?></dd>
+                        <dt><?= __('Gender') ?></dt>
+                        <dd><?= $Users->has('gender') ? Inflector::humanize(h($Users->gender)) : '&nbsp;' ?></dd>
+                        <dt><?= __('Birthdate') ?></dt>
+                        <dd><?= $Users->has('birthdate') ? $Users->birthdate->i18nFormat('yyyy-MM-dd') : '&nbsp;' ?></dd>
                     </dl>
                 </div>
                 <!-- /.box-body -->
@@ -41,10 +46,16 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <dl class="dl-horizontal">
+                        <dt><?= __('Phone Office') ?></dt>
+                        <dd><?= $Users->has('phone_office') ? h($Users->phone_office) : '&nbsp;' ?></dd>
+                        <dt><?= __('Phone Home') ?></dt>
+                        <dd><?= $Users->has('phone_home') ? h($Users->phone_home) : '&nbsp;' ?></dd>
+                        <dt><?= __('Phone Mobile') ?></dt>
+                        <dd><?= $Users->has('phone_mobile') ? h($Users->phone_mobile) : '&nbsp;' ?></dd>
                         <dt><?= __('Created') ?></dt>
-                        <dd><?= !empty($Users->created) ? h($Users->created) : '&nbsp;' ?></dd>
+                        <dd><?= $Users->has('created') ? $Users->created->i18nFormat('yyyy-MM-dd HH:mm') : '&nbsp;' ?></dd>
                         <dt><?= __('Modified') ?></dt>
-                        <dd><?= !empty($Users->modified) ? h($Users->modified) : '&nbsp;' ?></dd>
+                        <dd><?= $Users->has('modified') ? $Users->modified->i18nFormat('yyyy-MM-dd HH:mm') : '&nbsp;' ?></dd>
                     </dl>
                 </div>
                 <!-- /.box-body -->
