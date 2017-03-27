@@ -42,10 +42,6 @@ group('app', function () {
         printInfo("Task: app:install (Install application)");
     });
     task('install', ':dotenv:create', ':dotenv:reload', ':file:process');
-    // test that the migrations can run
-    task('install', ':cakephp:test-migrations');
-    // re-create empty test database for unit tests to run
-    task('install', ':cakephp:test-database-create');
     task('install', ':mysql:database-create');
     task('install', ':cakephp:install');
 
@@ -65,6 +61,37 @@ group('app', function () {
     task('remove', ':dotenv:delete');
     task('remove', ':cakephp:test-database-drop');
     task('remove', ':mysql:database-drop');
+
+    //
+    // Save version that we are deploying, both before and after
+    //
+
+    after(':builder:init', function ($app) {
+        $version = getProjectVersion($app);
+        // Save the version that we are deploying
+        if (file_exists('build/version')) {
+            rename('build/version', 'build/version.bak');
+        }
+        file_put_contents('build/version', $version);
+    });
+
+    after('install', function ($app) {
+        $version = getProjectVersion($app);
+        // Save the version that we have deployed
+        if (file_exists('build/version.ok')) {
+            rename('build/version.ok', 'build/version.ok.bak');
+        }
+        file_put_contents('build/version.ok', $version);
+    });
+
+    after('update', function ($app) {
+        $version = getProjectVersion($app);
+        // Save the version that we have deployed
+        if (file_exists('build/version.ok')) {
+            rename('build/version.ok', 'build/version.ok.bak');
+        }
+        file_put_contents('build/version.ok', $version);
+    });
 });
 
 /**
@@ -181,6 +208,12 @@ group('cakephp', function () {
         $mysql = new \PhakeBuilder\MySQL(requireValue('SYSTEM_COMMAND_MYSQL', $app));
         $mysql->setDSN($dsn);
 
+        // drop test database
+        printInfo("Dropping test database");
+        $command = $mysql->query('DROP DATABASE IF EXISTS ' . requireValue('DB_NAME', $app) . '_test');
+        $secureStrings = ['DB_PASS', 'DB_ADMIN_PASS'];
+        doShellCommand($command, $secureStrings);
+
         // create test database
         printInfo("Creating test database");
         $command = $mysql->query('CREATE DATABASE IF NOT EXISTS ' . requireValue('DB_NAME', $app) . '_test');
@@ -220,7 +253,7 @@ group('cakephp', function () {
         $result = doShellCommand($command);
         $loadedPlugins = (explode("\n", $result));
         foreach ($loadedPlugins as $plugin) {
-            printInfo("Testing migration for plugin $plugin");
+            printInfo("Running migration for plugin $plugin");
             $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin";
             doShellCommand($command);
         }
@@ -271,29 +304,14 @@ group('cakephp', function () {
     });
 
     /**
-     * 'Grouped CakePHP app update related tasks
-     */
-    desc('Run CakePHP app update related tasks');
-    task(
-        'update',
-        ':builder:init',
-        ':cakephp:clear-cache',
-        ':cakephp:migrations',
-        ':cakephp:shell-scripts',
-        ':cakephp:set-folder-permissions',
-        function ($app) {
-            printSeparator();
-            printInfo("Task: cakephp:update (Run CakePHP app update related tasks)");
-        }
-    );
-
-    /**
-     * 'Grouped CakePHP app install related tasks
+     * Grouped CakePHP app install related tasks
      */
     desc('Runs CakePHP app install related tasks');
     task(
         'install',
         ':builder:init',
+        ':cakephp:test-migrations',
+        ':cakephp:test-database-create',
         ':cakephp:migrations',
         ':cakephp:dev-user-create',
         ':cakephp:shell-scripts',
@@ -304,34 +322,22 @@ group('cakephp', function () {
         }
     );
 
-    //
-    // Save version that we are deploying, both before and after
-    //
-
-    after(':builder:init', function ($app) {
-        $version = getProjectVersion($app);
-        // Save the version that we are deploying
-        if (file_exists('build/version')) {
-            rename('build/version', 'build/version.bak');
+    /**
+     * Grouped CakePHP app update related tasks
+     */
+    desc('Run CakePHP app update related tasks');
+    task(
+        'update',
+        ':builder:init',
+        ':cakephp:test-migrations',
+        ':cakephp:test-database-create',
+        ':cakephp:clear-cache',
+        ':cakephp:migrations',
+        ':cakephp:shell-scripts',
+        ':cakephp:set-folder-permissions',
+        function ($app) {
+            printSeparator();
+            printInfo("Task: cakephp:update (Run CakePHP app update related tasks)");
         }
-        file_put_contents('build/version', $version);
-    });
-
-    after('install', function ($app) {
-        $version = getProjectVersion($app);
-        // Save the version that we have deployed
-        if (file_exists('build/version.ok')) {
-            rename('build/version.ok', 'build/version.ok.bak');
-        }
-        file_put_contents('build/version.ok', $version);
-    });
-
-    after('update', function ($app) {
-        $version = getProjectVersion($app);
-        // Save the version that we have deployed
-        if (file_exists('build/version.ok')) {
-            rename('build/version.ok', 'build/version.ok.bak');
-        }
-        file_put_contents('build/version.ok', $version);
-    });
+    );
 });
