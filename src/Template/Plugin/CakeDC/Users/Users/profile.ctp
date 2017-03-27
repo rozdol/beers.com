@@ -1,3 +1,11 @@
+<?php
+use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+
+$fhf = new FieldHandlerFactory($this);
+
+echo $this->Html->css('AdminLTE./plugins/datepicker/datepicker3', ['block' => 'css']);
+echo $this->Html->script('AdminLTE./plugins/datepicker/bootstrap-datepicker', ['block' => 'scriptBotton']);
+?>
 <section class="content-header">
     <h1>User Profile</h1>
 </section>
@@ -39,6 +47,38 @@
                             <dd><?= !empty($user['first_name']) ? h($user['first_name']) : '&nbsp;' ?></dd>
                             <dt><?= __('Last Name') ?></dt>
                             <dd><?= !empty($user['last_name']) ? h($user['last_name']) : '&nbsp;' ?></dd>
+                            <dt><?= __('Country') ?></dt>
+                            <dd><?php
+                            if (!empty($user['country'])) {
+                                $definition = [
+                                    'name' => 'country',
+                                    'type' => 'list(countries)',
+                                    'required' => false
+                                ];
+                                echo $fhf->renderValue('Users', 'country', $user['country'], ['fieldDefinitions' => $definition]);
+                            }
+                            ?></dd>
+                            <dt><?= __('Initials') ?></dt>
+                            <dd><?= !empty($user['initials']) ? h($user['initials']) : '&nbsp;' ?></dd>
+                            <dt><?= __('Gender') ?></dt>
+                            <dd><?php
+                            if (!empty($user['gender'])) {
+                                $definition = [
+                                    'name' => 'gender',
+                                    'type' => 'list(genders)',
+                                    'required' => false
+                                ];
+                                echo $fhf->renderValue('Users', 'gender', $user['gender'], ['fieldDefinitions' => $definition]);
+                            }
+                            ?></dd>
+                            <dt><?= __('Birthdate') ?></dt>
+                            <dd><?= !empty($user['birthdate']) ? $user['birthdate']->i18nFormat('yyyy-MM-dd') : '&nbsp;' ?></dd>
+                            <dt><?= __('Phone Office') ?></dt>
+                            <dd><?= !empty($user['phone_office']) ? h($user['phone_office']) : '&nbsp;' ?></dd>
+                            <dt><?= __('Phone Home') ?></dt>
+                            <dd><?= !empty($user['phone_home']) ? h($user['phone_home']) : '&nbsp;' ?></dd>
+                            <dt><?= __('Phone Mobile') ?></dt>
+                            <dd><?= !empty($user['phone_mobile']) ? h($user['phone_mobile']) : '&nbsp;' ?></dd>
                         </dl>
                         <?= $this->Html->link(
                             '<i class="fa fa-lock"></i> ' . __d('Users', 'Change Password'),
@@ -73,6 +113,61 @@
                             <?= $this->Form->input('Users.last_name', [
                                 'placeholder' => __('Last Name'),
                                 'value' => !empty($user['last_name']) ? h($user['last_name']) : null
+                            ]); ?>
+                            <?= $this->Form->label('Users.country'); ?>
+                            <div class="col-md-10">
+                                <?= $fhf->renderInput('Users', 'country', $user, [
+                                    'fieldDefinitions' => [
+                                        'name' => 'country',
+                                        'type' => 'list(countries)',
+                                        'required' => false,
+                                    ],
+                                    'label' => false
+                                ]); ?>
+                            </div>
+                            <?= $this->Form->input('Users.initials', [
+                                'placeholder' => __('Initials'),
+                                'value' => !empty($user['initials']) ? h($user['initials']) : null
+                            ]); ?>
+                            <?= $this->Form->label('Users.gender'); ?>
+                            <div class="col-md-10">
+                                <?= $fhf->renderInput('Users', 'gender', $user['gender'], [
+                                    'fieldDefinitions' => [
+                                        'name' => 'gender',
+                                        'type' => 'list(genders)',
+                                        'required' => false,
+                                    ],
+                                    'label' => false
+                                ]); ?>
+                            </div>
+                            <?= $this->Form->input('Users.birthdate', [
+                                'type' => 'text',
+                                'label' => 'Birthdate',
+                                'data-provide' => 'datepicker',
+                                'autocomplete' => 'off',
+                                'data-date-format' => 'yyyy-mm-dd',
+                                'data-date-autoclose' => true,
+                                'value' => !empty($user['birthdate']) ? $user['birthdate']->i18nFormat('yyyy-MM-dd') : null,
+                                'templates' => [
+                                    'input' => '<div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="{{type}}" name="{{name}}"{{attrs}}/>
+                                    </div>'
+                                ]
+                            ]); ?>
+                            <?= $this->Form->input('Users.phone_office', [
+                                'placeholder' => __('Office Phone'),
+                                'value' => !empty($user['phone_office']) ? h($user['phone_office']) : null
+                            ]); ?>
+                            <?= $this->Form->input('Users.phone_home', [
+                                'placeholder' => __('Home Phone'),
+                                'value' => !empty($user['phone_home']) ? h($user['phone_home']) : null
+                            ]); ?>
+                            <?= $this->Form->input('Users.phone_mobile', [
+                                'placeholder' => __('Mobile Phone'),
+                                'value' => !empty($user['phone_mobile']) ? h($user['phone_mobile']) : null
                             ]); ?>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">

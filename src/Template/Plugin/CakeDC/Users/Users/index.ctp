@@ -1,3 +1,8 @@
+<?php
+use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+
+$fhf = new FieldHandlerFactory($this);
+?>
 <section class="content-header">
     <h1>Users
         <div class="pull-right">
@@ -21,16 +26,27 @@
                 <th><?= $this->Paginator->sort('email') ?></th>
                 <th><?= $this->Paginator->sort('first_name') ?></th>
                 <th><?= $this->Paginator->sort('last_name') ?></th>
+                <th><?= $this->Paginator->sort('gender') ?></th>
+                <th><?= $this->Paginator->sort('birthdate') ?></th>
                 <th class="actions"><?= __d('Users', 'Actions') ?></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($Users as $user): ?>
+                    <?php foreach ($Users as $user) : ?>
                     <tr>
                         <td><?= h($user->username) ?></td>
                         <td><?= h($user->email) ?></td>
                         <td><?= h($user->first_name) ?></td>
                         <td><?= h($user->last_name) ?></td>
+                        <td><?php
+                            $definition = [
+                                'name' => 'gender',
+                                'type' => 'list(genders)',
+                                'required' => false
+                            ];
+                            echo $fhf->renderValue('Users', 'gender', $user, ['fieldDefinitions' => $definition]);
+                        ?></td>
+                        <td><?= $user->has('birthdate') ? $user->birthdate->i18nFormat('yyyy-MM-dd') : '' ?></td>
                         <td class="actions">
                             <div class="btn-group btn-group-xs" role="group">
                             <?= $this->Html->link(
@@ -46,7 +62,8 @@
                             <?= $this->Html->link(
                                 '<i class="fa fa-lock"></i>',
                                 ['action' => 'change-user-password', $user->id],
-                                ['title' => __('Change User Password'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                ['title' => __('Change User Password'), 'class' => 'btn btn-default btn-sm', 'escape' => false]
+                            ) ?>
                             <?= $this->Form->postLink(
                                 '<i class="fa fa-trash"></i>',
                                 ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'delete', $user->id],
