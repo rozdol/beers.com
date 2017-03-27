@@ -23,7 +23,7 @@ class UsersController extends AppController
      * change user passwords by the superusers
      *
      * @param mixed $id user id
-     * @return void
+     * @return \Cake\Network\Response|null Redirects on successful edit, renders view otherwise.
      */
     public function changeUserPassword($id)
     {
@@ -58,5 +58,63 @@ class UsersController extends AppController
         }
 
         $this->set(compact('user'));
+    }
+
+    /**
+     * Upload user image
+     *
+     * Converts and stores user image in base64 scheme.
+     *
+     * @param string $id User id
+     * @return \Cake\Network\Response
+     */
+    public function uploadImage($id)
+    {
+        $this->request->allowMethod(['patch', 'post', 'put']);
+
+        $user = $this->Users->get($id);
+
+        // user already has image flag
+        $hasImage = $user->get('image');
+
+        $data = $this->request->data('Users.image');
+
+        if (!$data) {
+            $this->Flash->error(__('Failed to upload image, please try again.'));
+
+            return $this->redirect($this->request->referer());
+        }
+
+        if (524288 < $data['size']) {
+            $this->Flash->error(__('Image is too large. Max size 512kb.'));
+
+            return $this->redirect($this->request->referer());
+        }
+
+        list($mimeGroup, ) = explode('/', $data['type']);
+
+        // show error and redirect if uploaded file is not an image
+        if ('image' !== strtolower($mimeGroup)) {
+            $this->Flash->error(__('Unsupported image type.'));
+
+            return $this->redirect($this->request->referer());
+        }
+
+        // base64 encode image
+        $image = 'data:' . $data['type'] . ';base64,' . base64_encode(file_get_contents($data['tmp_name']));
+
+        $user = $this->Users->patchEntity($user, ['image' => $image]);
+
+        if ($this->Users->save($user)) {
+            if ($hasImage) {
+                $this->Flash->success(__('The image has been replaced.'));
+            } else {
+                $this->Flash->success(__('The image has been uploaded.'));
+            }
+        } else {
+            $this->Flash->error(__('Failed to upload image, please try again.'));
+        }
+
+        return $this->redirect($this->request->referer());
     }
 }

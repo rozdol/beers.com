@@ -15,10 +15,15 @@ echo $this->Html->script('AdminLTE./plugins/datepicker/bootstrap-datepicker', ['
             <!-- Profile Image -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                <?= $this->Html->image(
-                    'user-image-160x160.png',
-                    ['class' => 'profile-user-img img-responsive img-circle', 'alt' => 'User profile picture']
-                ); ?>
+                <?php
+                if (!empty($user['image'])) {
+                    echo '<img src="' . $user['image'] . '" class="profile-user-img img-responsive img-circle" />';
+                } else {
+                    echo $this->Html->image('user-image-160x160.png', [
+                        'class' => 'profile-user-img img-responsive img-circle'
+                    ]);
+                }
+                ?>
 
                 <h3 class="profile-username text-center"><?= $user['name']; ?></h3>
 
