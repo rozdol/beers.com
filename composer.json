@@ -19,12 +19,12 @@
         "maiconpinto/cakephp-adminlte-theme": "^1.0",
         "mobiledetect/mobiledetectlib": "2.*",
         "pyrech/composer-changelogs": "~1.4",
-        "qobo/cakephp-csv-migrations": "^15.0",
-        "qobo/cakephp-groups": "^4.0",
-        "qobo/cakephp-menu": "^4.0",
-        "qobo/cakephp-roles-capabilities": "^7.0",
-        "qobo/cakephp-search": "^7.0",
-        "qobo/cakephp-utils": "^1.0",
+        "qobo/cakephp-csv-migrations": "^16.0",
+        "qobo/cakephp-groups": "^5.0",
+        "qobo/cakephp-menu": "^5.0",
+        "qobo/cakephp-roles-capabilities": "^8.0",
+        "qobo/cakephp-search": "^8.0",
+        "qobo/cakephp-utils": "^2.0",
         "qobo/phake-builder": "~2.0"
     },
     "require-dev": {
