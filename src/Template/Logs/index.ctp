@@ -11,6 +11,18 @@ $typeLabels = [
     'info' => 'info',
     'debug' => 'primary'
 ];
+
+$typeIcons = [
+    'emergency' => 'fa fa-exclamation-triangle bg-red',
+    'alert' => 'fa fa-exclamation-triangle bg-red',
+    'critical' => 'fa fa-exclamation-triangle bg-red',
+    'error' => 'fa fa-exclamation-triangle bg-red',
+    'warning' => 'fa fa-exclamation-triangle bg-yellow',
+    'notice' => 'fa fa-info-circle bg-blue',
+    'info' => 'fa fa-info-circle bg-blue',
+    'debug' => 'fa-wrench bg-green'
+];
+
 ?>
 <section class="content-header">
     <h1><?= __('Logs'); ?>
@@ -70,105 +82,93 @@ $typeLabels = [
             </ul>
             <?= $this->element('DatabaseLog.admin_filter'); ?>
         </div>
-        <div class="box-body table-responsive">
-            <table class="table table-hover table-condensed table-vertical-align">
-                <thead>
-                    <tr>
-                        <th class="col-xs-1"><?php echo $this->Paginator->sort('type');?></th>
-                        <th class="col-xs-5"><?php echo $this->Paginator->sort('message');?></th>
-                        <th class="col-xs-2"><?php echo $this->Paginator->sort('uri', __('URI'));?></th>
-                        <th class="col-xs-1"><?php echo $this->Paginator->sort('ip', __('IP'));?></th>
-                        <th class="col-xs-2"><?php echo $this->Paginator->sort('created');?></th>
-                        <th class="actions col-xs-1"><?php echo __('Actions');?></th>
-                    </tr>
-                </thead>
-                <tbody>
+                
+        <!-- Timeline start -->
+        <?php $displayed_date = ''; ?>
+        <ul class="timeline">
+        <?php foreach ($logs as $log) : ?>
+        <?php 
+            list($date, $time) = preg_split('/\,\s/', $log['created']);
+            if ($displayed_date != $date) {
+                $displayed_date = $date;
+                ?>
+                <!-- timeline time label -->
+                <li class="time-label">
+                    <span class="bg-red">
+                        <?= $date ?>
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
                 <?php
-                foreach ($logs as $log):
-                    $message = $log['message'];
-                    $pos = strpos($message, 'Stack Trace:');
-                    if ($pos) {
-                        $message = trim(substr($message, 0, $pos));
-                    }
-                    $pos = strpos($message, 'Trace:');
-                    if ($pos) {
-                        $message = trim(substr($message, 0, $pos));
-                    }
-                    $title = $this->Text->truncate(
-                        $message,
-                        85,
-                        [
-                            'ellipsis' => '...',
-                            'exact' => true
-                        ]
-                    );
-                    ?>
-                    <tr>
-                        <td>
-                        <?php $label = array_key_exists($log['type'], $typeLabels) ? $typeLabels[$log['type']] : 'default';?>
-                        <span class="label label-<?= $label;?>"><?= h($log['type']); ?></span>
-                        &nbsp;<small>(<?php echo h($log['count']); ?>x)</small>
-                        </td>
-                        <td class="logs-col-message">
-                            <div class="row">
-                                <div class="col-xs-9 col-lg-10 title"><?= h($title); ?></div>
-                                <div class="col-xs-3 col-lg-2">
-                                    <div class="text-right">
-                                    <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapse<?= $log['id']; ?>" aria-expanded="false" aria-controls="collapse<?= $log['id']; ?>">
-                                        <small><i class="fa fa-chevron-down"></i></small>
-                                    </button>
-                                    </div>
-                                </div>
+            }
+        ?>
+       
+        <!-- timeline item -->
+        <li>
+            <!-- timeline icon -->
+            <i class="<?= $typeIcons[$log['type']] ?>"></i>
+            <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> <?= $time ?></span>
+
+                <h2 class="timeline-header"><?= ucfirst($log['type']); ?></h2>
+
+                <div class="timeline-body">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-2 text-right">
+                                <strong><?= __('Hostname'); ?></strong>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="collapse" id="collapse<?= $log['id']; ?>">
-                                            <pre><?php echo h($message); ?></pre>
-                                    </div>
-                                </div>
+                            <div class="col-xs-8 col-md-4">
+                                <?= h($log['hostname']); ?>
                             </div>
-                        </td>
-                        <td><?php echo h($log['uri']); ?>&nbsp;</td>
-                        <td><?php echo h($log['ip']); ?>&nbsp;</td>
-                        <td><?php echo $this->Time->nice($log['created']); ?>&nbsp;</td>
-                        <td class="actions">
-                            <?php echo $this->Html->link(
-                                '<i class="fa fa-eye"></i>',
-                                [
-                                    'plugin' => false,
-                                    'controller' => 'Logs',
-                                    'action' => 'view',
-                                    $log['id'],
-                                    '?' => $this->request->query
-                                ],
-                                [
-                                    'title' => __('View'),
-                                    'class' => 'btn btn-default btn-sm',
-                                    'escape' => false
-                                ]
-                            );
-                            ?>
-                            <?php echo $this->Form->postLink(
-                                '<i class="fa fa-trash"></i>',
-                                [
-                                    'plugin' => false,
-                                    'controller' => 'Logs',
-                                    'action' => 'delete',
-                                    $log['id']
-                                ],
-                                [
-                                    'confirm' => __('Are you sure you want to delete log # {0}?', $log['id']),
-                                    'title' => __('Delete'),
-                                    'class' => 'btn btn-default btn-sm',
-                                    'escape' => false
-                                ]
-                            ); ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+                            <div class="col-xs-4 col-md-2 text-right">
+                                <strong><?= __('IP'); ?></strong>
+                            </div>
+                            <div class="col-xs-8 col-md-4">
+                                <?= h($log['ip']); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-md-2 text-right">
+                                <strong><?= __('Uri'); ?></strong>
+                            </div>
+                            <div class="col-xs-8 col-md-4">
+                                <?= h($log['uri']); ?>
+                            </div>
+                            <div class="col-xs-4 col-md-2 text-right">
+                                <strong><?= __('Referrer'); ?></strong>
+                            </div>
+                            <div class="col-xs-8 col-md-4">
+                                <?= h($log['refer']); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <strong><?= __('Message'); ?></strong>
+                            </div>
+                            <div class="col-md-10">
+                                <pre><small><?= trim(h($log['message'])); ?></small></pre>
+                            </div>
+                        </div>
+                        <?php if (!empty($log['context']['scope'])) : ?>
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <strong><?= __('Context'); ?></strong>
+                            </div>
+                            <div class="col-md-10">
+                                <pre><small><?= h($log['context']); ?></small></pre>
+                            </div>                            
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <?php endforeach; ?>
+        <!-- END timeline item -->
+
+        </ul>
+        <!-- Timeline end -->
         <div class="box-footer">
             <div class="paginator">
                 <?= $this->Paginator->counter([
