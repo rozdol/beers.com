@@ -88,14 +88,14 @@ $typeIcons = [
         <ul class="timeline">
         <?php foreach ($logs as $log) : ?>
         <?php 
-            list($date, $time) = preg_split('/\,\s/', $log['created']);
+            $date = $log['created']->i18nFormat('yyyy-MM-dd');
             if ($displayed_date != $date) {
                 $displayed_date = $date;
                 ?>
                 <!-- timeline time label -->
                 <li class="time-label">
                     <span class="bg-red">
-                        <?= $date ?>
+                        <?= $displayed_date ?>
                     </span>
                 </li>
                 <!-- /.timeline-label -->
@@ -108,7 +108,7 @@ $typeIcons = [
             <!-- timeline icon -->
             <i class="<?= $typeIcons[$log['type']] ?>"></i>
             <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> <?= $time ?></span>
+                <span class="time"><i class="fa fa-clock-o"></i> <?= $log['created']->i18nFormat('H:m:s') ?></span>
 
                 <h2 class="timeline-header"><?= ucfirst($log['type']); ?></h2>
 
