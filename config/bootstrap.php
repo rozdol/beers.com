@@ -199,7 +199,7 @@ Plugin::load('CsvMigrations', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Crud');
 Plugin::load('Groups', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('RolesCapabilities', ['bootstrap' => true, 'routes' => true]);
-Plugin::load('Menu', ['bootstrap' => true]);
+Plugin::load('Menu', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('AuditStash');
 Plugin::load('DatabaseLog', ['routes' => true]);
 Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
