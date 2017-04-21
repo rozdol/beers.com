@@ -273,7 +273,8 @@ group('cakephp', function () {
             'group import',
             'group assign',
             'role import',
-            'capability assign'
+            'capability assign',
+            'menu import'
         ];
 
         foreach ($scripts as $script) {
