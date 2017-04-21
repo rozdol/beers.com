@@ -262,6 +262,10 @@ class MenuListener implements EventListenerInterface
         foreach ($items as $k => &$item) {
             $url = $item['url'];
             if (is_string($url)) {
+                // skip access check on external links
+                if (preg_match('/http/i', $url) && (0 !== strpos($url, $fullBaseUrl))) {
+                    continue;
+                }
                 // strip out full base URL if is part of menu item's URL
                 $url = false !== strpos($url, $fullBaseUrl) ? str_replace($fullBaseUrl, '', $url) : $url;
                 $url = Router::parse($url);
