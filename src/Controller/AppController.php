@@ -108,6 +108,13 @@ class AppController extends Controller
             if (empty($this->Auth->user())) {
                 $this->redirect('/login');
             } else {
+                // send empty response for embedded forms
+                if ($this->request->query('embedded')) {
+                    $this->render(false);
+                    $this->response->send();
+
+                    return;
+                }
                 throw new ForbiddenException($e->getMessage());
             }
         }
