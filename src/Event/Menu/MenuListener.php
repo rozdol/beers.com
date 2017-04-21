@@ -6,11 +6,15 @@ use Cake\Event\EventListenerInterface;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
+use CsvMigrations\MigrationTrait;
+use Exception;
+use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
 
 class MenuListener implements EventListenerInterface
 {
     use CapabilityTrait;
+    use MigrationTrait;
 
     /**
      * ACL instance
@@ -26,6 +30,7 @@ class MenuListener implements EventListenerInterface
     {
         return [
             'Menu.Menu.getMenu' => 'getMenu',
+            'Menu.Menu.getMenuItems' => 'getMenuItems',
             'Menu.Menu.beforeRender' => 'beforeRender'
         ];
     }
@@ -70,6 +75,93 @@ class MenuListener implements EventListenerInterface
         }
 
         $event->result = $menus[$name];
+    }
+
+    /**
+     * Method that returns menu nested array based on provided menu name
+     *
+     * @param \Cake\Event\Event $event Event object
+     * @param string $name Menu name
+     * @param array $user Current user
+     * @param bool $fullBaseUrl Flag for fullbase url on menu links
+     * @param array $modules Modules to fetch menu items for
+     * @return void
+     */
+    public function getMenuItems(Event $event, $name, array $user, $fullBaseUrl = false, array $modules = [])
+    {
+        if (MENU_ADMIN === $name) {
+            $event->result = $this->_getAdminMenuItems();
+
+            return;
+        }
+
+        $result = [];
+        if (empty($modules)) {
+            $modules = $this->_getAllModules();
+            // include dashboards link when fetching all modules
+            $result[] = [
+                'label' => 'Dashboards',
+                'url' => '#',
+                'icon' => 'tachometer',
+                'children' => $this->_getDashboardLinks($user)
+            ];
+        }
+
+        foreach ($modules as $module) {
+            try {
+                $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_MENUS, $module);
+                $parsed = $mc->parse();
+                if (empty($parsed)) {
+                    continue;
+                }
+
+                $result[] = json_decode(json_encode($parsed), true);
+            } catch (Exception $e) {
+                //
+            }
+        }
+
+        $event->result = $result;
+    }
+
+    /**
+     * Admin menu getter.
+     *
+     * @return array
+     */
+    protected function _getAdminMenuItems()
+    {
+        $result = [
+            ['label' => 'Users', 'desc' => 'Manage system users', 'url' => '/users/', 'icon' => 'user bg-yellow', 'order' => 10],
+            ['label' => 'Groups', 'desc' => 'Manage system groups', 'url' => '/groups/groups/', 'icon' => 'users bg-orange', 'order' => 20],
+            ['label' => 'Roles', 'desc' => 'Manage system roles', 'url' => '/roles-capabilities/Roles/', 'icon' => 'unlock bg-green', 'order' => 30],
+            ['label' => 'Lists', 'desc' => 'Manage database lists', 'url' => '/csv-migrations/dblists/', 'icon' => 'list bg-blue', 'order' => 40],
+            ['label' => 'Logs', 'desc' => 'View system logs', 'url' => '/Logs/', 'icon' => 'list-alt bg-red', 'order' => 50],
+            ['label' => 'Information', 'desc' => 'System information screen', 'url' => '/System/info', 'icon' => 'info-circle bg-light-blue', 'order' => 60],
+            ['label' => 'Settings', 'desc' => 'System settings', 'url' => '#', 'icon' => 'cog bg-olive', 'order' => 100]
+        ];
+
+        if ((bool)getenv('APP_SETS')) {
+            $result[] = [
+                'label' => 'Sets',
+                'desc' => 'Record sets',
+                'url' => '/sets/',
+                'icon' => 'cubes bg-purple',
+                'order' => '70'
+            ];
+        }
+
+        if ((bool)getenv('APP_INTEGRATIONS')) {
+            $result[] = [
+                'label' => 'Integrations',
+                'desc' => 'Integration Packages',
+                'url' => '/integrations',
+                'icon' => 'plug bg-blue',
+                'order' => '80'
+            ];
+        }
+
+        return $result;
     }
 
     /**
