@@ -77,8 +77,8 @@ $hasActivity = false;
         <!-- Settings tab content -->
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <h3 class="control-sidebar-heading">Settings</h3>
-            <?= $this->element('Menu.menu', [
-                'name' => MENU_TOP,
+            <?= $this->cell('Menu.Menu', [
+                'name' => MENU_ADMIN,
                 'renderAs' => [
                     'menuStart' => '<ul class="control-sidebar-menu">',
                     'itemStart' => '<li>',
