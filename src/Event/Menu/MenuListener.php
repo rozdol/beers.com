@@ -135,6 +135,7 @@ class MenuListener implements EventListenerInterface
             ['label' => 'Users', 'desc' => 'Manage system users', 'url' => '/users/', 'icon' => 'user bg-yellow', 'order' => 10],
             ['label' => 'Groups', 'desc' => 'Manage system groups', 'url' => '/groups/groups/', 'icon' => 'users bg-orange', 'order' => 20],
             ['label' => 'Roles', 'desc' => 'Manage system roles', 'url' => '/roles-capabilities/Roles/', 'icon' => 'unlock bg-green', 'order' => 30],
+            ['label' => 'Menus', 'desc' => 'Manage system menus', 'url' => '/menu/menus/', 'icon' => 'bars bg-purple', 'order' => 35],
             ['label' => 'Lists', 'desc' => 'Manage database lists', 'url' => '/csv-migrations/dblists/', 'icon' => 'list bg-blue', 'order' => 40],
             ['label' => 'Logs', 'desc' => 'View system logs', 'url' => '/Logs/', 'icon' => 'list-alt bg-red', 'order' => 50],
             ['label' => 'Information', 'desc' => 'System information screen', 'url' => '/System/info', 'icon' => 'info-circle bg-light-blue', 'order' => 60],
