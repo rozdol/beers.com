@@ -12,3 +12,8 @@
     content: " *";
     color: red;
 }
+
+.logo .logo-lg img,
+.logo .logo-mini img {
+    vertical-align: initial;
+}
