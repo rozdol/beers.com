@@ -296,7 +296,7 @@ class MenuListener implements EventListenerInterface
             // evaluate child items
             if (!empty($item['children'])) {
                 $item['children'] = $this->_checkItemAccess($item['children'], $user);
-                if (empty($item['children'])) {
+                if (empty($item['children']) && (empty($item['url']) || '#' === trim($item['url']))) {
                     $item = [];
                 }
             }
