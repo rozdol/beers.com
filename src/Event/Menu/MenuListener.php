@@ -110,12 +110,12 @@ class MenuListener implements EventListenerInterface
         foreach ($modules as $module) {
             try {
                 $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_MENUS, $module);
-                $parsed = $mc->parse();
+                $parsed = (array)json_decode(json_encode($mc->parse()), true);
                 if (empty($parsed)) {
                     continue;
                 }
 
-                $result[] = json_decode(json_encode($parsed), true);
+                $result[] = $parsed;
             } catch (Exception $e) {
                 //
             }
