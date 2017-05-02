@@ -95,7 +95,11 @@ class MenuListener implements EventListenerInterface
             if (MENU_MAIN === $name) {
                 $modules[] = 'Search.Dashboards';
             }
+        }
 
+        $key = array_search('Search.Dashboards', $modules);
+        if (false !== $key) {
+            unset($modules[$key]);
             $result[] = [
                 'label' => 'Dashboards',
                 'url' => '#',
