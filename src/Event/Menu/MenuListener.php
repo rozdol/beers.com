@@ -112,11 +112,13 @@ class MenuListener implements EventListenerInterface
             try {
                 $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_MENUS, $module);
                 $parsed = (array)json_decode(json_encode($mc->parse()), true);
-                if (empty($parsed)) {
+                if (empty($parsed[$name])) {
                     continue;
                 }
 
-                $result[] = $parsed;
+                foreach ($parsed[$name] as $item) {
+                    $result[] = $item;
+                }
             } catch (Exception $e) {
                 //
             }
