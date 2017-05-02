@@ -92,7 +92,10 @@ class MenuListener implements EventListenerInterface
         $result = [];
         if (empty($modules)) {
             $modules = $this->_getAllModules();
-            // include dashboards link when fetching all modules
+            if (MENU_MAIN === $name) {
+                $modules[] = 'Search.Dashboards';
+            }
+
             $result[] = [
                 'label' => 'Dashboards',
                 'url' => '#',
