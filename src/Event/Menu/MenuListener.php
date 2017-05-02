@@ -29,52 +29,9 @@ class MenuListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Menu.Menu.getMenu' => 'getMenu',
             'Menu.Menu.getMenuItems' => 'getMenuItems',
             'Menu.Menu.beforeRender' => 'beforeRender'
         ];
-    }
-
-    /**
-     * Method that returns menu nested array based on provided menu name
-     *
-     * @param \Cake\Event\Event $event Event object
-     * @param string $name Menu name
-     * @param array $user Current user
-     * @param bool $fullBaseUrl Flag for fullbase url on menu links
-     * @return void
-     */
-    public function getMenu(Event $event, $name, array $user, $fullBaseUrl)
-    {
-        $menus = [
-            'sidebar' => [
-                [
-                    'label' => 'Dashboards',
-                    'url' => '/search/dashboards/',
-                    'icon' => 'tachometer',
-                    'children' => $this->_getDashboardLinks($user)
-                ]
-            ],
-            'top' => [
-                ['label' => 'Users', 'desc' => 'Manage system users', 'url' => '/users/', 'icon' => 'user bg-yellow'],
-                ['label' => 'Groups', 'desc' => 'Manage system groups', 'url' => '/groups/groups/', 'icon' => 'users bg-orange'],
-                ['label' => 'Roles', 'desc' => 'Manage system roles', 'url' => '/roles-capabilities/Roles/', 'icon' => 'unlock bg-green'],
-                ['label' => 'Lists', 'desc' => 'Manage database lists', 'url' => '/csv-migrations/dblists/', 'icon' => 'list bg-blue'],
-                ['label' => 'Logs', 'desc' => 'View system logs', 'url' => '/Logs/', 'icon' => 'list-alt bg-red'],
-                ['label' => 'Information', 'desc' => 'System information screen', 'url' => '/System/info', 'icon' => 'info-circle bg-light-blue'],
-                ['label' => 'Settings', 'desc' => 'System settings', 'url' => '#', 'icon' => 'cog bg-olive']
-            ]
-        ];
-
-        if (empty($menus[$name])) {
-            return;
-        }
-
-        if ((bool)$fullBaseUrl) {
-            $menus[$name] = $event->subject()->Menu->setFullBaseUrl($menus[$name]);
-        }
-
-        $event->result = $menus[$name];
     }
 
     /**
