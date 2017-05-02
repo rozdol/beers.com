@@ -29,52 +29,9 @@ class MenuListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Menu.Menu.getMenu' => 'getMenu',
             'Menu.Menu.getMenuItems' => 'getMenuItems',
             'Menu.Menu.beforeRender' => 'beforeRender'
         ];
-    }
-
-    /**
-     * Method that returns menu nested array based on provided menu name
-     *
-     * @param \Cake\Event\Event $event Event object
-     * @param string $name Menu name
-     * @param array $user Current user
-     * @param bool $fullBaseUrl Flag for fullbase url on menu links
-     * @return void
-     */
-    public function getMenu(Event $event, $name, array $user, $fullBaseUrl)
-    {
-        $menus = [
-            'sidebar' => [
-                [
-                    'label' => 'Dashboards',
-                    'url' => '/search/dashboards/',
-                    'icon' => 'tachometer',
-                    'children' => $this->_getDashboardLinks($user)
-                ]
-            ],
-            'top' => [
-                ['label' => 'Users', 'desc' => 'Manage system users', 'url' => '/users/', 'icon' => 'user bg-yellow'],
-                ['label' => 'Groups', 'desc' => 'Manage system groups', 'url' => '/groups/groups/', 'icon' => 'users bg-orange'],
-                ['label' => 'Roles', 'desc' => 'Manage system roles', 'url' => '/roles-capabilities/Roles/', 'icon' => 'unlock bg-green'],
-                ['label' => 'Lists', 'desc' => 'Manage database lists', 'url' => '/csv-migrations/dblists/', 'icon' => 'list bg-blue'],
-                ['label' => 'Logs', 'desc' => 'View system logs', 'url' => '/Logs/', 'icon' => 'list-alt bg-red'],
-                ['label' => 'Information', 'desc' => 'System information screen', 'url' => '/System/info', 'icon' => 'info-circle bg-light-blue'],
-                ['label' => 'Settings', 'desc' => 'System settings', 'url' => '#', 'icon' => 'cog bg-olive']
-            ]
-        ];
-
-        if (empty($menus[$name])) {
-            return;
-        }
-
-        if ((bool)$fullBaseUrl) {
-            $menus[$name] = $event->subject()->Menu->setFullBaseUrl($menus[$name]);
-        }
-
-        $event->result = $menus[$name];
     }
 
     /**
@@ -89,16 +46,17 @@ class MenuListener implements EventListenerInterface
      */
     public function getMenuItems(Event $event, $name, array $user, $fullBaseUrl = false, array $modules = [])
     {
-        if (MENU_ADMIN === $name) {
-            $event->result = $this->_getAdminMenuItems();
-
-            return;
-        }
-
         $result = [];
         if (empty($modules)) {
             $modules = $this->_getAllModules();
-            // include dashboards link when fetching all modules
+            if (MENU_MAIN === $name) {
+                $modules[] = 'Search.Dashboards';
+            }
+        }
+
+        $key = array_search('Search.Dashboards', $modules);
+        if (false !== $key) {
+            unset($modules[$key]);
             $result[] = [
                 'label' => 'Dashboards',
                 'url' => '#',
@@ -111,58 +69,19 @@ class MenuListener implements EventListenerInterface
             try {
                 $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_MENUS, $module);
                 $parsed = (array)json_decode(json_encode($mc->parse()), true);
-                if (empty($parsed)) {
+                if (empty($parsed[$name])) {
                     continue;
                 }
 
-                $result[] = $parsed;
+                foreach ($parsed[$name] as $item) {
+                    $result[] = $item;
+                }
             } catch (Exception $e) {
                 //
             }
         }
 
         $event->result = $result;
-    }
-
-    /**
-     * Admin menu getter.
-     *
-     * @return array
-     */
-    protected function _getAdminMenuItems()
-    {
-        $result = [
-            ['label' => 'Users', 'desc' => 'Manage system users', 'url' => '/users/', 'icon' => 'user bg-yellow', 'order' => 10],
-            ['label' => 'Groups', 'desc' => 'Manage system groups', 'url' => '/groups/groups/', 'icon' => 'users bg-orange', 'order' => 20],
-            ['label' => 'Roles', 'desc' => 'Manage system roles', 'url' => '/roles-capabilities/Roles/', 'icon' => 'unlock bg-green', 'order' => 30],
-            ['label' => 'Menus', 'desc' => 'Manage system menus', 'url' => '/menu/menus/', 'icon' => 'bars bg-purple', 'order' => 35],
-            ['label' => 'Lists', 'desc' => 'Manage database lists', 'url' => '/csv-migrations/dblists/', 'icon' => 'list bg-blue', 'order' => 40],
-            ['label' => 'Logs', 'desc' => 'View system logs', 'url' => '/Logs/', 'icon' => 'list-alt bg-red', 'order' => 50],
-            ['label' => 'Information', 'desc' => 'System information screen', 'url' => '/System/info', 'icon' => 'info-circle bg-light-blue', 'order' => 60],
-            ['label' => 'Settings', 'desc' => 'System settings', 'url' => '#', 'icon' => 'cog bg-olive', 'order' => 100]
-        ];
-
-        if ((bool)getenv('APP_SETS')) {
-            $result[] = [
-                'label' => 'Sets',
-                'desc' => 'Record sets',
-                'url' => '/sets/',
-                'icon' => 'cubes bg-purple',
-                'order' => '70'
-            ];
-        }
-
-        if ((bool)getenv('APP_INTEGRATIONS')) {
-            $result[] = [
-                'label' => 'Integrations',
-                'desc' => 'Integration Packages',
-                'url' => '/integrations',
-                'icon' => 'plug bg-blue',
-                'order' => '80'
-            ];
-        }
-
-        return $result;
     }
 
     /**
