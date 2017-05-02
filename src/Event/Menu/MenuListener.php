@@ -89,12 +89,6 @@ class MenuListener implements EventListenerInterface
      */
     public function getMenuItems(Event $event, $name, array $user, $fullBaseUrl = false, array $modules = [])
     {
-        if (MENU_ADMIN === $name) {
-            $event->result = $this->_getAdminMenuItems();
-
-            return;
-        }
-
         $result = [];
         if (empty($modules)) {
             $modules = $this->_getAllModules();
@@ -122,47 +116,6 @@ class MenuListener implements EventListenerInterface
         }
 
         $event->result = $result;
-    }
-
-    /**
-     * Admin menu getter.
-     *
-     * @return array
-     */
-    protected function _getAdminMenuItems()
-    {
-        $result = [
-            ['label' => 'Users', 'desc' => 'Manage system users', 'url' => '/users/', 'icon' => 'user bg-yellow', 'order' => 10],
-            ['label' => 'Groups', 'desc' => 'Manage system groups', 'url' => '/groups/groups/', 'icon' => 'users bg-orange', 'order' => 20],
-            ['label' => 'Roles', 'desc' => 'Manage system roles', 'url' => '/roles-capabilities/Roles/', 'icon' => 'unlock bg-green', 'order' => 30],
-            ['label' => 'Menus', 'desc' => 'Manage system menus', 'url' => '/menu/menus/', 'icon' => 'bars bg-purple', 'order' => 35],
-            ['label' => 'Lists', 'desc' => 'Manage database lists', 'url' => '/csv-migrations/dblists/', 'icon' => 'list bg-blue', 'order' => 40],
-            ['label' => 'Logs', 'desc' => 'View system logs', 'url' => '/Logs/', 'icon' => 'list-alt bg-red', 'order' => 50],
-            ['label' => 'Information', 'desc' => 'System information screen', 'url' => '/System/info', 'icon' => 'info-circle bg-light-blue', 'order' => 60],
-            ['label' => 'Settings', 'desc' => 'System settings', 'url' => '#', 'icon' => 'cog bg-olive', 'order' => 100]
-        ];
-
-        if ((bool)getenv('APP_SETS')) {
-            $result[] = [
-                'label' => 'Sets',
-                'desc' => 'Record sets',
-                'url' => '/sets/',
-                'icon' => 'cubes bg-purple',
-                'order' => '70'
-            ];
-        }
-
-        if ((bool)getenv('APP_INTEGRATIONS')) {
-            $result[] = [
-                'label' => 'Integrations',
-                'desc' => 'Integration Packages',
-                'url' => '/integrations',
-                'icon' => 'plug bg-blue',
-                'order' => '80'
-            ];
-        }
-
-        return $result;
     }
 
     /**
