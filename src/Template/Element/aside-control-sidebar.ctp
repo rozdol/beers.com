@@ -1,4 +1,5 @@
 <?php
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
@@ -51,7 +52,7 @@ $hasActivity = false;
                 ?>
                 <li>
                     <a href="<?= $this->Url->build(['plugin' => null, 'controller' => $table->alias(), 'action' => 'view', $item['primary_key']]) ?>">
-                        <i class="menu-icon fa fa-<?= $table->icon() ?> bg-primary" title="<?= $moduleAlias ?>"></i>
+                        <i class="menu-icon fa fa-<?= method_exists($table, 'icon') ? $table->icon() : Configure::read('Menu.default_menu_item_icon'); ?> bg-primary" title="<?= $moduleAlias ?>"></i>
                         <div class="menu-info">
                             <h4 class="control-sidebar-subheading"><?= $label ?></h4>
                             <p><?= $item['timestamp']->i18nFormat('yyyy-MM-dd HH:mm') ?></p>
