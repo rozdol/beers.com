@@ -36,6 +36,14 @@
             "order": 50
         },
         {
+            "label": "Languages",
+            "desc": "Manage languages",
+            "url": "/translations/languages",
+            "icon": "language bg-orange",
+            "order": 55
+        },
+
+        {
             "label": "Logs",
             "desc": "View system logs",
             "url": "/logs/",
