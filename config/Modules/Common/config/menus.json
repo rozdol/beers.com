@@ -48,13 +48,6 @@
             "url": "/system/info/",
             "icon": "info-circle bg-light-blue",
             "order": 70
-        },
-        {
-            "label": "Settings",
-            "desc": "System settings",
-            "url": "#",
-            "icon": "cog bg-olive",
-            "order": 300
         }
     ]
 }
