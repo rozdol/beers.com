@@ -182,25 +182,14 @@ class MenuListener implements EventListenerInterface
 
         foreach ($items as $k => &$item) {
             $url = $item['url'];
-            $internal = true;
 
-            // skip access check on external links
-            if (is_string($url) && preg_match('/http/i', $url) && (0 !== strpos($url, $fullBaseUrl))) {
-                $internal = false;
-            }
+            $internal = $this->_isInternalLink($item['url']);
 
-            // strip out full base URL if is part of menu item's URL
-            if (is_string($url) && $internal) {
-                $url = false !== strpos($url, $fullBaseUrl) ? str_replace($fullBaseUrl, '', $url) : $url;
-                $url = Router::parse($url);
-            }
-
+            // access check on internal links
             if ($internal) {
-                // replace site slug with the site id
-                $url = $this->_handleCmsUrl($url);
+                $url = $this->_parseUrl($item['url']);
 
-                $result = $this->_checkAccess($url, $user);
-                if (!$result) {
+                if (!$this->_checkAccess($url, $user)) {
                     // remove url from parent item on access check fail
                     if (!empty($item['children'])) {
                         unset($item['url']);
@@ -220,5 +209,50 @@ class MenuListener implements EventListenerInterface
         }
 
         return $items;
+    }
+
+    /**
+     * Checks if provided URL is an internal link.
+     *
+     * @param array|string $url URL
+     * @return bool
+     */
+    protected function _isInternalLink($url)
+    {
+        if (!is_string($url)) {
+            return true;
+        }
+
+        if (!preg_match('/http/i', $url)) {
+            return true;
+        }
+
+        if (0 === strpos($url, Router::fullBaseUrl())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Parses menu item URL.
+     *
+     * @param array|string $url Menu item URL
+     * @return array
+     */
+    protected function _parseUrl($url)
+    {
+        if (!is_string($url)) {
+            return $url;
+        }
+
+        $fullBaseUrl = Router::fullBaseUrl();
+
+        // strip out full base URL from menu item's URL.
+        if (false !== strpos($url, $fullBaseUrl)) {
+            $url = str_replace($fullBaseUrl, '', $url);
+        }
+
+        return Router::parseRequest($url);
     }
 }
