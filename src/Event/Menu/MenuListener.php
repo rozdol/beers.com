@@ -178,8 +178,6 @@ class MenuListener implements EventListenerInterface
      */
     protected function _checkItemAccess(array $items, array $user)
     {
-        $fullBaseUrl = Router::fullBaseUrl();
-
         foreach ($items as $k => &$item) {
             $url = $item['url'];
 
