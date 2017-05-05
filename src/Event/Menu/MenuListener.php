@@ -178,8 +178,6 @@ class MenuListener implements EventListenerInterface
      */
     protected function _checkItemAccess(array $items, array $user)
     {
-        $fullBaseUrl = Router::fullBaseUrl();
-
         foreach ($items as $k => &$item) {
             $url = $item['url'];
 
@@ -253,6 +251,6 @@ class MenuListener implements EventListenerInterface
             $url = str_replace($fullBaseUrl, '', $url);
         }
 
-        return Router::parseRequest($url);
+        return Router::parse($url);
     }
 }
