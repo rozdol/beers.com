@@ -179,36 +179,23 @@ class MenuListener implements EventListenerInterface
     protected function _checkItemAccess(array $items, array $user)
     {
         $fullBaseUrl = Router::fullBaseUrl();
+
         foreach ($items as $k => &$item) {
             $url = $item['url'];
-            if (is_string($url)) {
-                // skip access check on external links
-                if (preg_match('/http/i', $url) && (0 !== strpos($url, $fullBaseUrl))) {
-                    continue;
-                }
-                // strip out full base URL if is part of menu item's URL
-                $url = false !== strpos($url, $fullBaseUrl) ? str_replace($fullBaseUrl, '', $url) : $url;
-                $url = Router::parse($url);
-            }
 
-            try {
-                $result = $this->_checkAccess($url, $user);
-                if (!$result) {
+            $internal = $this->_isInternalLink($item['url']);
+
+            // access check on internal links
+            if ($internal) {
+                $url = $this->_parseUrl($item['url']);
+
+                if (!$this->_checkAccess($url, $user)) {
+                    // remove url from parent item on access check fail
                     if (!empty($item['children'])) {
-                        // remove url from parent item on access check fail
                         unset($item['url']);
-                    } else {
-                        // remove child item on access check fail
+                    } else { // remove item on access check fail
                         unset($items[$k]);
                     }
-                }
-            } catch (ForbiddenException $e) {
-                if (!empty($item['children'])) {
-                    // remove url from parent item on access check fail
-                    unset($item['url']);
-                } else {
-                    // remove child item on access check fail
-                    unset($items[$k]);
                 }
             }
 
@@ -216,11 +203,56 @@ class MenuListener implements EventListenerInterface
             if (!empty($item['children'])) {
                 $item['children'] = $this->_checkItemAccess($item['children'], $user);
                 if (empty($item['children']) && (empty($item['url']) || '#' === trim($item['url']))) {
-                    $item = [];
+                    unset($items[$k]);
                 }
             }
         }
 
         return $items;
+    }
+
+    /**
+     * Checks if provided URL is an internal link.
+     *
+     * @param array|string $url URL
+     * @return bool
+     */
+    protected function _isInternalLink($url)
+    {
+        if (!is_string($url)) {
+            return true;
+        }
+
+        if (!preg_match('/http/i', $url)) {
+            return true;
+        }
+
+        if (0 === strpos($url, Router::fullBaseUrl())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Parses menu item URL.
+     *
+     * @param array|string $url Menu item URL
+     * @return array
+     */
+    protected function _parseUrl($url)
+    {
+        if (!is_string($url)) {
+            return $url;
+        }
+
+        $fullBaseUrl = Router::fullBaseUrl();
+
+        // strip out full base URL from menu item's URL.
+        if (false !== strpos($url, $fullBaseUrl)) {
+            $url = str_replace($fullBaseUrl, '', $url);
+        }
+
+        return Router::parseRequest($url);
     }
 }
