@@ -251,6 +251,6 @@ class MenuListener implements EventListenerInterface
             $url = str_replace($fullBaseUrl, '', $url);
         }
 
-        return Router::parseRequest($url);
+        return Router::parse($url);
     }
 }
