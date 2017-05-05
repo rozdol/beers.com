@@ -179,36 +179,34 @@ class MenuListener implements EventListenerInterface
     protected function _checkItemAccess(array $items, array $user)
     {
         $fullBaseUrl = Router::fullBaseUrl();
+
         foreach ($items as $k => &$item) {
             $url = $item['url'];
-            if (is_string($url)) {
-                // skip access check on external links
-                if (preg_match('/http/i', $url) && (0 !== strpos($url, $fullBaseUrl))) {
-                    continue;
-                }
-                // strip out full base URL if is part of menu item's URL
+            $internal = true;
+
+            // skip access check on external links
+            if (is_string($url) && preg_match('/http/i', $url) && (0 !== strpos($url, $fullBaseUrl))) {
+                $internal = false;
+            }
+
+            // strip out full base URL if is part of menu item's URL
+            if (is_string($url) && $internal) {
                 $url = false !== strpos($url, $fullBaseUrl) ? str_replace($fullBaseUrl, '', $url) : $url;
                 $url = Router::parse($url);
             }
 
-            try {
+            if ($internal) {
+                // replace site slug with the site id
+                $url = $this->_handleCmsUrl($url);
+
                 $result = $this->_checkAccess($url, $user);
                 if (!$result) {
+                    // remove url from parent item on access check fail
                     if (!empty($item['children'])) {
-                        // remove url from parent item on access check fail
                         unset($item['url']);
-                    } else {
-                        // remove child item on access check fail
+                    } else { // remove item on access check fail
                         unset($items[$k]);
                     }
-                }
-            } catch (ForbiddenException $e) {
-                if (!empty($item['children'])) {
-                    // remove url from parent item on access check fail
-                    unset($item['url']);
-                } else {
-                    // remove child item on access check fail
-                    unset($items[$k]);
                 }
             }
 
@@ -216,7 +214,7 @@ class MenuListener implements EventListenerInterface
             if (!empty($item['children'])) {
                 $item['children'] = $this->_checkItemAccess($item['children'], $user);
                 if (empty($item['children']) && (empty($item['url']) || '#' === trim($item['url']))) {
-                    $item = [];
+                    unset($items[$k]);
                 }
             }
         }
