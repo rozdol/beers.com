@@ -1,6 +1,7 @@
 <?php
 namespace App\Event\Model;
 
+use App\Model\Table\UsersTable;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
@@ -41,6 +42,12 @@ class SearchableFieldsListener implements EventListenerInterface
      */
     public function getSearchableFields(Event $event, Table $table)
     {
+        if ($table instanceof UsersTable) {
+            $event->result = $this->_getUsersSearchableFields();
+
+            return;
+        }
+
         $method = 'getFieldsDefinitions';
         // skip if method cannot be called
         if (!method_exists($table, $method) || !is_callable([$table, $method])) {
@@ -63,6 +70,38 @@ class SearchableFieldsListener implements EventListenerInterface
         }
 
         $event->result = $result;
+    }
+
+    /**
+     * Returns searchable fields for Users module.
+     *
+     * @return array
+     */
+    protected function _getUsersSearchableFields()
+    {
+        $fields = [
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'username' => 'Username',
+            'email' => 'Email'
+        ];
+
+        $result = [];
+        foreach ($fields as $k => $v) {
+            $result[$k] = [
+                'type' => 'string',
+                'label' => $v,
+                'operators' => [
+                    'contains' => [
+                        'label' => 'contains',
+                        'operator' => 'LIKE',
+                        'pattern' => '%{{value}}%'
+                    ]
+                ]
+            ];
+        }
+
+        return $result;
     }
 
     /**
