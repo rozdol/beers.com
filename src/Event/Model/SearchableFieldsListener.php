@@ -76,6 +76,10 @@ class SearchableFieldsListener implements EventListenerInterface
     {
         $result = $this->_getBasicSearchFieldsFromConfig($table);
 
+        if (empty($result)) {
+            $result = $this->_getBasicSearchFieldsFromView($table);
+        }
+
         $event->result = $result;
     }
 
@@ -100,6 +104,33 @@ class SearchableFieldsListener implements EventListenerInterface
         if (!empty($config['table']['basic_search_fields'])) {
             $result = explode(',', $config['table']['basic_search_fields']);
             $result = array_filter(array_map('trim', $result), 'strlen');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns basic search fields from provided Table's index View csv fields.
+     *
+     * @param \Cake\ORM\Table $table Table instance
+     * @return array
+     */
+    protected function _getBasicSearchFieldsFromView(Table $table)
+    {
+        $config = [];
+        try {
+            $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_VIEW, $table->registryAlias(), 'index');
+            $config = $mc->parse();
+            $config = !empty($config->items) ? json_decode(json_encode($config->items), true) : [];
+        } catch (InvalidArgumentException $e) {
+            Log::error($e);
+        }
+
+        $result = [];
+        if (!empty($config)) {
+            foreach ($config as $column) {
+                $result[] = $column[0];
+            }
         }
 
         return $result;
