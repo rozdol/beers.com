@@ -19,7 +19,7 @@
         "maiconpinto/cakephp-adminlte-theme": "^1.0",
         "mobiledetect/mobiledetectlib": "2.*",
         "pyrech/composer-changelogs": "~1.4",
-        "qobo/cakephp-csv-migrations": "^17.0",
+        "qobo/cakephp-csv-migrations": "^18.0",
         "qobo/cakephp-groups": "^6.0",
         "qobo/cakephp-menu": "^7.0",
         "qobo/cakephp-roles-capabilities": "^9.0",
