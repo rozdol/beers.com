@@ -275,6 +275,7 @@ group('cakephp', function () {
             'role import',
             'capability assign',
             'menu import',
+            'check_dblist_permissions',
             'dblists_add',
         ];
 
