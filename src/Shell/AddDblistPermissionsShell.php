@@ -5,9 +5,9 @@ use Cake\Console\Shell;
 use Cake\ORM\TableRegistry;
 
 /**
- * CheckDblistPermissions shell command.
+ * AddDblistPermissions shell command.
  */
-class CheckDblistPermissionsShell extends Shell
+class AddDblistPermissionsShell extends Shell
 {
 
     /**
