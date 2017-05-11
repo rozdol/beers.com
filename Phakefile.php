@@ -274,7 +274,8 @@ group('cakephp', function () {
             'group assign',
             'role import',
             'capability assign',
-            'menu import'
+            'menu import',
+            'dblists_add',
         ];
 
         foreach ($scripts as $script) {
