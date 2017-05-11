@@ -37,14 +37,15 @@ class DblistsAddShell extends Shell
      */
     public function main()
     {
-        $this->out("Starting dblist records check...");
+        $this->out("Shell: Adding Dblist records from CSV migrations");
+        $this->hr();
 
         $modules = $this->_findCsvModules();
 
         $this->modules = $modules;
 
         if (empty($this->modules)) {
-            $this->out("Couldn't find CSV modules to parse");
+            $this->out("<warning>Couldn't find CSV modules to parse</warning>");
             exit();
         }
 
@@ -61,7 +62,7 @@ class DblistsAddShell extends Shell
         $table = TableRegistry::get('Dblists');
 
         if (empty($dblists)) {
-            $this->out("No lists found in the migrations of the project");
+            $this->out("<info>No dblist fields found in the application.</info>");
             exit();
         }
 
@@ -71,7 +72,7 @@ class DblistsAddShell extends Shell
                     ->where(['name' => $list])->first();
 
                 if (!empty($record)) {
-                    $this->out("Dblist record [$list] already exists in the dblists table");
+                    $this->out("<info>Dblist record [$list] already exists in the dblists table</info>");
                     continue;
                 }
 
@@ -81,12 +82,12 @@ class DblistsAddShell extends Shell
                 $dblistEntity->modified = date('Y-m-d H:i:s', time());
 
                 if ($table->save($dblistEntity)) {
-                    $this->out("Added [$list] to dblists table");
+                    $this->out("<success>Added [$list] to dblists table</success>");
                 }
             }
         }
 
-        $this->out("Completed Dblist addition script");
+        $this->out("<success>Completed Dblist addition script</success>");
     }
 
     /**
