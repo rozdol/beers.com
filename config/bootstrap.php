@@ -73,6 +73,7 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+    Configure::load('file_storage', 'default');
     Configure::load('groups', 'default');
     Configure::load('menu', 'default');
     Configure::load('csv_migrations', 'default');
