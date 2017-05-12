@@ -73,10 +73,10 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+    Configure::load('csv_migrations', 'default');
     Configure::load('file_storage', 'default');
     Configure::load('groups', 'default');
     Configure::load('menu', 'default');
-    Configure::load('csv_migrations', 'default');
     Configure::load('roles_capabilities', 'default');
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
