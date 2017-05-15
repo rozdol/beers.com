@@ -249,10 +249,15 @@ return [
      */
     'Ldap' => [
         'enabled' => (bool)getenv('LDAP_ENABLED'),
+        'username' => getenv('LDAP_USERNAME'),
+        'password' => getenv('LDAP_PASSWORD'),
         'host' => getenv('LDAP_HOST'),
         'port' => (int)getenv('LDAP_PORT') ?: 389,
         'version' => (int)getenv('LDAP_VERSION') ?: 3,
+        'domain' => getenv('LDAP_DOMAIN'),
         'baseDn' => getenv('LDAP_BASE_DN'),
+        'groupsFilter' => getenv('LDAP_GROUPS_FILTER'),
+        'groupsAttributes' => explode(',', getenv('LDAP_GROUPS_ATTRIBUTES')),
         'filter' => getenv('LDAP_FILTER'),
         'attributes' => function () {
             $result = [];
