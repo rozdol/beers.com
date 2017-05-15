@@ -8,6 +8,7 @@
     vertical-align: middle;
 }
 
+/* Highlight required fields */
 .required label::after {
     content: " *";
     color: red;
@@ -16,4 +17,9 @@
 .logo .logo-lg img,
 .logo .logo-mini img {
     vertical-align: initial;
+}
+
+/* Wrap long menu item names */
+.sidebar-menu li.treeview {
+    white-space: normal;
 }
