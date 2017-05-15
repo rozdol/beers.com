@@ -1,8 +1,15 @@
 <?php
+use Cake\Core\Configure;
 
+$ldapConfig = Configure::read('Ldap');
+
+// Groups plugin configuration
 return [
-    // Groups plugin configuration
     'Groups' => [
-        'defaultGroup' => getenv('DEFAULT_GROUP')
+        'defaultGroup' => getenv('DEFAULT_GROUP'),
+        'remoteGroups' => [
+            'enabled' => (bool)getenv('REMOTE_GROUPS'),
+            'LDAP' => $ldapConfig
+        ]
     ],
 ];
