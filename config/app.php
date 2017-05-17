@@ -435,4 +435,7 @@ return [
     'AuditStash' => [
         'persister' => 'App\Persister\MysqlPersister'
     ],
+    'Swagger' => [
+        'crawl' => (bool)getenv('SWAGGER_CRAWL')
+    ],
 ];
