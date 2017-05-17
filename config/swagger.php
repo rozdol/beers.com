@@ -12,7 +12,7 @@ return [
             'schemes' => ['http', 'https']
         ],
         'docs' => [
-            'crawl' => Configure::read('debug'),
+            'crawl' => (bool)Configure::read('debug') || (bool)Configure::read('Swagger.crawl'),
             'route' => '/swagger/docs/',
             'cors' => [
                 'Access-Control-Allow-Origin' => '*',
