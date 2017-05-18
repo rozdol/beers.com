@@ -44,6 +44,7 @@ use App\Event\Model\SearchableFieldsListener;
 use App\Event\Model\SearchResultsListener;
 use App\Event\View\IndexMenuListener;
 use App\Event\View\LayoutMenuListener;
+use App\Event\View\ReportGridViewListener;
 use App\Event\View\ViewMenuListener;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
 use Cake\Cache\Cache;
@@ -243,6 +244,7 @@ EventManager::instance()->on(new SearchResultsListener());
 EventManager::instance()->on(new IndexMenuListener());
 EventManager::instance()->on(new LayoutMenuListener());
 EventManager::instance()->on(new ViewMenuListener());
+EventManager::instance()->on(new ReportGridViewListener());
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
 EventManager::instance()->on(new LocalListener([
     'imageProcessing' => true,
