@@ -39,8 +39,6 @@ class ReportGridViewListener implements EventListenerInterface
         $fhf = new FieldHandlerFactory();
         $result = $fhf->renderValue($model, $field, $value);
 
-        $this->log(__METHOD__ . ": model=$model; field=$field; value=$value; result=$result", 'info');
-
         return $result;
     }
 }
