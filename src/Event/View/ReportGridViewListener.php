@@ -3,14 +3,11 @@ namespace App\Event\View;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use Cake\Log\LogTrait;
 use Cake\Network\Exception\ForbiddenException;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 
 class ReportGridViewListener implements EventListenerInterface
 {
-    use LogTrait;
-
     /**
      * @return array of implemented events for sets module
      */
