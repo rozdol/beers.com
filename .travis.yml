@@ -3,12 +3,13 @@ language: php
 php:
     - 5.6
     - 7.0
-    - hhvm
+    - 7.1
+    - nightly
 
 matrix:
     fast_finish: true
     allow_failures:
-        - php: hhvm
+        - php: nightly
 
 install:
     - ./bin/composer install --no-interaction --no-progress --no-suggest
@@ -17,11 +18,11 @@ install:
     - ./vendor/bin/phake app:install
 
 before_script:
-    - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99.0
-    - wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar
-    - ./bin/cake server -H localhost -p 8000 > /dev/null 2>&1 &
-    - java -jar selenium-server-standalone-2.53.0.jar > /dev/null 2>&1 &
+    - sh -e /etc/init.d/xvfb start
+    - wget -O /tmp/selenium-server.jar https://selenium-release.storage.googleapis.com/3.4/selenium-server-standalone-3.4.0.jar
+    - java -jar /tmp/selenium-server.jar > /dev/null 2>&1 &
+    - ./bin/phpserv >/dev/null 2>&1 &
     - sleep 30
 
 script:
