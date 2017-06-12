@@ -24,6 +24,6 @@ class UsersTable extends Table
         parent::initialize($config);
 
         // set table/module configuration
-        $this->_setConfiguration($this->table());
+        $this->setConfig($this->table());
     }
 }

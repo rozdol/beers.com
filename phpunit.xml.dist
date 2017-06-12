@@ -63,9 +63,6 @@
 		<testsuite name="Menu Plugin Test Suite">
             <directory>./vendor/qobo/cakephp-menu/tests/TestCase</directory>
 		</testsuite>
-		<testsuite name="Search Plugin Test Suite">
-            <directory>./vendor/qobo/cakephp-search/tests/TestCase</directory>
-		</testsuite>
 
 	</testsuites>
 
