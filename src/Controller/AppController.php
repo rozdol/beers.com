@@ -92,7 +92,7 @@ class AppController extends Controller
      * Callack method.
      *
      * @param  Cake\Event\Event $event Event object
-     * @return void
+     * @return void|\Cake\Http\Response
      */
     public function beforeFilter(Event $event)
     {
@@ -110,10 +110,7 @@ class AppController extends Controller
             } else {
                 // send empty response for embedded forms
                 if ($this->request->query('embedded')) {
-                    $this->render(false);
-                    $this->response->send();
-
-                    return;
+                    return $this->response;
                 }
                 throw new ForbiddenException($e->getMessage());
             }

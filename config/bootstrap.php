@@ -47,6 +47,7 @@ use App\Event\View\LayoutMenuListener;
 use App\Event\View\ReportGridViewListener;
 use App\Event\View\TranslationViewListener;
 use App\Event\View\ViewMenuListener;
+use App\Event\View\ViewViewTabsListener;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
@@ -247,6 +248,8 @@ EventManager::instance()->on(new LayoutMenuListener());
 EventManager::instance()->on(new ViewMenuListener());
 EventManager::instance()->on(new ReportGridViewListener());
 EventManager::instance()->on(new TranslationViewListener());
+EventManager::instance()->on(new ViewViewTabsListener());
+
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
 EventManager::instance()->on(new LocalListener([
     'imageProcessing' => true,
