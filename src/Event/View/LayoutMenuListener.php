@@ -5,6 +5,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
+use Cake\View\View;
 use RolesCapabilities\CapabilityTrait;
 use Search\Controller\Traits\SearchableTrait;
 
@@ -13,6 +14,9 @@ class LayoutMenuListener implements EventListenerInterface
     use CapabilityTrait;
     use SearchableTrait;
 
+    /**
+     * Default search form element.
+     */
     const SEARCH_FORM_ELEMENT = 'search-form';
 
     /**
@@ -28,7 +32,7 @@ class LayoutMenuListener implements EventListenerInterface
     }
 
     /**
-     * Add search form if current model is searchable and user has search access to it.
+     * Add search form in the layout.
      *
      * @param Cake\Event\Event $event Event object
      * @param array $user User info
@@ -36,33 +40,55 @@ class LayoutMenuListener implements EventListenerInterface
      */
     public function getSearchForm(Event $event, array $user)
     {
-        if (!$event->subject()->elementExists(static::SEARCH_FORM_ELEMENT)) {
-            return;
-        }
+        $cakeView = $event->subject();
 
-        $tableName = $event->subject()->request->controller;
-        if ($event->subject()->request->plugin) {
-            $tableName = $event->subject()->request->plugin . '.' . $tableName;
-        }
-        // skip non-searchable models
-        if (!$this->_isSearchable($tableName)) {
+        if ($this->_getSearchForm($event, $cakeView, $user)) {
             return;
+        }
+    }
+
+    /**
+     * Add search form if current model is searchable and user has search access to it.
+     *
+     * @param Cake\Event\Event $event Event object
+     * @param Cake\View\View $cakeView View instance
+     * @param array $user User info
+     * @return bool
+     */
+    protected function _getSearchForm(Event $event, View $cakeView, array $user)
+    {
+        $tableName = $cakeView->name;
+        if ($cakeView->plugin) {
+            $tableName = $cakeView->plugin . '.' . $tableName;
+        }
+        $table = TableRegistry::get($tableName);
+
+        // skip non-searchable models
+        if (!$this->_isSearchable($table)) {
+            return false;
         }
 
         $url = [
-            'plugin' => $event->subject()->request->plugin,
-            'controller' => $event->subject()->request->controller,
+            'plugin' => $cakeView->plugin,
+            'controller' => $cakeView->name,
             'action' => 'search'
         ];
 
         try {
             if (!$this->_checkAccess($url, $user)) {
-                return;
+                return false;
             }
         } catch (ForbiddenException $e) {
-            return;
+            return false;
         }
 
-        $event->result = $event->subject()->element(static::SEARCH_FORM_ELEMENT);
+        $name = $cakeView->name;
+        if (method_exists($table, 'moduleAlias')) {
+            $name = $table->moduleAlias();
+        }
+
+        $event->result = $cakeView->element(static::SEARCH_FORM_ELEMENT, ['name' => $name]);
+
+        return true;
     }
 }
