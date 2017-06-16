@@ -1,4 +1,6 @@
 <?php
+use Cake\Utility\Inflector;
+
 $formOptions = [
     'class' => 'sidebar-form',
     'url' => [
@@ -7,12 +9,19 @@ $formOptions = [
         'action' => 'search'
     ]
 ];
+
+if (!isset($name)) {
+    $name = $this->name;
+}
+
+$name = Inflector::humanize(Inflector::underscore($name));
+
 $inputOptions = [
     'label' => false,
     'div' => false,
     'container' => false,
     'class' => 'form-control',
-    'placeholder' => 'Search in ' . strtolower($this->name) . '...',
+    'placeholder' => 'Search in ' . strtolower($name) . '...',
     'templates' => [
         'inputContainer' => '{{content}}'
     ]
