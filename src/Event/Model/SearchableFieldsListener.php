@@ -141,8 +141,7 @@ class SearchableFieldsListener implements EventListenerInterface
 
         $result = [];
         if (!empty($config['table']['basic_search_fields'])) {
-            $result = explode(',', $config['table']['basic_search_fields']);
-            $result = array_filter(array_map('trim', $result), 'strlen');
+            $result = array_filter(array_map('trim', $config['table']['basic_search_fields']), 'strlen');
         }
 
         return $result;
