@@ -43,7 +43,7 @@ class SearchableFieldsListener implements EventListenerInterface
     public function getSearchableFields(Event $event, Table $table)
     {
         if ($table instanceof UsersTable) {
-            $event->result = $this->_getUsersSearchableFields();
+            $event->result = $this->_getUsersSearchableFields($table);
 
             return;
         }
@@ -56,17 +56,23 @@ class SearchableFieldsListener implements EventListenerInterface
 
         $this->_fhf = new FieldHandlerFactory();
 
-        $allFields = $table->{$method}();
-        if (empty($allFields)) {
+        $fields = $table->{$method}();
+        if (empty($fields)) {
             return;
         }
 
         $result = [];
-        foreach ($allFields as $field => $definition) {
-            $options = $this->_fhf->getSearchOptions($table, $field);
-            if (!empty($options)) {
-                $result = array_merge($result, $options);
+        foreach ($fields as $field => $definition) {
+            $searchOptions = $this->_fhf->getSearchOptions($table, $field);
+            if (empty($searchOptions)) {
+                continue;
             }
+
+            $options = [];
+            foreach ($searchOptions as $k => $v) {
+                $options[$table->aliasField($k)] = $v;
+            }
+            $result = array_merge($result, $options);
         }
 
         $event->result = $result;
@@ -75,9 +81,10 @@ class SearchableFieldsListener implements EventListenerInterface
     /**
      * Returns searchable fields for Users module.
      *
+     * @param \Cake\ORM\Table $table Table instance
      * @return array
      */
-    protected function _getUsersSearchableFields()
+    protected function _getUsersSearchableFields(Table $table)
     {
         $fields = [
             'first_name' => 'First Name',
@@ -88,7 +95,7 @@ class SearchableFieldsListener implements EventListenerInterface
 
         $result = [];
         foreach ($fields as $k => $v) {
-            $result[$k] = [
+            $result[$table->aliasField($k)] = [
                 'type' => 'string',
                 'label' => $v,
                 'operators' => [
@@ -117,6 +124,10 @@ class SearchableFieldsListener implements EventListenerInterface
 
         if (empty($result)) {
             $result = $this->_getBasicSearchFieldsFromView($table);
+        }
+
+        foreach ($result as &$field) {
+            $field = $table->aliasField($field);
         }
 
         $event->result = $result;
