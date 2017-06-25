@@ -1,0 +1,609 @@
+VALUE,LABEL,INACTIVE
+ab,Abkhazian,0
+ace,Achinese,0
+ach,Acoli,0
+ada,Adangme,0
+ady,Adyghe,0
+aa,Afar,0
+afh,Afrihili,0
+af,Afrikaans,0
+agq,Aghem,0
+ain,Ainu,0
+ak,Akan,0
+akk,Akkadian,0
+bss,Akoose,0
+akz,Alabama,0
+sq,Albanian,0
+ale,Aleut,0
+arq,Algerian Arabic,0
+en_US,American English,0
+ase,American Sign Language,0
+am,Amharic,0
+egy,Ancient Egyptian,0
+grc,Ancient Greek,0
+anp,Angika,0
+njo,Ao Naga,0
+ar,Arabic,0
+an,Aragonese,0
+arc,Aramaic,0
+aro,Araona,0
+arp,Arapaho,0
+arw,Arawak,0
+hy,Armenian,0
+rup,Aromanian,0
+frp,Arpitan,0
+as,Assamese,0
+ast,Asturian,0
+asa,Asu,0
+cch,Atsam,0
+en_AU,Australian English,0
+de_AT,Austrian German,0
+av,Avaric,0
+ae,Avestan,0
+awa,Awadhi,0
+ay,Aymara,0
+az,Azerbaijani,0
+bfq,Badaga,0
+ksf,Bafia,0
+bfd,Bafut,0
+bqi,Bakhtiari,0
+ban,Balinese,0
+bal,Baluchi,0
+bm,Bambara,0
+bax,Bamun,0
+bjn,Banjar,0
+bas,Basaa,0
+ba,Bashkir,0
+eu,Basque,0
+bbc,Batak Toba,0
+bar,Bavarian,0
+bej,Beja,0
+be,Belarusian,0
+bem,Bemba,0
+bez,Bena,0
+bn,Bengali,0
+bew,Betawi,0
+bho,Bhojpuri,0
+bik,Bikol,0
+bin,Bini,0
+bpy,Bishnupriya,0
+bi,Bislama,0
+byn,Blin,0
+zbl,Blissymbols,0
+brx,Bodo,0
+bs,Bosnian,0
+brh,Brahui,0
+bra,Braj,0
+pt_BR,Brazilian Portuguese,0
+br,Breton,0
+en_GB,British English,0
+bug,Buginese,0
+bg,Bulgarian,0
+bum,Bulu,0
+bua,Buriat,0
+my,Burmese,0
+cad,Caddo,0
+frc,Cajun French,0
+en_CA,Canadian English,0
+fr_CA,Canadian French,0
+yue,Cantonese,0
+cps,Capiznon,0
+car,Carib,0
+ca,Catalan,0
+cay,Cayuga,0
+ceb,Cebuano,0
+tzm,Central Atlas Tamazight,0
+dtp,Central Dusun,0
+esu,Central Yupik,0
+shu,Chadian Arabic,0
+chg,Chagatai,0
+ch,Chamorro,0
+ce,Chechen,0
+chr,Cherokee,0
+chy,Cheyenne,0
+chb,Chibcha,0
+cgg,Chiga,0
+qug,Chimborazo Highland Quichua,0
+zh,Chinese,0
+chn,Chinook Jargon,0
+chp,Chipewyan,0
+cho,Choctaw,0
+cu,Church Slavic,0
+chk,Chuukese,0
+cv,Chuvash,0
+nwc,Classical Newari,0
+syc,Classical Syriac,0
+ksh,Colognian,0
+swb,Comorian,0
+swc,Congo Swahili,0
+cop,Coptic,0
+kw,Cornish,0
+co,Corsican,0
+cr,Cree,0
+mus,Creek,0
+crh,Crimean Turkish,0
+hr,Croatian,0
+cs,Czech,0
+dak,Dakota,0
+da,Danish,0
+dar,Dargwa,0
+dzg,Dazaga,0
+del,Delaware,0
+din,Dinka,0
+dv,Divehi,0
+doi,Dogri,0
+dgr,Dogrib,0
+dua,Duala,0
+nl,Dutch,0
+dyu,Dyula,0
+dz,Dzongkha,0
+frs,Eastern Frisian,0
+efi,Efik,0
+arz,Egyptian Arabic,0
+eka,Ekajuk,0
+elx,Elamite,0
+ebu,Embu,0
+egl,Emilian,0
+en,English,0
+myv,Erzya,0
+eo,Esperanto,0
+et,Estonian,0
+pt_PT,European Portuguese,0
+es_ES,European Spanish,0
+ee,Ewe,0
+ewo,Ewondo,0
+ext,Extremaduran,0
+fan,Fang,0
+fat,Fanti,0
+fo,Faroese,0
+hif,Fiji Hindi,0
+fj,Fijian,0
+fil,Filipino,0
+fi,Finnish,0
+nl_BE,Flemish,0
+fon,Fon,0
+gur,Frafra,0
+fr,French,0
+fur,Friulian,0
+ff,Fulah,0
+gaa,Ga,0
+gag,Gagauz,0
+gl,Galician,0
+gan,Gan Chinese,0
+lg,Ganda,0
+gay,Gayo,0
+gba,Gbaya,0
+gez,Geez,0
+ka,Georgian,0
+de,German,0
+aln,Gheg Albanian,0
+bbj,Ghomala,0
+glk,Gilaki,0
+gil,Gilbertese,0
+gom,Goan Konkani,0
+gon,Gondi,0
+gor,Gorontalo,0
+got,Gothic,0
+grb,Grebo,0
+el,Greek,0
+gn,Guarani,0
+gu,Gujarati,0
+guz,Gusii,0
+gwi,Gwichʼin,0
+hai,Haida,0
+ht,Haitian,0
+hak,Hakka Chinese,0
+ha,Hausa,0
+haw,Hawaiian,0
+he,Hebrew,0
+hz,Herero,0
+hil,Hiligaynon,0
+hi,Hindi,0
+ho,Hiri Motu,0
+hit,Hittite,0
+hmn,Hmong,0
+hu,Hungarian,0
+hup,Hupa,0
+iba,Iban,0
+ibb,Ibibio,0
+is,Icelandic,0
+io,Ido,0
+ig,Igbo,0
+ilo,Iloko,0
+smn,Inari Sami,0
+id,Indonesian,0
+izh,Ingrian,0
+inh,Ingush,0
+ia,Interlingua,0
+ie,Interlingue,0
+iu,Inuktitut,0
+ik,Inupiaq,0
+ga,Irish,0
+it,Italian,0
+jam,Jamaican Creole English,0
+ja,Japanese,0
+jv,Javanese,0
+kaj,Jju,0
+dyo,Jola-Fonyi,0
+jrb,Judeo-Arabic,0
+jpr,Judeo-Persian,0
+jut,Jutish,0
+kbd,Kabardian,0
+kea,Kabuverdianu,0
+kab,Kabyle,0
+kac,Kachin,0
+kgp,Kaingang,0
+kkj,Kako,0
+kl,Kalaallisut,0
+kln,Kalenjin,0
+xal,Kalmyk,0
+kam,Kamba,0
+kbl,Kanembu,0
+kn,Kannada,0
+kr,Kanuri,0
+kaa,Kara-Kalpak,0
+krc,Karachay-Balkar,0
+krl,Karelian,0
+ks,Kashmiri,0
+csb,Kashubian,0
+kaw,Kawi,0
+kk,Kazakh,0
+ken,Kenyang,0
+kha,Khasi,0
+km,Khmer,0
+kho,Khotanese,0
+khw,Khowar,0
+ki,Kikuyu,0
+kmb,Kimbundu,0
+krj,Kinaray-a,0
+rw,Kinyarwanda,0
+kiu,Kirmanjki,0
+tlh,Klingon,0
+bkm,Kom,0
+kv,Komi,0
+koi,Komi-Permyak,0
+kg,Kongo,0
+kok,Konkani,0
+ko,Korean,0
+kfo,Koro,0
+kos,Kosraean,0
+avk,Kotava,0
+khq,Koyra Chiini,0
+ses,Koyraboro Senni,0
+kpe,Kpelle,0
+kri,Krio,0
+kj,Kuanyama,0
+kum,Kumyk,0
+ku,Kurdish,0
+kru,Kurukh,0
+kut,Kutenai,0
+nmg,Kwasio,0
+ky,Kyrgyz,0
+quc,Kʼicheʼ,0
+lad,Ladino,0
+lah,Lahnda,0
+lkt,Lakota,0
+lam,Lamba,0
+lag,Langi,0
+lo,Lao,0
+ltg,Latgalian,0
+la,Latin,0
+es_419,Latin American Spanish,0
+lv,Latvian,0
+lzz,Laz,0
+lez,Lezghian,0
+lij,Ligurian,0
+li,Limburgish,0
+ln,Lingala,0
+lfn,Lingua Franca Nova,0
+lzh,Literary Chinese,0
+lt,Lithuanian,0
+liv,Livonian,0
+jbo,Lojban,0
+lmo,Lombard,0
+nds,Low German,0
+sli,Lower Silesian,0
+dsb,Lower Sorbian,0
+loz,Lozi,0
+lu,Luba-Katanga,0
+lua,Luba-Lulua,0
+lui,Luiseno,0
+smj,Lule Sami,0
+lun,Lunda,0
+luo,Luo,0
+lb,Luxembourgish,0
+luy,Luyia,0
+mde,Maba,0
+mk,Macedonian,0
+jmc,Machame,0
+mad,Madurese,0
+maf,Mafa,0
+mag,Magahi,0
+vmf,Main-Franconian,0
+mai,Maithili,0
+mak,Makasar,0
+mgh,Makhuwa-Meetto,0
+kde,Makonde,0
+mg,Malagasy,0
+ms,Malay,0
+ml,Malayalam,0
+mt,Maltese,0
+mnc,Manchu,0
+mdr,Mandar,0
+man,Mandingo,0
+mni,Manipuri,0
+gv,Manx,0
+mi,Maori,0
+arn,Mapuche,0
+mr,Marathi,0
+chm,Mari,0
+mh,Marshallese,0
+mwr,Marwari,0
+mas,Masai,0
+mzn,Mazanderani,0
+byv,Medumba,0
+men,Mende,0
+mwv,Mentawai,0
+mer,Meru,0
+mgo,Metaʼ,0
+es_MX,Mexican Spanish,0
+mic,Micmac,0
+dum,Middle Dutch,0
+enm,Middle English,0
+frm,Middle French,0
+gmh,Middle High German,0
+mga,Middle Irish,0
+nan,Min Nan Chinese,0
+min,Minangkabau,0
+xmf,Mingrelian,0
+mwl,Mirandese,0
+lus,Mizo,0
+ar_001,Modern Standard Arabic,0
+moh,Mohawk,0
+mdf,Moksha,0
+ro_MD,Moldavian,0
+lol,Mongo,0
+mn,Mongolian,0
+mfe,Morisyen,0
+ary,Moroccan Arabic,0
+mos,Mossi,0
+mul,Multiple Languages,0
+mua,Mundang,0
+ttt,Muslim Tat,0
+mye,Myene,0
+naq,Nama,0
+na,Nauru,0
+nv,Navajo,0
+ng,Ndonga,0
+nap,Neapolitan,0
+ne,Nepali,0
+new,Newari,0
+sba,Ngambay,0
+nnh,Ngiemboon,0
+jgo,Ngomba,0
+yrl,Nheengatu,0
+nia,Nias,0
+niu,Niuean,0
+zxx,No linguistic content,0
+nog,Nogai,0
+nd,North Ndebele,0
+frr,Northern Frisian,0
+se,Northern Sami,0
+nso,Northern Sotho,0
+no,Norwegian,0
+nb,Norwegian Bokmål,0
+nn,Norwegian Nynorsk,0
+nov,Novial,0
+nus,Nuer,0
+nym,Nyamwezi,0
+ny,Nyanja,0
+nyn,Nyankole,0
+tog,Nyasa Tonga,0
+nyo,Nyoro,0
+nzi,Nzima,0
+nqo,NʼKo,0
+oc,Occitan,0
+oj,Ojibwa,0
+ang,Old English,0
+fro,Old French,0
+goh,Old High German,0
+sga,Old Irish,0
+non,Old Norse,0
+peo,Old Persian,0
+pro,Old Provençal,0
+or,Oriya,0
+om,Oromo,0
+osa,Osage,0
+os,Ossetic,0
+ota,Ottoman Turkish,0
+pal,Pahlavi,0
+pfl,Palatine German,0
+pau,Palauan,0
+pi,Pali,0
+pam,Pampanga,0
+pag,Pangasinan,0
+pap,Papiamento,0
+ps,Pashto,0
+pdc,Pennsylvania German,0
+fa,Persian,0
+phn,Phoenician,0
+pcd,Picard,0
+pms,Piedmontese,0
+pdt,Plautdietsch,0
+pon,Pohnpeian,0
+pl,Polish,0
+pnt,Pontic,0
+pt,Portuguese,0
+prg,Prussian,0
+pa,Punjabi,0
+qu,Quechua,0
+raj,Rajasthani,0
+rap,Rapanui,0
+rar,Rarotongan,0
+rif,Riffian,0
+rgn,Romagnol,0
+ro,Romanian,0
+rm,Romansh,0
+rom,Romany,0
+rof,Rombo,0
+root,Root,0
+rtm,Rotuman,0
+rug,Roviana,0
+rn,Rundi,0
+ru,Russian,0
+rue,Rusyn,0
+rwk,Rwa,0
+ssy,Saho,0
+sah,Sakha,0
+sam,Samaritan Aramaic,0
+saq,Samburu,0
+sm,Samoan,0
+sgs,Samogitian,0
+sad,Sandawe,0
+sg,Sango,0
+sbp,Sangu,0
+sa,Sanskrit,0
+sat,Santali,0
+sc,Sardinian,0
+sas,Sasak,0
+sdc,Sassarese Sardinian,0
+stq,Saterland Frisian,0
+saz,Saurashtra,0
+sco,Scots,0
+gd,Scottish Gaelic,0
+sly,Selayar,0
+sel,Selkup,0
+seh,Sena,0
+see,Seneca,0
+sr,Serbian,0
+sh,Serbo-Croatian,0
+srr,Serer,0
+sei,Seri,0
+ksb,Shambala,0
+shn,Shan,0
+sn,Shona,0
+ii,Sichuan Yi,0
+scn,Sicilian,0
+sid,Sidamo,0
+bla,Siksika,0
+szl,Silesian,0
+zh_Hans,Simplified Chinese,0
+sd,Sindhi,0
+si,Sinhala,0
+sms,Skolt Sami,0
+den,Slave,0
+sk,Slovak,0
+sl,Slovenian,0
+xog,Soga,0
+sog,Sogdien,0
+so,Somali,0
+snk,Soninke,0
+ckb,Sorani Kurdish,0
+azb,South Azerbaijani,0
+nr,South Ndebele,0
+alt,Southern Altai,0
+sma,Southern Sami,0
+st,Southern Sotho,0
+es,Spanish,0
+srn,Sranan Tongo,0
+zgh,Standard Moroccan Tamazight,0
+suk,Sukuma,0
+sux,Sumerian,0
+su,Sundanese,0
+sus,Susu,0
+sw,Swahili,0
+ss,Swati,0
+sv,Swedish,0
+fr_CH,Swiss French,0
+gsw,Swiss German,0
+de_CH,Swiss High German,0
+syr,Syriac,0
+shi,Tachelhit,0
+tl,Tagalog,0
+ty,Tahitian,0
+dav,Taita,0
+tg,Tajik,0
+tly,Talysh,0
+tmh,Tamashek,0
+ta,Tamil,0
+trv,Taroko,0
+twq,Tasawaq,0
+tt,Tatar,0
+te,Telugu,0
+ter,Tereno,0
+teo,Teso,0
+tet,Tetum,0
+th,Thai,0
+bo,Tibetan,0
+tig,Tigre,0
+ti,Tigrinya,0
+tem,Timne,0
+tiv,Tiv,0
+tli,Tlingit,0
+tpi,Tok Pisin,0
+tkl,Tokelau,0
+to,Tongan,0
+fit,Tornedalen Finnish,0
+zh_Hant,Traditional Chinese,0
+tkr,Tsakhur,0
+tsd,Tsakonian,0
+tsi,Tsimshian,0
+ts,Tsonga,0
+tn,Tswana,0
+tcy,Tulu,0
+tum,Tumbuka,0
+aeb,Tunisian Arabic,0
+tr,Turkish,0
+tk,Turkmen,0
+tru,Turoyo,0
+tvl,Tuvalu,0
+tyv,Tuvinian,0
+tw,Twi,0
+kcg,Tyap,0
+udm,Udmurt,0
+uga,Ugaritic,0
+uk,Ukrainian,0
+umb,Umbundu,0
+und,Unknown Language,0
+hsb,Upper Sorbian,0
+ur,Urdu,0
+ug,Uyghur,0
+uz,Uzbek,0
+vai,Vai,0
+ve,Venda,0
+vec,Venetian,0
+vep,Veps,0
+vi,Vietnamese,0
+vo,Volapük,0
+vro,Võro,0
+vot,Votic,0
+vun,Vunjo,0
+wa,Walloon,0
+wae,Walser,0
+war,Waray,0
+was,Washo,0
+guc,Wayuu,0
+cy,Welsh,0
+vls,West Flemish,0
+fy,Western Frisian,0
+mrj,Western Mari,0
+wal,Wolaytta,0
+wo,Wolof,0
+wuu,Wu Chinese,0
+xh,Xhosa,0
+hsn,Xiang Chinese,0
+yav,Yangben,0
+yao,Yao,0
+yap,Yapese,0
+ybb,Yemba,0
+yi,Yiddish,0
+yo,Yoruba,0
+zap,Zapotec,0
+dje,Zarma,0
+zza,Zaza,0
+zea,Zeelandic,0
+zen,Zenaga,0
+za,Zhuang,0
+gbz,Zoroastrian Dari,0
+zu,Zulu,0
+zun,Zuni,0
