@@ -82,7 +82,11 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {
         $this->viewBuilder()->theme('AdminLTE');
-        $this->viewBuilder()->layout('adminlte');
+        // Quick and urgent fix for broken file upload (task #4050)
+        // TODO : Find a better way of doing this
+        if ($event->subject()->request->params['plugin'] <> 'CakephpTinymceElfinder') {
+            $this->viewBuilder()->layout('adminlte');
+        }
         // overwrite theme title before setting the theme
         Configure::write('Theme.title', $this->name);
         $this->set('theme', Configure::read('Theme'));
