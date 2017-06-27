@@ -39,6 +39,7 @@ if (!extension_loaded('intl')) {
 }
 
 use App\Event\Component\UserIdentifyListener;
+use App\Event\MagicDefaultValueListener;
 use App\Event\Menu\MenuListener;
 use App\Event\Model\SearchableFieldsListener;
 use App\Event\Model\SearchResultsListener;
@@ -240,6 +241,7 @@ DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
 EventManager::instance()->on(new UserIdentifyListener());
+EventManager::instance()->on(new MagicDefaultValueListener());
 EventManager::instance()->on(new MenuListener());
 EventManager::instance()->on(new SearchableFieldsListener());
 EventManager::instance()->on(new SearchResultsListener());
