@@ -82,11 +82,6 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {
         $this->viewBuilder()->theme('AdminLTE');
-        // Quick and urgent fix for broken file upload (task #4050)
-        // TODO : Find a better way of doing this
-        if ($event->subject()->request->params['plugin'] <> 'CakephpTinymceElfinder') {
-            $this->viewBuilder()->layout('adminlte');
-        }
         // overwrite theme title before setting the theme
         Configure::write('Theme.title', $this->name);
         $this->set('theme', Configure::read('Theme'));
@@ -101,8 +96,11 @@ class AppController extends Controller
      */
     public function beforeFilter(Event $event)
     {
-        // if user not logged in, redirect him to login page
+        // Set default layout, but allow it to be overwritten by
+        // Contoller actions in the application and plugins.
+        $this->viewBuilder()->layout('adminlte');
 
+        // if user not logged in, redirect him to login page
         $url = $event->subject()->request->params;
         try {
             $result = $this->_checkAccess($url, $this->Auth->user());
