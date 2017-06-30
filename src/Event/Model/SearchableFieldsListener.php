@@ -29,7 +29,8 @@ class SearchableFieldsListener implements EventListenerInterface
     {
         return [
             'Search.Model.Search.searchabeFields' => 'getSearchableFields',
-            'Search.Model.Search.basicSearchFields' => 'getBasicSearchFields'
+            'Search.Model.Search.basicSearchFields' => 'getBasicSearchFields',
+            'Search.Model.Search.displayFields' => 'getDisplayFields'
         ];
     }
 
@@ -125,6 +126,24 @@ class SearchableFieldsListener implements EventListenerInterface
         if (empty($result)) {
             $result = $this->_getBasicSearchFieldsFromView($table);
         }
+
+        foreach ($result as &$field) {
+            $field = $table->aliasField($field);
+        }
+
+        $event->result = $result;
+    }
+
+    /**
+     * Method that retrieves target table search funcionality display fields.
+     *
+     * @param \Cake\Event\Event $event Event instance
+     * @param \Cake\ORM\Table $table Table instance
+     * @return void
+     */
+    public function getDisplayFields(Event $event, Table $table)
+    {
+        $result = $this->_getBasicSearchFieldsFromView($table);
 
         foreach ($result as &$field) {
             $field = $table->aliasField($field);
