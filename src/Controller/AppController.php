@@ -118,7 +118,10 @@ class AppController extends Controller
                 throw new ForbiddenException($e->getMessage());
             }
         }
-        $this->Auth->allow($this->_getSkipActions($url));
+
+        if (method_exists($this, '_getSkipActions')) {
+            $this->Auth->allow($this->_getSkipActions($url));
+        }
 
         $this->_setIframeRendering();
 
