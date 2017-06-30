@@ -118,6 +118,7 @@ class AppController extends Controller
                 throw new ForbiddenException($e->getMessage());
             }
         }
+        $this->Auth->allow($this->_getSkipActions($url));
 
         $this->_setIframeRendering();
 
@@ -176,27 +177,6 @@ class AppController extends Controller
             'getSkipControllers',
             'getSkipActions'
         ];
-        switch ($controllerName) {
-            case 'CakeDC\Users\Controller\UsersController':
-                $result = array_merge($result, [
-                    'failedSocialLogin',
-                    'failedSocialLoginListener',
-                    'getUsersTable',
-                    'requestResetPassword',
-                    'resendTokenValidation',
-                    'resetPassword',
-                    'setUsersTable',
-                    'socialEmail',
-                    'socialLogin',
-                    'twitterLogin',
-                    'validate',
-                    'validateEmail',
-                    'validateReCaptcha',
-                    'logout',
-                    'login'
-                ]);
-                break;
-        }
 
         return $result;
     }
