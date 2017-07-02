@@ -31,7 +31,7 @@
         {
             "label": "Languages",
             "desc": "Manage languages",
-            "url": "/translations/languages",
+            "url": "/language-translations/languages",
             "icon": "language bg-orange",
             "order": 55
         },
