@@ -41,6 +41,8 @@ class UsersTable extends Table
         ]);
 
         $validator->add('first_name', 'validRegex', [
+            // \p is used for targeting unicode character properties, in this case L which means all letters
+            // @link http://php.net/manual/en/regexp.reference.unicode.php
             'rule' => ['custom', '/^[\pL\-\s\.]+$/Du'],
             'message' => 'The provided value is invalid (letter, dot, dash, space)'
         ]);
