@@ -1,62 +1,41 @@
 <?php
 use Cake\Core\Configure;
+
+$this->layout = 'AdminLTE/login';
 ?>
 <div class="row">
     <div class="col-xs-12">
         <?= $this->Form->create($user); ?>
         <fieldset>
-            <legend><?= __('Register'); ?></legend>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">&nbsp;</h3>
+            <?= $this->Form->input('username'); ?>
+            <?= $this->Form->input('email'); ?>
+            <?= $this->Form->input('password'); ?>
+            <?= $this->Form->input('password_confirm', ['type' => 'password']); ?>
+            <?= $this->Form->input('first_name'); ?>
+            <?= $this->Form->input('last_name'); ?>
+            <?php if (!Configure::read('Users.Tos.required')) : ?>
+                <div class="form-group">
+                <?php
+                    $label = $this->Form->label('tos', __d('Users', 'Accept TOS conditions?'));
+                    echo $this->Form->input('tos', [
+                        'type' => 'checkbox',
+                        'class' => 'square',
+                        'required' => true,
+                        'label' => false,
+                        'templates' => [
+                            'inputContainer' => '<div class="{{required}}">' . $label . '<div class="clearfix"></div>{{content}}</div>'
+                        ]
+                    ]);
+                ?>
                 </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <?= $this->Form->input('username'); ?>
-                        </div>
-                        <div class="col-xs-6">
-                            <?= $this->Form->input('email'); ?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <?= $this->Form->input('password'); ?>
-                        </div>
-                        <div class="col-xs-6">
-                            <?= $this->Form->input('password_confirm', ['type' => 'password']); ?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <?= $this->Form->input('first_name'); ?>
-                        </div>
-                        <div class="col-xs-6">
-                            <?= $this->Form->input('last_name'); ?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <?php
-                            if (Configure::read('Users.Tos.required')) {
-                                echo $this->Form->input('tos', [
-                                    'type' => 'checkbox',
-                                    'label' => __d('Users', 'Accept TOS conditions?'),
-                                    'required' => true
-                                ]);
-                            } else {
-                                echo '&nbsp;';
-                            }
-                            ?>
-                        </div>
-                        <div class="col-xs-6">
-                            <?= $this->User->addReCaptcha(); ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php endif; ?>
+            <?php
+            if (Configure::read('Users.Registration.reCaptcha') && Configure::read('Users.reCaptcha.registration')) {
+                echo $this->User->addReCaptcha();
+            }
+            ?>
         </fieldset>
-        <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
+        <?= $this->Form->button(__('Register'), ['class' => 'btn btn-primary btn-block btn-flat']) ?>
         <?= $this->Form->end() ?>
     </div>
 </div>
