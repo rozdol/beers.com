@@ -206,18 +206,21 @@ class SearchableFieldsListener implements EventListenerInterface
     {
         $config = [];
         try {
-            $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_VIEW, $table->registryAlias(), 'index');
+            list($plugin, $module) = pluginSplit($table->registryAlias());
+            $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_VIEW, $module, 'index');
             $config = $mc->parse();
             $config = !empty($config->items) ? json_decode(json_encode($config->items), true) : [];
         } catch (InvalidArgumentException $e) {
             Log::error($e);
         }
 
+        if (empty($config)) {
+            return [];
+        }
+
         $result = [];
-        if (!empty($config)) {
-            foreach ($config as $column) {
-                $result[] = $column[0];
-            }
+        foreach ($config as $column) {
+            $result[] = $column[0];
         }
 
         return $result;
