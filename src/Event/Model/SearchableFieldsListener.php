@@ -87,18 +87,14 @@ class SearchableFieldsListener implements EventListenerInterface
      */
     protected function _getUsersSearchableFields(Table $table)
     {
-        $fields = [
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
-            'username' => 'Username',
-            'email' => 'Email'
-        ];
-
-        $result = [];
-        foreach ($fields as $k => $v) {
-            $result[$table->aliasField($k)] = [
-                'type' => 'string',
-                'label' => $v,
+        $searchFields = [
+            'string' => [
+                'fields' => [
+                    'first_name' => 'First Name',
+                    'last_name' => 'Last Name',
+                    'username' => 'Username',
+                    'email' => 'Email'
+                ],
                 'operators' => [
                     'contains' => [
                         'label' => 'contains',
@@ -106,7 +102,30 @@ class SearchableFieldsListener implements EventListenerInterface
                         'pattern' => '%{{value}}%'
                     ]
                 ]
-            ];
+            ],
+            'datetime' => [
+                'fields' => [
+                    'created' => 'Created',
+                    'modified' => 'Modified'
+                ],
+                'operators' => [
+                    'is' => [
+                        'label' => 'is',
+                        'operator' => 'IN',
+                    ]
+                ]
+            ]
+        ];
+
+        $result = [];
+        foreach ($searchFields as $type => $properties) {
+            foreach ($properties['fields'] as $k => $v) {
+                $result[$table->aliasField($k)] = [
+                    'type' => $type,
+                    'label' => $v,
+                    'operators' => $properties['operators']
+                ];
+            }
         }
 
         return $result;
