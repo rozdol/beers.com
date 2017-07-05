@@ -54,7 +54,7 @@ $this->layout = 'AdminLTE/login';
 <?= implode(' ', $this->User->socialLoginList()); ?>
 <?= $this->Form->end() ?>
 <?php
-if (Configure::read('Users.Email.required')) {
+if (Configure::read('Users.Email.required') && !(bool)Configure::read('Ldap.enabled')) {
     echo $this->Html->link(__d('users', 'I forgot my password'), ['action' => 'requestResetPassword']) . '<br />';
 }
 if (Configure::read('Users.Registration.active')) {
