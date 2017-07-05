@@ -21,6 +21,7 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Network\Exception\ForbiddenException;
+use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
@@ -96,6 +97,8 @@ class AppController extends Controller
      */
     public function beforeFilter(Event $event)
     {
+        $this->_allowedResetPassword();
+
         // Set default layout, but allow it to be overwritten by
         // Contoller actions in the application and plugins.
         $this->viewBuilder()->layout('adminlte');
@@ -128,6 +131,32 @@ class AppController extends Controller
         EventManager::instance()->on(new RequestMetadata($this->request, $this->Auth->user('id')));
 
         $this->_generateApiToken();
+    }
+
+    /**
+     * Check if allowed requestResetPassword action is allowed.
+     *
+     * @return void
+     */
+    protected function _allowedResetPassword()
+    {
+        $url = [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'requestResetPassword'
+        ];
+
+        // skip if url does not match Users requestResetPassword action.
+        if (array_diff_assoc($url, $this->request->params)) {
+            return;
+        }
+
+        // allow if LDAP is not enabled.
+        if (!(bool)Configure::read('Ldap.enabled')) {
+            return;
+        }
+
+        throw new NotFoundException();
     }
 
     /**
