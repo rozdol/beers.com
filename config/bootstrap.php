@@ -43,6 +43,7 @@ use App\Event\MagicDefaultValueListener;
 use App\Event\Menu\MenuListener;
 use App\Event\Model\SearchableFieldsListener;
 use App\Event\Model\SearchResultsListener;
+use App\Event\View\AddPermissionsListener;
 use App\Event\View\IndexMenuListener;
 use App\Event\View\LayoutMenuListener;
 use App\Event\View\ReportGridViewListener;
@@ -240,6 +241,7 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
+EventManager::instance()->on(new AddPermissionsListener());
 EventManager::instance()->on(new UserIdentifyListener());
 EventManager::instance()->on(new MagicDefaultValueListener());
 EventManager::instance()->on(new MenuListener());
