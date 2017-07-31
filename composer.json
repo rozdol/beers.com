@@ -4,8 +4,6 @@
 	"license": "GPL-2.0",
     "require": {
         "alt3/cakephp-swagger": "^1.0",
-        "burzum/cakephp-file-storage": "^1.1",
-        "burzum/cakephp-imagine-plugin": "^2.1",
         "cakedc/users": "^4.0",
         "cakephp/cakephp": "^3.4",
         "cakephp/debug_kit": "~3.0",
