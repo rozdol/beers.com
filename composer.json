@@ -18,6 +18,7 @@
         "lorenzo/audit-stash": "^1.0",
         "maiconpinto/cakephp-adminlte-theme": "^1.0",
         "mobiledetect/mobiledetectlib": "2.*",
+        "pelago/emogrifier": "^1.2",
         "pyrech/composer-changelogs": "~1.4",
         "qobo/cakephp-csv-migrations": "^21.0",
         "qobo/cakephp-groups": "^7.0",
