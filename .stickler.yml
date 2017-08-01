@@ -1,4 +1,4 @@
 linters:
   phpcs:
-    standard: PSR2
-    extensions: '.php'
+    standard: CakePHP
+    extensions: '.php,.ctp'
