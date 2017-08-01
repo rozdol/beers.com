@@ -9,10 +9,6 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-use \Pelago\Emogrifier;
-
-$emogrifier = new Emogrifier();
-
 $activationUrl = [
     '_full' => true,
     'plugin' => 'CakeDC/Users',
@@ -27,10 +23,5 @@ $content .= $this->element('Email/footer');
 
 $css = $this->element('Email/css');
 
-$emogrifier->setHtml($content);
-$emogrifier->setCss($css);
-
-$mergedContent = $emogrifier->emogrifyBodyContent();
-
-echo $mergedContent;
+echo $this->HtmlEmail->buildHtmlEmailBody($content, $css);
 ?>
