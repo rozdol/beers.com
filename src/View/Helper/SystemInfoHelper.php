@@ -3,28 +3,15 @@
 namespace App\View\Helper;
 
 use Cake\Core\Configure;
+use Cake\Datasource\ConnectionManager;
+use Cake\ORM\TableRegistry;
 use Cake\View\Helper;
 
 /**
- *
+ * SystemInfoHelper class
  */
 class SystemInfoHelper extends Helper
 {
-    /**
-     * @var $projectName
-     */
-    protected $projectName = null;
-
-    /**
-     * @var $projectUrl
-     */
-    protected $projectUrl = null;
-
-    /**
-     * @var $projectVersion
-     */
-    protected $projectVersion = null;
-
     /**
      *  getProjectVersion method
      *
@@ -91,5 +78,74 @@ class SystemInfoHelper extends Helper
         $projectName = getenv('PROJECT_NAME') ?: basename(ROOT);
 
         return $projectName;
+    }
+
+    /**
+     * getTableStats method
+     *
+     * @return array with table stats
+     */
+    public function getTableStats()
+    {
+        //
+        // Statistics
+        //
+        $allTables = $this->getAllTables();
+        $skipTables = 0;
+        $tableStats = [];
+        foreach ($allTables as $table) {
+            // Skip phinx database schema version tables
+            if (preg_match('/phinxlog/', $table)) {
+                $skipTables++;
+                continue;
+            }
+            // Bypassing any CakePHP logic for permissions, pagination, and so on,
+            // and executing raw query to get reliable data.
+            $sth = ConnectionManager::get('default')->execute("SELECT COUNT(*) AS total FROM `$table`");
+            $result = $sth->fetch('assoc');
+            $tableStats[$table]['total'] = $result['total'];
+
+            $tableInstance = TableRegistry::get($table);
+            $tableStats[$table]['deleted'] = 0;
+            if ($tableInstance->hasField('trashed')) {
+                $sth = ConnectionManager::get('default')->execute("SELECT COUNT(*) AS deleted FROM `$table` WHERE `trashed` IS NOT NULL AND `trashed` <> '0000-00-00 00:00:00'");
+                $result = $sth->fetch('assoc');
+                $tableStats[$table]['deleted'] = $result['deleted'];
+            }
+        }
+
+        return [$skipTables, $tableStats];
+    }
+
+    /**
+     * getAllTables method
+     *
+     * @return array of all tables in the database
+     */
+    public function getAllTables()
+    {
+        $allTables = ConnectionManager::get('default')->schemaCollection()->listTables();
+
+        return $allTables;
+    }
+
+    /**
+     * getProgressValue method
+     *
+     * @param int $progress value
+     * @param int $total value
+     * @return int progress result
+     */
+    public function getProgressValue($progress, $total)
+    {
+        $result = '0%';
+
+        if (!$progress || !$total) {
+            return $result;
+        }
+
+        $result = number_format(100 * $progress / $total, 0) . '%';
+
+        return $result;
     }
 }
