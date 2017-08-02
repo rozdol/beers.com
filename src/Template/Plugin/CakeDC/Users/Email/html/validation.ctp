@@ -17,11 +17,5 @@ $activationUrl = [
     isset($token) ? $token : ''
 ];
 
-$content = $this->element('Email/header');
-$content .= $this->element('Email/activation_link', ['activationUrl' => $activationUrl]);
-$content .= $this->element('Email/footer');
-
-$css = $this->element('Email/css');
-
-echo $this->HtmlEmail->buildHtmlEmailBody($content, $css);
+echo $this->HtmlEmail->buildHtmlEmailBody('Email/activation_link', ['activationUrl' => $activationUrl]);
 ?>

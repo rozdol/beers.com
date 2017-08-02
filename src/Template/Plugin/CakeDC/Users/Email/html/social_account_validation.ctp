@@ -17,10 +17,6 @@
         $socialAccount['reference'],
         $socialAccount['token'],
     ];
-$content = $this->element('Email/header');
-$content .= $this->element('Email/social_account_validation');
-$content .= $this->element('Email/footer');
-$css = $this->element('Email/css');
 
-echo $this->HtmlEmail->buildHtmlEmailBody($content, $css);
+echo $this->HtmlEmail->buildHtmlEmailBody('Email/social_account_validation', ['activationUrl' => $activationUrl]);
 ?>    
