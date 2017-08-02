@@ -43,28 +43,30 @@ class SearchableFieldsListener implements EventListenerInterface
      */
     public function getSearchableFields(Event $event, Table $table)
     {
+            return;
+        }
+
         if ($table instanceof UsersTable) {
-            $event->result = $this->_getUsersSearchableFields($table);
+            $fields = ['first_name', 'last_name', 'username', 'email', 'created', 'modified'];
+        } else {
+            $method = 'getFieldsDefinitions';
+            // skip if method cannot be called
+            if (!method_exists($table, $method) || !is_callable([$table, $method])) {
+                return;
+            }
 
-            return;
+            $fields = $table->{$method}();
+            if (empty($fields)) {
+                return;
+            }
+
+            $fields = array_keys($fields);
         }
 
-        $method = 'getFieldsDefinitions';
-        // skip if method cannot be called
-        if (!method_exists($table, $method) || !is_callable([$table, $method])) {
-            return;
-        }
-
-        $this->_fhf = new FieldHandlerFactory();
-
-        $fields = $table->{$method}();
-        if (empty($fields)) {
-            return;
-        }
-
+        $fhf = new FieldHandlerFactory();
         $result = [];
-        foreach ($fields as $field => $definition) {
-            $searchOptions = $this->_fhf->getSearchOptions($table, $field);
+        foreach ($fields as $field) {
+            $searchOptions = $fhf->getSearchOptions($table, $field);
             if (empty($searchOptions)) {
                 continue;
             }
@@ -77,58 +79,6 @@ class SearchableFieldsListener implements EventListenerInterface
         }
 
         $event->result = $result;
-    }
-
-    /**
-     * Returns searchable fields for Users module.
-     *
-     * @param \Cake\ORM\Table $table Table instance
-     * @return array
-     */
-    protected function _getUsersSearchableFields(Table $table)
-    {
-        $searchFields = [
-            'string' => [
-                'fields' => [
-                    'first_name' => 'First Name',
-                    'last_name' => 'Last Name',
-                    'username' => 'Username',
-                    'email' => 'Email'
-                ],
-                'operators' => [
-                    'contains' => [
-                        'label' => 'contains',
-                        'operator' => 'LIKE',
-                        'pattern' => '%{{value}}%'
-                    ]
-                ]
-            ],
-            'datetime' => [
-                'fields' => [
-                    'created' => 'Created',
-                    'modified' => 'Modified'
-                ],
-                'operators' => [
-                    'is' => [
-                        'label' => 'is',
-                        'operator' => 'IN',
-                    ]
-                ]
-            ]
-        ];
-
-        $result = [];
-        foreach ($searchFields as $type => $properties) {
-            foreach ($properties['fields'] as $k => $v) {
-                $result[$table->aliasField($k)] = [
-                    'type' => $type,
-                    'label' => $v,
-                    'operators' => $properties['operators']
-                ];
-            }
-        }
-
-        return $result;
     }
 
     /**
