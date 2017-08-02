@@ -3,6 +3,7 @@
 namespace App\View\Helper;
 
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
 use Cake\View\Helper;
@@ -234,5 +235,29 @@ class SystemInfoHelper extends Helper
         }
 
         return $totalRam;
+    }
+
+    /**
+     *  getCakePhpPlugins method
+     *
+     * @return array of CakePHP plugins
+     */
+    public function getCakePhpPlugins()
+    {
+        $plugins = Plugin::loaded();
+
+        return $plugins;
+    }
+
+    /**
+     * getCakePhpVersion method
+     *
+     * @return string CakePHP version
+     */
+    public function getCakePhpVersion()
+    {
+        $version = Configure::version();
+
+        return $version;
     }
 }
