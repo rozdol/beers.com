@@ -92,12 +92,18 @@ class HtmlEmailHelper extends Helper
         $copyright = date('Y') . ' ' . $projectName . '. All rigghts reserved.';
         $logo = Configure::read('Theme.logo.mini');
 
+        $name = $this->_View->get('first_name');
+        if (empty($name)) {
+            $name = $this->_View->get('username');
+        }
+
         $this->params = [
             'projectName' => $projectName,
             'projectUrl' => $projectUrl,
-            'copyright' => '&copy ' . date('Y') . ' ' . $projectName . '. All rigghts reserved.',
+            'copyright' => $copyright,
             'logo' => $logo,
-            'footerMsg' => 'Qobo LTD'
+            'footerMsg' => 'Qobo LTD',
+            'name' => $name,
         ];
     }
 }

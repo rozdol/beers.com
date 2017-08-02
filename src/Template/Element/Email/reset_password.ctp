@@ -1,7 +1,7 @@
 <!-- Body content -->
 <tr>
     <td class="content-cell">
-        <h1><?= __("Hi {0}", !empty($first_name) ? $first_name : $username); ?>,</h1>
+        <h1><?= __("Hi {0}", $name); ?>,</h1>
         <p>You recently requested to reset your password for your <?= getenv('PROJECT_NAME') ?> account. Use the button below to reset it. <strong>This password reset is only valid for the next 24 hours.</strong></p>
         <!-- Action -->
         <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
