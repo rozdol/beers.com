@@ -89,7 +89,7 @@ class HtmlEmailHelper extends Helper
     {
         $projectName = getenv('PROJECT_NAME');
         $projectUrl = getenv('PROJECT_URL');
-        $copyright = date('Y') . ' ' . $projectName . '. All rigghts reserved.';
+        $copyright = date('Y') . ' ' . $projectName . '. All rights reserved.';
         $logo = Configure::read('Theme.logo.mini');
 
         $name = $this->_View->get('first_name');
