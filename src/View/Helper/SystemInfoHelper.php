@@ -177,4 +177,62 @@ class SystemInfoHelper extends Helper
 
         return $localModificationsCommand;
     }
+
+    /**
+     *  getServerInfo method
+     *
+     * @return array with server details
+     */
+    public function getServerInfo()
+    {
+        $server = [
+            'Hostname' => gethostname(),
+            'Operating System' => implode(' ', [
+                php_uname('s'),
+                php_uname('r'),
+            ]),
+            'Machine Type' => php_uname('m'),
+            'Number of CPUs' => $this->getNumberOfCpus(),
+            'Total RAM' => $this->getTotalRam(),
+        ];
+
+        return $server;
+    }
+
+    /**
+     * getNumberOfCpus method
+     *
+     * @return int number of CPUs
+     */
+    public function getNumberOfCpus()
+    {
+        $numCpus = null;
+        $cpuInfoFile = '/proc/cpuinfo';
+        if (is_file($cpuInfoFile) && is_readable($cpuInfoFile)) {
+            $cpuInfoFile = file($cpuInfoFile);
+            $cpus = preg_grep("/^processor/", $cpuInfoFile);
+            $numCpus = count($cpus);
+        }
+
+        return $numCpus;
+    }
+
+    /**
+     * getTotalRam method
+     *
+     * @return string total RAM value
+     */
+    public function getTotalRam()
+    {
+        $totalRam = null;
+        $memoryInfoFile = '/proc/meminfo';
+        if (is_file($memoryInfoFile) && is_readable($memoryInfoFile)) {
+            $memoryInfoFile = file($memoryInfoFile);
+            $totalMemory = preg_grep("/^MemTotal:/", $memoryInfoFile);
+            list($key, $size, $unit) = preg_split('/\s+/', $totalMemory[0], 3);
+            $totalRam = number_format($size) . ' ' . $unit;
+        }
+
+        return $totalRam;
+    }
 }
