@@ -1,32 +1,9 @@
 <?php
-//
-// Installed composer libraries (from composer.lock file)
-//
-$composerLock = ROOT . DS . 'composer.lock';
-$composer = null;
-if (is_readable($composerLock)) {
-    $composer = json_decode(file_get_contents($composerLock), true);
-}
-$packages = !empty($composer['packages']) ? $composer['packages'] : [];
+$packages = $this->SystemInfo->getComposerPackages();
 $count = count($packages);
+$matchCounts = $this->SystemInfo->getComposerMatchCounts($packages);
 
-$matchWords = ['cakephp', 'qobo'];
-$matchCounts = [];
-foreach ($packages as $package) {
-    // Concatenate all fields that we'll be matching against
-    $matchString = $package['name'];
-    if (!empty($package['description'])) {
-        $matchString .= $package['description'];
-    }
-    foreach ($matchWords as $word) {
-        if (empty($matchCounts[$word])) {
-            $matchCounts[$word] = 0;
-        }
-        if (preg_match('/' . $word . '/', $matchString)) {
-            $matchCounts[$word]++;
-        }
-    }
-}
+debug($matchCounts);
 ?>
 <div class="row">
      <div class="col-md-3">
