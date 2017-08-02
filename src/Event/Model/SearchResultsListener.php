@@ -1,6 +1,7 @@
 <?php
 namespace App\Event\Model;
 
+use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\ORM\ResultSet;
@@ -20,26 +21,47 @@ class SearchResultsListener implements EventListenerInterface
     }
 
     /**
-     * Method that adds elements to index View top menu.
+     * Method that handles search result-set.
      *
      * @param \Cake\Event\Event $event Event instance
-     * @param \Cake\ORM\ResultSet $entities the ResultSet
-     * @param \Cake\ORM\Table $table  Table instance
-     * @return \Cake\ORM\ResultSet
+     * @param \Cake\ORM\ResultSet $entities ResultSet
+     * @param \Cake\ORM\Table $table Table instance
+     * @return void
      */
     public function afterFind(Event $event, ResultSet $entities, Table $table)
     {
+        if ($entities->isEmpty()) {
+            return;
+        }
+
         $fhf = new FieldHandlerFactory();
 
         foreach ($entities as $entity) {
-            $properties = $entity->visibleProperties();
-            foreach ($properties as $property) {
-                $entity->{$property} = $fhf->renderValue($table, $property, $entity->{$property});
-            }
+            $this->_renderValues($entity, $table, $fhf);
         }
 
         $event->result = $entities;
+    }
 
-        return $event->result;
+    /**
+     * Passes search entity fields through Field Handlers.
+     *
+     * @param \Cake\Datasource\EntityInterface $entity Entity object
+     * @param \Cake\ORM\Table $table Table instance
+     * @param \CsvMigrations\FieldHandlers\FieldHandlerFactory $fhf Field Handler Factory
+     * @return void
+     */
+    protected function _renderValues(EntityInterface $entity, Table $table, FieldHandlerFactory $fhf)
+    {
+        foreach ($entity->visibleProperties() as $prop) {
+            if ('_matchingData' === $prop) {
+                foreach ($entity->{$prop} as $associationName => $targetEntity) {
+                    $targetTable = $table->association($associationName)->getTarget();
+                    $this->_renderValues($targetEntity, $targetTable, $fhf);
+                }
+            } else {
+                $entity->{$prop} = $fhf->renderValue($table, $prop, $entity->{$prop});
+            }
+        }
     }
 }
