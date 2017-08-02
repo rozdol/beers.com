@@ -2,7 +2,7 @@
 <tr>
     <td class="content-cell">
         <h1><?= __("Hi {0}", !empty($first_name) ? $first_name : $username); ?>,</h1>
-        <p>Please activate your <?= getenv('PROJECT_NAME') ?> account. Use the button below to do that. <strong>This activation link is only valid for the next 24 hours.</strong></p>
+        <p>Please activate your <?= $projectName ?> account. Use the button below to do that. <strong>This activation link is only valid for the next 24 hours.</strong></p>
         <!-- Action -->
         <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
             <tr>
