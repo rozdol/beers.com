@@ -2,6 +2,7 @@
 namespace App\Event\Model;
 
 use App\Model\Table\UsersTable;
+use Cake\Core\App;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
@@ -10,17 +11,14 @@ use Cake\Utility\Inflector;
 use CsvMigrations\FieldHandlers\CsvField;
 use CsvMigrations\FieldHandlers\DbField;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+use ForbiddenException;
 use InvalidArgumentException;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
+use RolesCapabilities\CapabilityTrait;
 
 class SearchableFieldsListener implements EventListenerInterface
 {
-    /**
-     * Field handler factory instance.
-     *
-     * @var \CsvMigrations\FieldHandlers\FieldHandlerFactory
-     */
-    protected $_fhf;
+    use CapabilityTrait;
 
     /**
      * {@inheritDoc}
@@ -39,10 +37,18 @@ class SearchableFieldsListener implements EventListenerInterface
      *
      * @param \Cake\Event\Event $event Event instance
      * @param \Cake\ORM\Table $table Table instance
+     * @param array $user User info
      * @return void
      */
-    public function getSearchableFields(Event $event, Table $table)
+    public function getSearchableFields(Event $event, Table $table, array $user)
     {
+        list($plugin, $controller) = pluginSplit(App::shortName(get_class($table), 'Model/Table', 'Table'));
+        $url = [
+            'plugin' => $plugin,
+            'controller' => $controller,
+            'action' => 'search'
+        ];
+        if (!$this->_checkAccess($url, $user)) {
             return;
         }
 
