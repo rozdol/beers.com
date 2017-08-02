@@ -148,4 +148,33 @@ class SystemInfoHelper extends Helper
 
         return $result;
     }
+
+    /**
+     * getLocalModifications method
+     *
+     * @return array with local modifications
+     */
+    public function getLocalModifications()
+    {
+        $localModificationsCommand = $this->getLocalModificationsCommand();
+
+        $localModifications = trim(shell_exec($localModificationsCommand));
+        if (!empty($localModifications)) {
+            $localModifications = explode("\n", $localModifications);
+        }
+
+        return $localModifications;
+    }
+
+    /**
+     * getLocalModificationsCommand method
+     *
+     * @return string local modification command
+     */
+    public function getLocalModificationsCommand()
+    {
+        $localModificationsCommand = 'git status --porcelain';
+
+        return $localModificationsCommand;
+    }
 }

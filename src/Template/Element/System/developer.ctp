@@ -1,12 +1,7 @@
 <?php
-//
-// Developer information
-//
-$localModificationsCommand = 'git status --porcelain';
-$localModifications = trim(shell_exec($localModificationsCommand));
-if (!empty($localModifications)) {
-    $localModifications = explode("\n", $localModifications);
-}
+
+$localModificationsCommand = $this->SystemInfo->getLocalModificationsCommand();
+$localModifications = $this->SystemInfo->getLocalModifications();
 ?>
 <div class="row">
     <div class="col-md-3">
