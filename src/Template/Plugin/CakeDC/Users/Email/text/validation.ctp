@@ -17,7 +17,7 @@ $activationUrl = [
     isset($token) ? $token : ''
 ];
 ?>
-<?= __d('CakeDC/Users', "Hi {0}", isset($first_name)? $first_name : '') ?>,
+<?= __d('CakeDC/Users', "Hi {0}", $name) ?>,
 
 <?= __d('CakeDC/Users', "Please copy the following address in your web browser {0}", $this->Url->build($activationUrl)) ?>
 
