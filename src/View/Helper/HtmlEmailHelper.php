@@ -38,6 +38,7 @@ class HtmlEmailHelper extends Helper
      * initialize method
      *
      * @param array $config for the helper
+     * @return void
      */
     public function initialize(array $config)
     {
