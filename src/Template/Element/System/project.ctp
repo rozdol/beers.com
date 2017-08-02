@@ -3,37 +3,6 @@
 // Project information
 //
 
-// Use PROJECT_NAME environment variable or project folder name
-$projectName = getenv('PROJECT_NAME') ?: basename(ROOT);
-
-// Use PROJECT_URL environment variable or fallback URL
-$projectUrl = getenv('PROJECT_URL');
-$projectUrl = $projectUrl ?: \Cake\Routing\Router::fullBaseUrl();
-$projectUrl = $projectUrl ?: 'https://github.com/QoboLtd/project-template-cakephp';
-
-// Use PROJECT_VERSION environment variable or fallback
-$projectVersion = getenv('PROJECT_VERSION') ?: getenv('GIT_BRANCH');
-$lastCommit = shell_exec('git rev-parse --short HEAD');
-$lastCommit = $lastCommit ?: 'N/A';
-$projectVersion = $projectVersion ?: $lastCommit;
-
-//
-// Versions
-//
-
-// Read build/version* files or use N/A as fallback
-$versions = [
-	'current' => ROOT . DS . 'build' . DS . 'version',
-	'deployed' => ROOT . DS . 'build' . DS . 'version.ok',
-	'previous' => ROOT . DS . 'build' . DS . 'version.bak',
-];
-foreach ($versions as $version => $file) {
-	if (is_readable($file)) {
-		$versions[$version] = file_get_contents($file);
-	} else {
-		$versions[$version] = 'N/A';
-	}
-}
 ?>
 <div class="row">
     <div class="col-md-3">
