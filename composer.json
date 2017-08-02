@@ -21,7 +21,7 @@
         "pyrech/composer-changelogs": "~1.4",
         "qobo/cakephp-csv-migrations": "^21.0",
         "qobo/cakephp-groups": "^7.0",
-        "qobo/cakephp-menu": "^8.0",
+        "qobo/cakephp-menu": "^9.0",
         "qobo/cakephp-roles-capabilities": "^11.0",
         "qobo/cakephp-search": "^11.0",
         "qobo/cakephp-utils": "^4.0",
