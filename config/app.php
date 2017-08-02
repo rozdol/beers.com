@@ -242,6 +242,15 @@ return [
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
+    ],    
+    
+    /**
+     * Email templates
+     */
+    'EmailTemplates' => [
+        'css' => 'Email/css',
+        'header' => 'Email/header',
+        'footer' => 'Email/footer',
     ],
 
     /**
