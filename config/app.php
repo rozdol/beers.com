@@ -242,8 +242,8 @@ return [
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
-    ],    
-    
+    ],
+
     /**
      * Email templates
      */

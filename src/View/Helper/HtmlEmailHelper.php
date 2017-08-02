@@ -63,11 +63,14 @@ class HtmlEmailHelper extends Helper
 
         $args = array_merge($this->params, $args);
 
-        $content = $this->_View->elementExists($this->templateHeader) ? $this->_View->element($this->templateHeader, $args) : '';
+        $content = $this->_View->elementExists($this->templateHeader) ?
+                                $this->_View->element($this->templateHeader, $args) : '';
         $content .= $this->_View->element($elementName, $args);
-        $content .= $this->_View->elementExists($this->templateHeader) ? $this->_View->element($this->templateFooter, $args) : '';
+        $content .= $this->_View->elementExists($this->templateHeader) ?
+                                $this->_View->element($this->templateFooter, $args) : '';
 
-        $css = $this->_View->elementExists($this->templateCss) ? $this->_View->element($this->templateCss) : '';
+        $css = $this->_View->elementExists($this->templateCss) ?
+                                $this->_View->element($this->templateCss) : '';
 
         if (!empty($content) && !empty($css)) {
             $emogrifier = new Emogrifier($content, $css);
