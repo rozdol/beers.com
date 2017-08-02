@@ -24,20 +24,20 @@ class SystemInfoHelper extends Helper
      * @var $projectVersion
      */
     protected $projectVersion = null;
-    
+
     /**
-     *  getProjectVesion method
+     *  getProjectVersion method
      *
      * @return string project version
      */
-    public function getProjectVesion()
+    public function getProjectVersion()
     {
         // Use PROJECT_VERSION environment variable or fallback
         $projectVersion = getenv('PROJECT_VERSION') ?: getenv('GIT_BRANCH');
         $lastCommit = shell_exec('git rev-parse --short HEAD');
         $lastCommit = $lastCommit ?: 'N/A';
         $projectVersion = $projectVersion ?: $lastCommit;
-        
+
         return $projectVersion;
     }
 
@@ -61,7 +61,7 @@ class SystemInfoHelper extends Helper
                 $versions[$version] = 'N/A';
             }
         }
-        
+
         return $versions;
     }
 
@@ -76,7 +76,7 @@ class SystemInfoHelper extends Helper
         $projectUrl = getenv('PROJECT_URL');
         $projectUrl = $projectUrl ?: \Cake\Routing\Router::fullBaseUrl();
         $projectUrl = $projectUrl ?: 'https://github.com/QoboLtd/project-template-cakephp';
-    
+
         return $projectUrl;
     }
 
