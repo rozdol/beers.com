@@ -30,11 +30,6 @@ class HtmlEmailHelper extends Helper
     protected $templateCss = null;
 
     /**
-     * @var $params
-     */
-    protected $params = [];
-
-    /**
      * @var $helpers
      */
     public $helpers = ['SystemInfo'];
@@ -50,8 +45,6 @@ class HtmlEmailHelper extends Helper
         $this->templateHeader = Configure::read('EmailTemplates.header');
         $this->templateFooter = Configure::read('EmailTemplates.footer');
         $this->templateCss = Configure::read('EmailTemplates.css');
-
-        $this->setVariables();
     }
 
     /**
@@ -66,8 +59,6 @@ class HtmlEmailHelper extends Helper
         if (!$this->_View->elementExists($elementName)) {
             throw new MissingElementException("Cannot find element [$elementName]");
         }
-
-        $args = array_merge($this->params, $args);
 
         $content = $this->_View->elementExists($this->templateHeader) ?
                                 $this->_View->element($this->templateHeader, $args) : '';
@@ -87,27 +78,27 @@ class HtmlEmailHelper extends Helper
     }
 
     /**
-     * setVariables method
+     * getRecepientName method
      *
-     * @return void
+     * @return string recepient name
      */
-    protected function setVariables()
+    public function getRecepientName()
     {
-        $copyright = date('Y') . ' ' . $this->SystemInfo->getProjectName() . '. All rights reserved.';
-        $logo = Configure::read('Theme.logo.mini');
-
         $name = $this->_View->get('first_name');
         if (empty($name)) {
             $name = $this->_View->get('username');
         }
 
-        $this->params = [
-            'projectName' => $this->SystemInfo->getProjectName(),
-            'projectUrl' => $this->SystemInfo->getProjectUrl(),
-            'copyright' => $copyright,
-            'logo' => $logo,
-            'footerMsg' => 'Qobo LTD',
-            'name' => $name,
-        ];
+        return $name;
+    }
+
+    /**
+     * getFooterInfo method
+     *
+     * @return string additional footer info
+     */
+    public function getFooterInfo()
+    {
+        return '';
     }
 }
