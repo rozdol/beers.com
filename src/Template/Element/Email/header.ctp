@@ -18,8 +18,8 @@ use Cake\Core\Configure;
                     <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="email-masthead">
-                                <a href="<?= $projectUrl ?>" class="email-masthead_name">
-                                    <?= $logo ?>
+                                <a href="<?= $this->SystemInfo->getProjectUrl() ?>" class="email-masthead_name">
+                                    <?= $this->SystemInfo->getProjectLogo() ?>
                                 </a>
                             </td>
                         </tr>

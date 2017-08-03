@@ -17,5 +17,11 @@ $activationUrl = [
     isset($token) ? $token : ''
 ];
 
-echo $this->HtmlEmail->buildHtmlEmailBody('Email/reset_password', ['activationUrl' => $activationUrl]);
+echo $this->HtmlEmail->buildHtmlEmailBody(
+    'Email/reset_password', 
+    [
+        'activationUrl' => $activationUrl, 
+        'title' => 'Reset Password',
+    ]
+);
 ?>

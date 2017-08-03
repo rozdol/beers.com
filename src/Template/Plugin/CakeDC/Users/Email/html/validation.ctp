@@ -17,5 +17,11 @@ $activationUrl = [
     isset($token) ? $token : ''
 ];
 
-echo $this->HtmlEmail->buildHtmlEmailBody('Email/activation_link', ['activationUrl' => $activationUrl]);
+echo $this->HtmlEmail->buildHtmlEmailBody(
+    'Email/activation_link', 
+    [
+        'activationUrl' => $activationUrl,
+        'title' => 'Activation link'
+    ]
+);
 ?>

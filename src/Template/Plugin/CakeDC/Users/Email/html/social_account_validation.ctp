@@ -18,5 +18,11 @@
         $socialAccount['token'],
     ];
 
-echo $this->HtmlEmail->buildHtmlEmailBody('Email/social_account_validation', ['activationUrl' => $activationUrl]);
+echo $this->HtmlEmail->buildHtmlEmailBody(
+    'Email/social_account_validation', 
+    [
+        'activationUrl' => $activationUrl,
+        'title' => 'Social login activation'
+    ]
+);
 ?>    
