@@ -245,6 +245,15 @@ return [
     ],
 
     /**
+     * Email templates
+     */
+    'EmailTemplates' => [
+        'css' => 'Email/css',
+        'header' => 'Email/header',
+        'footer' => 'Email/footer',
+    ],
+
+    /**
      * LDAP configuration.
      */
     'Ldap' => [

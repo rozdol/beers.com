@@ -14,6 +14,16 @@ use Cake\View\Helper;
 class SystemInfoHelper extends Helper
 {
     /**
+     * @var $logoSizes
+     */
+    protected $logoSizes = ['mini', 'large'];
+
+    /**
+     * @var $defaultLogoSize
+     */
+    protected $defaultLogoSize = 'mini';
+
+    /**
      *  getProjectVersion method
      *
      * @return string project version
@@ -308,5 +318,31 @@ class SystemInfoHelper extends Helper
         }
 
         return $matchCounts;
+    }
+
+    /**
+     *  getProjectLogo method
+     *
+     * @param string $logoSize of logo - mini or large
+     * @return string base64 encoded project logo
+     */
+    public function getProjectLogo($logoSize = '')
+    {
+        $logoSize = in_array($logoSize, $this->logoSizes) ? $logoSize : $this->defaultLogoSize;
+        $logo = Configure::read('Theme.logo.' . $logoSize);
+
+        return $logo;
+    }
+
+    /**
+     * getCopyright method
+     *
+     * @return string copyright
+     */
+    public function getCopyright()
+    {
+        $copyright = 'Copyright &copy; ' . date('Y') . ' ' . $this->getProjectName() . '. All rights reserved.';
+
+        return $copyright;
     }
 }
