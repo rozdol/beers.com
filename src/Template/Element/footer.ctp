@@ -1,11 +1,11 @@
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
         <b>Version</b>:
-		<?php echo getenv('PROJECT_VERSION') ?: getenv('GIT_BRANCH'); ?>
+		<?= $this->SystemInfo->getProjectVersion() ?>
     </div>
     <strong>
 		Copyright &copy; <?php echo date('Y'); ?>,
-		<?php echo getenv('PROJECT_NAME') ?: basename(ROOT); ?>.
+		<?= $this->SystemInfo->getProjectName() ?>.
 	</strong>
 	All rights reserved.
 </footer>
