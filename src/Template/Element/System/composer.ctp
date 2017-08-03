@@ -2,8 +2,6 @@
 $packages = $this->SystemInfo->getComposerPackages();
 $count = count($packages);
 $matchCounts = $this->SystemInfo->getComposerMatchCounts($packages);
-
-debug($matchCounts);
 ?>
 <div class="row">
      <div class="col-md-3">
