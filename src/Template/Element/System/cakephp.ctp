@@ -1,8 +1,5 @@
 <?php
-//
-// Installed CakePHP plugins
-//
-$plugins = \Cake\Core\Plugin::loaded();
+$plugins = $this->SystemInfo->getCakePhpPlugins();
 ?>
 <div class="row">
     <div class="col-md-3">
@@ -10,14 +7,14 @@ $plugins = \Cake\Core\Plugin::loaded();
             <span class="info-box-icon bg-blue"><i class="fa fa-birthday-cake"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">CakePHP version</span>
-                <span class="info-box-number"><?php echo \Cake\Core\Configure::version(); ?></span>
+                <span class="info-box-number"><?= $this->SystemInfo->getCakePhpVersion() ?></span>
             </div>
         </div>
         <div class="info-box">
             <span class="info-box-icon bg-blue"><i class="fa fa-plug"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">CakePHP plugins</span>
-                <span class="info-box-number"><?php echo number_format(count($plugins)); ?></span>
+                <span class="info-box-number"><?= number_format(count($plugins)); ?></span>
             </div>
         </div>
     </div>
