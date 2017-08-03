@@ -35,6 +35,11 @@ class HtmlEmailHelper extends Helper
     protected $params = [];
 
     /**
+     * @var $helpers
+     */
+    public $helpers = ['SystemInfo'];
+
+    /**
      * initialize method
      *
      * @param array $config for the helper
@@ -88,9 +93,7 @@ class HtmlEmailHelper extends Helper
      */
     protected function setVariables()
     {
-        $projectName = getenv('PROJECT_NAME');
-        $projectUrl = getenv('PROJECT_URL');
-        $copyright = date('Y') . ' ' . $projectName . '. All rights reserved.';
+        $copyright = date('Y') . ' ' . $this->SystemInfo->getProjectName() . '. All rights reserved.';
         $logo = Configure::read('Theme.logo.mini');
 
         $name = $this->_View->get('first_name');
@@ -99,8 +102,8 @@ class HtmlEmailHelper extends Helper
         }
 
         $this->params = [
-            'projectName' => $projectName,
-            'projectUrl' => $projectUrl,
+            'projectName' => $this->SystemInfo->getProjectName(),
+            'projectUrl' => $this->SystemInfo->getProjectUrl(),
             'copyright' => $copyright,
             'logo' => $logo,
             'footerMsg' => 'Qobo LTD',
