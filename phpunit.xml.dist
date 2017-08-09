@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-	colors="true"
-	processIsolation="false"
-	stopOnFailure="false"
-	syntaxCheck="false"
-	bootstrap="./tests/bootstrap.php"
+    colors="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    syntaxCheck="false"
+    bootstrap="./tests/bootstrap.php"
     verbose="true"
-	>
-	<php>
-		<ini name="memory_limit" value="-1"/>
-		<ini name="apc.enable_cli" value="1"/>
-	</php>
+    >
+    <php>
+        <ini name="memory_limit" value="-1"/>
+        <ini name="apc.enable_cli" value="1"/>
+    </php>
 
-	<filter>
-		<whitelist>
+    <filter>
+        <whitelist>
             <directory suffix=".php">./src/</directory>
             <directory suffix=".php">./webroot/</directory>
-		</whitelist>
-	</filter>
+        </whitelist>
+    </filter>
 
     <logging>
-		<log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
-		<log type="coverage-html" target="build/coverage"/>
-		<log type="coverage-clover" target="build/logs/clover.xml"/>
-		<log type="coverage-crap4j" target="build/logs/crap4j.xml"/>
-		<log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+        <log type="coverage-html" target="build/coverage"/>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+        <log type="coverage-crap4j" target="build/logs/crap4j.xml"/>
+        <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
     </logging>
 
-	<!-- Add any additional test suites you want to run here -->
-	<testsuites>
-		<testsuite name="App Test Suite">
-			<directory>./tests/TestCase</directory>
-		</testsuite>
+    <!-- Add any additional test suites you want to run here -->
+    <testsuites>
+        <testsuite name="App Test Suite">
+            <directory>./tests/TestCase</directory>
+        </testsuite>
         <testsuite name="example">
             <directory>tests/Example/</directory>
         </testsuite>
@@ -44,37 +44,17 @@
         <testsuite name="unit">
             <directory>tests/Unit/</directory>
         </testsuite>
-		<!-- Add plugin test suites here. -->
-		<testsuite name="Utils Plugin Test Suite">
-            <directory>./vendor/qobo/cakephp-utils/tests/TestCase</directory>
-		</testsuite>
-		<testsuite name="CsvMigrations Plugin Test Suite">
-            <directory>./vendor/qobo/cakephp-csv-migrations/tests/TestCase</directory>
-		</testsuite>
-		<testsuite name="Group Plugin Test Suite">
-            <directory>./vendor/qobo/cakephp-groups/tests/TestCase</directory>
-		</testsuite>
-		<testsuite name="RolesCapabilities Plugin Test Suite">
-            <directory>./vendor/qobo/cakephp-roles-capabilities/tests/TestCase</directory>
-		</testsuite>
-		<testsuite name="QoboAdminPanel Plugin Test Suite">
-            <directory>./vendor/qobo/cakephp-qobo-admin-panel/tests/TestCase</directory>
-		</testsuite>
-		<testsuite name="Menu Plugin Test Suite">
-            <directory>./vendor/qobo/cakephp-menu/tests/TestCase</directory>
-		</testsuite>
+    </testsuites>
 
-	</testsuites>
-
-	<!-- Setup a listener for fixtures -->
-	<listeners>
-		<listener
-		class="\Cake\TestSuite\Fixture\FixtureInjector"
-		file="./vendor/cakephp/cakephp/src/TestSuite/Fixture/FixtureInjector.php">
-			<arguments>
-				<object class="\Cake\TestSuite\Fixture\FixtureManager" />
-			</arguments>
-		</listener>
-	</listeners>
+    <!-- Setup a listener for fixtures -->
+    <listeners>
+        <listener
+        class="\Cake\TestSuite\Fixture\FixtureInjector"
+        file="./vendor/cakephp/cakephp/src/TestSuite/Fixture/FixtureInjector.php">
+            <arguments>
+                <object class="\Cake\TestSuite\Fixture\FixtureManager" />
+            </arguments>
+        </listener>
+    </listeners>
 
 </phpunit>
