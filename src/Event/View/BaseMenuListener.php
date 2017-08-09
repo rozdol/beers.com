@@ -1,9 +1,9 @@
 <?php
 namespace App\Event\View;
 
+use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use Cake\Core\Exception\Exception;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -39,8 +39,8 @@ abstract class BaseMenuListener implements EventListenerInterface
             $menuBuilder->addMenuItem($menuItem);
         }
 
-        $renderClass = 'Menu\\MenuBuilder\\Menu' . ucfirst($type)  . 'Render';
-        
+        $renderClass = 'Menu\\MenuBuilder\\Menu' . ucfirst($type) . 'Render';
+
         if (!class_exists($renderClass)) {
             throw new Exception('Menu render class [' . $renderClass . '] is not found!');
         }
