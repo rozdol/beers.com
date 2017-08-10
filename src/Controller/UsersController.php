@@ -117,4 +117,29 @@ class UsersController extends AppController
 
         return $this->redirect($this->request->referer());
     }
+
+    /**
+     * editProfile method
+     *
+     *
+     */
+    public function editProfile()
+    {
+        $this->autoRender = false;
+        $this->request->allowMethod(['patch', 'post', 'put']);
+
+        $user_id = $this->Auth->user('id');
+
+        $user = $this->Users->get($user_id);
+
+        $user = $this->Users->patchEntity($user, $this->request->data);
+
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('Profile successfully updated'));
+        } else {
+            $this->Flash->error(__('Failed to update profile data, please try again.'));
+        }
+
+        return $this->redirect($this->request->referer());
+    }
 }
