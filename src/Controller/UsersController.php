@@ -7,6 +7,7 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
+use Cake\Network\Exception\UnauthorizedException;
 use Cake\Validation\Validator;
 use Exception;
 
@@ -121,7 +122,11 @@ class UsersController extends AppController
     /**
      * editProfile method
      *
+     *  Overide CakeDC edit suer record method to give ability
+     * separate user record update by admin and editing profile
+     * by logged in user
      *
+     * @return void
      */
     public function editProfile()
     {
@@ -129,8 +134,14 @@ class UsersController extends AppController
         $this->request->allowMethod(['patch', 'post', 'put']);
 
         $user_id = $this->Auth->user('id');
+        if (empty($user_id)) {
+            throw new UnauthorizedException('You have tpo login to complete this action!');
+        }
 
         $user = $this->Users->get($user_id);
+        if (empty($user)) {
+            throw new UserNotFoundException('User not found!');
+        }
 
         $user = $this->Users->patchEntity($user, $this->request->data);
 
