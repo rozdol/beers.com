@@ -26,7 +26,7 @@
         "qobo/cakephp-roles-capabilities": "^11.0",
         "qobo/cakephp-search": "^11.0",
         "qobo/cakephp-utils": "^4.0",
-        "qobo/phake-builder": "^3.0",
+        "qobo/phake-builder": "^4.0",
         "zircote/swagger-php": "2.0.8"
     },
     "require-dev": {
