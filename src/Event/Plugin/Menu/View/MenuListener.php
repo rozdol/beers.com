@@ -1,5 +1,5 @@
 <?php
-namespace App\Event\Menu;
+namespace App\Event\Plugin\Menu\View;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;

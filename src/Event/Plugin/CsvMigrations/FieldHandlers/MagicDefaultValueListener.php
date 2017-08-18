@@ -1,5 +1,5 @@
 <?php
-namespace App\Event;
+namespace App\Event\Plugin\CsvMigrations\FieldHandlers;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
