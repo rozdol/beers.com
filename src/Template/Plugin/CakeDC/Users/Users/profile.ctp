@@ -97,10 +97,8 @@ echo $this->Html->script('AdminLTE./plugins/datepicker/bootstrap-datepicker', ['
                         <?= $this->Form->create(null, [
                             'class' => 'form-horizontal',
                             'url' => [
-                                'plugin' => 'CakeDC/Users',
                                 'controller' => 'Users',
-                                'action' => 'edit',
-                                $user['id']
+                                'action' => 'edit-profile'
                             ]
                         ]); ?>
                             <?= $this->Form->input('Users.username', [

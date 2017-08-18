@@ -7,6 +7,7 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
+use Cake\Network\Exception\UnauthorizedException;
 use Cake\Validation\Validator;
 use Exception;
 
@@ -113,6 +114,41 @@ class UsersController extends AppController
             }
         } else {
             $this->Flash->error(__('Failed to upload image, please try again.'));
+        }
+
+        return $this->redirect($this->request->referer());
+    }
+
+    /**
+     * editProfile method
+     *
+     *  Overide CakeDC edit suer record method to give ability
+     * separate user record update by admin and editing profile
+     * by logged in user
+     *
+     * @return void
+     */
+    public function editProfile()
+    {
+        $this->autoRender = false;
+        $this->request->allowMethod(['patch', 'post', 'put']);
+
+        $user_id = $this->Auth->user('id');
+        if (empty($user_id)) {
+            throw new UnauthorizedException('You have to login to complete this action!');
+        }
+
+        $user = $this->Users->get($user_id);
+        if (empty($user)) {
+            throw new UserNotFoundException('User not found!');
+        }
+
+        $user = $this->Users->patchEntity($user, $this->request->data);
+
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('Profile successfully updated'));
+        } else {
+            $this->Flash->error(__('Failed to update profile data, please try again.'));
         }
 
         return $this->redirect($this->request->referer());
