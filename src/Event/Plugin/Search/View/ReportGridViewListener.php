@@ -1,5 +1,5 @@
 <?php
-namespace App\Event\View;
+namespace App\Event\Plugin\Search\View;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
@@ -27,9 +27,10 @@ class ReportGridViewListener implements EventListenerInterface
      * @param string $model model name
      * @param string $field field name
      * @param string $value field value
+     * @param array $options options
      * @return string processed field value
      */
-    public function processFieldValue(Event $event, $model, $field, $value, $options = [])
+    public function processFieldValue(Event $event, $model, $field, $value, array $options = [])
     {
         $result = '';
 

@@ -39,17 +39,17 @@ if (!extension_loaded('intl')) {
 }
 
 use App\Event\Component\UserIdentifyListener;
-use App\Event\MagicDefaultValueListener;
-use App\Event\Menu\MenuListener;
-use App\Event\Model\SearchableFieldsListener;
-use App\Event\Model\SearchResultsListener;
-use App\Event\View\AddPermissionsListener;
-use App\Event\View\IndexMenuListener;
+use App\Event\Plugin\CsvMigrations\FieldHandlers\MagicDefaultValueListener;
+use App\Event\Plugin\CsvMigrations\View\AddPermissionsListener;
+use App\Event\Plugin\CsvMigrations\View\MenuListener as CsvMigrationsMenuListener;
+use App\Event\Plugin\CsvMigrations\View\TranslationViewListener;
+use App\Event\Plugin\CsvMigrations\View\ViewViewTabsListener;
+use App\Event\Plugin\Menu\View\MenuListener;
+use App\Event\Plugin\Search\Model\SearchableFieldsListener;
+use App\Event\Plugin\Search\Model\SearchResultsListener;
+use App\Event\Plugin\Search\View\MenuListener as SearchMenuListener;
+use App\Event\Plugin\Search\View\ReportGridViewListener;
 use App\Event\View\LayoutMenuListener;
-use App\Event\View\ReportGridViewListener;
-use App\Event\View\TranslationViewListener;
-use App\Event\View\ViewMenuListener;
-use App\Event\View\ViewViewTabsListener;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
@@ -242,18 +242,8 @@ DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
 EventManager::instance()->on(new AddPermissionsListener());
-EventManager::instance()->on(new UserIdentifyListener());
-EventManager::instance()->on(new MagicDefaultValueListener());
-EventManager::instance()->on(new MenuListener());
-EventManager::instance()->on(new SearchableFieldsListener());
-EventManager::instance()->on(new SearchResultsListener());
-EventManager::instance()->on(new IndexMenuListener());
+EventManager::instance()->on(new CsvMigrationsMenuListener());
 EventManager::instance()->on(new LayoutMenuListener());
-EventManager::instance()->on(new ViewMenuListener());
-EventManager::instance()->on(new ReportGridViewListener());
-EventManager::instance()->on(new TranslationViewListener());
-EventManager::instance()->on(new ViewViewTabsListener());
-
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
 EventManager::instance()->on(new LocalListener([
     'imageProcessing' => true,
@@ -261,6 +251,15 @@ EventManager::instance()->on(new LocalListener([
         'pathPrefix' => 'uploads'
     ]
 ]));
+EventManager::instance()->on(new MagicDefaultValueListener());
+EventManager::instance()->on(new MenuListener());
+EventManager::instance()->on(new ReportGridViewListener());
+EventManager::instance()->on(new SearchableFieldsListener());
+EventManager::instance()->on(new SearchMenuListener());
+EventManager::instance()->on(new SearchResultsListener());
+EventManager::instance()->on(new TranslationViewListener());
+EventManager::instance()->on(new UserIdentifyListener());
+EventManager::instance()->on(new ViewViewTabsListener());
 
 // load AdminLTE theme settings
 Configure::load('admin_lte', 'default');

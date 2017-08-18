@@ -1,5 +1,5 @@
 <?php
-namespace App\Event\Model;
+namespace App\Event\Plugin\Search\Model;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
