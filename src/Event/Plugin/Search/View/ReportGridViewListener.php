@@ -3,7 +3,6 @@ namespace App\Event\Plugin\Search\View;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use Cake\Network\Exception\ForbiddenException;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 use Search\Event\EventName;
 

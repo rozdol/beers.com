@@ -3,10 +3,7 @@ namespace App\Event\Plugin\CsvMigrations\View;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use Cake\Log\LogTrait;
-use Cake\Network\Exception\ForbiddenException;
 use Cake\Utility\Inflector;
-use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 use CsvMigrations\Event\EventName;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
@@ -14,7 +11,6 @@ use RolesCapabilities\CapabilityTrait;
 class TranslationViewListener implements EventListenerInterface
 {
     use CapabilityTrait;
-    use LogTrait;
 
     /**
      * @return array of implemented events for sets module

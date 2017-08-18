@@ -1,7 +1,6 @@
 <?php
 namespace App\Event\Plugin\CsvMigrations\View;
 
-use App\Event\View\BaseMenuListener;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use CsvMigrations\Event\EventName;

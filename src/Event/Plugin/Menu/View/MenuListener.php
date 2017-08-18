@@ -3,7 +3,6 @@ namespace App\Event\Plugin\Menu\View;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use CsvMigrations\MigrationTrait;
