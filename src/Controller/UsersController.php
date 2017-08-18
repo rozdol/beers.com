@@ -135,7 +135,7 @@ class UsersController extends AppController
 
         $user_id = $this->Auth->user('id');
         if (empty($user_id)) {
-            throw new UnauthorizedException('You have tpo login to complete this action!');
+            throw new UnauthorizedException('You have to login to complete this action!');
         }
 
         $user = $this->Users->get($user_id);
