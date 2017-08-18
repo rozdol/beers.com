@@ -1,7 +1,12 @@
 project-template-cakephp
 ========================
 
+About
+-----
+
 This is a template for the new CakePHP projects.
+
+Developed by [Qobo](https://www.qobo.biz), used in [Qobrix](https://qobrix.com).
 
 Install
 -------
