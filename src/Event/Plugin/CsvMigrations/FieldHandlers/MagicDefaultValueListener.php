@@ -4,6 +4,7 @@ namespace App\Event\Plugin\CsvMigrations\FieldHandlers;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Utility\Inflector;
+use CsvMigrations\Event\EventName;
 
 class MagicDefaultValueListener implements EventListenerInterface
 {
@@ -13,7 +14,7 @@ class MagicDefaultValueListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'CsvMigrations.FieldHandler.DefaultValue' => 'getDefaultValue',
+            (string)EventName::FIELD_HANDLER_DEFAULT_VALUE() => 'getDefaultValue',
         ];
     }
 

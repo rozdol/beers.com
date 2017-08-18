@@ -1,6 +1,7 @@
 <?php
 namespace App\Event\View;
 
+use App\Event\EventName;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Network\Exception\ForbiddenException;
@@ -27,7 +28,7 @@ class LayoutMenuListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Element.MainSidebar.Form' => 'getSearchForm'
+            (string)EventName::LAYOUT_ASIDE_FORM() => 'getSearchForm'
         ];
     }
 

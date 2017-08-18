@@ -15,6 +15,7 @@ use ForbiddenException;
 use InvalidArgumentException;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
+use Search\Event\EventName;
 
 class SearchableFieldsListener implements EventListenerInterface
 {
@@ -26,9 +27,9 @@ class SearchableFieldsListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Search.Model.Search.searchabeFields' => 'getSearchableFields',
-            'Search.Model.Search.basicSearchFields' => 'getBasicSearchFields',
-            'Search.Model.Search.displayFields' => 'getDisplayFields'
+            (string)EventName::MODEL_SEARCH_SEARCHABLE_FIELDS() => 'getSearchableFields',
+            (string)EventName::MODEL_SEARCH_BASIC_SEARCH_FIELDS() => 'getBasicSearchFields',
+            (string)EventName::MODEL_SEARCH_DISPLAY_FIELDS() => 'getDisplayFields'
         ];
     }
 

@@ -5,6 +5,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Network\Exception\ForbiddenException;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+use Search\Event\EventName;
 
 class ReportGridViewListener implements EventListenerInterface
 {
@@ -14,7 +15,7 @@ class ReportGridViewListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Search.Dashboard.Widget.GridElement' => 'processFieldValue',
+            (string)EventName::VIEW_DASHBOARDS_WIDGET_GRID() => 'processFieldValue',
         ];
     }
 

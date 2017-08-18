@@ -7,6 +7,7 @@ use Cake\Event\EventListenerInterface;
 use Cake\ORM\ResultSet;
 use Cake\ORM\Table;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+use Search\Event\EventName;
 
 class SearchResultsListener implements EventListenerInterface
 {
@@ -16,7 +17,7 @@ class SearchResultsListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Search.Model.Search.afterFind' => 'afterFind'
+            (string)EventName::MODEL_SEARCH_AFTER_FIND() => 'afterFind'
         ];
     }
 

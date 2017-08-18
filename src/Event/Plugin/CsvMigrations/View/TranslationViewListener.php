@@ -7,6 +7,7 @@ use Cake\Log\LogTrait;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Utility\Inflector;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+use CsvMigrations\Event\EventName;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
 
@@ -21,7 +22,7 @@ class TranslationViewListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'CsvMigrations.View.View.TranslationButton' => 'getTranslationButton',
+            (string)EventName::VIEW_TRANSLATION_BUTTON() => 'getTranslationButton',
         ];
     }
 

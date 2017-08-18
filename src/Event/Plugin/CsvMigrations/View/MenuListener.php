@@ -4,6 +4,7 @@ namespace App\Event\Plugin\CsvMigrations\View;
 use App\Event\View\BaseMenuListener;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use CsvMigrations\Event\EventName;
 use Menu\MenuBuilder\Menu;
 use Menu\MenuBuilder\MenuItemFactory;
 use RolesCapabilities\CapabilityTrait;
@@ -20,14 +21,14 @@ class MenuListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'CsvMigrations.Index.topMenu.beforeRender' => 'beforeRenderFlatMenu',
-            'CsvMigrations.Index.actionsMenu.beforeRender' => 'beforeRenderFlatMenu',
-            'CsvMigrations.Associated.actionsMenu.beforeRender' => 'beforeRenderFlatMenu',
-            'CsvMigrations.View.topMenu.beforeRender' => 'beforeRenderCsvMigrationsViewTopMenu',
-            'CsvMigrations.Dblists.Index.topMenu.beforeRender' => 'beforeRenderFlatMenu',
-            'CsvMigrations.Dblists.Index.actionsMenu.beforeRender' => 'beforeRenderFlatMenu',
-            'CsvMigrations.DblistItems.Index.topMenu.beforeRender' => 'beforeRenderFlatMenu',
-            'CsvMigrations.DblistItems.Index.actionsMenu.beforeRender' => 'beforeRenderFlatMenu',
+            (string)EventName::MENU_ACTIONS_ASSOCIATED() => 'beforeRenderFlatMenu',
+            (string)EventName::MENU_ACTIONS_DB_LISTS_INDEX() => 'beforeRenderFlatMenu',
+            (string)EventName::MENU_ACTIONS_DB_LIST_ITEMS_INDEX() => 'beforeRenderFlatMenu',
+            (string)EventName::MENU_ACTIONS_INDEX() => 'beforeRenderFlatMenu',
+            (string)EventName::MENU_TOP_DB_LISTS_INDEX() => 'beforeRenderFlatMenu',
+            (string)EventName::MENU_TOP_DB_LIST_ITEMS_INDEX() => 'beforeRenderFlatMenu',
+            (string)EventName::MENU_TOP_INDEX() => 'beforeRenderFlatMenu',
+            (string)EventName::MENU_TOP_VIEW() => 'beforeRenderCsvMigrationsViewTopMenu'
         ];
     }
 
