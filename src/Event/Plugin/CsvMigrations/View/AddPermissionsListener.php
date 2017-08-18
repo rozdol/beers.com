@@ -5,6 +5,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
+use CsvMigrations\Event\EventName;
 use RolesCapabilities\CapabilityTrait;
 
 class AddPermissionsListener implements EventListenerInterface
@@ -23,7 +24,7 @@ class AddPermissionsListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'CsvMigrations.View.topMenu.beforeRender' => 'addPermissionsButton'
+            (string)EventName::MENU_TOP_VIEW() => 'addPermissionsButton'
         ];
     }
 

@@ -5,6 +5,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Entity;
+use CsvMigrations\Event\EventName;
 use RolesCapabilities\CapabilityTrait;
 
 class ViewViewTabsListener implements EventListenerInterface
@@ -18,7 +19,7 @@ class ViewViewTabsListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'CsvMigrations.View.View.TabsList' => [
+            (string)EventName::VIEW_TABS_LIST() => [
                 'callable' => 'getTabsList',
                 'priority' => 20
             ]

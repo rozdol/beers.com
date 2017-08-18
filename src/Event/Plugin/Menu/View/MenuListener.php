@@ -3,11 +3,11 @@ namespace App\Event\Plugin\Menu\View;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use Cake\Network\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use CsvMigrations\MigrationTrait;
 use Exception;
+use Menu\Event\EventName;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
 
@@ -29,8 +29,8 @@ class MenuListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Menu.Menu.getMenuItems' => 'getMenuItems',
-            'Menu.Menu.beforeRender' => 'beforeRender'
+            (string)EventName::GET_MENU_ITEMS() => 'getMenuItems',
+            (string)EventName::MENU_BEFORE_RENDER() => 'beforeRender'
         ];
     }
 

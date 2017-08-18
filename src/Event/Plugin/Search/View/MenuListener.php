@@ -5,6 +5,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Network\Request;
 use Cake\ORM\Entity;
+use Search\Event\EventName;
 
 class MenuListener implements EventListenerInterface
 {
@@ -21,8 +22,8 @@ class MenuListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Search.Dashboards.View.View.Menu.Top' => 'getDashboardsViewMenuTop',
-            'Search.View.View.Menu.Actions' => 'getSearchResultsIndexMenuActions',
+            (string)EventName::MENU_TOP_DASHBOARD_VIEW() => 'getDashboardsViewMenuTop',
+            (string)EventName::MENU_ACTIONS_SEARCH_VIEW() => 'getSearchResultsIndexMenuActions',
         ];
     }
 
