@@ -70,12 +70,16 @@ class MenuListener implements EventListenerInterface
             [
                 'label' => $btnEdit,
                 'url' => $urlEdit,
-                'capabilities' => 'fromUrl'
+                'capabilities' => 'fromUrl',
+                'icon' => 'pencil',
+                'type' => 'link_button',
             ],
             [
                 'label' => $btnDel,
                 'url' => $urlDel,
-                'capabilities' => 'fromUrl'
+                'capabilities' => 'fromUrl',
+                'icon' => 'trash',
+                'type' => 'link_button',
             ]
         ];
 
