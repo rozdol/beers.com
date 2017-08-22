@@ -8,6 +8,7 @@ use Cake\Routing\Router;
 use CsvMigrations\MigrationTrait;
 use Exception;
 use Menu\Event\EventName;
+use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
 
@@ -67,7 +68,7 @@ class MenuListener implements EventListenerInterface
 
         foreach ($modules as $module) {
             try {
-                $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_MENUS, $module);
+                $mc = new ModuleConfig(ConfigType::MENUS(), $module);
                 $parsed = (array)json_decode(json_encode($mc->parse()), true);
                 if (empty($parsed[$name])) {
                     continue;
