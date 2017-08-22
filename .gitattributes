@@ -35,3 +35,10 @@ composer binary
 *.mo binary
 *.pdf binary
 *.phar binary
+
+# Web fonts are binary
+*.otf binary
+*.eot binary
+*.svg binary
+*.ttf binary
+*.woff binary
