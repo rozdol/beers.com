@@ -9,6 +9,7 @@ use Cake\Log\Log;
 use Cake\ORM\Table;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 use InvalidArgumentException;
+use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
 use Search\Event\EventName;
@@ -134,7 +135,7 @@ class SearchableFieldsListener implements EventListenerInterface
     {
         $config = [];
         try {
-            $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_MODULE, $table->registryAlias());
+            $mc = new ModuleConfig(ConfigType::MODULE(), $table->registryAlias());
             $config = $mc->parse();
             $config = json_decode(json_encode($config), true);
         } catch (InvalidArgumentException $e) {
@@ -160,7 +161,7 @@ class SearchableFieldsListener implements EventListenerInterface
         $config = [];
         try {
             list($plugin, $module) = pluginSplit($table->registryAlias());
-            $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_VIEW, $module, 'index');
+            $mc = new ModuleConfig(ConfigType::VIEW(), $module, 'index');
             $config = $mc->parse();
             $config = !empty($config->items) ? json_decode(json_encode($config->items), true) : [];
         } catch (InvalidArgumentException $e) {

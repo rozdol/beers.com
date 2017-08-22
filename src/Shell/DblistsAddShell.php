@@ -4,6 +4,7 @@ namespace App\Shell;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
+use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 
 /**
@@ -104,7 +105,7 @@ class DblistsAddShell extends Shell
             return $result;
         }
 
-        $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_MIGRATION, $module);
+        $mc = new ModuleConfig(ConfigType::MIGRATION(), $module);
         $fields = json_decode(json_encode($mc->parse()), true);
 
         if (empty($fields)) {

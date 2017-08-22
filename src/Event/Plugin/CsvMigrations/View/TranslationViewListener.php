@@ -5,6 +5,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Utility\Inflector;
 use CsvMigrations\Event\EventName;
+use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
 
@@ -62,12 +63,12 @@ class TranslationViewListener implements EventListenerInterface
         $result = false;
 
         // Read translatable from config.ini
-        $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_MODULE, Inflector::camelize($model));
+        $mc = new ModuleConfig(ConfigType::MODULE(), Inflector::camelize($model));
         $moduleConfig = (array)json_decode(json_encode($mc->parse()), true);
         $translatableModule = empty($moduleConfig['table']['translatable']) ? false : (bool)$moduleConfig['table']['translatable'];
 
         // Read field options from fields.ini
-        $mc = new ModuleConfig(ModuleConfig::CONFIG_TYPE_FIELDS, Inflector::camelize($model));
+        $mc = new ModuleConfig(ConfigType::FIELDS(), Inflector::camelize($model));
         $fieldOptions = (array)json_decode(json_encode($mc->parse()), true);
         $translatableField = empty($fieldOptions[$field]['translatable']) ? false : (bool)$fieldOptions[$field]['translatable'];
 
