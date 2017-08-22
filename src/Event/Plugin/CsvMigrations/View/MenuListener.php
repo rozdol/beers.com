@@ -62,7 +62,7 @@ class MenuListener implements EventListenerInterface
         }
 
         $render = new $renderClass($menuBuilder, $event->subject());
-        $event->result = $render->render();
+        $event->result .= $render->render();
     }
 
     /**
