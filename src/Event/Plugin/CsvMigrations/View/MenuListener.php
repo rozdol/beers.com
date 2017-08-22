@@ -90,7 +90,11 @@ class MenuListener implements EventListenerInterface
 
         array_unshift($menu, [
             'html' => $html,
-            'url' => $url
+            'url' => $url,
+            'label' => 'Changelog',
+            'icon' => 'book',
+            'type' => 'link_button',
+            'order' => 10
         ]);
 
         $this->beforeRenderFlatMenu($event, $menu, $user);
