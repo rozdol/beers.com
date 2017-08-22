@@ -12,5 +12,5 @@
 <?php
 // @todo find a way to load this as part of 'block' => 'css'
 echo $this->Html->css('custom');
-$this->Html->script('general.js', ['block' => 'scriptBotton']);
+$this->Html->script('general.js', ['block' => 'scriptBottom']);
 

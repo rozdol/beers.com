@@ -154,17 +154,18 @@ class AddPermissionsListener implements EventListenerInterface
         $event->subject()->Html->script(
             [
                 'AdminLTE./plugins/select2/select2.full.min',
-                'RolesCapabilities.select2.init',
+                'Qobo/Utils.select2.init',
                 'RolesCapabilities.switch-target',
                 'RolesCapabilities.permissions',
             ],
-            ['block' => 'scriptBotton']
+            ['block' => 'scriptBottom']
         );
 
         $event->subject()->Html->css(
             [
                 'AdminLTE./plugins/select2/select2.min',
-                'RolesCapabilities.select2-bootstrap.min',
+                'Qobo/Utils.select2-bootstrap.min',
+                'Qobo/Utils.select2-style'
             ],
             ['block' => 'css']
         );

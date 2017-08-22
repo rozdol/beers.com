@@ -19,7 +19,7 @@ echo $this->Html->script(
         'AdminLTE./plugins/datepicker/bootstrap-datepicker'
     ],
     [
-        'block' => 'scriptBotton'
+        'block' => 'scriptBottom'
     ]
 );
 echo $this->Html->scriptBlock(
@@ -27,7 +27,7 @@ echo $this->Html->scriptBlock(
         checkboxClass: "icheckbox_square",
         radioClass: "iradio_square"
     });',
-    ['block' => 'scriptBotton']
+    ['block' => 'scriptBottom']
 );
 ?>
 <section class="content-header">
