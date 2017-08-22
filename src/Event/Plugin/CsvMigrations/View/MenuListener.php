@@ -62,7 +62,7 @@ class MenuListener implements EventListenerInterface
         }
 
         $render = new $renderClass($menuBuilder, $event->subject());
-        $event->result = $render->render();
+        $event->result .= $render->render();
     }
 
     /**
@@ -90,7 +90,11 @@ class MenuListener implements EventListenerInterface
 
         array_unshift($menu, [
             'html' => $html,
-            'url' => $url
+            'url' => $url,
+            'label' => 'Changelog',
+            'icon' => 'book',
+            'type' => 'link_button',
+            'order' => 10
         ]);
 
         $this->beforeRenderFlatMenu($event, $menu, $user);
