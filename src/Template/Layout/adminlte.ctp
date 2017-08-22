@@ -7,16 +7,11 @@
         <title><?php echo Configure::read('Theme.title'); ?></title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <!-- Bootstrap 3.3.5 -->
         <?php echo $this->Html->css('AdminLTE./bootstrap/css/bootstrap.min'); ?>
-        <!-- Font Awesome -->
         <?php echo $this->Html->css('/plugins/font-awesome/css/font-awesome.min'); ?>
-        <!-- Ionicons -->
         <?php echo $this->Html->css('/plugins/ionicons/css/ionicons.min'); ?>
         <!-- Theme style -->
         <?php echo $this->Html->css('AdminLTE.AdminLTE.min'); ?>
-        <!-- AdminLTE Skins. Choose a skin from the css/skins
-        folder instead of downloading all of them to reduce the load. -->
         <?php echo $this->Html->css('AdminLTE.skins/skin-' . Configure::read('Theme.skin') . '.min'); ?>
 
         <?php echo $this->fetch('css'); ?>
@@ -70,19 +65,14 @@
         </div>
         <!-- ./wrapper -->
 
-        <!-- jQuery 2.2.3 -->
         <?php echo $this->Html->script('AdminLTE./plugins/jQuery/jquery-2.2.3.min'); ?>
-        <!-- Bootstrap 3.3.5 -->
         <?php echo $this->Html->script('AdminLTE./bootstrap/js/bootstrap.min'); ?>
-        <!-- SlimScroll -->
         <?php echo $this->Html->script('AdminLTE./plugins/slimScroll/jquery.slimscroll.min'); ?>
-        <!-- FastClick -->
         <?php echo $this->Html->script('AdminLTE./plugins/fastclick/fastclick'); ?>
         <!-- AdminLTE App -->
         <?php echo $this->Html->script('AdminLTE./js/app.min'); ?>
-        <!-- iCheck -->
         <?php echo $this->Html->script('AdminLTE./plugins/iCheck/icheck.min'); ?>
-        <!-- AdminLTE for demo purposes -->
+
         <?php echo $this->fetch('script'); ?>
         <?php echo $this->fetch('scriptBottom'); ?>
 
