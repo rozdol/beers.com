@@ -4,7 +4,7 @@ use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 $fhf = new FieldHandlerFactory($this);
 
 echo $this->Html->css('AdminLTE./plugins/datepicker/datepicker3', ['block' => 'css']);
-echo $this->Html->script('AdminLTE./plugins/datepicker/bootstrap-datepicker', ['block' => 'scriptBotton']);
+echo $this->Html->script('AdminLTE./plugins/datepicker/bootstrap-datepicker', ['block' => 'scriptBottom']);
 ?>
 <section class="content-header">
     <h1>User Profile</h1>

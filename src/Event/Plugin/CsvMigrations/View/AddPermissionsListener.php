@@ -158,7 +158,7 @@ class AddPermissionsListener implements EventListenerInterface
                 'RolesCapabilities.switch-target',
                 'RolesCapabilities.permissions',
             ],
-            ['block' => 'scriptBotton']
+            ['block' => 'scriptBottom']
         );
 
         $event->subject()->Html->css(
