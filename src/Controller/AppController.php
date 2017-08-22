@@ -82,6 +82,16 @@ class AppController extends Controller
      */
     public function beforeRender(Event $event)
     {
+        // Use AdminLTE View instead of our App\View
+        $this->viewBuilder()->className('AdminLTE.AdminLTE');
+        $this->viewBuilder()->helpers([
+            'Menu.Menu',
+            'Form' => [
+                'className' => 'AdminLTE.Form',
+            ],
+            'HtmlEmail',
+            'SystemInfo',
+        ]);
         $this->viewBuilder()->theme('AdminLTE');
         // overwrite theme title before setting the theme
         Configure::write('Theme.title', $this->name);
