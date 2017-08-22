@@ -12,7 +12,6 @@
         "dereuromark/cakephp-databaselog": "^2.1",
         "doctrine/annotations": "v1.4.0",
         "doctrine/instantiator": "1.0.5",
-        "friendsofcake/bootstrap-ui": "~0.3",
         "friendsofcake/crud": "^4.3",
         "fzaninotto/faker": "^1.0",
         "lorenzo/audit-stash": "^1.0",
