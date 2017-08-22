@@ -29,7 +29,6 @@ class AppTest extends TestCase
             ['AdminLTE', null],
             ['Alt3/Swagger', null],
             ['AuditStash', null],
-            ['BootstrapUI', null],
             ['Burzum/FileStorage', null],
             ['CakeDC/Users', null],
             ['Crud', null],
