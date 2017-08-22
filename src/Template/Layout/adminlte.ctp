@@ -68,7 +68,7 @@
         <?php echo $this->Html->script('AdminLTE./plugins/jQuery/jquery-2.2.3.min'); ?>
         <?php echo $this->Html->script('AdminLTE./bootstrap/js/bootstrap.min'); ?>
         <?php echo $this->Html->script('AdminLTE./plugins/slimScroll/jquery.slimscroll.min'); ?>
-        <?php echo $this->Html->script('AdminLTE./plugins/fastclick/fastclick'); ?>
+        <?php echo $this->Html->script('AdminLTE./plugins/fastclick/fastclick.min'); ?>
         <?php echo $this->Html->script('AdminLTE./plugins/iCheck/icheck.min'); ?>
         <!-- AdminLTE App -->
         <?php echo $this->Html->script('AdminLTE./js/app.min'); ?>
