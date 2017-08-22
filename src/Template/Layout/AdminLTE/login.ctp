@@ -1,17 +1,25 @@
+<?php use Cake\Core\Configure; ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title><?php echo isset($theme['title']) ? $theme['title'] : 'AdminLTE 2 | Log in'; ?></title>
+        <title><?php echo Configure::read('Theme.title'); ?></title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.5 -->
-        <?php echo $this->Html->css('AdminLTE./bootstrap/css/bootstrap'); ?>
+        <?php echo $this->Html->css('AdminLTE./bootstrap/css/bootstrap.min'); ?>
+        <!-- Font Awesome -->
+        <?php echo $this->Html->css('/plugins/font-awesome/css/font-awesome.min'); ?>
+        <!-- Ionicons -->
+        <?php echo $this->Html->css('/plugins/ionicons/css/ionicons.min'); ?>
         <!-- Theme style -->
         <?php echo $this->Html->css('AdminLTE.AdminLTE.min'); ?>
-        <!-- iCheck -->
-        <?php echo $this->Html->css('AdminLTE./plugins/iCheck/square/blue'); ?>
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+        folder instead of downloading all of them to reduce the load. -->
+        <?php echo $this->Html->css('AdminLTE.skins/skin-' . Configure::read('Theme.skin') . '.min'); ?>
+
+        <?php echo $this->fetch('css'); ?>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -20,7 +28,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="hold-transition login-page">
+    <body class="hold-transition skin-<?php echo Configure::read('Theme.skin'); ?> login-page">
         <div class="login-box">
             <div class="login-logo">
                 <a href="<?php echo $this->Url->build('/'); ?>"><?php echo $theme['logo']['large'] ?></a>
@@ -36,19 +44,40 @@
         </div>
         <!-- /.login-box -->
 
-        <!-- jQuery 2.1.4 -->
-        <?php echo $this->Html->script('/plugins/jQuery/jQuery-2.1.4.min'); ?>
+        <!-- jQuery 2.2.3 -->
+        <?php echo $this->Html->script('AdminLTE./plugins/jQuery/jquery-2.2.3.min'); ?>
         <!-- Bootstrap 3.3.5 -->
-        <?php echo $this->Html->script('/bootstrap/js/bootstrap'); ?>
-        <!-- iCheck -->
-        <?php echo $this->Html->script('/plugins/iCheck/icheck.min'); ?>
-        <script>
-            $(function () {
+        <?php echo $this->Html->script('AdminLTE./bootstrap/js/bootstrap.min'); ?>
+        <!-- SlimScroll -->
+        <?php echo $this->Html->script('AdminLTE./plugins/slimScroll/jquery.slimscroll.min'); ?>
+        <!-- FastClick -->
+        <?php echo $this->Html->script('AdminLTE./plugins/fastclick/fastclick'); ?>
+        <!-- AdminLTE App -->
+        <?php echo $this->Html->script('AdminLTE./js/app.min'); ?>
+        <!-- AdminLTE for demo purposes -->
+        <?php echo $this->Html->script('AdminLTE./plugins/iCheck/icheck.min'); ?>
+
+        <?php echo $this->fetch('script'); ?>
+        <?php echo $this->fetch('scriptBottom'); ?>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $(".navbar .menu").slimscroll({
+                    height: "200px",
+                    alwaysVisible: false,
+                    size: "3px"
+                }).css("width", "100%");
+
                 $('input').iCheck({
                     checkboxClass: 'icheckbox_square-blue',
                     radioClass: 'iradio_square-blue',
                     increaseArea: '20%' // optional
                 });
+
+                var a = $('a[href="<?php echo $this->request->webroot . $this->request->url ?>"]');
+                if (!a.parent().hasClass('treeview') && !a.parent().parent().hasClass('pagination')) {
+                    a.parent().addClass('active').parents('.treeview').addClass('active');
+                }
             });
         </script>
     </body>

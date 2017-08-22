@@ -80,9 +80,12 @@
         <?php echo $this->Html->script('AdminLTE./plugins/fastclick/fastclick'); ?>
         <!-- AdminLTE App -->
         <?php echo $this->Html->script('AdminLTE./js/app.min'); ?>
+        <!-- iCheck -->
+        <?php echo $this->Html->script('AdminLTE./plugins/iCheck/icheck.min'); ?>
         <!-- AdminLTE for demo purposes -->
         <?php echo $this->fetch('script'); ?>
         <?php echo $this->fetch('scriptBottom'); ?>
+
         <script type="text/javascript">
             $(document).ready(function(){
                 $(".navbar .menu").slimscroll({
@@ -90,6 +93,12 @@
                     alwaysVisible: false,
                     size: "3px"
                 }).css("width", "100%");
+
+                $('input').iCheck({
+                    checkboxClass: 'icheckbox_square-blue',
+                    radioClass: 'iradio_square-blue',
+                    increaseArea: '20%' // optional
+                });
 
                 var a = $('a[href="<?php echo $this->request->webroot . $this->request->url ?>"]');
                 if (!a.parent().hasClass('treeview') && !a.parent().parent().hasClass('pagination')) {
