@@ -95,54 +95,65 @@ echo $this->Html->script('AdminLTE./plugins/datepicker/bootstrap-datepicker', ['
 
                     <div class="tab-pane" id="settings">
                         <?= $this->Form->create(null, [
-                            'class' => 'form-horizontal',
                             'url' => [
                                 'controller' => 'Users',
                                 'action' => 'edit-profile'
                             ]
                         ]); ?>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('Users.username', [
                                 'placeholder' => __('Username'),
                                 'value' => !empty($user['username']) ? h($user['username']) : null
                             ]); ?>
-                            <?= $this->Form->input('Users.email', [
-                                'placeholder' => __('Email'),
-                                'value' => !empty($user['email']) ? h($user['email']) : null
-                            ]); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('Users.first_name', [
                                 'placeholder' => __('First Name'),
                                 'value' => !empty($user['first_name']) ? h($user['first_name']) : null
                             ]); ?>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('Users.last_name', [
                                 'placeholder' => __('Last Name'),
                                 'value' => !empty($user['last_name']) ? h($user['last_name']) : null
                             ]); ?>
-                            <?= $this->Form->label('Users.country'); ?>
-                            <div class="col-md-10">
-                                <?= $fhf->renderInput('Users', 'country', $user, [
-                                    'fieldDefinitions' => [
-                                        'name' => 'country',
-                                        'type' => 'list(countries)',
-                                        'required' => false,
-                                    ],
-                                    'label' => false
-                                ]); ?>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                            <?= $this->Form->label('Users.country'); ?>
+                            <?= $fhf->renderInput('Users', 'country', $user, [
+                                'fieldDefinitions' => [
+                                    'name' => 'country',
+                                    'type' => 'list(countries)',
+                                    'required' => false,
+                                ],
+                                'label' => false
+                            ]); ?>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('Users.initials', [
                                 'placeholder' => __('Initials'),
                                 'value' => !empty($user['initials']) ? h($user['initials']) : null
                             ]); ?>
-                            <?= $this->Form->label('Users.gender'); ?>
-                            <div class="col-md-10">
-                                <?= $fhf->renderInput('Users', 'gender', $user['gender'], [
-                                    'fieldDefinitions' => [
-                                        'name' => 'gender',
-                                        'type' => 'list(genders)',
-                                        'required' => false,
-                                    ],
-                                    'label' => false
-                                ]); ?>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                            <?= $this->Form->label('Users.gender'); ?>
+                            <?= $fhf->renderInput('Users', 'gender', $user['gender'], [
+                                'fieldDefinitions' => [
+                                    'name' => 'gender',
+                                    'type' => 'list(genders)',
+                                    'required' => false,
+                                ],
+                                'label' => false
+                            ]); ?>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('Users.birthdate', [
                                 'type' => 'text',
                                 'label' => 'Birthdate',
@@ -160,23 +171,41 @@ echo $this->Html->script('AdminLTE./plugins/datepicker/bootstrap-datepicker', ['
                                     </div>'
                                 ]
                             ]); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                            <?= $this->Form->input('Users.email', [
+                                'placeholder' => __('Email'),
+                                'value' => !empty($user['email']) ? h($user['email']) : null
+                            ]); ?>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('Users.phone_office', [
                                 'placeholder' => __('Office Phone'),
                                 'value' => !empty($user['phone_office']) ? h($user['phone_office']) : null
                             ]); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('Users.phone_home', [
                                 'placeholder' => __('Home Phone'),
                                 'value' => !empty($user['phone_home']) ? h($user['phone_home']) : null
                             ]); ?>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
                             <?= $this->Form->input('Users.phone_mobile', [
                                 'placeholder' => __('Mobile Phone'),
                                 'value' => !empty($user['phone_mobile']) ? h($user['phone_mobile']) : null
                             ]); ?>
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
-                                </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
+                            </div>
+                        </div>
                         <?= $this->Form->end() ?>
                     </div>
                     <!-- /.tab-pane -->
