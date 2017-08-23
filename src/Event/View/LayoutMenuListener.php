@@ -64,6 +64,11 @@ class LayoutMenuListener implements EventListenerInterface
         }
         $table = TableRegistry::get($tableName);
 
+        // skip search in Dashboards
+        if ($tableName == 'Search.Dashboards') {
+            return false;
+        }
+
         // skip non-searchable models
         if (!$this->_isSearchable($table)) {
             return false;
