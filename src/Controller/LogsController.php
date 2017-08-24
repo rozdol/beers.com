@@ -17,5 +17,6 @@ class LogsController extends BaseController
     {
         parent::initialize();
         $this->paginate['limit'] = 10;
+        $this->paginate['fields'] = null;
     }
 }
