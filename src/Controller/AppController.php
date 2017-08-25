@@ -82,20 +82,6 @@ class AppController extends Controller
      */
     public function beforeRender(Event $event)
     {
-        // Use AdminLTE View instead of our App\View
-        $this->viewBuilder()->className('AdminLTE.AdminLTE');
-        $this->viewBuilder()->helpers([
-            'Menu.Menu',
-            'Form' => [
-                'className' => 'AdminLTE.Form',
-            ],
-            'HtmlEmail',
-            'SystemInfo',
-        ]);
-        $this->viewBuilder()->theme('AdminLTE');
-        // overwrite theme title before setting the theme
-        Configure::write('Theme.title', $this->name);
-        $this->set('theme', Configure::read('Theme'));
         $this->set('user', $this->Auth->user());
     }
 
@@ -141,6 +127,21 @@ class AppController extends Controller
         EventManager::instance()->on(new RequestMetadata($this->request, $this->Auth->user('id')));
 
         $this->_generateApiToken();
+
+        // Use AdminLTE View instead of our App\View
+        $this->viewBuilder()->className('AdminLTE.AdminLTE');
+        $this->viewBuilder()->helpers([
+            'Menu.Menu',
+            'Form' => [
+                'className' => 'AdminLTE.Form',
+            ],
+            'HtmlEmail',
+            'SystemInfo',
+        ]);
+        $this->viewBuilder()->theme('AdminLTE');
+        // overwrite theme title before setting the theme
+        Configure::write('Theme.title', $this->name);
+        $this->set('theme', Configure::read('Theme'));
     }
 
     /**
