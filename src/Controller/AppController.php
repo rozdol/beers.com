@@ -82,9 +82,6 @@ class AppController extends Controller
      */
     public function beforeRender(Event $event)
     {
-        if ($this->request->is('ajax')) {
-            $this->viewBuilder()->className('Json');
-        }
         $this->set('user', $this->Auth->user());
     }
 
@@ -97,10 +94,6 @@ class AppController extends Controller
     public function beforeFilter(Event $event)
     {
         $this->_allowedResetPassword();
-
-        // Set default layout, but allow it to be overwritten by
-        // Contoller actions in the application and plugins.
-        $this->viewBuilder()->layout('adminlte');
 
         // if user not logged in, redirect him to login page
         $url = $event->subject()->request->params;
@@ -131,17 +124,40 @@ class AppController extends Controller
 
         $this->_generateApiToken();
 
-        // Use AdminLTE View instead of our App\View
-        $this->viewBuilder()->className('AdminLTE.AdminLTE');
-        $this->viewBuilder()->helpers([
-            'Menu.Menu',
-            'Form' => [
-                'className' => 'AdminLTE.Form',
-            ],
-            'HtmlEmail',
-            'SystemInfo',
-        ]);
+        // Load AdminLTE theme
+        $this->loadAdminLTE();
+    }
+
+    /**
+     * Setup AdminLTE theme
+     *
+     * This is just to keep the `beforeFilter()` smaller and
+     * simpler, as well as to provide extending classes a way
+     * to adjust things, if necessary.
+     *
+     * @return void
+     */
+    protected function loadAdminLTE()
+    {
+        $loadAdminLTE = true;
+
+        // Skip AdminLTE on JSON requests
+        if ($this->request->is('json')) {
+            $loadAdminLTE = false;
+        }
+
+        // Skip AdminLTE on AJAX requests
+        if ($this->request->is('ajax')) {
+            $loadAdminLTE = false;
+        }
+
+        // Load AdminLTE for regular requests
+        if ($loadAdminLTE) {
+            $this->viewBuilder()->className('AdminLTE.AdminLTE');
+        }
+
         $this->viewBuilder()->theme('AdminLTE');
+        $this->viewBuilder()->layout('adminlte');
         // overwrite theme title before setting the theme
         Configure::write('Theme.title', $this->name);
         $this->set('theme', Configure::read('Theme'));
