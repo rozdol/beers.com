@@ -153,4 +153,19 @@ class UsersController extends AppController
 
         return $this->redirect($this->request->referer());
     }
+
+    /**
+     * Index method
+     *
+     * @return void
+     */
+    public function index()
+    {
+        $table = $this->loadModel();
+        $tableAlias = $table->alias();
+        $users = $table->find()->all();
+        $this->set($tableAlias, $users);
+        $this->set('tableAlias', $tableAlias);
+        $this->set('_serialize', [$tableAlias, 'tableAlias']);
+    }
 }
