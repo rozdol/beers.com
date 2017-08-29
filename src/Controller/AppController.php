@@ -82,6 +82,9 @@ class AppController extends Controller
      */
     public function beforeRender(Event $event)
     {
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->className('Json');
+        }
         $this->set('user', $this->Auth->user());
     }
 
@@ -129,9 +132,7 @@ class AppController extends Controller
         $this->_generateApiToken();
 
         // Use AdminLTE View instead of our App\View
-        if (!$this->request->is('ajax')) {
-            $this->viewBuilder()->className('AdminLTE.AdminLTE');
-        }
+        $this->viewBuilder()->className('AdminLTE.AdminLTE');
         $this->viewBuilder()->helpers([
             'Menu.Menu',
             'Form' => [
