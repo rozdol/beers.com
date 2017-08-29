@@ -9,6 +9,7 @@
         "dereuromark/cakephp-databaselog": "^2.1",
         "mobiledetect/mobiledetectlib": "2.*",
         "pelago/emogrifier": "^1.2",
+        "phpunit/php-token-stream": "~1.4",
         "qobo/cakephp-csv-migrations": "^23.0",
         "qobo/cakephp-groups": "^7.0",
         "qobo/cakephp-menu": "^10.0",
