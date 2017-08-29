@@ -129,7 +129,9 @@ class AppController extends Controller
         $this->_generateApiToken();
 
         // Use AdminLTE View instead of our App\View
-        $this->viewBuilder()->className('AdminLTE.AdminLTE');
+        if (!$this->request->is('ajax')) {
+            $this->viewBuilder()->className('AdminLTE.AdminLTE');
+        }
         $this->viewBuilder()->helpers([
             'Menu.Menu',
             'Form' => [
