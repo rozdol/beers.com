@@ -82,6 +82,9 @@ class AppController extends Controller
      */
     public function beforeRender(Event $event)
     {
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->className('Json');
+        }
         $this->set('user', $this->Auth->user());
     }
 
