@@ -43,7 +43,6 @@
         <?php echo $this->Html->script('AdminLTE./bootstrap/js/bootstrap.min'); ?>
         <?php echo $this->Html->script('AdminLTE./plugins/slimScroll/jquery.slimscroll.min'); ?>
         <?php echo $this->Html->script('AdminLTE./plugins/fastclick/fastclick.min'); ?>
-        <?php echo $this->Html->script('AdminLTE./plugins/iCheck/icheck.min'); ?>
         <!-- AdminLTE App -->
         <?php echo $this->Html->script('AdminLTE./js/app.min'); ?>
 
@@ -57,12 +56,6 @@
                     alwaysVisible: false,
                     size: "3px"
                 }).css("width", "100%");
-
-                $('input').iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue',
-                    increaseArea: '20%' // optional
-                });
 
                 var a = $('a[href="<?php echo $this->request->webroot . $this->request->url ?>"]');
                 if (!a.parent().hasClass('treeview') && !a.parent().parent().hasClass('pagination')) {
