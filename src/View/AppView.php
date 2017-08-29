@@ -31,13 +31,6 @@ class AppView extends View
     public function initialize()
     {
         parent::initialize();
-        /*
-         * !!! OBSOLETE !!!
-         *
-         * The below is obsolete and is only kept here temporarily
-         * for backward compatibility.  The real thing (AdminLTE
-         * setup) is happening in App\Controller::beforeRender() .
-         */
         $this->loadHelper('Menu.Menu');
         $this->loadHelper('Form', ['className' => 'AdminLTE.Form']);
         $this->loadHelper('HtmlEmail');
