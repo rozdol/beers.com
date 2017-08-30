@@ -28,4 +28,6 @@
     <file>./tests/</file>
     <file>./webroot/</file>
     <file>./Phakefile.php</file>
+
+    <arg name="ignore" value="tests/Frontend/" />
 </ruleset>
