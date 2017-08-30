@@ -32,6 +32,7 @@ install:
     - ./vendor/bin/phake app:install
 
 before_script:
+    - yarn install
     - ./bin/phpserv >/dev/null 2>&1 &
     - sleep 5
 
