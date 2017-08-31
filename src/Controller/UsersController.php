@@ -8,6 +8,7 @@ use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
 use Cake\Network\Exception\UnauthorizedException;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Exception;
 
@@ -167,5 +168,32 @@ class UsersController extends AppController
         $this->set($tableAlias, $users);
         $this->set('tableAlias', $tableAlias);
         $this->set('_serialize', [$tableAlias, 'tableAlias']);
+    }
+
+    /**
+     * View method
+     *
+     * @param string|null $id User id.
+     * @return void
+     * @throws NotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        $table = $this->loadModel();
+        $tableAlias = $table->alias();
+        $entity = $table->get($id, [
+            'contain' => []
+        ]);
+
+        $groupsTable = TableRegistry::get('Groups.Groups');
+        $userGroups = $groupsTable->getUserGroupsAll($id, [
+            'fields' => ['id', 'name', 'description'],
+            'contain' => [],
+        ]);
+
+        $this->set($tableAlias, $entity);
+        $this->set('tableAlias', $tableAlias);
+        $this->set('userGroups', $userGroups);
+        $this->set('_serialize', [$tableAlias, $userGroups, 'tableAlias']);
     }
 }
