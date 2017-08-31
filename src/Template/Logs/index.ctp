@@ -82,12 +82,12 @@ $typeIcons = [
             </ul>
             <?= $this->element('DatabaseLog.admin_filter'); ?>
         </div>
-                
+
         <!-- Timeline start -->
         <?php $displayed_date = ''; ?>
         <ul class="timeline">
         <?php foreach ($logs as $log) : ?>
-        <?php 
+        <?php
             $date = $log['created']->i18nFormat('yyyy-MM-dd');
             if ($displayed_date != $date) {
                 $displayed_date = $date;
@@ -102,13 +102,13 @@ $typeIcons = [
                 <?php
             }
         ?>
-       
+
         <!-- timeline item -->
         <li>
             <!-- timeline icon -->
             <i class="<?= $typeIcons[$log['type']] ?>"></i>
             <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> <?= $log['created']->i18nFormat('H:m:s') ?></span>
+                <span class="time"><i class="fa fa-clock-o"></i> <?= $log['created']->i18nFormat('HH:mm:ss') ?></span>
 
                 <h2 class="timeline-header"><?= ucfirst($log['type']); ?></h2>
 
@@ -157,7 +157,7 @@ $typeIcons = [
                             </div>
                             <div class="col-md-10">
                                 <pre><small><?= h($log['context']); ?></small></pre>
-                            </div>                            
+                            </div>
                         </div>
                         <?php endif; ?>
                     </div>
