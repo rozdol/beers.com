@@ -101,4 +101,44 @@ $fhf = new FieldHandlerFactory($this);
             <!-- /.box -->
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="nav-tabs-custom">
+                <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <?= $this->Html->link(__('Groups'), '#groups', [
+                            'aria-controls' => 'groups',
+                            'role' => 'tab',
+                            'data-toggle' => 'tab',
+                        ]);?>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="groups">
+                        <?php if (empty($userGroups)) : ?>
+                            <?= __('User currently not assigned to any of available groups');?>
+                        <?php else: ?>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-condensed table-vertical-align">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($userGroups as $groupId => $groupName) : ?>
+                                            <tr>
+                                                <td><?= $this->Html->link($groupName, ['plugin' => 'Groups', 'controller' => 'Groups', 'action' => 'view', $groupId]);?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
