@@ -186,7 +186,10 @@ class UsersController extends AppController
         ]);
 
         $groupsTable = TableRegistry::get('Groups.Groups');
-        $userGroups = $groupsTable->getUserGroups($id);
+        $userGroups = $groupsTable->getUserGroupsAll($id, [
+            'fields' => ['id', 'name', 'description'],
+            'contain' => [],
+        ]);
 
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);

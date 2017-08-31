@@ -123,13 +123,15 @@ $fhf = new FieldHandlerFactory($this);
                                 <table class="table table-hover table-condensed table-vertical-align">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
+                                            <th><?= __('Name');?></th>
+                                            <th><?= __('Description');?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($userGroups as $groupId => $groupName) : ?>
+                                        <?php foreach ($userGroups as $group) : ?>
                                             <tr>
-                                                <td><?= $this->Html->link($groupName, ['plugin' => 'Groups', 'controller' => 'Groups', 'action' => 'view', $groupId]);?></td>
+                                                <td><?= $this->Html->link($group->name, ['plugin' => 'Groups', 'controller' => 'Groups', 'action' => 'view', $group->id]);?></td>
+                                                <td><?= $group->description;?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
