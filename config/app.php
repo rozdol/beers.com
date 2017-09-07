@@ -24,6 +24,11 @@ $cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY');
 $useOnlyCookies = (bool)env('APP_SESSION_USE_ONLY_COOKIES');
 $sessionTimeout = (int)env('APP_SESSION_TIMEOUT');
 
+// If EMAIL_ENABLED is false, use Debug transport.  Otherwise, use
+// either the Smtp transport if enabled or fallback on Mail transport.
+$emailTransport = (bool)getenv('SMTP_ENABLED') ? 'Smtp' : 'Mail';
+$emailTransport = (bool)getenv('EMAIL_ENABLED') ? $emailTransport : 'Debug';
+
 // If the configuration is missing, fallback on
 // PHP configuration.  If that is missing too,
 // assume default.
@@ -223,7 +228,7 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'className' => (bool)getenv('SMTP_ENABLED') ? 'Smtp' : 'Mail',
+            'className' => $emailTransport,
             // The following keys are used in SMTP transports
             'host' => getenv('SMTP_HOST') ?: 'localhost',
             'port' => getenv('SMTP_PORT') ?: 25,

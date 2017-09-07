@@ -3,6 +3,7 @@
 namespace App\Shell;
 
 use Cake\Console\Shell;
+use Cake\Core\Configure;
 use Cake\Mailer\Email;
 
 class EmailShell extends Shell
@@ -62,6 +63,12 @@ class EmailShell extends Shell
      */
     public function main()
     {
+        $emailTransport = Configure::read('EmailTransport.default.className');
+        if ($emailTransport == 'Debug') {
+            $this->out('FAILED');
+            $this->abort('Email sending is disabled via the Debug transport');
+        }
+
         // Get the settings
         $to = $this->args[0];
         $domain = !empty($this->params['domain']) ? $this->params['domain'] : $this->_getDefaultDomain();
