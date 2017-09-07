@@ -55,6 +55,7 @@ echo $this->Html->scriptBlock(
                                 'type' => 'checkbox',
                                 'class' => 'square',
                                 'label' => false,
+                                'checked' => 'checked',
                                 'templates' => [
                                     'inputContainer' => '<div class="{{required}}">' . $this->Form->label('Users.active') . '<div class="clearfix"></div>{{content}}</div>'
                                 ]
