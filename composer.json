@@ -14,7 +14,7 @@
         "qobo/cakephp-groups": "^7.0",
         "qobo/cakephp-menu": "^10.0",
         "qobo/cakephp-roles-capabilities": "^13.0",
-        "qobo/cakephp-search": "^13.0",
+        "qobo/cakephp-search": "^14.0",
         "qobo/cakephp-utils": "^5.1",
         "qobo/phake-builder": "^4.0"
     },
