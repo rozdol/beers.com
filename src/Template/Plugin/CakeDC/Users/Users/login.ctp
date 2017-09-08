@@ -10,6 +10,7 @@ $this->layout = 'AdminLTE/login';
             'required' => true,
             'label' => false,
             'placeholder' => 'Username',
+            'autofocus' => true,
             'templates' => [
                 'inputContainer' => '{{content}}'
             ]
