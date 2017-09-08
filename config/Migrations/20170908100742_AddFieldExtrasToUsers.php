@@ -1,5 +1,6 @@
 <?php
 use Migrations\AbstractMigration;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class AddFieldExtrasToUsers extends AbstractMigration
 {
@@ -15,7 +16,7 @@ class AddFieldExtrasToUsers extends AbstractMigration
         $table = $this->table('users');
         $table->addColumn('extras', 'text', [
             'default' => null,
-            'limit' => 4294967295,
+            'limit' => MysqlAdapter::TEXT_LONG,
             'null' => true
         ]); 
         $table->update();
