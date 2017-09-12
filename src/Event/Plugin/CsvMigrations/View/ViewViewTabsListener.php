@@ -54,5 +54,26 @@ class ViewViewTabsListener implements EventListenerInterface
             // remove tabs that user has no permission to access
             unset($event->result['tabs'][$key]);
         }
+
+        // check if manyToMany tab has permission for using
+        // link/embedded add element in the tab content.
+        if (!empty($event->result['tabs'])) {
+            foreach ($event->result['tabs'] as $k => $tab) {
+                if ('manyToMany' != $tab['associationType']) {
+                    continue;
+                }
+
+                $url = [
+                    'plugin' => $request->plugin,
+                    'controller' => $request->controller,
+                    'action' => 'link',
+                    $request->pass[0]
+                ];
+
+                $allowLinkElement = $this->_checkAccess($url, $user);
+
+                $event->result['tabs'][$k]['permission_allow_link'] = $allowLinkElement;
+            }
+        }
     }
 }
