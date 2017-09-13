@@ -10,7 +10,7 @@
         "mobiledetect/mobiledetectlib": "2.*",
         "pelago/emogrifier": "^1.2",
         "phpunit/php-token-stream": "~1.4",
-        "qobo/cakephp-csv-migrations": "^23.0",
+        "qobo/cakephp-csv-migrations": "^24.0",
         "qobo/cakephp-groups": "^7.0",
         "qobo/cakephp-menu": "^10.0",
         "qobo/cakephp-roles-capabilities": "^13.0",
