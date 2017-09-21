@@ -81,6 +81,7 @@ try {
     Configure::load('csv_migrations', 'default');
     Configure::load('file_storage', 'default');
     Configure::load('groups', 'default');
+    Configure::load('icons', 'default');
     Configure::load('menu', 'default');
     Configure::load('roles_capabilities', 'default');
 } catch (\Exception $e) {
