@@ -41,7 +41,6 @@ if (!extension_loaded('intl')) {
 use App\Event\Component\UserIdentifyListener;
 use App\Event\Plugin\CsvMigrations\Controller\BatchActionListener;
 use App\Event\Plugin\CsvMigrations\FieldHandlers\MagicDefaultValueListener;
-use App\Event\Plugin\CsvMigrations\View\AddPermissionsListener;
 use App\Event\Plugin\CsvMigrations\View\TranslationViewListener;
 use App\Event\Plugin\CsvMigrations\View\ViewViewTabsListener;
 use App\Event\Plugin\Menu\View\MenuListener;
@@ -248,7 +247,6 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
-EventManager::instance()->on(new AddPermissionsListener());
 EventManager::instance()->on(new BatchActionListener());
 EventManager::instance()->on(new LayoutMenuListener());
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
