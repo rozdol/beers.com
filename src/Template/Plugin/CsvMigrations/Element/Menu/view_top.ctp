@@ -21,7 +21,7 @@ $menu[] = [
     'type' => 'link_button_modal',
     'modal_target' => 'permissions-modal-add',
     'order' => 10,
-    'raw_html' => $this->element('modal-permissions')
+    'raw_html' => $this->element('modal-permissions', ['id' => $this->request->param('pass.0')])
 ];
 
 $url = ['plugin' => $plugin, 'controller' => $controller, 'action' => 'changelog', $options['entity']->id];

@@ -35,7 +35,7 @@ asort($groups);
 // get existing permissions
 $table = TableRegistry::get('RolesCapabilities.Permissions');
 $query = $table->find()
-    ->where(['model' => $this->name, 'foreign_key' => $this->request->param('pass.0')])
+    ->where(['model' => $this->name, 'foreign_key' => $id])
     ->limit(100);
 $permissions = $query->all();
 ?>
@@ -54,7 +54,7 @@ $permissions = $query->all();
                     'id' => 'modal-form-permissions-add'
                 ]) ?>
                 <div class="sets-feedback-container"></div>
-                <?= $this->Form->hidden('foreign_key', ['value' => $this->request->param('pass.0')]) ?>
+                <?= $this->Form->hidden('foreign_key', ['value' => $id]) ?>
                 <?= $this->Form->hidden('plugin', ['value' => $this->plugin]) ?>
                 <?= $this->Form->hidden('model', ['value' => $this->name]) ?>
                 <div class="row">
@@ -142,7 +142,7 @@ $permissions = $query->all();
                                         'data' => [
                                             'plugin' => $this->plugin,
                                             'model' => $this->name,
-                                            'foreign_key' => $this->request->param('pass.0'),
+                                            'foreign_key' => $id,
                                         ],
                                         'escape' => false,
                                     ]
