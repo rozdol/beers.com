@@ -46,8 +46,6 @@ use App\Event\Plugin\CsvMigrations\View\ViewViewTabsListener;
 use App\Event\Plugin\Menu\View\MenuListener;
 use App\Event\Plugin\Search\Model\SearchableFieldsListener;
 use App\Event\Plugin\Search\Model\SearchResultsListener;
-use App\Event\Plugin\Search\View\MenuListener as SearchMenuListener;
-use App\Event\Plugin\Search\View\ReportGridViewListener;
 use App\Event\View\LayoutMenuListener;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
 use Cake\Cache\Cache;
@@ -258,9 +256,7 @@ EventManager::instance()->on(new LocalListener([
 ]));
 EventManager::instance()->on(new MagicDefaultValueListener());
 EventManager::instance()->on(new MenuListener());
-EventManager::instance()->on(new ReportGridViewListener());
 EventManager::instance()->on(new SearchableFieldsListener());
-EventManager::instance()->on(new SearchMenuListener());
 EventManager::instance()->on(new SearchResultsListener());
 EventManager::instance()->on(new TranslationViewListener());
 EventManager::instance()->on(new UserIdentifyListener());
