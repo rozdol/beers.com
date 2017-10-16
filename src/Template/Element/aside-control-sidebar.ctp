@@ -78,16 +78,7 @@ $hasActivity = false;
         <!-- Settings tab content -->
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <h3 class="control-sidebar-heading">Settings</h3>
-            <?= $this->cell('Menu.Menu', [
-                'name' => MENU_ADMIN,
-                'renderAs' => [
-                    'menuStart' => '<ul class="control-sidebar-menu">',
-                    'itemStart' => '<li>',
-                    'itemEnd' => '</li>',
-                    'item' => '<a href="%url%"><i class="menu-icon fa fa-%icon%"></i> <div class="menu-info"><h4 class="control-sidebar-subheading">%label%</h4><p>%desc%</p></div></a>'
-                ]
-            ]);
-            ?>
+            <?= $this->cell('Menu.Menu', ['name' => MENU_ADMIN, 'user' => $user]) ?>
         </div>
         <!-- /.tab-pane -->
     </div>
