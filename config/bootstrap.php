@@ -46,7 +46,6 @@ use App\Event\Plugin\CsvMigrations\View\ViewViewTabsListener;
 use App\Event\Plugin\Menu\View\MenuListener;
 use App\Event\Plugin\Search\Model\SearchableFieldsListener;
 use App\Event\Plugin\Search\Model\SearchResultsListener;
-use App\Event\View\LayoutMenuListener;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
@@ -246,7 +245,6 @@ DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
 EventManager::instance()->on(new BatchActionListener());
-EventManager::instance()->on(new LayoutMenuListener());
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
 EventManager::instance()->on(new LocalListener([
     'imageProcessing' => true,
