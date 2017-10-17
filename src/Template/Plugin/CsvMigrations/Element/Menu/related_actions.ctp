@@ -3,11 +3,13 @@ use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 
 $factory = new FieldHandlerFactory();
 
-list($plugin, $controller) = pluginSplit($options['targetClass']);
+$primaryKey = $table->getPrimaryKey();
+$displayField = $table->getDisplayField();
+list($plugin, $controller) = pluginSplit($association->className());
 
 $menu = [];
 
-$url = ['prefix' => false, 'plugin' => $plugin, 'controller' => $controller, 'action' => 'view', $entity->id];
+$url = ['prefix' => false, 'plugin' => $plugin, 'controller' => $controller, 'action' => 'view', $entity->get($primaryKey)];
 $menu[] = [
     'html' => $this->Html->link('<i class="fa fa-eye"></i>', $url, [
         'title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false
@@ -19,7 +21,7 @@ $menu[] = [
     'order' => 10
 ];
 
-$url = ['prefix' => false, 'plugin' => $plugin, 'controller' => $controller, 'action' => 'edit', $entity->id];
+$url = ['prefix' => false, 'plugin' => $plugin, 'controller' => $controller, 'action' => 'edit', $entity->get($primaryKey)];
 $menu[] = [
     'html' => $this->Html->link('<i class="fa fa-pencil"></i>', $url, [
         'title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false
@@ -31,18 +33,14 @@ $menu[] = [
     'order' => 20
 ];
 
-$url = ['prefix' => false, 'plugin' => $plugin, 'controller' => $controller, 'action' => 'delete', $entity->id];
+$url = ['prefix' => false, 'plugin' => $plugin, 'controller' => $controller, 'action' => 'delete', $entity->get($primaryKey)];
+$confirm = __(
+    'Are you sure you want to delete {0}?',
+    $factory->renderValue($table, $displayField, $entity->get($displayField), ['renderAs' => 'plain'])
+);
 $menu[] = [
     'html' => $this->Form->postLink('<i class="fa fa-trash"></i>', $url, [
-        'confirm' => __(
-            'Are you sure you want to delete {0}?',
-            $factory->renderValue(
-                $options['class_name'],
-                $options['display_field'],
-                $entity->{$options['display_field']},
-                ['renderAs' => 'plain']
-            )
-        ),
+        'confirm' => $confirm,
         'title' => __('Delete'),
         'class' => 'btn btn-default btn-sm',
         'escape' => false
@@ -52,26 +50,18 @@ $menu[] = [
     'icon' => 'trash',
     'type' => 'postlink_button',
     'order' => 40,
-    'confirmMsg' => __(
-        'Are you sure you want to delete {0}?',
-        $factory->renderValue(
-            $options['class_name'],
-            $options['display_field'],
-            $entity->{$options['display_field']},
-            ['renderAs' => 'plain']
-        )
-    )
+    'confirmMsg' => $confirm
 ];
 
-if (isset($options['associationType']) && in_array($options['associationType'], ['manyToMany'])) {
+if (in_array($association->type(), ['manyToMany'])) {
     $url = [
         'prefix' => false,
         'plugin' => $this->request->plugin,
         'controller' => $this->request->controller,
         'action' => 'unlink',
         $options['id'],
-        $options['associationName'],
-        $entity->id
+        $association->getName(),
+        $entity->get($primaryKey)
     ];
     $menu[] = [
         'html' => $this->Form->postLink('<i class="fa fa-chain-broken"></i>', $url, [
