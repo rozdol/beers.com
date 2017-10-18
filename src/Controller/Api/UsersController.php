@@ -2,6 +2,7 @@
 namespace App\Controller\Api;
 
 use Cake\Core\Configure;
+use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\UnauthorizedException;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
@@ -13,7 +14,14 @@ class UsersController extends AppController
      */
     public function initialize()
     {
-        parent::initialize();
+        // allow public access to token action
+        try {
+            parent::initialize();
+        } catch (ForbiddenException $e) {
+            if ('token' !== $this->request->action) {
+                throw new ForbiddenException($e->getMessage());
+            }
+        }
 
         if (Configure::read('API.auth')) {
             $this->Auth->allow(['token']);

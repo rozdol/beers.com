@@ -41,9 +41,8 @@ if (!extension_loaded('intl')) {
 use App\Event\Component\UserIdentifyListener;
 use App\Event\Plugin\CsvMigrations\Controller\BatchActionListener;
 use App\Event\Plugin\CsvMigrations\FieldHandlers\MagicDefaultValueListener;
-use App\Event\Plugin\CsvMigrations\View\TranslationViewListener;
-use App\Event\Plugin\CsvMigrations\View\ViewViewTabsListener;
 use App\Event\Plugin\Menu\View\MenuListener;
+use App\Event\Plugin\Search\Model\ReportsListener;
 use App\Event\Plugin\Search\Model\SearchableFieldsListener;
 use App\Event\Plugin\Search\Model\SearchResultsListener;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
@@ -254,11 +253,10 @@ EventManager::instance()->on(new LocalListener([
 ]));
 EventManager::instance()->on(new MagicDefaultValueListener());
 EventManager::instance()->on(new MenuListener());
+EventManager::instance()->on(new ReportsListener());
 EventManager::instance()->on(new SearchableFieldsListener());
 EventManager::instance()->on(new SearchResultsListener());
-EventManager::instance()->on(new TranslationViewListener());
 EventManager::instance()->on(new UserIdentifyListener());
-EventManager::instance()->on(new ViewViewTabsListener());
 
 // load AdminLTE theme settings
 Configure::load('admin_lte', 'default');
