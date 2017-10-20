@@ -25,6 +25,8 @@ use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
+use Qobo\Utils\ModuleConfig\ConfigType;
+use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\Capability;
 use RolesCapabilities\CapabilityTrait;
 use Search\Controller\SearchTrait;
@@ -158,8 +160,21 @@ class AppController extends Controller
 
         $this->viewBuilder()->theme('AdminLTE');
         $this->viewBuilder()->layout('adminlte');
+
+        $title = $this->name;
+        try {
+            $mc = new ModuleConfig(ConfigType::MODULE(), $this->name);
+            $config = $mc->parse();
+            if (!empty($config->table->alias)) {
+                $title = $config->table->alias;
+            }
+        } catch (Exception $e) {
+            // do nothing
+        }
+
         // overwrite theme title before setting the theme
-        Configure::write('Theme.title', $this->name);
+        // NOTE: we set controller specific title, to work around requestAction() calls.
+        Configure::write('Theme.title.' . $this->name, $title);
         $this->set('theme', Configure::read('Theme'));
     }
 
