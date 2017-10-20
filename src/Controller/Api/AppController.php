@@ -21,5 +21,9 @@ class AppController extends BaseController
         if (!$hasAccess) {
             throw new ForbiddenException();
         }
+
+        $this->loadComponent('RolesCapabilities.Capability', [
+            'currentRequest' => $this->request->params
+        ]);
     }
 }
