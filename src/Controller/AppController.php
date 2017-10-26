@@ -27,6 +27,7 @@ use Cake\Utility\Security;
 use Firebase\JWT\JWT;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
+use RolesCapabilities\Access\AccessFactory;
 use RolesCapabilities\Capability;
 use RolesCapabilities\CapabilityTrait;
 use Search\Controller\SearchTrait;
@@ -125,6 +126,8 @@ class AppController extends Controller
         EventManager::instance()->on(new RequestMetadata($this->request, $this->Auth->user('id')));
 
         $this->_generateApiToken();
+
+        $this->setFeatures();
 
         // Load AdminLTE theme
         $this->loadAdminLTE();
@@ -225,6 +228,23 @@ class AppController extends Controller
             'Bearer ' . Configure::read('API.token')
         );
         Configure::write('Search.api.token', Configure::read('API.token'));
+    }
+
+    /**
+     * Enable/disable features.
+     *
+     * @return void
+     */
+    protected function setFeatures()
+    {
+        $factory = new AccessFactory();
+        $user = $this->Auth->user();
+
+        // Batch feature
+        $url = ['plugin' => $this->plugin, 'controller' => $this->name, 'action' => 'batch'];
+        $batch = (bool)$factory->hasAccess($url, $user);
+        Configure::write('CsvMigrations.batch.active', $batch);
+        Configure::write('Search.batch.active', $batch);
     }
 
     /**
