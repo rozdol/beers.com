@@ -22,7 +22,7 @@ $url = $this->Url->build([
                 echo $this->element('CsvMigrations.Embedded/lookup', ['association' => $association, 'user' => $user]);
             } ?>
             <?= $this->element('CsvMigrations.Associated/tab-content', [
-                'association' => $association, 'table' => $table, 'url' => $url
+                'association' => $association, 'table' => $table, 'url' => $url, 'factory' => $factory
             ]) ?>
         </div>
         <?php $active = ''; ?>
