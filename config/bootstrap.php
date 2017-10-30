@@ -214,7 +214,9 @@ Plugin::load('AuditStash');
 Plugin::load('DatabaseLog', ['routes' => true]);
 Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Burzum/FileStorage');
-Plugin::load('Alt3/Swagger', ['routes' => true]);
+if (Configure::read('API.auth')) {
+    Plugin::load('Alt3/Swagger', ['routes' => true]);
+}
 Plugin::load('AdminLTE', ['bootstrap' => true, 'routes' => true]);
 
 // Only load JwtAuth plugin if API authentication is enabled
