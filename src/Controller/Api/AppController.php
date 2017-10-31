@@ -7,6 +7,16 @@ use Cake\Network\Exception\ForbiddenException;
 use CsvMigrations\Controller\Api\AppController as BaseController;
 use RolesCapabilities\CapabilityTrait;
 
+/**
+    @SWG\Swagger(
+        @SWG\Info(
+            title="API Documentation",
+            description="Interactive API documentation powered by Swagger.io",
+            termsOfService="http://swagger.io/terms/",
+            version="1.0.0"
+        )
+    )
+ */
 class AppController extends BaseController
 {
     use CapabilityTrait;
