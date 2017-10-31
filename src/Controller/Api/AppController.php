@@ -14,6 +14,13 @@ use RolesCapabilities\CapabilityTrait;
             description="Interactive API documentation powered by Swagger.io",
             termsOfService="http://swagger.io/terms/",
             version="1.0.0"
+        ),
+        @SWG\SecurityScheme(
+            securityDefinition="Bearer",
+            description="Json Web Tokens (JWT)",
+            type="apiKey",
+            name="token",
+            in="query"
         )
     )
  */
