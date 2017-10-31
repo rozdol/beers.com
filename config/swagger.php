@@ -1,6 +1,6 @@
 <?php
+use App\Swagger\Analyser;
 use Cake\Core\Configure;
-use CsvMigrations\Swagger\Analyser;
 
 return [
     'Swagger' => [
