@@ -141,7 +141,7 @@ if (!isset($uiConfig['api_selector'])) {
         <?php if ($uiConfig['api_selector'] === true) : ?>
             <form id='api_selector'>
                 <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
-                <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
+                <div id='auth_container'></div>
                 <div class='input'><a id="explore" href="#" data-sw-translate>Explore</a></div>
             </form>
         <?php endif; ?>
