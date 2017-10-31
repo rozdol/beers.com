@@ -7,6 +7,39 @@ use Cake\Network\Exception\UnauthorizedException;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
 
+/**
+    @SWG\Post(
+        path="/api/users/token",
+        summary="API authentication",
+        tags={"Authentication"},
+        consumes={"application/json"},
+        produces={"application/json"},
+        @SWG\Parameter(
+            name="body",
+            in="body",
+            description="API credentials",
+            required=true,
+            @SWG\Schema(ref="#/definitions/AuthToken")
+        ),
+        @SWG\Response(
+            response="200",
+            description="Successful operation"
+        )
+    )
+
+    @SWG\Definition(
+        definition="AuthToken",
+        required={"username,password"},
+        @SWG\Property(
+            property="username",
+            type="string"
+        ),
+        @SWG\Property(
+            property="password",
+            type="string"
+        )
+    )
+ */
 class UsersController extends AppController
 {
     /**
