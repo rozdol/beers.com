@@ -15,10 +15,26 @@ class AppTest extends TestCase
         if (empty($config)) {
             $this->assertTrue(Plugin::loaded($plugin), "Plugin $plugin is not loaded");
         } else {
-            $enabled = Configure::read($config);
-            if ($enabled) {
-                $this->assertTrue(Plugin::loaded($plugin), "Plugin $plugin is not loaded but '$config' is true");
+            $enabled = false;
+            switch (gettype($config)) {
+                case 'string':
+                    $enabled = Configure::read($config);
+                    break;
+
+                case 'array':
+                    foreach ($config as $conf) {
+                        if (!Configure::read($conf)) {
+                            $enabled = false;
+                            break;
+                        }
+
+                        $enabled = true;
+                    }
+                    break;
             }
+
+            $message = "Plugin $plugin is not loaded but [" . implode(' or ', (array)$config) . "] is true";
+            $this->assertEquals($enabled, Plugin::loaded($plugin), $message);
         }
     }
 
@@ -27,7 +43,7 @@ class AppTest extends TestCase
         return [
             ['ADmad/JwtAuth', 'API.auth'],
             ['AdminLTE', null],
-            ['Alt3/Swagger', null],
+            ['Alt3/Swagger', ['API.auth', 'Swagger.crawl']],
             ['AuditStash', null],
             ['Burzum/FileStorage', null],
             ['CakeDC/Users', null],
