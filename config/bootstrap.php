@@ -39,6 +39,11 @@ if (!extension_loaded('intl')) {
 }
 
 use App\Event\Component\UserIdentifyListener;
+use App\Event\Controller\Api\AddActionListener;
+use App\Event\Controller\Api\EditActionListener;
+use App\Event\Controller\Api\IndexActionListener;
+use App\Event\Controller\Api\LookupActionListener;
+use App\Event\Controller\Api\ViewActionListener;
 use App\Event\Plugin\CsvMigrations\Controller\BatchActionListener;
 use App\Event\Plugin\CsvMigrations\FieldHandlers\MagicDefaultValueListener;
 use App\Event\Plugin\Menu\View\MenuListener;
@@ -245,7 +250,10 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
+EventManager::instance()->on(new AddActionListener());
 EventManager::instance()->on(new BatchActionListener());
+EventManager::instance()->on(new EditActionListener());
+EventManager::instance()->on(new IndexActionListener());
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
 EventManager::instance()->on(new LocalListener([
     'imageProcessing' => true,
@@ -253,12 +261,14 @@ EventManager::instance()->on(new LocalListener([
         'pathPrefix' => 'uploads'
     ]
 ]));
+EventManager::instance()->on(new LookupActionListener());
 EventManager::instance()->on(new MagicDefaultValueListener());
 EventManager::instance()->on(new MenuListener());
 EventManager::instance()->on(new ReportsListener());
 EventManager::instance()->on(new SearchableFieldsListener());
 EventManager::instance()->on(new SearchResultsListener());
 EventManager::instance()->on(new UserIdentifyListener());
+EventManager::instance()->on(new ViewActionListener());
 
 // load AdminLTE theme settings
 Configure::load('admin_lte', 'default');
