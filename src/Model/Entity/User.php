@@ -6,6 +6,11 @@ use CakeDC\Users\Model\Entity\User as BaseUser;
 class User extends BaseUser
 {
     /**
+     * @var $_virtual - make virtual fields visible to export to JSON or array
+     */
+    protected $_virtual = ['name', 'image'];
+
+    /**
      * Virtual Field: name
      *
      * Try to use first name and last name together, but
