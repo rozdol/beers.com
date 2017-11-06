@@ -6,10 +6,6 @@ return [
     // disable remember-me functionality because currently it affects google authenticator functionality:
     // https://github.com/CakeDC/users/issues/488
     'Users.RememberMe.active' => false,
-    'Users.Email.required' => true,
-    'Users.Registration.active' => true,
-    'Users.Email.validate' => true,
-    'Users.Tos.required' => false,
     // this is a workaround for disabling RememberMe functionality bug:
     // https://github.com/CakeDC/users/issues/490
     'Auth.authenticate' => [
