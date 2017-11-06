@@ -148,6 +148,7 @@ class UsersController extends AppController
 
         if ($this->Users->save($user)) {
             $this->Flash->success(__('Profile successfully updated'));
+            $this->Auth->setUser($user->toArray());
         } else {
             $this->Flash->error(__('Failed to update profile data, please try again.'));
         }
