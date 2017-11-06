@@ -50,6 +50,7 @@ Router::prefix('api', function ($routes) {
      */
     $routes->extensions(['json']);
     $routes->resources('Users');
+    $routes->resources('LanguageTranslations');
 
     $routes->fallbacks('DashedRoute');
 });
