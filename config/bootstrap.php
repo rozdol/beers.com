@@ -258,7 +258,7 @@ EventManager::instance()->on(new IndexActionListener());
 EventManager::instance()->on(new LocalListener([
     'imageProcessing' => true,
     'pathBuilderOptions' => [
-        'pathPrefix' => 'uploads'
+        'pathPrefix' => Configure::read('FileStorage.pathBuilderOptions.pathPrefix')
     ]
 ]));
 EventManager::instance()->on(new LookupActionListener());
