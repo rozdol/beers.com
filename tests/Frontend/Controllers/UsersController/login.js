@@ -31,9 +31,9 @@ describe('Testing login UsersController::login() method', () => {
             .url(loginUrl)
             .waitForElementVisible('.login-box', 2000)
             .assert.elementPresent('input#username')
-            .setValue('input#username', 'qobo')
+            .setValue('input#username', process.env.DEV_USER)
             .assert.elementPresent('input#password')
-            .setValue('input#password', 'qobo')
+            .setValue('input#password', process.env.DEV_PASS)
             .submitForm('form')
             .pause(2000)
             .assert.elementPresent('nav');
