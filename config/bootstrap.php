@@ -39,17 +39,17 @@ if (!extension_loaded('intl')) {
 }
 
 use App\Event\Component\UserIdentifyListener;
+use App\Event\Controller\Api\AddActionListener;
+use App\Event\Controller\Api\EditActionListener;
+use App\Event\Controller\Api\IndexActionListener;
+use App\Event\Controller\Api\LookupActionListener;
+use App\Event\Controller\Api\ViewActionListener;
+use App\Event\Plugin\CsvMigrations\Controller\BatchActionListener;
 use App\Event\Plugin\CsvMigrations\FieldHandlers\MagicDefaultValueListener;
-use App\Event\Plugin\CsvMigrations\View\AddPermissionsListener;
-use App\Event\Plugin\CsvMigrations\View\MenuListener as CsvMigrationsMenuListener;
-use App\Event\Plugin\CsvMigrations\View\TranslationViewListener;
-use App\Event\Plugin\CsvMigrations\View\ViewViewTabsListener;
 use App\Event\Plugin\Menu\View\MenuListener;
+use App\Event\Plugin\Search\Model\ReportsListener;
 use App\Event\Plugin\Search\Model\SearchableFieldsListener;
 use App\Event\Plugin\Search\Model\SearchResultsListener;
-use App\Event\Plugin\Search\View\MenuListener as SearchMenuListener;
-use App\Event\Plugin\Search\View\ReportGridViewListener;
-use App\Event\View\LayoutMenuListener;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
@@ -81,6 +81,7 @@ try {
     Configure::load('csv_migrations', 'default');
     Configure::load('file_storage', 'default');
     Configure::load('groups', 'default');
+    Configure::load('icons', 'default');
     Configure::load('menu', 'default');
     Configure::load('roles_capabilities', 'default');
 } catch (\Exception $e) {
@@ -151,12 +152,19 @@ if (!Configure::read('App.fullBaseUrl')) {
     unset($httpHost, $s);
 }
 
+// Configure::consume() reads and deletes the value.
+// This is useful for consistency and security reasons.
 Cache::config(Configure::consume('Cache'));
 ConnectionManager::config(Configure::consume('Datasources'));
-Email::configTransport(Configure::consume('EmailTransport'));
-Email::config(Configure::consume('Email'));
 Log::config(Configure::consume('Log'));
 Security::salt(Configure::consume('Security.salt'));
+
+// Read, rather than consume, since we have some logic that
+// needs to know if email sending is enabled or not.
+// See `src/Shell/EmailShell.php` for example, but also in
+// plugins.
+Email::configTransport(Configure::read('EmailTransport'));
+Email::config(Configure::read('Email'));
 
 /**
  * The default crypto extension in 3.0 is OpenSSL.
@@ -211,7 +219,9 @@ Plugin::load('AuditStash');
 Plugin::load('DatabaseLog', ['routes' => true]);
 Plugin::load('Search', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Burzum/FileStorage');
-Plugin::load('Alt3/Swagger', ['routes' => true]);
+if (Configure::read('Swagger.crawl') && Configure::read('API.auth')) {
+    Plugin::load('Alt3/Swagger', ['routes' => true]);
+}
 Plugin::load('AdminLTE', ['bootstrap' => true, 'routes' => true]);
 
 // Only load JwtAuth plugin if API authentication is enabled
@@ -240,25 +250,25 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
-EventManager::instance()->on(new AddPermissionsListener());
-EventManager::instance()->on(new CsvMigrationsMenuListener());
-EventManager::instance()->on(new LayoutMenuListener());
+EventManager::instance()->on(new AddActionListener());
+EventManager::instance()->on(new BatchActionListener());
+EventManager::instance()->on(new EditActionListener());
+EventManager::instance()->on(new IndexActionListener());
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
 EventManager::instance()->on(new LocalListener([
     'imageProcessing' => true,
     'pathBuilderOptions' => [
-        'pathPrefix' => 'uploads'
+        'pathPrefix' => Configure::read('FileStorage.pathBuilderOptions.pathPrefix')
     ]
 ]));
+EventManager::instance()->on(new LookupActionListener());
 EventManager::instance()->on(new MagicDefaultValueListener());
 EventManager::instance()->on(new MenuListener());
-EventManager::instance()->on(new ReportGridViewListener());
+EventManager::instance()->on(new ReportsListener());
 EventManager::instance()->on(new SearchableFieldsListener());
-EventManager::instance()->on(new SearchMenuListener());
 EventManager::instance()->on(new SearchResultsListener());
-EventManager::instance()->on(new TranslationViewListener());
 EventManager::instance()->on(new UserIdentifyListener());
-EventManager::instance()->on(new ViewViewTabsListener());
+EventManager::instance()->on(new ViewActionListener());
 
 // load AdminLTE theme settings
 Configure::load('admin_lte', 'default');
