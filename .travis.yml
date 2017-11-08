@@ -9,6 +9,17 @@ php:
     - 7.1
     - nightly
 
+node_js:
+  - "7"
+
+addons:
+  chrome: stable
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
 matrix:
     fast_finish: true
     allow_failures:
@@ -21,11 +32,12 @@ install:
     - ./vendor/bin/phake app:install
 
 before_script:
+    - yarn install
     - ./bin/phpserv >/dev/null 2>&1 &
     - sleep 5
 
 script:
+  - yarn test
   - ./vendor/bin/phpunit --group example
   - ./vendor/bin/phpunit --exclude-group example
   - ./vendor/bin/phpcs
-
