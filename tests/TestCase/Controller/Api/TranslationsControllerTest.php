@@ -18,7 +18,7 @@ class TranslationsControllerTest extends IntegrationTestCase
     public $fixtures = [
         'plugin.translations.languages',
         'plugin.translations.language_translations',
-        'plugin.translations.users'
+        'plugin.CakeDC/Users.users',
     ];
 
     public function setUp()
@@ -26,7 +26,7 @@ class TranslationsControllerTest extends IntegrationTestCase
         parent::setUp();
 
         $token = JWT::encode(
-            ['sub' => '00000000-0000-0000-0000-000000000001', 'exp' => time() + 604800],
+            ['sub' => '00000000-0000-0000-0000-000000000002', 'exp' => time() + 604800],
             Security::salt()
         );
 
