@@ -18,6 +18,8 @@ class AppTable extends Table
     {
         parent::initialize($config);
 
-        $this->addBehavior('AuditStash.AuditLog');
+        $this->addBehavior('AuditStash.AuditLog', [
+            'blacklist' => ['created', 'modified', 'created_by', 'modified_by']
+        ]);
     }
 }

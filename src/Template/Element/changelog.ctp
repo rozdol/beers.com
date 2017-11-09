@@ -1,7 +1,14 @@
 <?php
 use Cake\Event\Event;
 use Cake\I18n\Time;
-use Cake\Utility\Inflector;
+use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+
+$factory = new FieldHandlerFactory($this);
+
+$tableName = $this->name;
+if ($this->plugin) {
+    $tableName = $this->plugin . '.' . $this->name;
+}
 
 $oldUser = null;
 $oldDate = null;
@@ -101,8 +108,8 @@ $iconColors = [
     }
     ?>
     <tr>
-        <td><?= Inflector::humanize($k) ?></td>
-        <td><?= $old ?></td>
+        <td><?= $factory->renderName($tableName, $k) ?></td>
+        <td><?= $factory->renderValue($tableName, $k, $old) ?></td>
         <?php
         if (is_object($v)) {
             if (!empty($v->date) && !empty($v->timezone)) {
@@ -112,7 +119,7 @@ $iconColors = [
             }
         }
         ?>
-        <td><?= $v ?></td>
+        <td><?= $factory->renderValue($tableName, $k, $v) ?></td>
     </tr>
     <?php endforeach; ?>
                     </tbody>
