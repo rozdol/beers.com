@@ -2,10 +2,6 @@
 // Features configuration
 return [
     'Features' => [
-        // [
-        //     'name' => 'Articles',
-        //     'type' => 'Module',
-        //     'active' => false
-        // ],
+        // ['name' => 'Articles', 'type' => 'Module', 'active' => false],
     ],
 ];
