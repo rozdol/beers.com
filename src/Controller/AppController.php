@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use App\Controller\ChangelogTrait;
 use App\Feature\Collection;
+use App\Feature\Factory;
 use App\Feature\Manager;
 use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
@@ -80,6 +81,8 @@ class AppController extends Controller
         if (!$manager->isEnabled($this->name)) {
             throw new NotFoundException();
         }
+
+        $this->manageFeatures();
     }
 
     /**
@@ -135,10 +138,35 @@ class AppController extends Controller
 
         $this->_generateApiToken();
 
-        $this->setFeatures();
-
         // Load AdminLTE theme
         $this->loadAdminLTE();
+    }
+
+    /**
+     * Enable/disable features.
+     *
+     * @return void
+     */
+    protected function manageFeatures()
+    {
+        $collection = new Collection((array)Configure::read('Features'));
+        $manager = new Manager($collection);
+        // loop through all features collection and enable/disable accordingly.
+        foreach ($collection->all() as $item) {
+            $type = Factory::create($item);
+            $manager->isEnabled($item->getName()) ? $type->enable() : $type->disable();
+        }
+
+        // if batch is enabled do permission check and enable/disable accordingly.
+        if ($manager->isEnabled('Batch')) {
+            $factory = new AccessFactory();
+            $user = $this->Auth->user();
+
+            $url = ['plugin' => $this->plugin, 'controller' => $this->name, 'action' => 'batch'];
+            $batch = (bool)$factory->hasAccess($url, $user);
+            Configure::write('CsvMigrations.batch.active', $batch);
+            Configure::write('Search.batch.active', $batch);
+        }
     }
 
     /**
@@ -236,23 +264,6 @@ class AppController extends Controller
             'Bearer ' . Configure::read('API.token')
         );
         Configure::write('Search.api.token', Configure::read('API.token'));
-    }
-
-    /**
-     * Enable/disable features.
-     *
-     * @return void
-     */
-    protected function setFeatures()
-    {
-        $factory = new AccessFactory();
-        $user = $this->Auth->user();
-
-        // Batch feature
-        $url = ['plugin' => $this->plugin, 'controller' => $this->name, 'action' => 'batch'];
-        $batch = (bool)$factory->hasAccess($url, $user);
-        Configure::write('CsvMigrations.batch.active', $batch);
-        Configure::write('Search.batch.active', $batch);
     }
 
     /**
