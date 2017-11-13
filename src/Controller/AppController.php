@@ -15,6 +15,8 @@
 namespace App\Controller;
 
 use App\Controller\ChangelogTrait;
+use App\Feature\Collection;
+use App\Feature\Manager;
 use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
@@ -72,6 +74,12 @@ class AppController extends Controller
         $this->loadComponent('RolesCapabilities.Capability', [
             'currentRequest' => $this->request->params
         ]);
+
+        // prevent access on disabled module
+        $manager = new Manager(new Collection((array)Configure::read('Features')));
+        if (!$manager->isEnabled($this->name)) {
+            throw new NotFoundException();
+        }
     }
 
     /**
