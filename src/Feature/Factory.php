@@ -10,7 +10,7 @@ use RuntimeException;
 class Factory
 {
     const FEATURE_SUFFIX = 'Feature';
-    const FEATURE_INTERFACE = 'FeatureInterface';
+    const BASE_CLASS = 'App\\Feature\\AbstractFeature';
     const BASE_FEATURE = 'Base';
 
     /**
@@ -41,9 +41,8 @@ class Factory
             $class = __NAMESPACE__ . '\\Type\\' . $name . static::FEATURE_SUFFIX;
         }
 
-        $interface = __NAMESPACE__ . '\\' . static::FEATURE_INTERFACE;
-        if (!in_array($interface, class_implements($class))) {
-            throw new RuntimeException('Feature class [' . $class . '] does not implement [' . $interface . '].');
+        if (!is_subclass_of($class, static::BASE_CLASS)) {
+            throw new RuntimeException('Feature class [' . $class . '] does not extend [' . static::BASE_CLASS . '].');
         }
 
         $config = static::getCollection()->get($name);
@@ -64,9 +63,6 @@ class Factory
         // loop through all features collection and enable/disable accordingly.
         foreach ($items as $item) {
             $feature = Factory::create($item->getName());
-            if (is_null($feature)) {
-                continue;
-            }
             $feature->isActive() ? $feature->enable() : $feature->disable();
         }
     }
