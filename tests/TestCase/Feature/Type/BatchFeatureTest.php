@@ -1,8 +1,8 @@
 <?php
 namespace App\Test\TestCase\Feature\Type;
 
-use App\Feature\Collection;
 use App\Feature\Factory;
+use App\Feature\Feature;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 
@@ -20,28 +20,14 @@ class BatchFeatureTest extends TestCase
     {
         parent::setUp();
 
-        $data = [
-            ['name' => 'Articles', 'type' => 'Module', 'active' => false],
-            ['name' => 'Foobar', 'type' => 'Batch', 'active' => true]
-        ];
-        $this->Collection = new Collection($data);
-    }
-
-    /**
-     * tearDown method
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        unset($this->Collection);
-
-        parent::tearDown();
+        Configure::write('Features', [
+            ['name' => Feature::BATCH(), 'active' => false]
+        ]);
     }
 
     public function testEnable()
     {
-        $feature = Factory::create($this->Collection->get('Foobar'));
+        $feature = Factory::create(Feature::BATCH());
 
         $feature->enable();
 
@@ -51,7 +37,7 @@ class BatchFeatureTest extends TestCase
 
     public function testDisable()
     {
-        $feature = Factory::create($this->Collection->get('Foobar'));
+        $feature = Factory::create(Feature::BATCH());
 
         $feature->disable();
 

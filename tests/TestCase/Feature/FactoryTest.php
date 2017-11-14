@@ -1,18 +1,18 @@
 <?php
 namespace App\Test\TestCase\Feature;
 
-use App\Feature\Collection;
-use App\Feature\Config;
 use App\Feature\Factory;
+use App\Feature\Feature;
 use App\Feature\FeatureInterface;
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use ReflectionClass;
 
 /**
  * App\Feature\Factory Test Case
  */
 class FactoryTest extends TestCase
 {
-
     /**
      * setUp method
      *
@@ -22,29 +22,32 @@ class FactoryTest extends TestCase
     {
         parent::setUp();
 
-        $data = [
-            ['name' => 'Articles', 'type' => 'Module', 'active' => false],
-            ['name' => 'Batch', 'type' => 'Batch', 'active' => true]
-        ];
-        $this->Collection = new Collection($data);
+        Configure::write('Features', [
+            ['name' => Feature::BATCH(), 'active' => false]
+        ]);
     }
 
     /**
-     * tearDown method
-     *
-     * @return void
+     * @dataProvider featuresProvider
      */
-    public function tearDown()
+    public function testCreate($feature)
     {
-        unset($this->Collection);
-
-        parent::tearDown();
+        $this->assertInstanceOf(FeatureInterface::class, Factory::create($feature));
     }
 
-    public function testCreate()
+    public function testExecute()
     {
-        foreach ($this->Collection->all() as $item) {
-            $this->assertInstanceOf(FeatureInterface::class, Factory::create($item));
-        }
+        Factory::execute(Feature::BATCH());
+
+        $this->assertFalse(Configure::read('CsvMigrations.batch.active'));
+        $this->assertFalse(Configure::read('Search.batch.active'));
+    }
+
+    public function featuresProvider()
+    {
+        return [
+            ['Batch'],
+            [Feature::BATCH()]
+        ];
     }
 }

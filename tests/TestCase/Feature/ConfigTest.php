@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Feature;
 
 use App\Feature\Config;
+use App\Feature\Feature;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 
@@ -20,7 +21,7 @@ class ConfigTest extends TestCase
     {
         parent::setUp();
 
-        $data = ['name' => 'Articles', 'type' => 'Module', 'active' => false];
+        $data = ['name' => Feature::BATCH(), 'active' => false];
         $this->Config = new Config($data);
     }
 
@@ -36,14 +37,9 @@ class ConfigTest extends TestCase
         parent::tearDown();
     }
 
-    public function testGetType()
-    {
-        $this->assertEquals('Module', $this->Config->getType());
-    }
-
     public function testGetName()
     {
-        $this->assertEquals('Articles', $this->Config->getName());
+        $this->assertEquals(Feature::BATCH(), $this->Config->getName());
     }
 
     public function testIsActive()
@@ -52,21 +48,12 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidTypeProvider
-     */
-    public function testWrongType($value)
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new Config(['type' => $value]);
-    }
-
-    /**
      * @dataProvider invalidNameProvider
      */
     public function testWrongName($value)
     {
         $this->expectException(InvalidArgumentException::class);
-        new Config(['type' => 'Module', 'name' => $value]);
+        new Config(['name' => $value]);
     }
 
     /**
@@ -75,23 +62,13 @@ class ConfigTest extends TestCase
     public function testWrongActive($value)
     {
         $this->expectException(InvalidArgumentException::class);
-        new Config(['type' => 'Module', 'name' => 'Articles', 'active' => $value]);
-    }
-
-    public function invalidTypeProvider()
-    {
-        return [
-            [['Module']],
-            [true],
-            [357],
-            [null]
-        ];
+        new Config(['name' => Feature::BATCH(), 'active' => $value]);
     }
 
     public function invalidNameProvider()
     {
         return [
-            [['Articles']],
+            ['Articles'],
             [true],
             [357],
             [null]
