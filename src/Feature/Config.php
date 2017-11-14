@@ -1,16 +1,25 @@
 <?php
 namespace App\Feature;
 
+use App\Feature\Feature;
 use Cake\Utility\Hash;
 use InvalidArgumentException;
 
 class Config
 {
-    protected $type;
-
+    /**
+     * Feature name as ENUM.
+     *
+     * @var \App\Feature\Feature
+     */
     protected $name;
 
-    protected $active;
+    /**
+     * Active flag.
+     *
+     * @var bool
+     */
+    protected $active = true;
 
     /**
      * Constructor method.
@@ -19,14 +28,9 @@ class Config
      */
     public function __construct(array $config)
     {
-        $type = Hash::get($config, 'type');
-        if (!is_string($type)) {
-            throw new InvalidArgumentException('Feature type must be a string.');
-        }
-
         $name = Hash::get($config, 'name');
-        if (!is_string($name)) {
-            throw new InvalidArgumentException('Feature name must be a string.');
+        if (!$name instanceof Feature) {
+            throw new InvalidArgumentException('Feature name must be an enum.');
         }
 
         $active = Hash::get($config, 'active');
@@ -34,19 +38,8 @@ class Config
             throw new InvalidArgumentException('Feature active status must be a boolean.');
         }
 
-        $this->type = $type;
-        $this->name = $name;
+        $this->name = $name->getValue();
         $this->active = (bool)$active;
-    }
-
-    /**
-     * Feature type getter.
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

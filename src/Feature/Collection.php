@@ -1,7 +1,7 @@
 <?php
 namespace App\Feature;
 
-use InvalidArgumentException;
+use App\Feature\Feature;
 
 class Collection
 {
@@ -20,9 +20,9 @@ class Collection
     public function __construct(array $data)
     {
         foreach ($data as $params) {
-            $feature = new Config($params);
+            $config = new Config($params);
 
-            $this->items[$feature->getName()] = $feature;
+            $this->items[$config->getName()] = $config;
         }
     }
 
@@ -39,15 +39,15 @@ class Collection
     /**
      * Collection item getter method.
      *
-     * @param string $name Feature name
-     * @return \App\Feature\Feature|null
+     * @param \App\Feature\Feature $name Feature name enum
+     * @return \App\Feature\Config|null
      */
-    public function get($name)
+    public function get(Feature $name)
     {
-        if (!array_key_exists($name, $this->items)) {
+        if (!array_key_exists($name->getValue(), $this->items)) {
             return null;
         }
 
-        return $this->items[$name];
+        return $this->items[$name->getValue()];
     }
 }

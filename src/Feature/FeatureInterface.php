@@ -16,4 +16,11 @@ interface FeatureInterface
      * @return void
      */
     public function disable();
+
+    /**
+     * Feature status getter method.
+     *
+     * @return void
+     */
+    public function isActive();
 }
