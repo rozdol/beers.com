@@ -1,7 +1,7 @@
 <?php
 namespace App\Event\Plugin\Menu\View;
 
-use App\Feature\Factory;
+use App\Feature\Factory as FeatureFactory;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
@@ -69,9 +69,9 @@ class MenuListener implements EventListenerInterface
         }
 
         foreach ($modules as $module) {
-            $feature = Factory::create($module);
+            $feature = FeatureFactory::create($module);
             // skip if module is disabled
-            if (!is_null($feature) && !$feature->isActive()) {
+            if (!$feature->isActive()) {
                 continue;
             }
 

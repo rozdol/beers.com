@@ -29,12 +29,4 @@ abstract class AbstractFeature implements FeatureInterface
     {
         return (bool)$this->config->isActive();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function handle()
-    {
-        $this->isActive() ? $this->enable() : $this->disable();
-    }
 }

@@ -2,13 +2,17 @@
 namespace App\Feature;
 
 use App\Feature\Collection;
-use App\Feature\Feature;
 use Cake\Core\Configure;
+use Cake\Log\Log;
 use InvalidArgumentException;
 use RuntimeException;
 
 class Factory
 {
+    const FEATURE_SUFFIX = 'Feature';
+    const FEATURE_INTERFACE = 'FeatureInterface';
+    const BASE_FEATURE = 'Base';
+
     /**
      * Features Collection.
      *
@@ -19,33 +23,30 @@ class Factory
     /**
      * Create method.
      *
-     * @param \App\Feature\Feature|string $name Feature name
-     * @return \App\Feature\FeatureInterface|null
+     * @param string $name Feature name
+     * @return \App\Feature\FeatureInterface
      */
     public static function create($name)
     {
-        $collection = static::getCollection();
-
-        $type = $name;
-        if ($type instanceof Feature) {
-            $type = $type->getValue();
+        if (!is_string($name)) {
+            throw new InvalidArgumentException('Feature name must be a string.');
         }
 
-        $class = __NAMESPACE__ . '\\Type\\' . $type . 'Feature';
+        $class = __NAMESPACE__ . '\\Type\\' . $name . static::FEATURE_SUFFIX;
         if (!class_exists($class)) {
-            return null;
+            Log::notice('Feature class [' . $class . '] does not exist.');
+
+            // fallback to base feature
+            $name = static::BASE_FEATURE;
+            $class = __NAMESPACE__ . '\\Type\\' . $name . static::FEATURE_SUFFIX;
         }
 
-        $interface = __NAMESPACE__ . '\\FeatureInterface';
+        $interface = __NAMESPACE__ . '\\' . static::FEATURE_INTERFACE;
         if (!in_array($interface, class_implements($class))) {
             throw new RuntimeException('Feature class [' . $class . '] does not implement [' . $interface . '].');
         }
 
-        if (is_string($name)) {
-            $name = Feature::{strtoupper($name)}();
-        }
-
-        $config = $collection->get($name);
+        $config = static::getCollection()->get($name);
 
         return new $class($config);
     }
@@ -53,10 +54,10 @@ class Factory
     /**
      * Initialize feature.
      *
-     * @param \App\Feature\Feature|null $name Feature name
+     * @param string|null $name Feature name
      * @return void
      */
-    public static function execute(Feature $name = null)
+    public static function execute($name = null)
     {
         $items = is_null($name) ? static::getCollection()->all() : [static::getCollection()->get($name)];
 
