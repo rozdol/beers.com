@@ -14,20 +14,6 @@ use ReflectionClass;
 class FactoryTest extends TestCase
 {
     /**
-     * setUp method
-     *
-     * @return void
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        Configure::write('Features', [
-            ['name' => Feature::BATCH(), 'active' => false]
-        ]);
-    }
-
-    /**
      * @dataProvider featuresProvider
      */
     public function testCreate($feature)
@@ -39,8 +25,8 @@ class FactoryTest extends TestCase
     {
         Factory::execute(Feature::BATCH());
 
-        $this->assertFalse(Configure::read('CsvMigrations.batch.active'));
-        $this->assertFalse(Configure::read('Search.batch.active'));
+        $this->assertTrue(Configure::read('CsvMigrations.batch.active'));
+        $this->assertTrue(Configure::read('Search.batch.active'));
     }
 
     public function featuresProvider()
