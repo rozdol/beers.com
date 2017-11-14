@@ -15,9 +15,8 @@
 namespace App\Controller;
 
 use App\Controller\ChangelogTrait;
-use App\Feature\Collection;
-use App\Feature\Factory;
-use App\Feature\Manager;
+use App\Feature\Factory as FeatureFactory;
+use App\Feature\Feature;
 use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
@@ -77,8 +76,8 @@ class AppController extends Controller
         ]);
 
         // prevent access on disabled module
-        $manager = new Manager(new Collection((array)Configure::read('Features')));
-        if (!$manager->isEnabled($this->name)) {
+        $feature = FeatureFactory::create($this->name);
+        if (!is_null($feature) && !$feature->isActive()) {
             throw new NotFoundException();
         }
 
@@ -149,16 +148,11 @@ class AppController extends Controller
      */
     protected function manageFeatures()
     {
-        $collection = new Collection((array)Configure::read('Features'));
-        $manager = new Manager($collection);
-        // loop through all features collection and enable/disable accordingly.
-        foreach ($collection->all() as $item) {
-            $type = Factory::create($item);
-            $manager->isEnabled($item->getName()) ? $type->enable() : $type->disable();
-        }
+        FeatureFactory::execute();
 
+        $feature = FeatureFactory::create(Feature::BATCH());
         // if batch is enabled do permission check and enable/disable accordingly.
-        if ($manager->isEnabled('Batch')) {
+        if ($feature->isActive()) {
             $factory = new AccessFactory();
             $user = $this->Auth->user();
 

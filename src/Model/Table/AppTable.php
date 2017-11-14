@@ -1,8 +1,7 @@
 <?php
 namespace App\Model\Table;
 
-use App\Feature\Collection;
-use App\Feature\Manager;
+use App\Feature\Factory as FeatureFactory;
 use Cake\Core\Configure;
 use CsvMigrations\CsvMigrationsUtils;
 use CsvMigrations\Table;
@@ -45,8 +44,8 @@ class AppTable extends Table
 
         foreach ($modules as $module) {
             // skip if associated module is disabled
-            $manager = new Manager(new Collection((array)Configure::read('Features')));
-            if (!$manager->isEnabled($module)) {
+            $feature = FeatureFactory::create($module);
+            if (!is_null($feature) && !$feature->isActive()) {
                 continue;
             }
 
@@ -71,8 +70,8 @@ class AppTable extends Table
                 }
 
                 // skip if associated module is disabled
-                $manager = new Manager(new Collection((array)Configure::read('Features')));
-                if (!$manager->isEnabled($field->getAssocCsvModule())) {
+                $feature = FeatureFactory::create($field->getAssocCsvModule());
+                if (!is_null($feature) && !$feature->isActive()) {
                     continue;
                 }
 
