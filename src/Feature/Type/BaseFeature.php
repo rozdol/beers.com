@@ -1,25 +1,10 @@
 <?php
 namespace App\Feature\Type;
 
-use App\Feature\FeatureInterface;
-use Cake\Core\Configure;
+use App\Feature\AbstractFeature;
 
-class BaseFeature implements FeatureInterface
+class BaseFeature extends AbstractFeature
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function enable()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function disable()
-    {
-    }
-
     /**
      * {@inheritDoc}
      */
