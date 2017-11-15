@@ -1,8 +1,10 @@
 <?php
 namespace App\Feature;
 
-use App\Feature\Collection;
+use App\Feature\Config;
+use Cake\Controller\Component\AuthComponent;
 use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use InvalidArgumentException;
 use RuntimeException;
@@ -12,6 +14,10 @@ class Factory
     const FEATURE_INTERFACE = 'App\\Feature\\FeatureInterface';
     const FEATURE_SUFFIX = 'Feature';
 
+    protected static $initialized = false;
+
+    protected static $defaultOptions = ['name' => 'Base', 'active' => true];
+
     /**
      * Features Collection.
      *
@@ -19,31 +25,84 @@ class Factory
      */
     protected static $collection;
 
+    protected static $auth;
+
+    protected static $request;
+
     /**
-     * Create method.
+     * Initialize feature.
+     *
+     * @return void
+     */
+    public static function init(AuthComponent $auth, ServerRequest $request)
+    {
+        if (static::$initialized) {
+            throw new RuntimeException('Feature Factory already initialized.');
+        }
+        // set factory as initialized.
+        static::$initialized = true;
+
+        static::$auth = $auth;
+        static::$request = $request;
+
+        $features = Configure::read('Features');
+
+        foreach ($features as $feature => $options) {
+            $config = static::getConfig($feature);
+            $class = static::getFeatureClass($config);
+            $feature = new $class($config);
+            $feature->isActive() ? $feature->enable() : $feature->disable();
+        }
+    }
+
+    /**
+     * Get feature method.
      *
      * @param string $name Feature name
      * @return \App\Feature\FeatureInterface
      */
-    public static function create($name)
+    public static function get($name)
     {
+        if (!static::$initialized) {
+            throw new RuntimeException('Feature Factory is not initialized.');
+        }
+
         if (!is_string($name)) {
             throw new InvalidArgumentException('Feature name must be a string.');
         }
 
-        $collection = static::getCollection();
+        $config = static::getConfig($name);
+        $class = static::getFeatureClass($config);
 
-        $config = $collection->get($name);
-        if (is_null($config)) {
-            $config = $collection->get(Collection::DEFAULT_FEATURE);
+        return new $class($config);
+    }
+
+    protected static function getConfig($feature)
+    {
+        $options = Configure::read('Features.' . $feature);
+
+        if (!empty($options)) {
+            $options['name'] = $feature;
         }
 
-        $class = __NAMESPACE__ . '\\Type\\' . $config->getName() . static::FEATURE_SUFFIX;
-        if (!class_exists($class)) {
-            Log::notice('Feature class [' . $class . '] does not exist.');
+        if (empty($options)) {
+            Log::notice('Feature [' . $feature . '] does not exist.');
+            $options = static::$defaultOptions;
+        }
 
-            // fallback to default feature
-            $class = __NAMESPACE__ . '\\Type\\' . Collection::DEFAULT_FEATURE . static::FEATURE_SUFFIX;
+        $options['auth'] = static::$auth;
+        $options['request'] = static::$request;
+
+        return new Config($options);
+    }
+
+    protected static function getFeatureClass(Config $config)
+    {
+        $class = __NAMESPACE__ . '\\Type\\' . $config->get('name') . static::FEATURE_SUFFIX;
+        if (!class_exists($class)) {
+            throw new RuntimeException(
+                'Class [' . $class . '] does not exist.'
+            );
         }
 
         if (!in_array(static::FEATURE_INTERFACE, class_implements($class))) {
@@ -52,41 +111,6 @@ class Factory
             );
         }
 
-        return new $class($config);
-    }
-
-    /**
-     * Initialize feature.
-     *
-     * @param string|null $name Feature name
-     * @return void
-     */
-    public static function execute($name = null)
-    {
-        if (is_null($name)) {
-            $collection = static::getCollection();
-            foreach ($collection->all() as $item) {
-                static::execute($item->getName());
-            }
-
-            return;
-        }
-
-        $feature = static::create($name);
-        $feature->isActive() ? $feature->enable() : $feature->disable();
-    }
-
-    /**
-     * Features Collection getter.
-     *
-     * @return \App\Feature\Collection
-     */
-    protected static function getCollection()
-    {
-        if (!static::$collection instanceof Collection) {
-            static::$collection = new Collection(Configure::read('Features'));
-        }
-
-        return static::$collection;
+        return $class;
     }
 }

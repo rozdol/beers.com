@@ -27,37 +27,44 @@ class Config
      */
     public function __construct(array $config)
     {
-        $name = Hash::get($config, 'name');
-        if (!is_string($name)) {
-            throw new InvalidArgumentException('Feature name must be a string.');
+        $required = [
+            'name' => ['type' => 'string'],
+            'active' => ['type' => 'boolean'],
+            'auth' => ['type' => 'object', 'instanceof' => '\Cake\Controller\Component\AuthComponent'],
+            'request' => ['type' => 'object', 'instanceof' => '\Cake\Http\ServerRequest']
+        ];
+
+        foreach ($required as $field => $options) {
+            if (!array_key_exists($field, $config)) {
+                throw new InvalidArgumentException('Missing required parameter [' . $field . '].');
+            }
+
+            $givenType = gettype($config[$field]);
+            if ($givenType !== $options['type']) {
+                throw new InvalidArgumentException(
+                    'Parameter [' . $field . '] must be of type [' . $options['type'] . '], [' . $givenType . '] given.'
+                );
+            }
+
+            if (!empty($options['instanceof']) && !$config[$field] instanceof $options['instanceof']) {
+                throw new InvalidArgumentException(
+                    'Parameter [' . $field . '] must be instance of [' . $options['instanceof'] . '].'
+                );
+            }
         }
 
-        $active = Hash::get($config, 'active');
-        if (!is_bool($active)) {
-            throw new InvalidArgumentException('Feature active status must be a boolean.');
+        foreach ($config as $field => $value) {
+            $this->{$field} = $value;
+        }
+    }
+
+    public function get($field)
+    {
+        $result = null;
+        if (property_exists($this, $field)) {
+            $result = $this->{$field};
         }
 
-        $this->name = $name;
-        $this->active = $active;
-    }
-
-    /**
-     * Feature name getter.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Feature active status getter.
-     *
-     * @return bool
-     */
-    public function isActive()
-    {
-        return (bool)$this->active;
+        return $result;
     }
 }

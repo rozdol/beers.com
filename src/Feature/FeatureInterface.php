@@ -1,8 +1,17 @@
 <?php
 namespace App\Feature;
 
+use App\Feature\Config;
+
 interface FeatureInterface
 {
+    /**
+     * Contructor method.
+     *
+     * @param \App\Feature\Config $config Feature Config instance
+     */
+    public function __construct(Config $config);
+
     /**
      * Feature status getter method.
      *
