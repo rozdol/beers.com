@@ -2,11 +2,13 @@
 namespace App\Controller\Api;
 
 use App\Event\EventName;
+use App\Feature\Factory as FeatureFactory;
 use App\Swagger\Annotation;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Exception\ForbiddenException;
+use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -108,6 +110,12 @@ class AppController extends Controller
 
         if (Configure::read('API.auth')) {
             $this->enableAuthorization();
+        }
+
+        // prevent access on disabled module
+        $feature = FeatureFactory::create($this->name);
+        if (!$feature->isActive()) {
+            throw new NotFoundException();
         }
     }
 
