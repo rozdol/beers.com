@@ -30,17 +30,18 @@ class FactoryTest extends TestCase
         parent::tearDown();
     }
 
-    public function testGetWithoutInit()
-    {
-        $this->expectException(RuntimeException::class);
-        $feature = Factory::get('Foobar');
-    }
-
+    /**
+     * For now we just make sure the Factory can be initialized, no assertions are made.
+     */
     public function testInit()
     {
         Factory::init($this->auth, $this->request);
+    }
 
+    public function testGet()
+    {
         $feature = Factory::get('Foobar');
         $this->assertInstanceOf(FeatureInterface::class, $feature);
+        $this->assertInstanceOf(BaseFeature::class, $feature);
     }
 }
