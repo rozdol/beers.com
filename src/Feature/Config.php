@@ -58,6 +58,12 @@ class Config
         }
     }
 
+    /**
+     * Class property getter method.
+     *
+     * @param string $field Property name
+     * @return mixed
+     */
     public function get($field)
     {
         $result = null;

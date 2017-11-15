@@ -32,6 +32,8 @@ class Factory
     /**
      * Initialize feature.
      *
+     * @param \Cake\Controller\Component\AuthComponent $auth Cake's Auth component
+     * @param \Cake\Http\ServerRequest $request Server request
      * @return void
      */
     public static function init(AuthComponent $auth, ServerRequest $request)
@@ -77,6 +79,12 @@ class Factory
         return new $class($config);
     }
 
+    /**
+     * Feature Config getter method.
+     *
+     * @param string $feature Feature name
+     * @return \App\Feature\Config
+     */
     protected static function getConfig($feature)
     {
         $options = Configure::read('Features.' . $feature);
@@ -96,6 +104,12 @@ class Factory
         return new Config($options);
     }
 
+    /**
+     * Feature class name getter.
+     *
+     * @param \App\Feature\Config $config Config instance
+     * @return string
+     */
     protected static function getFeatureClass(Config $config)
     {
         $class = __NAMESPACE__ . '\\Type\\' . $config->get('name') . static::FEATURE_SUFFIX;
