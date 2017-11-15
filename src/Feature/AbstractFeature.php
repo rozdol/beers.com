@@ -33,14 +33,10 @@ abstract class AbstractFeature implements FeatureInterface
     /**
      * {@inheritDoc}
      */
-    public function enable()
-    {
-    }
+    abstract public function enable();
 
     /**
      * {@inheritDoc}
      */
-    public function disable()
-    {
-    }
+    abstract public function disable();
 }

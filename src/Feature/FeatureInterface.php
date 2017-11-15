@@ -4,6 +4,13 @@ namespace App\Feature;
 interface FeatureInterface
 {
     /**
+     * Feature status getter method.
+     *
+     * @return bool
+     */
+    public function isActive();
+
+    /**
      * Feature disable method.
      *
      * @return void
@@ -16,11 +23,4 @@ interface FeatureInterface
      * @return void
      */
     public function disable();
-
-    /**
-     * Feature status getter method.
-     *
-     * @return void
-     */
-    public function isActive();
 }

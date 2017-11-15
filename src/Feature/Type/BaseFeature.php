@@ -8,8 +8,16 @@ class BaseFeature extends AbstractFeature
     /**
      * {@inheritDoc}
      */
-    public function isActive()
+    public function enable()
     {
-        return true;
+        //
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function disable()
+    {
+        //
     }
 }
