@@ -9,8 +9,8 @@ use RuntimeException;
 
 class Factory
 {
+    const FEATURE_INTERFACE = 'App\\Feature\\FeatureInterface';
     const FEATURE_SUFFIX = 'Feature';
-    const BASE_CLASS = 'App\\Feature\\AbstractFeature';
 
     /**
      * Features Collection.
@@ -46,8 +46,10 @@ class Factory
             $class = __NAMESPACE__ . '\\Type\\' . Collection::DEFAULT_FEATURE . static::FEATURE_SUFFIX;
         }
 
-        if (!is_subclass_of($class, static::BASE_CLASS)) {
-            throw new RuntimeException('Feature class [' . $class . '] does not extend [' . static::BASE_CLASS . '].');
+        if (!in_array(static::FEATURE_INTERFACE, class_implements($class))) {
+            throw new RuntimeException(
+                'Feature class [' . $class . '] does not implement [' . static::FEATURE_INTERFACE . '].'
+            );
         }
 
         return new $class($config);
