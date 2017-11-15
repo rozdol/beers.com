@@ -61,13 +61,17 @@ class Factory
      */
     public static function execute($name = null)
     {
-        $items = is_null($name) ? static::getCollection()->all() : [static::getCollection()->get($name)];
+        if (is_null($name)) {
+            $collection = static::getCollection();
+            foreach ($collection->all() as $item) {
+                static::execute($item->getName());
+            }
 
-        // loop through all features collection and enable/disable accordingly.
-        foreach ($items as $item) {
-            $feature = Factory::create($item->getName());
-            $feature->isActive() ? $feature->enable() : $feature->disable();
+            return;
         }
+
+        $feature = static::create($name);
+        $feature->isActive() ? $feature->enable() : $feature->disable();
     }
 
     /**
