@@ -2,7 +2,6 @@
 namespace App\Test\TestCase\Feature;
 
 use App\Feature\Config;
-use App\Feature\Feature;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 
@@ -21,7 +20,7 @@ class ConfigTest extends TestCase
     {
         parent::setUp();
 
-        $data = ['name' => Feature::BATCH(), 'active' => false];
+        $data = ['name' => 'Batch', 'active' => false];
         $this->Config = new Config($data);
     }
 
@@ -39,7 +38,7 @@ class ConfigTest extends TestCase
 
     public function testGetName()
     {
-        $this->assertEquals(Feature::BATCH(), $this->Config->getName());
+        $this->assertEquals('Batch', $this->Config->getName());
     }
 
     public function testIsActive()
@@ -62,7 +61,7 @@ class ConfigTest extends TestCase
     public function testWrongActive($value)
     {
         $this->expectException(InvalidArgumentException::class);
-        new Config(['name' => Feature::BATCH(), 'active' => $value]);
+        new Config(['name' => 'Batch', 'active' => $value]);
     }
 
     public function invalidNameProvider()

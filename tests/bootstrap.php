@@ -6,3 +6,6 @@
  * unit tests in this file.
  */
 require dirname(__DIR__) . '/config/bootstrap.php';
+
+// Load test configuration file(s)
+require __DIR__ . '/config/features.php';

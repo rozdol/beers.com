@@ -2,7 +2,6 @@
 namespace App\Test\TestCase\Feature;
 
 use App\Feature\Factory;
-use App\Feature\Feature;
 use App\Feature\FeatureInterface;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
@@ -13,27 +12,29 @@ use ReflectionClass;
  */
 class FactoryTest extends TestCase
 {
-    /**
-     * @dataProvider featuresProvider
-     */
-    public function testCreate($feature)
+    public function testCreate()
     {
-        $this->assertInstanceOf(FeatureInterface::class, Factory::create($feature));
+        $this->assertInstanceOf(FeatureInterface::class, Factory::create('Batch'));
+    }
+
+    public function testCreateNonExisting()
+    {
+        $this->assertInstanceOf(FeatureInterface::class, Factory::create('NonExistingFeature'));
     }
 
     public function testExecute()
     {
-        Factory::execute(Feature::BATCH());
+        Factory::execute('Batch');
 
         $this->assertTrue(Configure::read('CsvMigrations.batch.active'));
         $this->assertTrue(Configure::read('Search.batch.active'));
     }
 
-    public function featuresProvider()
+    public function testExecuteAll()
     {
-        return [
-            ['Batch'],
-            [Feature::BATCH()]
-        ];
+        Factory::execute();
+
+        $this->assertTrue(Configure::read('CsvMigrations.batch.active'));
+        $this->assertTrue(Configure::read('Search.batch.active'));
     }
 }

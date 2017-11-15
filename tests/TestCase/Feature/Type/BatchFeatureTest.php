@@ -2,7 +2,6 @@
 namespace App\Test\TestCase\Feature\Type;
 
 use App\Feature\Factory;
-use App\Feature\Feature;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 
@@ -11,23 +10,16 @@ use Cake\TestSuite\TestCase;
  */
 class BatchFeatureTest extends TestCase
 {
-    /**
-     * setUp method
-     *
-     * @return void
-     */
-    public function setUp()
+    public function testIsActive()
     {
-        parent::setUp();
+        $feature = Factory::create('Batch');
 
-        Configure::write('Features', [
-            ['name' => Feature::BATCH(), 'active' => false]
-        ]);
+        $this->assertTrue($feature->isActive());
     }
 
     public function testEnable()
     {
-        $feature = Factory::create(Feature::BATCH());
+        $feature = Factory::create('Batch');
 
         $feature->enable();
 
@@ -37,7 +29,7 @@ class BatchFeatureTest extends TestCase
 
     public function testDisable()
     {
-        $feature = Factory::create(Feature::BATCH());
+        $feature = Factory::create('Batch');
 
         $feature->disable();
 

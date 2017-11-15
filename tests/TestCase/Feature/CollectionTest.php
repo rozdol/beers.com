@@ -3,7 +3,6 @@ namespace App\Test\TestCase\Feature;
 
 use App\Feature\Collection;
 use App\Feature\Config;
-use App\Feature\Feature;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -22,7 +21,7 @@ class CollectionTest extends TestCase
         parent::setUp();
 
         $data = [
-            ['name' => Feature::BATCH(), 'active' => true]
+            ['name' => 'Batch', 'active' => true]
         ];
         $this->Collection = new Collection($data);
     }
@@ -52,8 +51,15 @@ class CollectionTest extends TestCase
 
     public function testGet()
     {
-        $data = $this->Collection->get(Feature::BATCH());
+        $data = $this->Collection->get('Batch');
 
         $this->assertInstanceOf(Config::class, $data);
+    }
+
+    public function testGetNonExisting()
+    {
+        $data = $this->Collection->get('NonExistingFeature');
+
+        $this->assertNull($data);
     }
 }
