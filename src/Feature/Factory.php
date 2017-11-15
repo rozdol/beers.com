@@ -11,7 +11,6 @@ class Factory
 {
     const FEATURE_SUFFIX = 'Feature';
     const BASE_CLASS = 'App\\Feature\\AbstractFeature';
-    const BASE_FEATURE = 'Base';
 
     /**
      * Features Collection.
@@ -32,20 +31,24 @@ class Factory
             throw new InvalidArgumentException('Feature name must be a string.');
         }
 
-        $class = __NAMESPACE__ . '\\Type\\' . $name . static::FEATURE_SUFFIX;
+        $collection = static::getCollection();
+
+        $config = $collection->get($name);
+        if (is_null($config)) {
+            $config = $collection->get(Collection::DEFAULT_FEATURE);
+        }
+
+        $class = __NAMESPACE__ . '\\Type\\' . $config->getName() . static::FEATURE_SUFFIX;
         if (!class_exists($class)) {
             Log::notice('Feature class [' . $class . '] does not exist.');
 
-            // fallback to base feature
-            $name = static::BASE_FEATURE;
-            $class = __NAMESPACE__ . '\\Type\\' . $name . static::FEATURE_SUFFIX;
+            // fallback to default feature
+            $class = __NAMESPACE__ . '\\Type\\' . Collection::DEFAULT_FEATURE . static::FEATURE_SUFFIX;
         }
 
         if (!is_subclass_of($class, static::BASE_CLASS)) {
             throw new RuntimeException('Feature class [' . $class . '] does not extend [' . static::BASE_CLASS . '].');
         }
-
-        $config = static::getCollection()->get($name);
 
         return new $class($config);
     }

@@ -81,7 +81,7 @@ class Collection
         if (!array_key_exists($name, $this->items)) {
             Log::notice('No configuration found for Feature [' . $name . ']');
 
-            return $this->items[static::DEFAULT_FEATURE];
+            return null;
         }
 
         return $this->items[$name];
