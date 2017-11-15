@@ -2,7 +2,8 @@
 namespace App\Test\TestCase\Feature\Type;
 
 use App\Feature\Factory;
-use Cake\Core\Configure;
+use Cake\Controller\Component\AuthComponent;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -12,7 +13,12 @@ class BaseFeatureTest extends TestCase
 {
     public function testIsActive()
     {
-        $feature = Factory::create('Base');
+        $auth = $this->createMock(AuthComponent::class);
+        $request = $this->createMock(ServerRequest::class);
+
+        Factory::init($auth, $request);
+
+        $feature = Factory::get('Base');
 
         $this->assertTrue($feature->isActive());
     }

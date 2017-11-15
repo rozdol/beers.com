@@ -3,38 +3,44 @@ namespace App\Test\TestCase\Feature;
 
 use App\Feature\Factory;
 use App\Feature\FeatureInterface;
-use Cake\Core\Configure;
+use App\Feature\Type\BaseFeature;
+use Cake\Controller\Component\AuthComponent;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
-use ReflectionClass;
+use RuntimeException;
 
 /**
  * App\Feature\Factory Test Case
  */
 class FactoryTest extends TestCase
 {
-    public function testCreate()
+    public function setUp()
     {
-        $this->assertInstanceOf(FeatureInterface::class, Factory::create('Batch'));
+        parent::setUp();
+
+        $this->auth = $this->createMock(AuthComponent::class);
+        $this->request = $this->createMock(ServerRequest::class);
     }
 
-    public function testCreateNonExisting()
+    public function tearDown()
     {
-        $this->assertInstanceOf(FeatureInterface::class, Factory::create('NonExistingFeature'));
+        unset($this->auth);
+        unset($this->request);
+
+        parent::tearDown();
     }
 
-    public function testExecute()
+    public function testGetWithoutInit()
     {
-        Factory::execute('Batch');
-
-        $this->assertTrue(Configure::read('CsvMigrations.batch.active'));
-        $this->assertTrue(Configure::read('Search.batch.active'));
+        $this->expectException(RuntimeException::class);
+        $feature = Factory::get('Foobar');
     }
 
-    public function testExecuteAll()
+    public function testInit()
     {
-        Factory::execute();
+        Factory::init($this->auth, $this->request);
 
-        $this->assertTrue(Configure::read('CsvMigrations.batch.active'));
-        $this->assertTrue(Configure::read('Search.batch.active'));
+        $feature = Factory::get('Foobar');
+        $this->assertInstanceOf(FeatureInterface::class, $feature);
     }
 }
