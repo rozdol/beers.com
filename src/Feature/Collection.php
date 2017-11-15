@@ -35,7 +35,9 @@ class Collection
     }
 
     /**
-     * Normalize features configuration data.
+     * Normalize data.
+     *
+     * Make sure that features configuration data does not overwrite defaults.
      *
      * @param array $data Configuration data
      * @return array
@@ -44,16 +46,12 @@ class Collection
     {
         $result = [];
 
-        // add defaults
-        foreach ($this->defaults as $row) {
+        foreach ($data as $row) {
             $result[$row['name']] = $row;
         }
 
-        // merge/overwrite data with defaults
-        foreach ($data as $row) {
-            if (array_key_exists($row['name'], $result)) {
-                continue;
-            }
+        // merge defaults with data
+        foreach ($this->defaults as $row) {
             $result[$row['name']] = $row;
         }
 
