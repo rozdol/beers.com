@@ -37,7 +37,7 @@ class Factory
     public static function init(AuthComponent $auth, ServerRequest $request)
     {
         if (static::$initialized) {
-            throw new RuntimeException('Feature Factory already initialized.');
+            return;
         }
         // set factory as initialized.
         static::$initialized = true;

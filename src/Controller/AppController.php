@@ -57,10 +57,12 @@ class AppController extends Controller
     public function initialize()
     {
         parent::initialize();
+
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Csrf');
         $this->loadComponent('CakeDC/Users.UsersAuth');
+
         $this->Auth->config('authorize', false);
         $this->Auth->config('loginRedirect', '/');
         $this->Auth->config('flash', ['element' => 'error', 'key' => 'auth']);
@@ -70,10 +72,8 @@ class AppController extends Controller
             $this->Auth->config('authenticate', ['Ldap']);
         }
 
-        // Feature Factory initialization, skipped only if request came through requestAction().
-        if (!$this->request->param('bare') && !$this->request->param('requested')) {
-            FeatureFactory::init($this->Auth, $this->request);
-        }
+        // Feature Factory initialization
+        FeatureFactory::init($this->Auth, $this->request);
 
         // prevent access on disabled module
         $feature = FeatureFactory::get($this->name);
