@@ -70,17 +70,20 @@ class AppController extends Controller
             $this->Auth->config('authenticate', ['Ldap']);
         }
 
-        $this->loadComponent('RolesCapabilities.Capability', [
-            'currentRequest' => $this->request->params
-        ]);
+        // Feature Factory initialization, skipped only if request came through requestAction().
+        if (!$this->request->param('bare') && !$this->request->param('requested')) {
+            FeatureFactory::init($this->Auth, $this->request);
+        }
 
         // prevent access on disabled module
-        $feature = FeatureFactory::create($this->name);
+        $feature = FeatureFactory::get($this->name);
         if (!$feature->isActive()) {
             throw new NotFoundException();
         }
 
-        $this->manageFeatures();
+        $this->loadComponent('RolesCapabilities.Capability', [
+            'currentRequest' => $this->request->params
+        ]);
     }
 
     /**
@@ -138,28 +141,6 @@ class AppController extends Controller
 
         // Load AdminLTE theme
         $this->loadAdminLTE();
-    }
-
-    /**
-     * Enable/disable features.
-     *
-     * @return void
-     */
-    protected function manageFeatures()
-    {
-        FeatureFactory::execute();
-
-        $feature = FeatureFactory::create('Batch');
-        // if batch is enabled do permission check and enable/disable accordingly.
-        if ($feature->isActive()) {
-            $factory = new AccessFactory();
-            $user = $this->Auth->user();
-
-            $url = ['plugin' => $this->plugin, 'controller' => $this->name, 'action' => 'batch'];
-            $batch = (bool)$factory->hasAccess($url, $user);
-            Configure::write('CsvMigrations.batch.active', $batch);
-            Configure::write('Search.batch.active', $batch);
-        }
     }
 
     /**
