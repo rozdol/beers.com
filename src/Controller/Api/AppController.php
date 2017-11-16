@@ -106,6 +106,10 @@ class AppController extends Controller
 
         $this->_authentication();
 
+        $this->loadComponent('RolesCapabilities.Capability', [
+            'currentRequest' => $this->request->params
+        ]);
+
         // Feature Factory initialization
         FeatureFactory::init($this->Auth, $this->request);
 
@@ -134,10 +138,6 @@ class AppController extends Controller
         if (!$hasAccess) {
             throw new ForbiddenException();
         }
-
-        $this->loadComponent('RolesCapabilities.Capability', [
-            'currentRequest' => $this->request->params
-        ]);
     }
 
     /**
