@@ -47,6 +47,7 @@ use App\Event\Controller\Api\ViewActionListener;
 use App\Event\Plugin\CsvMigrations\Controller\BatchActionListener;
 use App\Event\Plugin\CsvMigrations\FieldHandlers\MagicDefaultValueListener;
 use App\Event\Plugin\Menu\View\MenuListener;
+use App\Event\Plugin\Search\Model\ChildListItemsListener;
 use App\Event\Plugin\Search\Model\ReportsListener;
 use App\Event\Plugin\Search\Model\SearchableFieldsListener;
 use App\Event\Plugin\Search\Model\SearchResultsListener;
@@ -265,6 +266,7 @@ EventManager::instance()->on(new LocalListener([
 EventManager::instance()->on(new LookupActionListener());
 EventManager::instance()->on(new MagicDefaultValueListener());
 EventManager::instance()->on(new MenuListener());
+EventManager::instance()->on(new ChildListItemsListener());
 EventManager::instance()->on(new ReportsListener());
 EventManager::instance()->on(new SearchableFieldsListener());
 EventManager::instance()->on(new SearchResultsListener());
