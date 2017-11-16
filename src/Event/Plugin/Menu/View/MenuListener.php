@@ -1,6 +1,8 @@
 <?php
 namespace App\Event\Plugin\Menu\View;
 
+use App\Feature\Factory as FeatureFactory;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\ORM\TableRegistry;
@@ -67,6 +69,12 @@ class MenuListener implements EventListenerInterface
         }
 
         foreach ($modules as $module) {
+            $feature = FeatureFactory::get($module);
+            // skip if module is disabled
+            if (!$feature->isActive()) {
+                continue;
+            }
+
             try {
                 $mc = new ModuleConfig(ConfigType::MENUS(), $module);
                 $parsed = (array)json_decode(json_encode($mc->parse()), true);

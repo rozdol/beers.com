@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 use App\Controller\ChangelogTrait;
+use App\Feature\Factory as FeatureFactory;
 use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
@@ -56,10 +57,12 @@ class AppController extends Controller
     public function initialize()
     {
         parent::initialize();
+
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Csrf');
         $this->loadComponent('CakeDC/Users.UsersAuth');
+
         $this->Auth->config('authorize', false);
         $this->Auth->config('loginRedirect', '/');
         $this->Auth->config('flash', ['element' => 'error', 'key' => 'auth']);
@@ -67,6 +70,15 @@ class AppController extends Controller
         // enable LDAP authentication
         if ((bool)Configure::read('Ldap.enabled')) {
             $this->Auth->config('authenticate', ['Ldap']);
+        }
+
+        // Feature Factory initialization
+        FeatureFactory::init($this->Auth, $this->request);
+
+        // prevent access on disabled module
+        $feature = FeatureFactory::get($this->name);
+        if (!$feature->isActive()) {
+            throw new NotFoundException();
         }
 
         $this->loadComponent('RolesCapabilities.Capability', [
@@ -126,8 +138,6 @@ class AppController extends Controller
         EventManager::instance()->on(new RequestMetadata($this->request, $this->Auth->user('id')));
 
         $this->_generateApiToken();
-
-        $this->setFeatures();
 
         // Load AdminLTE theme
         $this->loadAdminLTE();
@@ -228,23 +238,6 @@ class AppController extends Controller
             'Bearer ' . Configure::read('API.token')
         );
         Configure::write('Search.api.token', Configure::read('API.token'));
-    }
-
-    /**
-     * Enable/disable features.
-     *
-     * @return void
-     */
-    protected function setFeatures()
-    {
-        $factory = new AccessFactory();
-        $user = $this->Auth->user();
-
-        // Batch feature
-        $url = ['plugin' => $this->plugin, 'controller' => $this->name, 'action' => 'batch'];
-        $batch = (bool)$factory->hasAccess($url, $user);
-        Configure::write('CsvMigrations.batch.active', $batch);
-        Configure::write('Search.batch.active', $batch);
     }
 
     /**
