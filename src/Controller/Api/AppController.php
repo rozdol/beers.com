@@ -111,7 +111,7 @@ class AppController extends Controller
         ]);
 
         // Feature Factory initialization
-        FeatureFactory::init($this->Auth, $this->request);
+        FeatureFactory::init();
 
         // prevent access on disabled module
         $feature = FeatureFactory::get($this->name);

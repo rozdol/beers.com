@@ -29,9 +29,7 @@ class Config
     {
         $required = [
             'name' => ['type' => 'string'],
-            'active' => ['type' => 'boolean'],
-            'auth' => ['type' => 'object', 'instanceof' => '\Cake\Controller\Component\AuthComponent'],
-            'request' => ['type' => 'object', 'instanceof' => '\Cake\Http\ServerRequest']
+            'active' => ['type' => 'boolean']
         ];
 
         foreach ($required as $field => $options) {
@@ -43,12 +41,6 @@ class Config
             if ($givenType !== $options['type']) {
                 throw new InvalidArgumentException(
                     'Parameter [' . $field . '] must be of type [' . $options['type'] . '], [' . $givenType . '] given.'
-                );
-            }
-
-            if (!empty($options['instanceof']) && !$config[$field] instanceof $options['instanceof']) {
-                throw new InvalidArgumentException(
-                    'Parameter [' . $field . '] must be instance of [' . $options['instanceof'] . '].'
                 );
             }
         }
