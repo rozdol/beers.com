@@ -25,27 +25,18 @@ class Factory
      */
     protected static $collection;
 
-    protected static $auth;
-
-    protected static $request;
-
     /**
      * Initialize feature.
      *
-     * @param \Cake\Controller\Component\AuthComponent $auth Cake's Auth component
-     * @param \Cake\Http\ServerRequest $request Server request
      * @return void
      */
-    public static function init(AuthComponent $auth, ServerRequest $request)
+    public static function init()
     {
         if (static::$initialized) {
             return;
         }
         // set factory as initialized.
         static::$initialized = true;
-
-        static::$auth = $auth;
-        static::$request = $request;
 
         $features = Configure::read('Features');
 
@@ -66,7 +57,7 @@ class Factory
     public static function get($name)
     {
         if (!static::$initialized) {
-            throw new RuntimeException('Feature Factory is not initialized.');
+            static::init();
         }
 
         if (!is_string($name)) {
@@ -97,9 +88,6 @@ class Factory
             Log::notice('Feature [' . $feature . '] does not exist.');
             $options = static::$defaultOptions;
         }
-
-        $options['auth'] = static::$auth;
-        $options['request'] = static::$request;
 
         return new Config($options);
     }

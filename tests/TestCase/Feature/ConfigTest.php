@@ -2,8 +2,6 @@
 namespace App\Test\TestCase\Feature;
 
 use App\Feature\Config;
-use Cake\Controller\Component\AuthComponent;
-use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use StdClass;
@@ -17,14 +15,9 @@ class ConfigTest extends TestCase
     {
         parent::setUp();
 
-        $this->auth = $this->createMock(AuthComponent::class);
-        $this->request = $this->createMock(ServerRequest::class);
-
         $data = [
             'name' => 'Foobar',
             'active' => false,
-            'auth' => $this->auth,
-            'request' => $this->request,
             'options' => [1, 'foo']
         ];
         $this->Config = new Config($data);
@@ -32,8 +25,6 @@ class ConfigTest extends TestCase
 
     public function tearDown()
     {
-        unset($this->auth);
-        unset($this->request);
         unset($this->Config);
 
         parent::tearDown();
@@ -47,16 +38,6 @@ class ConfigTest extends TestCase
     public function testGetActive()
     {
         $this->assertFalse($this->Config->get('active'));
-    }
-
-    public function testGetAuth()
-    {
-        $this->assertInstanceOf(AuthComponent::class, $this->Config->get('auth'));
-    }
-
-    public function testGetRequest()
-    {
-        $this->assertInstanceOf(ServerRequest::class, $this->Config->get('request'));
     }
 
     public function testGetAdditionalParameter()
@@ -74,7 +55,7 @@ class ConfigTest extends TestCase
      */
     public function testMissingRequiredParameter($value)
     {
-        $data = ['name' => 'Batch', 'active' => true, 'auth' => $this->auth, 'request' => $this->request];
+        $data = ['name' => 'Batch', 'active' => true];
         unset($data[$value]);
 
         $this->expectException(InvalidArgumentException::class);
@@ -87,7 +68,7 @@ class ConfigTest extends TestCase
     public function testWrongParameterName($value)
     {
         $this->expectException(InvalidArgumentException::class);
-        new Config(['name' => $value, 'active' => true, 'auth' => $this->auth, 'request' => $this->request]);
+        new Config(['name' => $value, 'active' => true]);
     }
 
     /**
@@ -96,34 +77,14 @@ class ConfigTest extends TestCase
     public function testWrongParameterActive($value)
     {
         $this->expectException(InvalidArgumentException::class);
-        new Config(['active' => $value, 'name' => 'Batch', 'auth' => $this->auth, 'request' => $this->request]);
-    }
-
-    /**
-     * @dataProvider invalidAuthProvider
-     */
-    public function testWrongParameterAuth($value)
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new Config(['auth' => $value, 'name' => 'Batch', 'active' => true, 'request' => $this->request]);
-    }
-
-    /**
-     * @dataProvider invalidRequestProvider
-     */
-    public function testWrongParameterRequest($value)
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new Config(['request' => $value, 'name' => 'Batch', 'active' => true, 'auth' => $this->auth]);
+        new Config(['active' => $value, 'name' => 'Batch']);
     }
 
     public function RequiredParametersProvider()
     {
         return [
             ['name'],
-            ['active'],
-            ['auth'],
-            ['request']
+            ['active']
         ];
     }
 
@@ -146,30 +107,6 @@ class ConfigTest extends TestCase
             ['string'],
             [1],
             [0],
-            [null]
-        ];
-    }
-
-    public function invalidAuthProvider()
-    {
-        return [
-            [new StdClass()],
-            [['array']],
-            ['string'],
-            [0],
-            [true],
-            [null]
-        ];
-    }
-
-    public function invalidRequestProvider()
-    {
-        return [
-            [new StdClass()],
-            [['array']],
-            ['string'],
-            [0],
-            [true],
             [null]
         ];
     }
