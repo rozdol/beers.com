@@ -302,7 +302,7 @@ group('cakephp', function () {
         printSeparator();
         printInfo("Task: cakephp:clear-cache (Run CakePHP clear cache task)");
 
-        $command = getenv('CAKE_CONSOLE') . ' clear_cache all';
+        $command = getenv('CAKE_CONSOLE') . ' cache clear_all';
         doShellCommand($command);
     });
 
