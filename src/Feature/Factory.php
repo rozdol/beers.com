@@ -85,7 +85,7 @@ class Factory
         }
 
         if (empty($options)) {
-            Log::notice('Feature [' . $feature . '] does not exist.');
+            Log::debug('Feature [' . $feature . '] does not exist.');
             $options = static::$defaultOptions;
         }
 
