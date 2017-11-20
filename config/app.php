@@ -159,6 +159,15 @@ return [
             'serialize' => true,
             'duration' => '+2 minutes',
         ],
+
+        /**
+         * This configuration is not used for caching, but only for clearing cache for cakephp-swagger plugin.
+         */
+        '_cake_swagger_' => [
+            'className' => 'File',
+            'prefix' => 'cakephp_swagger_',
+            'path' => CACHE
+        ],
     ],
 
     /**
