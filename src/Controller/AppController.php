@@ -72,9 +72,6 @@ class AppController extends Controller
             $this->Auth->config('authenticate', ['Ldap']);
         }
 
-        // Feature Factory initialization
-        FeatureFactory::init();
-
         // prevent access on disabled module
         $feature = FeatureFactory::get($this->name);
         if (!$feature->isActive()) {

@@ -51,6 +51,7 @@ use App\Event\Plugin\Search\Model\ChildListItemsListener;
 use App\Event\Plugin\Search\Model\ReportsListener;
 use App\Event\Plugin\Search\Model\SearchableFieldsListener;
 use App\Event\Plugin\Search\Model\SearchResultsListener;
+use App\Feature\Factory as FeatureFactory;
 use Burzum\FileStorage\Storage\Listener\LocalListener;
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
@@ -275,3 +276,7 @@ EventManager::instance()->on(new ViewActionListener());
 
 // load AdminLTE theme settings
 Configure::load('admin_lte', 'default');
+
+// Feature Factory initialization
+// IMPORTANT: this line should be placed at the end of the bootstrap file.
+FeatureFactory::init();

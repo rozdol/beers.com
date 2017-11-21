@@ -110,9 +110,6 @@ class AppController extends Controller
             'currentRequest' => $this->request->params
         ]);
 
-        // Feature Factory initialization
-        FeatureFactory::init();
-
         // prevent access on disabled module
         $feature = FeatureFactory::get($this->name);
         if (!$feature->isActive()) {
