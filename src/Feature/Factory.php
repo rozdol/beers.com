@@ -100,7 +100,10 @@ class Factory
      */
     protected static function getFeatureClass(Config $config)
     {
-        $class = __NAMESPACE__ . '\\Type\\' . $config->get('name') . static::FEATURE_SUFFIX;
+        $name = explode('/', $config->get('name'));
+        $name = implode('\\', $name);
+
+        $class = __NAMESPACE__ . '\\Type\\' . $name . static::FEATURE_SUFFIX;
         if (!class_exists($class)) {
             throw new RuntimeException(
                 'Class [' . $class . '] does not exist.'
