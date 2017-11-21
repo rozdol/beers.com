@@ -227,12 +227,12 @@ group('cakephp', function () {
         $loadedPlugins = (explode("\n", $result));
         foreach ($loadedPlugins as $plugin) {
             printInfo("Testing migration for plugin $plugin");
-            $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin --connection=test";
+            $command = getenv('CAKE_CONSOLE') . " migrations migrate --quiet -p $plugin --connection=test";
             doShellCommand($command);
         }
         // Run app migrations
         printInfo("Testing application migrations");
-        $command = getenv('CAKE_CONSOLE') . ' migrations migrate --connection=test';
+        $command = getenv('CAKE_CONSOLE') . ' migrations migrate --quiet --connection=test';
         doShellCommand($command);
 
         // drop test database
@@ -254,12 +254,12 @@ group('cakephp', function () {
         $loadedPlugins = (explode("\n", $result));
         foreach ($loadedPlugins as $plugin) {
             printInfo("Running migration for plugin $plugin");
-            $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin";
+            $command = getenv('CAKE_CONSOLE') . " migrations migrate --quiet -p $plugin";
             doShellCommand($command);
         }
         // Run app migrations
         printInfo("Running application migrations");
-        $command = getenv('CAKE_CONSOLE') . ' migrations migrate';
+        $command = getenv('CAKE_CONSOLE') . ' migrations migrate --quiet';
         doShellCommand($command);
     });
 
