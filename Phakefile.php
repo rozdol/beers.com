@@ -227,12 +227,14 @@ group('cakephp', function () {
         $loadedPlugins = (explode("\n", $result));
         foreach ($loadedPlugins as $plugin) {
             printInfo("Testing migration for plugin $plugin");
-            $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin --connection=test";
+            $command = getenv('CAKE_CONSOLE') . " migrations migrate --quiet -p $plugin --connection=test";
+            printInfo("Command: $command");
             doShellCommand($command);
         }
         // Run app migrations
         printInfo("Testing application migrations");
-        $command = getenv('CAKE_CONSOLE') . ' migrations migrate --connection=test';
+        $command = getenv('CAKE_CONSOLE') . ' migrations migrate --quiet --connection=test';
+        printInfo("Command: $command");
         doShellCommand($command);
 
         // drop test database
@@ -250,16 +252,19 @@ group('cakephp', function () {
         // Run plugin migrations separately for each loaded plugin
         printInfo("Running plugin migrations");
         $command = getenv('CAKE_CONSOLE') . ' plugin loaded';
+        printInfo("Command: $command");
         $result = doShellCommand($command);
         $loadedPlugins = (explode("\n", $result));
         foreach ($loadedPlugins as $plugin) {
             printInfo("Running migration for plugin $plugin");
-            $command = getenv('CAKE_CONSOLE') . " migrations migrate -p $plugin";
+            $command = getenv('CAKE_CONSOLE') . " migrations migrate --quiet -p $plugin";
+            printInfo("Command: $command");
             doShellCommand($command);
         }
         // Run app migrations
         printInfo("Running application migrations");
-        $command = getenv('CAKE_CONSOLE') . ' migrations migrate';
+        $command = getenv('CAKE_CONSOLE') . ' migrations migrate --quiet';
+        printInfo("Command: $command");
         doShellCommand($command);
     });
 
@@ -280,7 +285,8 @@ group('cakephp', function () {
         ];
 
         foreach ($scripts as $script) {
-            $command = getenv('CAKE_CONSOLE') . ' ' . $script;
+            $command = getenv('CAKE_CONSOLE') . ' ' . $script . ' --quiet';
+            printInfo("Command: $command");
             doShellCommand($command);
         }
     });
