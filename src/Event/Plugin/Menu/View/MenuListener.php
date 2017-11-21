@@ -69,7 +69,7 @@ class MenuListener implements EventListenerInterface
         }
 
         foreach ($modules as $module) {
-            $feature = FeatureFactory::get('Module/' . $module);
+            $feature = FeatureFactory::get('Module' . DS . $module);
             // skip if module is disabled
             if (!$feature->isActive()) {
                 continue;

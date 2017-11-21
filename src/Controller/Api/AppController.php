@@ -111,7 +111,7 @@ class AppController extends Controller
         ]);
 
         // prevent access on disabled module
-        $feature = FeatureFactory::get('Module/' . $this->name);
+        $feature = FeatureFactory::get('Module' . DS . $this->name);
         if (!$feature->isActive()) {
             throw new NotFoundException();
         }
