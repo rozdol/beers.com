@@ -44,7 +44,7 @@ class AppTable extends Table
 
         foreach ($modules as $module) {
             // skip if associated module is disabled
-            $feature = FeatureFactory::get($module);
+            $feature = FeatureFactory::get('Module/' . $module);
             if (!$feature->isActive()) {
                 continue;
             }
@@ -70,7 +70,7 @@ class AppTable extends Table
                 }
 
                 // skip if associated module is disabled
-                $feature = FeatureFactory::get($field->getAssocCsvModule());
+                $feature = FeatureFactory::get('Module/' . $field->getAssocCsvModule());
                 if (!$feature->isActive()) {
                     continue;
                 }
