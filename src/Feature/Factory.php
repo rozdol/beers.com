@@ -100,7 +100,7 @@ class Factory
      */
     protected static function getFeatureClass(Config $config)
     {
-        $name = explode('/', $config->get('name'));
+        $name = explode(DS, $config->get('name'));
         $name = implode('\\', $name);
 
         $class = __NAMESPACE__ . '\\Type\\' . $name . static::FEATURE_SUFFIX;
