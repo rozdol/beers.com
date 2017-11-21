@@ -8,8 +8,6 @@ class BaseFeatureTest extends TestCase
 {
     public function testIsActive()
     {
-        Factory::init();
-
         $feature = Factory::get('Base');
 
         $this->assertTrue($feature->isActive());
