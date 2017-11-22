@@ -70,11 +70,11 @@ class UsersShell extends BaseShell
      */
     protected function printUserInfo(Entity $user, $password)
     {
-        $this->out(__d('CakeDC/Users', 'Superuser added:'));
-        $this->out(__d('CakeDC/Users', 'Id: {0}', $user->id));
-        $this->out(__d('CakeDC/Users', 'Username: {0}', $user->username));
-        $this->out(__d('CakeDC/Users', 'Email: {0}', $user->email));
-        $this->out(__d('CakeDC/Users', 'Password: {0}', $password));
+        $this->out('<success>' . __d('CakeDC/Users', 'Superuser added successfully.') . '</success>');
+        $this->out('<info>' . __d('CakeDC/Users', 'User Id : {0}', $user->id) . '</info>');
+        $this->out('<info>' . __d('CakeDC/Users', 'Username: {0}', $user->username) . '</info>');
+        $this->out('<info>' . __d('CakeDC/Users', 'Email   : {0}', $user->email) . '</info>');
+        $this->out('<info>' . __d('CakeDC/Users', 'Password: {0}', $password) . '</info>');
     }
 
     /**
@@ -85,10 +85,10 @@ class UsersShell extends BaseShell
      */
     protected function printUserErrors(Entity $user)
     {
-        $this->out(__d('CakeDC/Users', 'Superuser could not be added:'));
+        $this->err(__d('CakeDC/Users', 'Errors while trying to add a superuser:'));
 
         collection($user->errors())->each(function ($error, $field) {
-            $this->out(__d('CakeDC/Users', 'Field: {0} Error: {1}', $field, implode(',', $error)));
+            $this->err(__d('CakeDC/Users', 'Field "{0}" error: {1}', $field, implode(',', $error)));
         });
     }
 
@@ -116,6 +116,7 @@ class UsersShell extends BaseShell
             $this->printUserInfo($savedUser, $password);
         } else {
             $this->printUserErrors($userEntity);
+            $this->abort(__d('CakeDC/Users', 'Failed to add superuser'));
         }
     }
 }
