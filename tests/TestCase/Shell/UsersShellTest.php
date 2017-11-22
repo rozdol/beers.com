@@ -91,10 +91,12 @@ class UsersShellTest extends TestCase
 
         $expected = [
             'Username: ' . $data['username'],
-            'Email: ' . $data['email'],
+            'Email   : ' . $data['email'],
             'Password: ' . $data['password']
         ];
 
-        $this->assertContains(join('', $expected), join('', $output));
+        foreach ($expected as $param) {
+            $this->assertContains($param, join('', $output));
+        }
     }
 }
