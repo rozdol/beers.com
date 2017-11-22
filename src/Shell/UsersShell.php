@@ -1,8 +1,8 @@
 <?php
 namespace App\Shell;
 
-use Cake\ORM\Entity;
 use CakeDC\Users\Shell\UsersShell as BaseShell;
+use Cake\ORM\Entity;
 
 class UsersShell extends BaseShell
 {
