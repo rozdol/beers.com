@@ -7,6 +7,36 @@ use Cake\ORM\Entity;
 class UsersShell extends BaseShell
 {
     /**
+     * Add a new superadmin user
+     *
+     * @return void
+     */
+    public function addSuperuser()
+    {
+        $username = $this->getUsername();
+        $password = $this->getPassword();
+        $email = $this->getEmail($username);
+
+        $user = [
+            'username' => $username,
+            'email' => $email,
+            'password' => $password,
+            'active' => 1,
+        ];
+
+        $userEntity = $this->Users->newEntity($user);
+        $userEntity->is_superuser = true;
+        $userEntity->role = 'superuser';
+        $savedUser = $this->Users->save($userEntity);
+        if (!empty($savedUser)) {
+            $this->printUserInfo($savedUser, $password);
+        } else {
+            $this->printUserErrors($userEntity);
+            $this->abort(__d('CakeDC/Users', 'Failed to add superuser'));
+        }
+    }
+
+    /**
      * Return a username for the new user
      *
      * If the username is provided as an argument,
@@ -90,33 +120,5 @@ class UsersShell extends BaseShell
         collection($user->errors())->each(function ($error, $field) {
             $this->err(__d('CakeDC/Users', 'Field "{0}" error: {1}', $field, implode(',', $error)));
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addSuperuser()
-    {
-        $username = $this->getUsername();
-        $password = $this->getPassword();
-        $email = $this->getEmail($username);
-
-        $user = [
-            'username' => $username,
-            'email' => $email,
-            'password' => $password,
-            'active' => 1,
-        ];
-
-        $userEntity = $this->Users->newEntity($user);
-        $userEntity->is_superuser = true;
-        $userEntity->role = 'superuser';
-        $savedUser = $this->Users->save($userEntity);
-        if (!empty($savedUser)) {
-            $this->printUserInfo($savedUser, $password);
-        } else {
-            $this->printUserErrors($userEntity);
-            $this->abort(__d('CakeDC/Users', 'Failed to add superuser'));
-        }
     }
 }
