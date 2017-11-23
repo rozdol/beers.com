@@ -22,11 +22,6 @@ class IndexActionListener extends BaseActionListener
     const FLAG_INCLUDE_MENUS = 'menus';
 
     /**
-     * Include primary key
-     */
-    const FLAG_INCLUDE_PRIMARY_KEY = 'primary_key';
-
-    /**
      * Property name for menu items
      */
     const MENU_PROPERTY_NAME = '_Menus';
@@ -51,17 +46,20 @@ class IndexActionListener extends BaseActionListener
         $table = $event->subject()->{$event->subject()->name};
         $request = $event->subject()->request;
 
-        if (!in_array($request->query('format'), [static::FORMAT_PRETTY, static::FORMAT_DATATABLES])) {
+        if (!in_array($request->query('format'), [static::FORMAT_PRETTY])) {
             $query->contain($this->_getFileAssociations($table));
         }
         $this->_filterByConditions($query, $event);
 
-        $select = $this->getSelectClause($event);
-        if (!empty($select)) {
-            $query->select($select, true);
-        }
+        // This is a temporary solution for multi-column sort support,
+        // until crud plugin adds relevant functionality.
+        // @link https://github.com/FriendsOfCake/crud/issues/522
+        // @link https://github.com/cakephp/cakephp/issues/7324
+        $sort = $event->subject()->request->query('sort');
+        $sort = explode(',', $sort);
 
-        $order = $this->_handleDtSorting($event);
+        // add sort direction to all columns
+        $order = array_fill_keys($sort, $event->subject()->request->query('direction'));
         $query->order($order);
     }
 
@@ -81,14 +79,9 @@ class IndexActionListener extends BaseActionListener
             $this->_resourceToString($entity);
         }
 
-        if (in_array($request->query('format'), [static::FORMAT_PRETTY, static::FORMAT_DATATABLES])) {
-            $fields = [];
-            if (static::FORMAT_DATATABLES === $request->query('format')) {
-                $fields = $this->_getActionFields($event->subject()->request);
-            }
-
+        if (in_array($request->query('format'), [static::FORMAT_PRETTY])) {
             foreach ($entities as $entity) {
-                $this->_prettify($entity, $table, $fields);
+                $this->_prettify($entity, $table);
             }
         } else { // @todo temporary functionality, please see _includeFiles() method documentation.
             foreach ($entities as $entity) {
@@ -106,11 +99,7 @@ class IndexActionListener extends BaseActionListener
      */
     public function beforeRender(Event $event, ResultSet $entities)
     {
-        if ($entities->isEmpty()) {
-            return;
-        }
-
-        $this->_datatablesStructure($entities, $event);
+        //
     }
 
     /**
@@ -129,151 +118,6 @@ class IndexActionListener extends BaseActionListener
         }
 
         return $fields;
-    }
-
-    /**
-     * Method that returns SELECT clause for the Query to only include
-     * action fields (as defined in the csv file).
-     *
-     * @param  \Cake\Event\Event $event The event
-     * @return array
-     */
-    protected function getSelectClause(Event $event)
-    {
-        if (!in_array($event->subject()->request->query('format'), [static::FORMAT_DATATABLES])) {
-            return [];
-        }
-
-        $fields = $this->_getActionFields($event->subject()->request);
-
-        if (empty($fields)) {
-            return [];
-        }
-
-        $primaryKey = $event->subject()->{$event->subject()->name}->primaryKey();
-        // always include primary key, useful for menus URLs
-        if (!in_array($primaryKey, $fields)) {
-            array_push($fields, $primaryKey);
-        }
-
-        $table = $event->subject()->{$event->subject()->name};
-
-        $mc = new ModuleConfig(ConfigType::MIGRATION(), $event->subject()->name);
-        $config = $mc->parse();
-
-        $migrationFields = json_decode(json_encode($config), true);
-        if (empty($migrationFields)) {
-            return [];
-        }
-
-        $mc = new ModuleConfig(ConfigType::MODULE(), $event->subject()->name);
-        $config = $mc->parse();
-        $virtualFields = (array)$config->virtualFields;
-
-        $factory = new FieldHandlerFactory();
-
-        $result = [];
-        foreach ($fields as $field) {
-            // skip non-existing fields
-            if (!isset($migrationFields[$field]) && !isset($virtualFields[$field])) {
-                continue;
-            }
-
-            // convert virtual field
-            if (isset($virtualFields[$field])) {
-                $result = array_merge($result, $virtualFields[$field]);
-                continue;
-            }
-
-            $csvField = new CsvField($migrationFields[$field]);
-            // convert combined field into relevant db fields
-            foreach ($factory->fieldToDb($csvField, $table, $field) as $dbField) {
-                $result[] = $dbField->getName();
-            }
-        }
-
-        $result = array_unique($result);
-
-        return $result;
-    }
-
-    /**
-     * Handle datatables sorting parameters to match Query order() accepted parameters.
-     *
-     * @param  \Cake\Event\Event $event The event
-     * @return array
-     */
-    protected function _handleDtSorting(Event $event)
-    {
-        if (!in_array($event->subject()->request->query('format'), [static::FORMAT_DATATABLES])) {
-            return [];
-        }
-
-        if (!$event->subject()->request->query('order')) {
-            return [];
-        }
-
-        $table = $event->subject()->{$event->subject()->name};
-
-        $column = $event->subject()->request->query('order.0.column') ?: 0;
-
-        $direction = $event->subject()->request->query('order.0.dir') ?: 'asc';
-        if (!in_array($direction, ['asc', 'desc'])) {
-            $direction = 'asc';
-        }
-
-        $fields = $this->_getActionFields($event->subject()->request);
-        if (empty($fields)) {
-            return [];
-        }
-
-        // skip if sort column is not found in the action fields
-        if (!isset($fields[$column])) {
-            return [];
-        }
-
-        $column = $fields[$column];
-
-        $schema = $table->getSchema();
-        // virtual or combined field
-        if (!in_array($column, $schema->columns())) {
-            $mc = new ModuleConfig(ConfigType::MODULE(), $event->subject()->name);
-            $config = $mc->parse();
-            $virtualFields = (array)$config->virtualFields;
-            $virtual = false;
-            // handle virtual field
-            if (isset($virtualFields[$column])) {
-                $virtual = true;
-                $column = $virtualFields[$column];
-            }
-
-            // handle combined field
-            if (!$virtual) {
-                $factory = new FieldHandlerFactory();
-                $mc = new ModuleConfig(ConfigType::MIGRATION(), $event->subject()->name);
-                $config = $mc->parse();
-                $csvField = new CsvField((array)$config->{$column});
-
-                $combined = [];
-                foreach ($factory->fieldToDb($csvField, $table, $column) as $dbField) {
-                    $combined[] = $dbField->getName();
-                }
-
-                $column = $combined;
-            }
-        }
-
-        $columns = (array)$column;
-
-        // prefix table name
-        foreach ($columns as &$v) {
-            $v = $table->aliasField($v);
-        }
-
-        // add sort direction to all columns
-        $conditions = array_fill_keys($columns, $direction);
-
-        return $conditions;
     }
 
     /**
@@ -298,50 +142,6 @@ class IndexActionListener extends BaseActionListener
                 'entity' => $entity,
                 'user' => $event->subject()->Auth->user()
             ]);
-        }
-    }
-
-    /**
-     * Method that re-formats entities to Datatables supported format.
-     *
-     * @param  \Cake\ORM\ResultSet $entities Entities
-     * @param  \Cake\Event\Event   $event    Event instance
-     * @return void
-     */
-    protected function _datatablesStructure(ResultSet $entities, Event $event)
-    {
-        if (static::FORMAT_DATATABLES !== $event->subject()->request->query('format')) {
-            return;
-        }
-
-        $fields = $this->_getActionFields($event->subject()->request);
-
-        if (empty($fields)) {
-            return;
-        }
-
-        // include primary key to the response fields
-        if ((bool)$event->subject()->request->query(static::FLAG_INCLUDE_PRIMARY_KEY)) {
-            array_unshift($fields, $event->subject()->{$event->subject()->name}->primaryKey());
-        }
-
-        // include actions menu to the response fields
-        if ((bool)$event->subject()->request->query(static::FLAG_INCLUDE_MENUS)) {
-            $fields[] = static::MENU_PROPERTY_NAME;
-        }
-
-        foreach ($entities as $entity) {
-            $savedEntity = $entity->toArray();
-            // remove non-action fields property
-            foreach (array_diff($entity->visibleProperties(), $fields) as $field) {
-                $entity->unsetProperty($field);
-            }
-
-            // set fields with numeric index
-            foreach ($fields as $k => $v) {
-                $entity->{$k} = $savedEntity[$v];
-                $entity->unsetProperty($v);
-            }
         }
     }
 
