@@ -44,4 +44,32 @@ class UsersFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
+
+    /**
+     * Records
+     *
+     * @var array
+     */
+    public $records = [
+        [
+            'id' => '00000000-0000-0000-0001-000000000001',
+            'username' => 'super-user-1',
+            'email' => 'user-test@example.com',
+            'password' => '$2y$10$227d3KtN2jVJJyTvUSVIuuGzZ8HBcFOcVB0Ym4BR9SFCnca4oJ1Ty',
+            'first_name' => 'first1',
+            'last_name' => 'last1',
+            'token' => 'ae93ddbe32664ce7927cf0c5c5a5e59d',
+            'token_expires' => '2035-06-24 17:33:54',
+            'api_token' => 'yyy',
+            'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'yyy',
+            'secret_verified' => true,
+            'tos_date' => '2015-06-24 17:33:54',
+            'active' => true,
+            'is_superuser' => true,
+            'role' => 'admin',
+            'created' => '2015-06-24 17:33:54',
+            'modified' => '2015-06-24 17:33:54'
+        ],
+    ];
 }
