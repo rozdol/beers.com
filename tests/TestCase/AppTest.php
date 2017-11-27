@@ -50,7 +50,6 @@ class AppTest extends TestCase
             ['Crud', null],
             ['CsvMigrations', null],
             ['DatabaseLog', null],
-            ['DebugKit', 'debug'],
             ['Groups', null],
             ['Menu', null],
             ['Migrations', null],
