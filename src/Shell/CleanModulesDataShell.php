@@ -51,11 +51,13 @@ class CleanModulesDataShell extends Shell
 
         $modulesstr = $this->param('modules');
         if (empty($modulesstr)) {
+            $lock->unlock();
             $this->err("0 Modules Provided");
         }
 
         $modules = explode(",", $modulesstr);
         if (empty($modules)) {
+            $lock->unlock();
             $this->err("0 Modules Provided");
         }
 
