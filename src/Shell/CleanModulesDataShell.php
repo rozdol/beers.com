@@ -3,7 +3,9 @@ namespace App\Shell;
 
 use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
+use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 use Exception;
 use Qobo\Utils\Utility\FileLock;
 
@@ -57,7 +59,25 @@ class CleanModulesDataShell extends Shell
             $this->err("0 Modules Provided");
         }
 
+        $tables = ConnectionManager::get('default')->schemaCollection()->listTables();
         $this->modules = $modules;
+
+        //tranform module names into lowercase.
+        foreach ($this->modules as $key => $moduleName) {
+            if (empty($moduleName)) {
+                unset($this->modules[$key]);
+                continue;
+            }
+            $this->modules[$key] = Inflector::tableize($moduleName);
+        }
+
+        $notExistsModules = array_diff($this->modules, $tables);
+
+        foreach ($notExistsModules as $key => $moduleName) {
+            $this->warn($moduleName . ' does not exists!');
+        }
+
+        $this->modules = array_intersect($this->modules, $tables);
 
         foreach ($this->modules as $moduleName) {
             $this->clearModuleData($moduleName);
@@ -81,6 +101,7 @@ class CleanModulesDataShell extends Shell
         if (empty($moduleName)) {
             return $rowCount;
         }
+
         try {
             $table = TableRegistry::get($moduleName);
             $rowCount = $table->deleteAll([]);
