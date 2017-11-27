@@ -3,7 +3,6 @@
 	"description": "Template for new CakePHP projects",
 	"license": "GPL-2.0",
     "require": {
-        "cakephp/debug_kit": "~3.0",
         "cakephp/migrations": "^1.6",
         "cakephp/plugin-installer": "*",
         "dereuromark/cakephp-databaselog": "^2.1",
