@@ -6,6 +6,7 @@ use Cake\Core\Configure;
 use Cake\Event\EventList;
 use Cake\Event\EventManager;
 use Cake\ORM\TableRegistry;
+use Cake\Network\Exception\UnauthorizedException;
 use Cake\TestSuite\IntegrationTestCase;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
@@ -44,5 +45,18 @@ class UsersControllerTest extends IntegrationTestCase
 
         $this->post('/api/users/token.json', json_encode($data));
         $this->assertResponseSuccess();
+    }
+
+    public function testInitializeForbidden()
+    {
+        $this->post('/api/users/add.json', json_encode([]));
+        $this->assertResponseError();
+    }
+
+    public function testTokenInvalid()
+    {
+        $this->post('/api/users/token.json', json_encode([]));
+        $this->assertResponseError();
+
     }
 }
