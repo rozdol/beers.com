@@ -43,6 +43,10 @@ class ChildListItemsListener implements EventListenerInterface
      */
     public function childItemsForParent(Event $event, $criteria)
     {
+        if (empty($criteria['criteria'])) {
+            return $criteria;
+        }
+
         foreach ($criteria['criteria'] as $key => $val) {
             $items = [];
 
