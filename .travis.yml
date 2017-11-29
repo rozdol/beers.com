@@ -42,3 +42,8 @@ script:
   - ./vendor/bin/phpunit --group example
   - ./vendor/bin/phpunit --exclude-group example
   - ./vendor/bin/phpcs
+
+after_success:
+  - curl -s https://codecov.io/bash > /tmp/codecov.sh
+  - chmod +x /tmp/codecov.sh
+  - /tmp/codecov.sh -s build/logs
