@@ -1,6 +1,13 @@
 project-template-cakephp
 ========================
 
+[![Build Status](https://travis-ci.org/QoboLtd/project-template-cakephp.svg?branch=master)](https://travis-ci.org/QoboLtd/project-template-cakephp)
+[![Latest Stable Version](https://poser.pugx.org/qobo/project-template-cakephp/v/stable)](https://packagist.org/packages/qobo/project-template-cakephp)
+[![Total Downloads](https://poser.pugx.org/qobo/project-template-cakephp/downloads)](https://packagist.org/packages/qobo/project-template-cakephp)
+[![Latest Unstable Version](https://poser.pugx.org/qobo/project-template-cakephp/v/unstable)](https://packagist.org/packages/qobo/project-template-cakephp)
+[![License](https://poser.pugx.org/qobo/project-template-cakephp/license)](https://packagist.org/packages/qobo/project-template-cakephp)
+[![codecov](https://codecov.io/gh/QoboLtd/project-template-cakephp/branch/master/graph/badge.svg)](https://codecov.io/gh/QoboLtd/project-template-cakephp)
+
 About
 -----
 
