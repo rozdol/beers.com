@@ -27,6 +27,7 @@ matrix:
 
 install:
     - ./bin/composer install --no-interaction --no-progress --no-suggest
+    - mkdir -p build/logs
     - ./vendor/bin/phake dotenv:create CHOWN_USER=$USER CHGRP_GROUP=$USER DB_NAME=app DB_ADMIN_USER=root DB_USER=root
     - if [ -d "config/CsvMigrations" ] || [ -d "config/Modules" ] ; then ./bin/cake validate ; fi
     - ./vendor/bin/phake app:install
