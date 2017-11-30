@@ -100,7 +100,7 @@ class LookupActionListener extends BaseActionListener
      *
      * @param string $field Field name
      * @param \Cake\ORM\Table $table Table instance
-     * @return null|CsvMigrations\FieldHandlers\CsvField
+     * @return null|\CsvMigrations\FieldHandlers\CsvField
      */
     protected function _getCsvField($field, Table $table)
     {
@@ -156,7 +156,7 @@ class LookupActionListener extends BaseActionListener
      * Modify lookup entities after they have been fetched from the database
      *
      * @param \Cake\Event\Event $event Event instance
-     * @param Cake\Datasource\ResultSetDecorator $entities Entities resultset
+     * @param \Cake\Datasource\ResultSetDecorator $entities Entities resultset
      * @return void
      */
     public function afterLookup(Event $event, ResultSetDecorator $entities)

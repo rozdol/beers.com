@@ -89,7 +89,7 @@ class AppController extends Controller
      * * Load AdminLTE theme
      * * Load theme settings
      *
-     * @param Cake\Event\Event $event Event
+     * @param \Cake\Event\Event $event Event
      * @return void
      */
     public function beforeRender(Event $event)
@@ -100,7 +100,7 @@ class AppController extends Controller
     /**
      * Callack method.
      *
-     * @param  Cake\Event\Event $event Event object
+     * @param  \Cake\Event\Event $event Event object
      * @return void|\Cake\Http\Response
      */
     public function beforeFilter(Event $event)
