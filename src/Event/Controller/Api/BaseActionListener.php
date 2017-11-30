@@ -46,7 +46,7 @@ abstract class BaseActionListener implements EventListenerInterface
     /**
      * An instance of Field Handler Factory
      *
-     * @var CsvMigrations\FieldHandlers\FieldHandlerFactory
+     * @var \CsvMigrations\FieldHandlers\FieldHandlerFactory
      */
     private $factory;
 
@@ -204,7 +204,7 @@ abstract class BaseActionListener implements EventListenerInterface
     /**
      * Method responsible for retrieving current Table's file associations
      *
-     * @param  Cake\ORM\Table $table Table instance
+     * @param  \Cake\ORM\Table $table Table instance
      * @return array
      */
     protected function _getFileAssociations(Table $table)
@@ -225,7 +225,7 @@ abstract class BaseActionListener implements EventListenerInterface
     /**
      * Method responsible for retrieving file associations field names
      *
-     * @param  Cake\ORM\Table $table Table instance
+     * @param  \Cake\ORM\Table $table Table instance
      * @return array
      */
     protected function _getFileAssociationFields(Table $table)
@@ -289,8 +289,8 @@ abstract class BaseActionListener implements EventListenerInterface
     /**
      * Method that renders Entity values through Field Handler Factory.
      *
-     * @param  Cake\ORM\Entity       $entity    Entity instance
-     * @param  Cake\ORM\Table|string $table     Table instance
+     * @param  \Cake\ORM\Entity       $entity    Entity instance
+     * @param  \Cake\ORM\Table|string $table     Table instance
      * @param  array                 $fields    Fields to prettify
      * @return void
      */

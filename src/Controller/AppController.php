@@ -25,6 +25,7 @@ use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
+use Exception;
 use Firebase\JWT\JWT;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
@@ -89,7 +90,7 @@ class AppController extends Controller
      * * Load AdminLTE theme
      * * Load theme settings
      *
-     * @param Cake\Event\Event $event Event
+     * @param \Cake\Event\Event $event Event
      * @return void
      */
     public function beforeRender(Event $event)
@@ -100,7 +101,7 @@ class AppController extends Controller
     /**
      * Callack method.
      *
-     * @param  Cake\Event\Event $event Event object
+     * @param  \Cake\Event\Event $event Event object
      * @return void|\Cake\Http\Response
      */
     public function beforeFilter(Event $event)

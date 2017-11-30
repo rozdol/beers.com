@@ -19,13 +19,6 @@ class Factory
     protected static $defaultOptions = ['name' => 'Base', 'active' => true];
 
     /**
-     * Features Collection.
-     *
-     * @var \App\Feature\Collection
-     */
-    protected static $collection;
-
-    /**
      * Initialize feature.
      *
      * @return void
