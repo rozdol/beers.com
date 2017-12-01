@@ -35,7 +35,7 @@
 
                         <p>
                             <?= $user['name']; ?>
-                            <small><?= __d('cake', 'Member since') ?> <?= $this->Month->shortName($user['created']->i18nFormat('M')) ?> <?= $user['created']->i18nFormat('yyyy'); ?></small>
+                            <small><?= __d('cake', 'Member since') ?> <?= $user['created']->i18nFormat('LLLL yyyy') ?></small>
                         </p>
                     </li>
                     <!-- Menu Footer-->
