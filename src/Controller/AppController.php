@@ -87,9 +87,6 @@ class AppController extends Controller
     /**
      * beforeRender callback
      *
-     * * Load AdminLTE theme
-     * * Load theme settings
-     *
      * @param \Cake\Event\Event $event Event
      * @return void
      */
