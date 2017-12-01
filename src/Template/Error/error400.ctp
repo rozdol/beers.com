@@ -2,6 +2,8 @@
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 
+$this->layout = 'error';
+
 if (Configure::read('debug')) {
     $this->layout = 'dev_error';
 
@@ -27,10 +29,7 @@ if (Configure::read('debug')) {
     endif;
 
     $this->end();
-} else {
-    $this->layout = 'error';
-}
-?>
+} ?>
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
         <div class="box box-danger box-solid">

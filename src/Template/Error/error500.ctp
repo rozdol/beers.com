@@ -3,6 +3,8 @@ use Cake\Core\Configure;
 use Cake\Error\Debugger;
 use Cake\Routing\Router;
 
+$this->layout = 'error';
+
 if (Configure::read('debug')) {
     $this->layout = 'dev_error';
 
@@ -29,8 +31,6 @@ if (Configure::read('debug')) {
     endif;
 
     $this->end();
-} else {
-    $this->layout = 'error';
 }
 ?>
 <div class="row">
