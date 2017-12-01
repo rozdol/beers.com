@@ -23,3 +23,16 @@
 .sidebar-menu li.treeview {
     white-space: normal;
 }
+
+.error-container .content-wrapper {
+    margin: 0 auto;
+    margin-top: 80px;
+}
+
+.error-container .main-header .logo {
+    background-color: #3c8dbc;
+}
+
+.error-container .wrapper{
+    background-color: #ecf0f5;
+}

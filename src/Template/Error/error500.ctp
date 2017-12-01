@@ -3,7 +3,9 @@ use Cake\Core\Configure;
 use Cake\Error\Debugger;
 use Cake\Routing\Router;
 
-if (Configure::read('debug')):
+$this->layout = 'error';
+
+if (Configure::read('debug')) {
     $this->layout = 'dev_error';
 
     $this->assign('title', $message);
@@ -29,19 +31,21 @@ if (Configure::read('debug')):
     endif;
 
     $this->end();
-endif;
+}
 ?>
 <div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-danger">
-            <div class="panel-heading">
-				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <b><?= __d('cake', 'Error') ?> <?= h($code) ?>: <?= h($message) ?></b>
+    <div class="col-md-6 col-md-offset-3">
+        <div class="box box-danger box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                    <?= __d('cake', 'Error') ?> <?= h($code) ?>: <?= h($message) ?>
+                </h3>
             </div>
-            <div class="panel-body">
+            <div class="box-body">
                 <?php echo 'There was a problem processing your request.  Please notify your system administrator.'; ?>
             </div>
-            <div class="panel-footer">
+            <div class="box-footer">
                 <b>URL: </b><?= h(Router::url($url, true)) ?>
             </div>
         </div>
