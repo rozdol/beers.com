@@ -36,7 +36,8 @@ class AppExceptionRenderer extends ExceptionRenderer
                     '_serialize' => ['message', 'code', 'url'],
                 ];
 
-                $res = $this->controller->request->session()->write('currentError', json_encode($data));
+                // adding generated error info into custom session variable for system/error page.
+                $this->controller->request->session()->write('currentError', json_encode($data));
 
                 return $this->controller->redirect('/system/error');
             }
