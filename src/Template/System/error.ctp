@@ -8,7 +8,10 @@ if (empty($user)) {
 
 $currentError = $this->request->session()->read('currentError');
 
-$url = $code = $message = '';
+$code = '000';
+$message = 'Unknown Error';
+
+$url = '';
 
 if (!empty($currentError)) {
     $currentError = json_decode($currentError, true);
