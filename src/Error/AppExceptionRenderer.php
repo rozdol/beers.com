@@ -1,0 +1,47 @@
+<?php
+namespace App\Error;
+
+use Cake\Core\Configure;
+use Cake\Error\ExceptionRenderer;
+
+class AppExceptionRenderer extends ExceptionRenderer
+{
+    /**
+     * Render Error Page.
+     *
+     * We overwrite the render function just to remain
+     * on the same layout in case the user got an error
+     * and still logged in to the sytem.
+     *
+     * @return mixed
+     */
+    public function render()
+    {
+        $isDebug = Configure::read('debug');
+        $this->controller->loadComponent('CakeDC/Users.UsersAuth');
+        $this->controller->Auth->config('authorize', false);
+        $currentUser = $this->controller->Auth->user();
+
+        if (!$isDebug) {
+            if (!empty($currentUser)) {
+                $exception = $this->error;
+                $code = $this->_code($exception);
+                $message = $this->_message($this->error, $this->error->getCode());
+
+                $data = [
+                    'code' => $code,
+                    'message' => $message,
+                    'url' => $this->controller->request->getRequestTarget(),
+                    'error' => $this->_unwrap($exception),
+                    '_serialize' => ['message', 'code', 'url'],
+                ];
+
+                $res = $this->controller->request->session()->write('currentError', json_encode($data));
+
+                return $this->controller->redirect('/system/error');
+            }
+        }
+
+        return parent::render();
+    }
+}
