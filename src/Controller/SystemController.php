@@ -19,4 +19,17 @@ class SystemController extends AppController
     public function info()
     {
     }
+
+    /**
+     * Error method
+     *
+     * Default redirect method for loggedin users
+     * in case the system throws an error on switched off
+     * debug. Otherwise, it'll use native Cake Error pages.
+     *
+     * @return void
+     */
+    public function error()
+    {
+    }
 }
