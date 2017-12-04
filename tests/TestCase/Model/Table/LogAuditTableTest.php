@@ -4,6 +4,8 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\LogAuditTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Validation\Validator;
+use DateTime;
 
 /**
  * App\Model\Table\LogAuditTable Test Case
@@ -58,7 +60,7 @@ class LogAuditTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertInstanceOf(LogAuditTable::class, $this->LogAudit);
     }
 
     /**
@@ -68,6 +70,17 @@ class LogAuditTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $validator = new Validator();
+        $result = $this->LogAudit->validationDefault($validator);
+
+        $this->assertInstanceOf(Validator::class, $result);
+
+        $entity = $this->LogAudit->newEntity([
+            'timestamp' => new Datetime(),
+            'primary_key' => '00000000-0000-0000-0000-000000001234',
+            'source' => 'Foo'
+        ]);
+
+        $this->assertEmpty($entity->errors());
     }
 }
