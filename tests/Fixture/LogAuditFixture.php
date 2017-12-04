@@ -9,6 +9,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class LogAuditFixture extends TestFixture
 {
+    public $table = 'log_audit';
 
     /**
      * Fields
