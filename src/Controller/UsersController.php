@@ -128,8 +128,8 @@ class UsersController extends AppController
      * by logged in user
      *
      * @return \Cake\Network\Response
-     * @throws UserNotFoundException When user not found.
-     * @throws UnauthorizedException When user is not authorized.
+     * @throws \CakeDC\Users\Exception\UserNotFoundException\UserNotFoundException When user not found.
+     * @throws \Cake\Network\Exception\UnauthorizedException\UnauthorizedException When user is not authorized.
      */
     public function editProfile()
     {
