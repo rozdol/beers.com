@@ -34,7 +34,7 @@ class DblistsAddShell extends Shell
     /**
      * main() method.
      *
-     * @return bool|int|null Success or error code.
+     * @return void
      */
     public function main()
     {

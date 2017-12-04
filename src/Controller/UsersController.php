@@ -127,19 +127,21 @@ class UsersController extends AppController
      * separate user record update by admin and editing profile
      * by logged in user
      *
-     * @return void
+     * @return \Cake\Network\Response
+     * @throws UserNotFoundException When user not found.
+     * @throws UnauthorizedException When user is not authorized.
      */
     public function editProfile()
     {
         $this->autoRender = false;
         $this->request->allowMethod(['patch', 'post', 'put']);
 
-        $user_id = $this->Auth->user('id');
-        if (empty($user_id)) {
+        $userId = $this->Auth->user('id');
+        if (empty($userId)) {
             throw new UnauthorizedException('You have to login to complete this action!');
         }
 
-        $user = $this->Users->get($user_id);
+        $user = $this->Users->get($userId);
         if (empty($user)) {
             throw new UserNotFoundException('User not found!');
         }

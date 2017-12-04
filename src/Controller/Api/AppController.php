@@ -189,7 +189,7 @@ class AppController extends Controller
     /**
      * Related API request for View Tabs
      *
-     * @return \Cake\Network\Response
+     * @return void
      */
     public function related()
     {
