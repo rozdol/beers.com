@@ -22,27 +22,25 @@ class AppExceptionRenderer extends ExceptionRenderer
         $this->controller->Auth->config('authorize', false);
         $currentUser = $this->controller->Auth->user();
 
-        if (!$isDebug) {
-            if (!empty($currentUser)) {
-                $exception = $this->error;
-                $code = $this->_code($exception);
-                $message = $this->_message($this->error, $this->error->getCode());
-
-                $data = [
-                    'code' => $code,
-                    'message' => $message,
-                    'url' => $this->controller->request->getRequestTarget(),
-                    'error' => $this->_unwrap($exception),
-                    '_serialize' => ['message', 'code', 'url'],
-                ];
-
-                // adding generated error info into custom session variable for system/error page.
-                $this->controller->request->session()->write('currentError', json_encode($data));
-
-                return $this->controller->redirect('/system/error');
-            }
+        if (empty($currentUser) || $isDebug) {
+            return parent::render();
         }
 
-        return parent::render();
+        $exception = $this->error;
+        $code = $this->_code($exception);
+        $message = $this->_message($this->error, $this->error->getCode());
+
+        $data = [
+            'code' => $code,
+            'message' => $message,
+            'url' => $this->controller->request->getRequestTarget(),
+            'error' => $this->_unwrap($exception),
+            '_serialize' => ['message', 'code', 'url'],
+        ];
+
+        // adding generated error info into custom session variable for system/error page.
+        $this->controller->request->session()->write('currentError', json_encode($data));
+
+        return $this->controller->redirect('/system/error');
     }
 }
