@@ -282,6 +282,7 @@ group('cakephp', function () {
             'menu import',
             'add_dblist_permissions',
             'dblists_add',
+            'validate' // run after dblists are populated
         ];
 
         foreach ($scripts as $script) {

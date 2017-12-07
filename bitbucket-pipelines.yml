@@ -14,7 +14,6 @@ pipelines:
           - chmod -R u+rwX,go-rwX ~/.ssh
           - ./bin/composer install --no-interaction --no-progress --no-suggest
           - ./vendor/bin/phake dotenv:create CHOWN_USER=$USER CHGRP_GROUP=$USER DB_NAME=app DB_ADMIN_USER=root DB_ADMIN_PASS=root DB_USER=root DB_PASS=root
-          - if [ -d "config/CsvMigrations" ] || [ -d "config/Modules" ] ; then ./bin/cake validate ; fi
           - ./vendor/bin/phake app:install
           - ./vendor/bin/phpunit --group example --no-coverage
           - ./vendor/bin/phpunit --exclude-group example --no-coverage
