@@ -56,6 +56,8 @@ echo $this->Html->scriptBlock(
                 <th><?= __('Last Name') ?></th>
                 <th><?= __('Gender') ?></th>
                 <th><?= __('Birthdate') ?></th>
+                <th><?= __('Active') ?></th>
+                <th><?= __('Created') ?></th>
                 <th class="actions"><?= __d('Users', 'Actions') ?></th>
                     </tr>
                 </thead>
@@ -75,6 +77,8 @@ echo $this->Html->scriptBlock(
                             echo $fhf->renderValue('Users', 'gender', $user, ['fieldDefinitions' => $definition]);
                         ?></td>
                         <td><?= $user->has('birthdate') ? $user->birthdate->i18nFormat('yyyy-MM-dd') : '' ?></td>
+                        <td><?= $user->active ? 'Yes' : 'No' ?></td>
+                        <td><?= h($user->created->i18nFormat('yyyy-MM-dd hh:mm:ss')) ?></td>
                         <td class="actions">
                             <div class="btn-group btn-group-xs" role="group">
                             <?= $this->Html->link(
