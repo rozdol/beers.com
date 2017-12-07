@@ -91,7 +91,7 @@ class UsersExternalApiTest extends IntegrationTestCase
 
         $response = $this->sendAuthPost(
             '/api/users/edit/' . $userView['data']['id'] . '.json',
-            ['is_superuser' => 1],
+            ['password' => 'test-' . $this->generateRandomString(4)],
             ['token' => $token]
         );
 
