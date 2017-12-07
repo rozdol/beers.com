@@ -229,13 +229,6 @@ group('cakephp', function () {
             printInfo("Testing migration for plugin $plugin");
             $command = getenv('CAKE_CONSOLE') . " migrations migrate --quiet -p $plugin --connection=test";
             printInfo("Command: $command");
-            try {
-                doShellCommand($command);
-            } catch (\Exception $e) {
-                if ('DatabaseLog' !== $plugin) {
-                    throw $e;
-                }
-            }
         }
         // Run app migrations
         printInfo("Testing application migrations");
@@ -265,7 +258,13 @@ group('cakephp', function () {
             printInfo("Running migration for plugin $plugin");
             $command = getenv('CAKE_CONSOLE') . " migrations migrate --quiet -p $plugin";
             printInfo("Command: $command");
-            doShellCommand($command);
+            try {
+                doShellCommand($command);
+            } catch (\Exception $e) {
+                if ('DatabaseLog' !== $plugin) {
+                    throw $e;
+                }
+            }
         }
         // Run app migrations
         printInfo("Running application migrations");
