@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\ExternalAPI;
+namespace App\Test\External;
 
 use Cake\Core\Configure;
 use Cake\Http\Client;
