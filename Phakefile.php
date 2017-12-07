@@ -229,6 +229,7 @@ group('cakephp', function () {
             printInfo("Testing migration for plugin $plugin");
             $command = getenv('CAKE_CONSOLE') . " migrations migrate --quiet -p $plugin --connection=test";
             printInfo("Command: $command");
+            doShellCommand($command);
         }
         // Run app migrations
         printInfo("Testing application migrations");
