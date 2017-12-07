@@ -259,7 +259,13 @@ group('cakephp', function () {
             printInfo("Running migration for plugin $plugin");
             $command = getenv('CAKE_CONSOLE') . " migrations migrate --quiet -p $plugin";
             printInfo("Command: $command");
-            doShellCommand($command);
+            try {
+                doShellCommand($command);
+            } catch (\Exception $e) {
+                if ('DatabaseLog' !== $plugin) {
+                    throw $e;
+                }
+            }
         }
         // Run app migrations
         printInfo("Running application migrations");
@@ -282,6 +288,7 @@ group('cakephp', function () {
             'menu import',
             'add_dblist_permissions',
             'dblists_add',
+            'validate' // run after dblists are populated
         ];
 
         foreach ($scripts as $script) {
