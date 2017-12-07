@@ -193,20 +193,12 @@ class UsersControllerTest extends IntegrationTestCase
 
         $this->assertTrue($response->isOk(), "Couldn't fetch API token from users");
 
-        if (!$response->isOk()) {
-            return;
-        }
-
         $responseBody = json_decode($response->body(), true);
         unset($response);
 
         $token = $responseBody['data']['token'];
         $response = $this->sendAuthPost('/api/users/index.json', [], ['token' => $token]);
         $this->assertTrue($response->isOk());
-
-        if (!$response->isOk()) {
-            return;
-        }
 
         $usersResponse = json_decode($response->body(), true);
 
@@ -223,10 +215,6 @@ class UsersControllerTest extends IntegrationTestCase
 
         $response = $this->sendAuthPost('/api/users/add.json', $data, ['token' => $token]);
         $this->assertTrue($response->isOk());
-
-        if (!$response->isOk()) {
-            return;
-        }
 
         $userCreated = json_decode($response->body(), true);
         unset($response);
