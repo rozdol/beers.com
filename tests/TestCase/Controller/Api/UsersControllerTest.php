@@ -5,8 +5,10 @@ use App\Event\Controller\Api\EditActionListener;
 use App\Event\Controller\Api\IndexActionListener;
 use App\Event\Controller\Api\ViewActionListener;
 use Cake\Core\Configure;
+use Cake\Datasource\ConnectionManager;
 use Cake\Event\EventList;
 use Cake\Event\EventManager;
+use Cake\Http\Client;
 use Cake\Network\Exception\UnauthorizedException;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
@@ -22,6 +24,13 @@ class UsersControllerTest extends IntegrationTestCase
         'plugin.CakeDC/Users.users',
     ];
 
+    /**
+     * External API Client object
+     *
+     * @var \Cake\Http\Client for external api calls.
+     */
+    protected $apiClient = null;
+
     public function setUp()
     {
         parent::setUp();
@@ -30,6 +39,13 @@ class UsersControllerTest extends IntegrationTestCase
 
         // set headers without auth token by default.
         $this->setHeaders();
+
+        $this->apiClient = new Client([
+            'host' => 'localhost:8000',
+            'scheme' => 'http',
+        ], [
+            'type' => 'json',
+        ]);
 
         EventManager::instance()->on(new EditActionListener());
         EventManager::instance()->on(new IndexActionListener());

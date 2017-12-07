@@ -35,6 +35,9 @@
         <testsuite name="example">
             <directory>tests/Example/</directory>
         </testsuite>
+        <testsuite name="external">
+            <directory>./tests/External/</directory>
+        </testsuite>
         <testsuite name="environment">
             <directory>tests/Environment/</directory>
         </testsuite>
