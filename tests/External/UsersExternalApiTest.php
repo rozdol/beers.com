@@ -9,7 +9,6 @@ use Cake\TestSuite\IntegrationTestCase;
 /**
  * Users External API Test Case
  *
- * @author Andrey Vystavkin <a.vystavkin@qobo.biz>
  * @group external
  */
 class UsersExternalApiTest extends IntegrationTestCase
