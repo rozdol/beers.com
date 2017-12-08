@@ -16,5 +16,5 @@ pipelines:
           - ./vendor/bin/phake dotenv:create CHOWN_USER=$USER CHGRP_GROUP=$USER DB_NAME=app DB_ADMIN_USER=root DB_ADMIN_PASS=root DB_USER=root DB_PASS=root
           - ./vendor/bin/phake app:install
           - ./vendor/bin/phpunit --group example --no-coverage
-          - ./vendor/bin/phpunit --exclude-group example --no-coverage
+          - ./vendor/bin/phpunit --exclude-group example,external --no-coverage
           - ./vendor/bin/phpcs
