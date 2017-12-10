@@ -24,6 +24,9 @@ $cookieHttpOnly = (bool)env('APP_SESSION_COOKIE_HTTP_ONLY');
 $useOnlyCookies = (bool)env('APP_SESSION_USE_ONLY_COOKIES');
 $sessionTimeout = (int)env('APP_SESSION_TIMEOUT');
 
+// Ignore deprecated errors when debug is disabled.
+$errorLevel = $debug ? E_ALL : E_ALL & ~E_DEPRECATED ;
+
 // If EMAIL_ENABLED is false, use Debug transport.  Otherwise, use
 // either the Smtp transport if enabled or fallback on Mail transport.
 $emailTransport = (bool)getenv('SMTP_ENABLED') ? 'Smtp' : 'Mail';
@@ -197,7 +200,7 @@ return [
      *   `'skipLog' => ['Cake\Network\Exception\NotFoundException', 'Cake\Network\Exception\UnauthorizedException']`
      */
     'Error' => [
-        'errorLevel' => E_ALL & ~E_DEPRECATED,
+        'errorLevel' => $errorLevel,
         'exceptionRenderer' => 'App\Error\AppExceptionRenderer',
         'skipLog' => [],
         'log' => true,
