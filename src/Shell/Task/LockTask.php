@@ -16,8 +16,7 @@ class LockTask extends Shell
      */
     public function lock($file, $class)
     {
-        $class = Inflector::underscore(preg_replace('/\\\/', '', $class));
-        $lockFile = $class . '_' . md5($file) . '.lock';
+        $lockFile = $this->getLockFileName($file, $class);
 
         try {
             $lock = new FileLock($lockFile);
@@ -30,5 +29,20 @@ class LockTask extends Shell
         }
 
         return $lock;
+    }
+
+    /**
+     * getLockFileName method
+     *
+     * @param string $fileName - path to the shell script which acquires lock
+     * @param string $className - name of the shell class which acquires lock
+     * @return string - unique lock file name
+     */
+    private function getLockFileName($fileName, $className)
+    {
+        $className = Inflector::underscore(preg_replace('/\\\/', '', $className));
+        $lockFile = $className . '_' . md5($fileName) . '.lock';
+
+        return $lockfile;
     }
 }
