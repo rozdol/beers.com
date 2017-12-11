@@ -27,11 +27,6 @@ abstract class BaseActionListener implements EventListenerInterface
     const FORMAT_PRETTY = 'pretty';
 
     /**
-     * Datatables format identifier
-     */
-    const FORMAT_DATATABLES = 'datatables';
-
-    /**
      * File association class name
      */
     const FILE_CLASS_NAME = 'Burzum/FileStorage.FileStorage';
