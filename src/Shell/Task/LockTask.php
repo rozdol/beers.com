@@ -43,6 +43,6 @@ class LockTask extends Shell
         $className = Inflector::underscore(preg_replace('/\\\/', '', $className));
         $lockFile = $className . '_' . md5($fileName) . '.lock';
 
-        return $lockfile;
+        return $lockFile;
     }
 }
