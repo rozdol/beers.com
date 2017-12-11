@@ -9,9 +9,7 @@ echo $this->Html->css('Qobo/Utils./plugins/datatables/css/dataTables.bootstrap.m
 echo $this->Html->script(
     [
         'Qobo/Utils./plugins/datatables/datatables.min',
-        'Qobo/Utils./plugins/datatables/js/dataTables.bootstrap.min',
-        'Qobo/Utils.dataTables.init',
-        'CsvMigrations.view-index'
+        'Qobo/Utils./plugins/datatables/js/dataTables.bootstrap.min'
     ],
     ['block' => 'scriptBottom']
 );
