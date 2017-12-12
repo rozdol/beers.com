@@ -7,17 +7,16 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
-use CsvMigrations\MigrationTrait;
 use Exception;
 use Menu\Event\EventName;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
+use Qobo\Utils\Utility;
 use RolesCapabilities\CapabilityTrait;
 
 class MenuListener implements EventListenerInterface
 {
     use CapabilityTrait;
-    use MigrationTrait;
 
     /**
      * ACL instance
@@ -51,7 +50,7 @@ class MenuListener implements EventListenerInterface
     {
         $result = [];
         if (empty($modules)) {
-            $modules = $this->_getAllModules();
+            $modules = Utility::findDirs(Configure::readOrFail('CsvMigrations.modules.path'));
             if (MENU_MAIN === $name) {
                 $modules[] = 'Search.Dashboards';
             }
