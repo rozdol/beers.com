@@ -50,13 +50,14 @@ class MenuListener implements EventListenerInterface
         }
 
         $key = array_search('Search.Dashboards', $modules);
+        // add dashboard links
         if (false !== $key) {
             unset($modules[$key]);
             $result[] = [
                 'label' => 'Dashboards',
                 'url' => '#',
                 'icon' => 'tachometer',
-                'children' => $this->_getDashboardLinks($user)
+                'children' => $this->getDashboardLinks($user)
             ];
         }
 
@@ -91,7 +92,7 @@ class MenuListener implements EventListenerInterface
      * @param array $user Current user
      * @return array
      */
-    protected function _getDashboardLinks(array $user)
+    protected function getDashboardLinks(array $user)
     {
         $dashboards = TableRegistry::get('Search.Dashboards')->getUserDashboards($user);
 
@@ -128,7 +129,7 @@ class MenuListener implements EventListenerInterface
      */
     public function beforeRender(Event $event, array $menu, array $user)
     {
-        $event->result = $this->_checkItemsAccess($event, $menu, $user);
+        $event->result = $this->checkItemsAccess($event, $menu, $user);
     }
 
     /**
@@ -139,7 +140,7 @@ class MenuListener implements EventListenerInterface
      * @param  array             $user  User details
      * @return array
      */
-    protected function _checkItemsAccess(Event $event, array $menu, array $user)
+    protected function checkItemsAccess(Event $event, array $menu, array $user)
     {
         $result = [];
         foreach ($menu as $item) {
@@ -162,7 +163,7 @@ class MenuListener implements EventListenerInterface
                 continue;
             }
 
-            $result[] = current($this->_checkItemAccess([$item], $user));
+            $result[] = current($this->checkItemAccess([$item], $user));
         }
 
         return $result;
@@ -175,16 +176,16 @@ class MenuListener implements EventListenerInterface
      * @param  array  $user  User details
      * @return array
      */
-    protected function _checkItemAccess(array $items, array $user)
+    protected function checkItemAccess(array $items, array $user)
     {
         foreach ($items as $k => &$item) {
             $url = $item['url'];
 
-            $internal = $this->_isInternalLink($item['url']);
+            $internal = $this->isInternalLink($item['url']);
 
             // access check on internal links
             if ($internal) {
-                $url = $this->_parseUrl($item['url']);
+                $url = $this->parseUrl($item['url']);
 
                 if (!$this->_checkAccess($url, $user)) {
                     // remove url from parent item on access check fail
@@ -198,7 +199,7 @@ class MenuListener implements EventListenerInterface
 
             // evaluate child items
             if (!empty($item['children'])) {
-                $item['children'] = $this->_checkItemAccess($item['children'], $user);
+                $item['children'] = $this->checkItemAccess($item['children'], $user);
                 if (empty($item['children']) && (empty($item['url']) || '#' === trim($item['url']))) {
                     unset($items[$k]);
                 }
@@ -214,7 +215,7 @@ class MenuListener implements EventListenerInterface
      * @param array|string $url URL
      * @return bool
      */
-    protected function _isInternalLink($url)
+    protected function isInternalLink($url)
     {
         if (!is_string($url)) {
             return true;
@@ -237,7 +238,7 @@ class MenuListener implements EventListenerInterface
      * @param array|string $url Menu item URL
      * @return array
      */
-    protected function _parseUrl($url)
+    protected function parseUrl($url)
     {
         if (!is_string($url)) {
             return $url;
