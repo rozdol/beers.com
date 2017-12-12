@@ -42,99 +42,29 @@ class MenuListener implements EventListenerInterface
      */
     public function getMenuItems(Event $event, $name, array $user, $fullBaseUrl = false, array $modules = [])
     {
-        $result = [];
+        // include dashboard links on default main menu.
+        $withDashboards = empty($modules) && MENU_MAIN === $name;
+
         if (empty($modules)) {
             $modules = Utility::findDirs(Configure::readOrFail('CsvMigrations.modules.path'));
-            if (MENU_MAIN === $name) {
-                $modules[] = 'Search.Dashboards';
-            }
         }
 
-        $key = array_search('Search.Dashboards', $modules);
+        $links = $this->getModuleLinks($modules, $name);
         // add dashboard links
-        if (false !== $key) {
-            unset($modules[$key]);
-            $result[] = [
-                'label' => 'Dashboards',
-                'url' => '#',
-                'icon' => 'tachometer',
-                'children' => $this->getDashboardLinks($user)
-            ];
+        if ($withDashboards) {
+            $links[] = $this->getDashboardMenuItem($user);
         }
 
-        foreach ($modules as $module) {
-            $feature = FeatureFactory::get('Module' . DS . $module);
-            // skip if module is disabled
-            if (!$feature->isActive()) {
-                continue;
-            }
-
-            try {
-                $mc = new ModuleConfig(ConfigType::MENUS(), $module);
-                $parsed = (array)json_decode(json_encode($mc->parse()), true);
-                if (empty($parsed[$name])) {
-                    continue;
-                }
-
-                foreach ($parsed[$name] as $item) {
-                    $result[] = $item;
-                }
-            } catch (Exception $e) {
-                //
-            }
+        if (empty($links)) {
+            return;
         }
 
-        // handle plugin links
-        foreach ($result as $k => $item) {
-            $result[$k] = $this->filterPluginLinks($item);
+        $result = $this->filterLinks($links);
+        if (empty($result)) {
+            return;
         }
 
-        // handle placeholder links
-        foreach ($result as $k => $item) {
-            $result[$k] = $this->filterPlaceholderLinks($item);
-        }
-
-        // handle empty items
-        foreach ($result as $k => $item) {
-            if (empty($item)) {
-                unset($result[$k]);
-            }
-        }
-
-        $event->result = $result;
-    }
-
-    /**
-     * Get dashboard links for the menu.
-     *
-     * @param array $user Current user
-     * @return array
-     */
-    protected function getDashboardLinks(array $user)
-    {
-        $dashboards = TableRegistry::get('Search.Dashboards')->getUserDashboards($user);
-
-        $result = [];
-        foreach ($dashboards as $dashboard) {
-            $result[] = [
-                'label' => $dashboard->name,
-                'url' => [
-                    'plugin' => 'Search',
-                    'controller' => 'Dashboards',
-                    'action' => 'view',
-                    $dashboard->id
-                ],
-                'icon' => 'tachometer'
-            ];
-        }
-
-        $result[] = [
-            'label' => 'Create',
-            'url' => '/search/dashboards/add',
-            'icon' => 'plus'
-        ];
-
-        return $result;
+        $event->setResult($result);
     }
 
     /**
@@ -148,6 +78,127 @@ class MenuListener implements EventListenerInterface
     public function beforeRender(Event $event, array $menu, array $user)
     {
         $event->result = $this->checkItemsAccess($event, $menu, $user);
+    }
+
+    /**
+     * Module links getter, based on menu name.
+     *
+     * @param array $modules Modules list
+     * @param string $menuName Menu name
+     * @return array
+     */
+    protected function getModuleLinks(array $modules, $menuName)
+    {
+        if (empty($modules)) {
+            return [];
+        }
+
+        $result = [];
+        foreach ($modules as $module) {
+            $feature = FeatureFactory::get('Module' . DS . $module);
+            if (!$feature->isActive()) {
+                continue;
+            }
+
+            $mc = new ModuleConfig(ConfigType::MENUS(), $module);
+            $config = $mc->parse();
+            if (!property_exists($config, $menuName)) {
+                continue;
+            }
+
+            foreach ($config->{$menuName} as $item) {
+                $result[] = (array)$item;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Dashboard menu item getter.
+     *
+     * @param array $user Current user
+     * @return array
+     */
+    protected function getDashboardMenuItem(array $user)
+    {
+        $result = [
+            'label' => 'Dashboards',
+            'url' => '#',
+            'icon' => 'tachometer',
+            'order' => 0,
+            'children' => $this->getDashboardLinks($user)
+        ];
+
+        return $result;
+    }
+
+    /**
+     * Get dashboard links.
+     *
+     * @param array $user Current user
+     * @return array
+     */
+    protected function getDashboardLinks(array $user)
+    {
+        $table = TableRegistry::get('Search.Dashboards');
+        $query = $table->getUserDashboards($user)->order(['modified' => 'DESC']);
+
+        if ($query->isEmpty()) {
+            return [];
+        }
+
+        $result = [];
+        foreach ($query as $k => $entity) {
+            $result[] = [
+                'label' => $entity->get('name'),
+                'url' => [
+                    'plugin' => 'Search',
+                    'controller' => 'Dashboards',
+                    'action' => 'view',
+                    $entity->get('id')
+                ],
+                'icon' => 'tachometer',
+                'order' => $k
+            ];
+        }
+
+        $result[] = [
+            'label' => 'Create',
+            'url' => '/search/dashboards/add',
+            'icon' => 'plus',
+            'order' => 999999999
+        ];
+
+        return $result;
+    }
+
+    /**
+     * Menu links filter method.
+     *
+     * @param array $links Menu links
+     * @return array
+     */
+    protected function filterLinks(array $links)
+    {
+        // handle plugin links
+        foreach ($links as $k => $link) {
+            $links[$k] = $this->filterPluginLinks($link);
+        }
+
+        // handle placeholder links
+        foreach ($links as $k => $link) {
+            $links[$k] = $this->filterPlaceholderLinks($link);
+        }
+
+        // handle empty items
+        foreach ($links as $k => $link) {
+            if (empty($link)) {
+                unset($links[$k]);
+            }
+        }
+
+        return $links;
     }
 
     /**
