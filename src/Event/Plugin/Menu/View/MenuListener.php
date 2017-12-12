@@ -197,7 +197,7 @@ class MenuListener implements EventListenerInterface
     {
         if (!empty($item['children'])) {
             foreach ($item['children'] as $k => $child) {
-                if (!empty($this->filterPluginLinks($child))) {
+                if (!empty($this->filterPlaceholderLinks($child))) {
                     continue;
                 }
 
