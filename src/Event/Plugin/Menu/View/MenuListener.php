@@ -19,13 +19,6 @@ class MenuListener implements EventListenerInterface
     use CapabilityTrait;
 
     /**
-     * ACL instance
-     *
-     * @var object
-     */
-    protected $_aclInstance;
-
-    /**
      * {@inheritDoc}
      */
     public function implementedEvents()
@@ -168,8 +161,6 @@ class MenuListener implements EventListenerInterface
                 $result[] = $item;
                 continue;
             }
-
-            $this->_aclInstance = TableRegistry::get('RolesCapabilities.Capabilities');
 
             $result[] = current($this->_checkItemAccess([$item], $user));
         }
