@@ -7,6 +7,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
+use Cake\Utility\Inflector;
 use Exception;
 use Menu\Event\EventName;
 use Qobo\Utils\ModuleConfig\ConfigType;
@@ -83,6 +84,23 @@ class MenuListener implements EventListenerInterface
             }
         }
 
+        // handle plugin links
+        foreach ($result as $k => $item) {
+            $result[$k] = $this->filterPluginLinks($item);
+        }
+
+        // handle placeholder links
+        foreach ($result as $k => $item) {
+            $result[$k] = $this->filterPlaceholderLinks($item);
+        }
+
+        // handle empty items
+        foreach ($result as $k => $item) {
+            if (empty($item)) {
+                unset($result[$k]);
+            }
+        }
+
         $event->result = $result;
     }
 
@@ -130,6 +148,77 @@ class MenuListener implements EventListenerInterface
     public function beforeRender(Event $event, array $menu, array $user)
     {
         $event->result = $this->checkItemsAccess($event, $menu, $user);
+    }
+
+    /**
+     * Filters plugin links based on active status.
+     *
+     * @param array $item Menu item
+     * @return array
+     */
+    protected function filterPluginLinks(array $item)
+    {
+        if (!empty($item['children'])) {
+            foreach ($item['children'] as $k => $child) {
+                if (!empty($this->filterPluginLinks($child))) {
+                    continue;
+                }
+
+                unset($item['children'][$k]);
+            }
+        }
+
+        $url = $item['url'];
+        $url = is_string($url) ? array_filter(explode('/', $url)) : $url;
+
+        // not a plugin route
+        if (3 > count($url)) {
+            return $item;
+        }
+
+        // remove keys
+        $url = array_values($url);
+
+        // get plugin name
+        $name = Inflector::camelize(Inflector::underscore($url[0]));
+
+        $feature = FeatureFactory::get('Plugin' . DS . $name);
+
+        return $feature->isActive() ? $item : [];
+    }
+
+    /**
+     * Filters out placeholder links if no child items are found.
+     *
+     * @param array $item Menu item
+     * @return array
+     */
+    protected function filterPlaceholderLinks($item)
+    {
+        if (!empty($item['children'])) {
+            foreach ($item['children'] as $k => $child) {
+                if (!empty($this->filterPluginLinks($child))) {
+                    continue;
+                }
+
+                unset($item['children'][$k]);
+            }
+        }
+
+        $url = $item['url'];
+        $url = is_array($url) ? implode('/', $url) : $url;
+
+        // not a placeholder link
+        if ('#' !== trim($url)) {
+            return $item;
+        }
+
+        // has children
+        if (!empty($item['children'])) {
+            return $item;
+        }
+
+        return [];
     }
 
     /**
