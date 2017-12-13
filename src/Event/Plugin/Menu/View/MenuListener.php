@@ -124,16 +124,16 @@ class MenuListener implements EventListenerInterface
      */
     protected function getModuleLinks($module, $menuName)
     {
-        $mc = new ModuleConfig(ConfigType::MENUS(), $module);
-        $config = $mc->parse();
+        $moduleConfig = new ModuleConfig(ConfigType::MENUS(), $module);
+        $config = json_decode(json_encode($moduleConfig->parse()), true);
 
-        if (!property_exists($config, $menuName)) {
+        if (empty($config[$menuName])) {
             return [];
         }
 
         $result = [];
-        foreach ($config->{$menuName} as $item) {
-            $result[] = (array)$item;
+        foreach ($config[$menuName] as $item) {
+            $result[] = $item;
         }
 
         return $result;
