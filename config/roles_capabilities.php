@@ -8,6 +8,13 @@ return [
                 'menus',
                 'menu_items'
             ],
-        ]
+        ],
+        'accessCheck' => [
+            'skipActions' => [
+                'App\Controller\SystemController' => [
+                    'error',
+                ]
+            ],
+        ],
     ]
 ];
