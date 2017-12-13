@@ -49,7 +49,7 @@ class MenuListener implements EventListenerInterface
             $modules = Utility::findDirs(Configure::readOrFail('CsvMigrations.modules.path'));
         }
 
-        $links = $this->getModuleLinks($modules, $name);
+        $links = $this->getLinks($modules, $name);
         // add dashboard links
         if ($withDashboards) {
             $links[] = $this->getDashboardMenuItem($user);
@@ -59,12 +59,12 @@ class MenuListener implements EventListenerInterface
             return;
         }
 
-        $result = $this->filterLinks($links);
-        if (empty($result)) {
+        $links = $this->filterLinks($links);
+        if (empty($links)) {
             return;
         }
 
-        $event->setResult($result);
+        $event->setResult($links);
     }
 
     /**
@@ -77,17 +77,25 @@ class MenuListener implements EventListenerInterface
      */
     public function beforeRender(Event $event, array $menu, array $user)
     {
-        $event->result = $this->checkItemsAccess($event, $menu, $user);
+        if (empty($menu)) {
+            return;
+        }
+
+        if (empty($user)) {
+            return;
+        }
+
+        $event->setResult($this->checkItemsAccess($menu, $user));
     }
 
     /**
-     * Module links getter, based on menu name.
+     * Menu links getter.
      *
      * @param array $modules Modules list
      * @param string $menuName Menu name
      * @return array
      */
-    protected function getModuleLinks(array $modules, $menuName)
+    protected function getLinks(array $modules, $menuName)
     {
         if (empty($modules)) {
             return [];
@@ -100,15 +108,32 @@ class MenuListener implements EventListenerInterface
                 continue;
             }
 
-            $mc = new ModuleConfig(ConfigType::MENUS(), $module);
-            $config = $mc->parse();
-            if (!property_exists($config, $menuName)) {
-                continue;
-            }
+            $links = $this->getModuleLinks($module, $menuName);
+            $result = array_merge($result, $links);
+        }
 
-            foreach ($config->{$menuName} as $item) {
-                $result[] = (array)$item;
-            }
+        return $result;
+    }
+
+    /**
+     * Module links getter.
+     *
+     * @param string $module Module name
+     * @param string $menuName Menu name
+     * @return array
+     */
+    protected function getModuleLinks($module, $menuName)
+    {
+        $mc = new ModuleConfig(ConfigType::MENUS(), $module);
+        $config = $mc->parse();
+
+        if (!property_exists($config, $menuName)) {
+            return [];
+        }
+
+        $result = [];
+        foreach ($config->{$menuName} as $item) {
+            $result[] = (array)$item;
         }
 
         return $result;
@@ -152,12 +177,7 @@ class MenuListener implements EventListenerInterface
         foreach ($query as $k => $entity) {
             $result[] = [
                 'label' => $entity->get('name'),
-                'url' => [
-                    'plugin' => 'Search',
-                    'controller' => 'Dashboards',
-                    'action' => 'view',
-                    $entity->get('id')
-                ],
+                'url' => ['plugin' => 'Search', 'controller' => 'Dashboards', 'action' => 'view', $entity->get('id')],
                 'icon' => 'tachometer',
                 'order' => $k
             ];
@@ -244,7 +264,7 @@ class MenuListener implements EventListenerInterface
      * @param array $item Menu item
      * @return array
      */
-    protected function filterPlaceholderLinks($item)
+    protected function filterPlaceholderLinks(array $item)
     {
         if (!empty($item['children'])) {
             foreach ($item['children'] as $k => $child) {
@@ -275,30 +295,16 @@ class MenuListener implements EventListenerInterface
     /**
      * Method responsible for checking user access on menu items.
      *
-     * @param  \Cake\Event\Event $event Event object
-     * @param  array             $menu  Menu items
-     * @param  array             $user  User details
+     * @param array $menu Menu items
+     * @param array $user User details
      * @return array
      */
-    protected function checkItemsAccess(Event $event, array $menu, array $user)
+    protected function checkItemsAccess(array $menu, array $user)
     {
         $result = [];
         foreach ($menu as $item) {
             // this is for label like menu items without a url or children
             if (empty($item['url']) && empty($item['children'])) {
-                $result[] = $item;
-                continue;
-            }
-
-            // if empty user get it from the SESSION
-            if (empty($user)) {
-                if (!empty($_SESSION['Auth']['User'])) {
-                    $user = $_SESSION['Auth']['User'];
-                }
-            }
-
-            // skip on empty user
-            if (empty($user)) {
                 $result[] = $item;
                 continue;
             }
