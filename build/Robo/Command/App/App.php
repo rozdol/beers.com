@@ -198,7 +198,9 @@ class App extends AbstractCommand
             'menu import',
             'add_dblist_permissions',
             'dblists_add',
+            'validate' // run after dblists are populated
         ];
+
         foreach ($shellScripts as $script) {
             if (strstr($script, " ")) {
                 list($name, $param) = explode(" ", $script);
@@ -351,7 +353,9 @@ class App extends AbstractCommand
             'menu import',
             'add_dblist_permissions',
             'dblists_add',
+            'validate' // run after dblists are populated
         ];
+
         foreach ($shellScripts as $script) {
             if (strstr($script, " ")) {
                 list($name, $param) = explode(" ", $script);

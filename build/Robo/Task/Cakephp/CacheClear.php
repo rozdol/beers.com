@@ -21,7 +21,7 @@ class CacheClear extends \Qobo\Robo\AbstractCmdTask
      * {@inheritdoc}
      */
     protected $data = [
-        'cmd'   => './bin/cake clear_cache all',
+        'cmd'   => './bin/cake cache clear_all',
         'path'  => ['./'],
         'batch' => false
     ];

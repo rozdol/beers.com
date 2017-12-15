@@ -23,7 +23,7 @@ class ShellScript extends \Qobo\Robo\AbstractCmdTask
      * {@inheritdoc}
      */
     protected $data = [
-        'cmd'   => './bin/cake %%NAME%% %%PARAM%%',
+        'cmd'   => './bin/cake %%NAME%% %%PARAM%% --quiet',
         'path'  => ['./'],
         'batch' => false,
         'name' => null,
