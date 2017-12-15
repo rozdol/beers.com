@@ -5,6 +5,7 @@
     "require": {
         "cakephp/migrations": "^1.6",
         "cakephp/plugin-installer": "*",
+		"consolidation/robo": "^1.1",
         "dereuromark/cakephp-databaselog": "^2.1",
         "mobiledetect/mobiledetectlib": "2.*",
         "pelago/emogrifier": "^1.2",
@@ -42,6 +43,8 @@
             "CsvMigrations\\Test\\": "./vendor/qobo/cakephp-csv-migrations/tests",
             "Groups\\Test\\": "./vendor/qobo/cakephp-groups/tests",
             "Menu\\Test\\": "./vendor/qobo/cakephp-menu/tests",
+            "Qobo\\Robo\\": "build/Robo",
+            "Qobo\\Utility\\": "build/Utility",
             "RolesCapabilities\\Test\\": "./vendor/qobo/cakephp-roles-capabilities/tests",
             "Search\\Test\\": "./vendor/qobo/cakephp-search/tests",
             "Translations\\Test\\": "./vendor/qobo/cakephp-translations/tests"
