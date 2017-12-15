@@ -52,7 +52,7 @@ class App extends AbstractCommand
             return false;
         }
 
-        $result = $this->installCake($env);
+        $result = $this->updateCake($env);
 
         if (!$result) {
             return false;
