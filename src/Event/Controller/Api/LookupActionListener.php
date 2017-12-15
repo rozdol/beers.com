@@ -143,7 +143,7 @@ class LookupActionListener extends BaseActionListener
         ]);
 
         // recursive call
-        $query = $this->_alterQuery($table, $query, $request);
+        $this->_alterQuery($table, $query, $request);
 
         $result = $query->toArray();
 
