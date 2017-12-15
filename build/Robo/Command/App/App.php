@@ -143,6 +143,15 @@ class App extends AbstractCommand
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env));
 
+        // execute all tasks
+        foreach ($tasks as $task) {
+            $result = $task->run();
+            if (!$result->wasSuccessful()) {
+                return false;
+            }
+        }
+        $tasks = [];
+
         // get a list of cakephp plugins
         $result = $this->taskCakephpPlugins()->run();
         if (!$result->wasSuccessful()) {
@@ -217,11 +226,11 @@ class App extends AbstractCommand
         ];
         $dirMode = (!empty($this->getValue('CHMOD_DIR_MODE', $env))
             ? $this->getValue('CHMOD_DIR_MODE', $env)
-            : 0775
+            : '0775'
         );
         $fileMode = (!empty($this->getValue('CHMOD_FILE_MODE', $env))
             ? $this->getValue('CHMOD_FILE_MODE', $env)
-            : 0664
+            : '0664'
         );
         $user = $this->getValue('CHOWN_USER', $env);
         $group = $this->getValue('CHGRP_GROUP', $env);
@@ -257,7 +266,11 @@ class App extends AbstractCommand
         foreach ($tasks as $task) {
             $result = $task->run();
             if (!$result->wasSuccessful()) {
-                return false;
+                $data = $result->getData();
+                if (empty($data) || empty($data['plugin']) || $data['plugin'] != 'DatabaseLog') {
+                    return false;
+                }
+                $this->say("Ignore the above as we forgive the DatabaseLog errors");
             }
         }
 
@@ -300,6 +313,15 @@ class App extends AbstractCommand
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env));
+
+        // execute all tasks
+        foreach ($tasks as $task) {
+            $result = $task->run();
+            if (!$result->wasSuccessful()) {
+                return false;
+            }
+        }
+        $tasks = [];
 
         // get a list of cakephp plugins
         $result = $this->taskCakephpPlugins()->run();
@@ -372,11 +394,11 @@ class App extends AbstractCommand
         ];
         $dirMode = (!empty($this->getValue('CHMOD_DIR_MODE', $env))
             ? $this->getValue('CHMOD_DIR_MODE', $env)
-            : 0775
+            : '0775'
         );
         $fileMode = (!empty($this->getValue('CHMOD_FILE_MODE', $env))
             ? $this->getValue('CHMOD_FILE_MODE', $env)
-            : 0664
+            : '0664'
         );
         $user = $this->getValue('CHOWN_USER', $env);
         $group = $this->getValue('CHGRP_GROUP', $env);
@@ -412,10 +434,13 @@ class App extends AbstractCommand
         foreach ($tasks as $task) {
             $result = $task->run();
             if (!$result->wasSuccessful()) {
-                return false;
+                $data = $result->getData();
+                if (empty($data) || empty($data['plugin']) || $data['plugin'] != 'DatabaseLog') {
+                    return false;
+                }
+                $this->say("Ignore the above as we forgive the DatabaseLog errors");
             }
         }
-
 
         return true;
     }
