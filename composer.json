@@ -32,7 +32,9 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src"
+            "App\\": "src",
+            "Qobo\\Robo\\": "build/Robo",
+            "Qobo\\Utility\\": "build/Utility"
         }
     },
     "autoload-dev": {
@@ -43,8 +45,6 @@
             "CsvMigrations\\Test\\": "./vendor/qobo/cakephp-csv-migrations/tests",
             "Groups\\Test\\": "./vendor/qobo/cakephp-groups/tests",
             "Menu\\Test\\": "./vendor/qobo/cakephp-menu/tests",
-            "Qobo\\Robo\\": "build/Robo",
-            "Qobo\\Utility\\": "build/Utility",
             "RolesCapabilities\\Test\\": "./vendor/qobo/cakephp-roles-capabilities/tests",
             "Search\\Test\\": "./vendor/qobo/cakephp-search/tests",
             "Translations\\Test\\": "./vendor/qobo/cakephp-translations/tests"
