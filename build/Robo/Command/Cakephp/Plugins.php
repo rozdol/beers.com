@@ -20,7 +20,7 @@ class Plugins extends AbstractCommand
         $result = $this->taskCakephpPlugins()
             ->run();
         if (!$result->wasSuccessful()) {
-            return false;
+            $this->exitError("Failed to run the command");
         }
 
         return new PropertyList($result->getData()['data']);

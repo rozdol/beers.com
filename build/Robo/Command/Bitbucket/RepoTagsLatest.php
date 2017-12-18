@@ -26,6 +26,11 @@ class RepoTagsLatest extends AbstractCommand
         $result = $this->taskBitbucketRepoTagsLatest()
             ->name($repo)
             ->run();
+
+        if (!$result->wasSuccessful()) {
+            $this->exitError("Failed to run the command");
+        }
+
         $data = $result->getData();
         $data = new PropertyList($data);
         return $data;

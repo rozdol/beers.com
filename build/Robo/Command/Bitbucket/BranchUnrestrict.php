@@ -33,10 +33,14 @@ class BranchUnrestrict extends AbstractCommand
                         ->branch($branch)
                         ->run();
 
+        if (!$result->wasSuccessful()) {
+            $this->exitError("Failed to run the command");
+        }
+
         $data = Hash::extract($result->getData(), '{n}');
         $data = new RowsOfFields($data);
 
         return $data;
     }
-  
+
 }

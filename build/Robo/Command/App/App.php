@@ -11,6 +11,8 @@ class App extends AbstractCommand
      * @var array $defaultEnv Default values if missing in env
      */
     protected $defaultEnv = [
+        'CHMOD_FILE_MODE'   => '0664',
+        'CHMOD_DIR_MODE'    => '02775'
     ];
 
     /**
@@ -31,7 +33,7 @@ class App extends AbstractCommand
         $result = $this->installCake($env);
 
         if (!$result) {
-            return false;
+            $this->exitError("Failed to do app:install");
         }
 
         return $this->postInstall();
@@ -55,7 +57,7 @@ class App extends AbstractCommand
         $result = $this->updateCake($env);
 
         if (!$result) {
-            return false;
+            $this->exitError("Failed to do app:update");
         }
 
         return $this->postInstall();
@@ -75,11 +77,12 @@ class App extends AbstractCommand
             ->db($this->getValue('DB_NAME', $env) . '_test')
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
+            ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env))
             ->run();
 
         if (!$result->wasSuccessful()) {
-            return false;
+            $this->exitError("Failed to do app:remove");
         }
 
         // drop project database
@@ -87,11 +90,12 @@ class App extends AbstractCommand
             ->db($this->getValue('DB_NAME', $env))
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
+            ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env))
             ->run();
 
         if (!$result->wasSuccessful()) {
-            return false;
+            $this->exitError("Failed to do app:remove");
         }
 
         // Remove .env
@@ -114,6 +118,7 @@ class App extends AbstractCommand
             ->query("SELECT NOW() AS ServerTime")
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
+            ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env))
             ->run();
 
@@ -130,6 +135,7 @@ class App extends AbstractCommand
             ->db($this->getValue('DB_NAME', $env))
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
+            ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env));
 
 
@@ -138,6 +144,7 @@ class App extends AbstractCommand
              ->db($this->getValue('DB_NAME', $env) . "_test")
              ->user($this->getValue('DB_ADMIN_USER', $env))
              ->pass($this->getValue('DB_ADMIN_PASS', $env))
+             ->hide($this->getValue('DB_ADMIN_PASS', $env))
              ->host($this->getValue('DB_HOST', $env));
 
         // create test DB
@@ -145,6 +152,7 @@ class App extends AbstractCommand
             ->db($this->getValue('DB_NAME', $env) . "_test")
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
+            ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env));
 
         // execute all tasks
@@ -179,6 +187,7 @@ class App extends AbstractCommand
              ->db($this->getValue('DB_NAME', $env) . "_test")
              ->user($this->getValue('DB_ADMIN_USER', $env))
              ->pass($this->getValue('DB_ADMIN_PASS', $env))
+             ->hide($this->getValue('DB_ADMIN_PASS', $env))
              ->host($this->getValue('DB_HOST', $env));
 
         // create test DB
@@ -186,6 +195,7 @@ class App extends AbstractCommand
             ->db($this->getValue('DB_NAME', $env) . "_test")
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
+            ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env));
 
         // do plugin migrations
@@ -228,14 +238,8 @@ class App extends AbstractCommand
             'logs',
             'webroot/uploads'
         ];
-        $dirMode = (!empty($this->getValue('CHMOD_DIR_MODE', $env))
-            ? $this->getValue('CHMOD_DIR_MODE', $env)
-            : '0775'
-        );
-        $fileMode = (!empty($this->getValue('CHMOD_FILE_MODE', $env))
-            ? $this->getValue('CHMOD_FILE_MODE', $env)
-            : '0664'
-        );
+        $dirMode = $this->getValue('CHMOD_DIR_MODE', $env);
+        $fileMode = $this->getValue('CHMOD_FILE_MODE', $env);
         $user = $this->getValue('CHOWN_USER', $env);
         $group = $this->getValue('CHGRP_GROUP', $env);
 
@@ -293,6 +297,7 @@ class App extends AbstractCommand
             ->query("SELECT NOW() AS ServerTime")
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
+            ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env))
             ->run();
 
@@ -309,6 +314,7 @@ class App extends AbstractCommand
              ->db($this->getValue('DB_NAME', $env) . "_test")
              ->user($this->getValue('DB_ADMIN_USER', $env))
              ->pass($this->getValue('DB_ADMIN_PASS', $env))
+             ->hide($this->getValue('DB_ADMIN_PASS', $env))
              ->host($this->getValue('DB_HOST', $env));
 
         // create test DB
@@ -316,6 +322,7 @@ class App extends AbstractCommand
             ->db($this->getValue('DB_NAME', $env) . "_test")
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
+            ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env));
 
         // execute all tasks
@@ -350,6 +357,7 @@ class App extends AbstractCommand
              ->db($this->getValue('DB_NAME', $env) . "_test")
              ->user($this->getValue('DB_ADMIN_USER', $env))
              ->pass($this->getValue('DB_ADMIN_PASS', $env))
+             ->hide($this->getValue('DB_ADMIN_PASS', $env))
              ->host($this->getValue('DB_HOST', $env));
 
         // create test DB
@@ -357,6 +365,7 @@ class App extends AbstractCommand
             ->db($this->getValue('DB_NAME', $env) . "_test")
             ->user($this->getValue('DB_ADMIN_USER', $env))
             ->pass($this->getValue('DB_ADMIN_PASS', $env))
+            ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env));
 
         $tasks [] = $this->taskCakephpCacheClear();
@@ -396,14 +405,8 @@ class App extends AbstractCommand
             'logs',
             'webroot/uploads'
         ];
-        $dirMode = (!empty($this->getValue('CHMOD_DIR_MODE', $env))
-            ? $this->getValue('CHMOD_DIR_MODE', $env)
-            : '0775'
-        );
-        $fileMode = (!empty($this->getValue('CHMOD_FILE_MODE', $env))
-            ? $this->getValue('CHMOD_FILE_MODE', $env)
-            : '0664'
-        );
+        $dirMode = $this->getValue('CHMOD_DIR_MODE', $env);
+        $fileMode = $this->getValue('CHMOD_FILE_MODE', $env);
         $user = $this->getValue('CHOWN_USER', $env);
         $group = $this->getValue('CHGRP_GROUP', $env);
 
