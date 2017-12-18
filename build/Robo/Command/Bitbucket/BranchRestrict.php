@@ -36,6 +36,10 @@ class BranchRestrict extends AbstractCommand
                         ->action('push')
                         ->run();
 
+        if (!$result->wasSuccessful()) {
+            $this->exitError("Failed to run the command");
+        }
+
         $data = Hash::extract($result->getData(), '{n}');
         $data = new RowsOfFields($data);
 
