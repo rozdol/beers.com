@@ -155,6 +155,10 @@ if (!Configure::read('App.fullBaseUrl')) {
     unset($httpHost, $s);
 }
 
+// Optionally stop using the now redundant default loggers
+Log::drop('debug');
+Log::drop('error');
+
 // Configure::consume() reads and deletes the value.
 // This is useful for consistency and security reasons.
 Cache::config(Configure::consume('Cache'));
