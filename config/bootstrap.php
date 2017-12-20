@@ -81,6 +81,7 @@ try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
     Configure::load('csv_migrations', 'default');
+    Configure::load('database_log', 'default');
     Configure::load('features', 'default');
     Configure::load('file_storage', 'default');
     Configure::load('groups', 'default');
@@ -154,6 +155,10 @@ if (!Configure::read('App.fullBaseUrl')) {
     }
     unset($httpHost, $s);
 }
+
+// Optionally stop using the now redundant default loggers
+Log::drop('debug');
+Log::drop('error');
 
 // Configure::consume() reads and deletes the value.
 // This is useful for consistency and security reasons.

@@ -13,6 +13,11 @@ $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? true : fals
 $debug = (bool)env('DEBUG');
 $salt = getenv('SALT') ?: 'dc363e686e16eafeab563188e3a5264ee73196accaec05a3541b1ce4148d9992';
 
+$logLevels = ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency'];
+if ($debug) {
+    $logLevels[] = 'debug';
+}
+
 $dbHost = getenv('DB_HOST') ?: 'localhost';
 $dbName = getenv('DB_NAME');
 $dbUser = getenv('DB_USER') ?: 'root';
@@ -378,15 +383,9 @@ return [
      * Configures logging options
      */
     'Log' => [
-        'debug' => [
-            'className' => 'Cake\Log\Engine\FileLog',
-            'path' => LOGS,
-            'file' => 'debug',
-            'levels' => ['debug'],
-        ],
-        'error' => [
-            'className' => 'DatabaseLog.Database',
-            'levels' => ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency']
+        'default' => [
+            'className' => 'LevelAwareDatabase',
+            'levels' => $logLevels
         ],
     ],
 
