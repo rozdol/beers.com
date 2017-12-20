@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use CakeDC\Users\Controller\Traits\CustomUsersTableTrait;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -8,19 +9,14 @@ use Cake\ORM\TableRegistry;
  */
 trait ChangelogTrait
 {
+    use CustomUsersTableTrait;
+
     /**
      * Table name for Log Audit model.
      *
      * @var string
      */
     protected $_tableLog = 'LogAudit';
-
-    /**
-     * Table name for Users model.
-     *
-     * @var string
-     */
-    protected $_tableUsers = 'CakeDC/Users.Users';
 
     /**
      * Element to be used as View template.
@@ -57,7 +53,7 @@ trait ChangelogTrait
         $this->set('changelog', $this->paginate($query));
         $this->set('modelAlias', $modelAlias);
         $this->set('displayField', $this->{$this->name}->displayField());
-        $this->set('usersTable', TableRegistry::get($this->_tableUsers));
+        $this->set('usersTable', $this->getUsersTable());
         $this->set('entity', $entity);
 
         $this->render($this->_elementView);
