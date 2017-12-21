@@ -3,6 +3,7 @@ build/*
 !build/Robo/
 !build/Utility/
 vendor/
+node_modules/
 .env
 etc/nginx.conf
 etc/ssl/*
