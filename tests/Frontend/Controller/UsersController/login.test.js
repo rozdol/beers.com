@@ -17,9 +17,20 @@ describe('UsersController::login(): ', () => {
       done();
     });
 
-    it('Testing [successfull] login', (browser) => {
+    it('Admin login with correct credentials', (browser) => {
         browser
             .login(process.env.DEV_USER, process.env.DEV_PASS)
             .assert.elementPresent('nav');
+    });
+    it('Admin logout', (browser) => {
+        browser
+            .url(browser.launch_url + '/users/logout')
+            .pause(3000)
+            .assert.urlContains('/login');
+    });
+    it('Admin login with wrong credentials', (browser) => {
+        browser
+            .login(process.env.DEV_USER, 'this is not a valid password ever')
+            .assert.urlContains('/login');
     });
 });
