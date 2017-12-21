@@ -1,6 +1,7 @@
 <?php
 namespace App\Log\Engine;
 
+use Cake\Database\Log\LoggedQuery;
 use DatabaseLog\Log\Engine\DatabaseLog;
 
 class LevelAwareDatabaseLog extends DatabaseLog
@@ -12,6 +13,11 @@ class LevelAwareDatabaseLog extends DatabaseLog
      */
     public function log($level, $message, array $context = [])
     {
+        // avoid logging database queries, which results in infinite recursion
+        if ($message instanceof LoggedQuery) {
+            return false;
+        }
+
         if (!in_array($level, $this->levels())) {
             return false;
         }
