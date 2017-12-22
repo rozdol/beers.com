@@ -169,11 +169,17 @@ class MenuListener implements EventListenerInterface
         $table = TableRegistry::get('Search.Dashboards');
         $query = $table->getUserDashboards($user)->order(['modified' => 'DESC']);
 
+        $result[] = [
+            'label' => 'Create',
+            'url' => '/search/dashboards/add',
+            'icon' => 'plus',
+            'order' => 999999999
+        ];
+
         if ($query->isEmpty()) {
-            return [];
+            return $result;
         }
 
-        $result = [];
         foreach ($query as $k => $entity) {
             $result[] = [
                 'label' => $entity->get('name'),
@@ -182,13 +188,6 @@ class MenuListener implements EventListenerInterface
                 'order' => $k
             ];
         }
-
-        $result[] = [
-            'label' => 'Create',
-            'url' => '/search/dashboards/add',
-            'icon' => 'plus',
-            'order' => 999999999
-        ];
 
         return $result;
     }
