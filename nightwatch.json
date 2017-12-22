@@ -1,7 +1,7 @@
 {
   "src_folders": ["tests/Frontend"],
   "output_folder": "build/coverage/",
-  "custom_commands_path": "tests/Frontend/custom-commands",
+  "custom_commands_path": "tests/Frontend/CustomCommand",
   "custom_assertions_path": "",
   "page_objects_path": "",
   "globals_path": "globals.js",
@@ -17,6 +17,7 @@
   },
   "test_settings": {
     "default": {
+      "launch_url": "http://localhost:8000",
       "selenium_port": 9515,
       "selenium_host": "localhost",
       "default_path_prefix" : "",
