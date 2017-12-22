@@ -8,7 +8,6 @@ exports.command = function(username, password, callback) {
         .waitForElementPresent('input#password', 2000)
         .setValue('input#password', password)
         .submitForm('form')
-        .pause(3000)
 
     if (typeof callback === "function") {
         callback.call(self);
