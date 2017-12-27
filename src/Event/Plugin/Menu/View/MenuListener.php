@@ -241,8 +241,8 @@ class MenuListener implements EventListenerInterface
         $url = $item['url'];
         $url = is_string($url) ? array_filter(explode('/', $url)) : $url;
 
-        // not a plugin route
-        if (3 > count($url)) {
+        // definitely not a plugin route
+        if (2 > count($url)) {
             return $item;
         }
 
