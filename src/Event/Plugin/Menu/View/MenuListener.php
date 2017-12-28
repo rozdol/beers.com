@@ -228,6 +228,10 @@ class MenuListener implements EventListenerInterface
      */
     protected function filterPluginLinks(array $item)
     {
+        if (empty($item)) {
+            return [];
+        }
+
         if (!empty($item['children'])) {
             foreach ($item['children'] as $k => $child) {
                 if (!empty($this->filterPluginLinks($child))) {
@@ -265,6 +269,10 @@ class MenuListener implements EventListenerInterface
      */
     protected function filterPlaceholderLinks(array $item)
     {
+        if (empty($item)) {
+            return [];
+        }
+
         if (!empty($item['children'])) {
             foreach ($item['children'] as $k => $child) {
                 if (!empty($this->filterPlaceholderLinks($child))) {
