@@ -274,11 +274,7 @@ class App extends AbstractCommand
         foreach ($tasks as $task) {
             $result = $task->run();
             if (!$result->wasSuccessful()) {
-                $data = $result->getData();
-                if (empty($data) || empty($data['plugin']) || $data['plugin'] != 'DatabaseLog') {
-                    return false;
-                }
-                $this->say("Ignore the above as we forgive the DatabaseLog errors");
+                return false;
             }
         }
 
@@ -441,11 +437,7 @@ class App extends AbstractCommand
         foreach ($tasks as $task) {
             $result = $task->run();
             if (!$result->wasSuccessful()) {
-                $data = $result->getData();
-                if (empty($data) || empty($data['plugin']) || $data['plugin'] != 'DatabaseLog') {
-                    return false;
-                }
-                $this->say("Ignore the above as we forgive the DatabaseLog errors");
+                return false;
             }
         }
 
