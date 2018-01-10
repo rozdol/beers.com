@@ -1,0 +1,12 @@
+FIELD NAME,FIELD TYPE,REQUIRED,NOT SEARCHABLE,UNIQUE
+id,uuid
+name,string
+command,text
+arguments,text
+recurrence,text
+active,boolean
+priority,integer
+created,datetime
+modified,datetime
+created_by,related(Users)
+modified_by,related(Users)
