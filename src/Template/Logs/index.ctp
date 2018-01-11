@@ -57,129 +57,109 @@ $typeIcons = [
     </h1>
 </section>
 <section class="content">
-    <div class="box box-solid">
-        <div class="box-header with-border">
-            <ul class="list-inline">
-                <li><?php echo $this->Html->link(
-                    'ALL',
-                    ['controller' => 'Logs', 'action' => 'index'],
-                    ['class' => 'label label-default']
-                ); ?></li>
-            <?php
-            // sort types by importance
-            $types = array_intersect(array_keys($typeLabels), $types);
-            foreach ($types as $type) {
-                $label = array_key_exists($type, $typeLabels) ? $typeLabels[$type] : 'default';
-                echo '<li>';
-                echo $this->Html->link(
-                    $type,
-                    ['controller' => 'Logs', 'action' => 'index', '?' => ['type' => $type]],
-                    ['class' => 'label label-' . $label]
-                );
-                echo '</li>';
-            }
-            ?>
-            </ul>
-            <?= $this->element('DatabaseLog.admin_filter'); ?>
-        </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-solid">
+                <div class="box-body">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                        <?= $this->Html->link(
+                            __('All'),
+                            ['controller' => 'Logs', 'action' => 'index'],
+                            ['class' => 'btn btn-default']
+                        );?>
+                        <?php
+                        // sort types by importance
+                        $types = array_intersect(array_keys($typeLabels), $types);
+                        foreach ($types as $type) {
+                            $label = array_key_exists($type, $typeLabels) ? $typeLabels[$type] : 'default';
+                            echo $this->Html->link(
+                                ucfirst($type),
+                                ['controller' => 'Logs', 'action' => 'index', '?' => ['type' => $type]],
+                                ['class' => 'btn btn-' . $label]
+                            );
+                        }
+                        ?>
+                    </div>
+                    <?= $this->element('DatabaseLog.admin_filter'); ?>
+                </div>
+            </div>
 
-        <!-- Timeline start -->
-        <?php $displayed_date = ''; ?>
-        <ul class="timeline">
-        <?php foreach ($logs as $log) : ?>
-        <?php
-            $date = $log['created']->i18nFormat('yyyy-MM-dd');
-            if ($displayed_date != $date) {
-                $displayed_date = $date;
-                ?>
-                <!-- timeline time label -->
-                <li class="time-label">
-                    <span class="bg-red">
-                        <?= $displayed_date ?>
-                    </span>
-                </li>
-                <!-- /.timeline-label -->
+            <?php $displayed_date = ''; ?>
+            <ul class="timeline">
+                <?php foreach ($logs as $log) : ?>
                 <?php
-            }
-        ?>
+                    $date = $log['created']->i18nFormat('yyyy-MM-dd');
+                    if ($displayed_date != $date) {
+                        $displayed_date = $date;
+                        ?>
+                        <!-- timeline time label -->
+                        <li class="time-label">
+                            <span class="bg-red">
+                                <?= $displayed_date ?>
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
+                        <?php
+                    }
+                ?>
 
-        <!-- timeline item -->
-        <li>
-            <!-- timeline icon -->
-            <i class="<?= $typeIcons[$log['type']] ?>"></i>
-            <div class="timeline-item">
-                <span class="time"><i class="fa fa-clock-o"></i> <?= $log['created']->i18nFormat('HH:mm:ss') ?></span>
+                <!-- timeline item -->
+                <li>
+                    <i class="<?= $typeIcons[$log['type']] ?>"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> <?= $log['created']->i18nFormat('HH:mm:ss') ?></span>
+                        <h2 class="timeline-header"><?= ucfirst($log['type']); ?></h2>
+                        <div class="timeline-body">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-2 text-right"><strong><?= __('Hostname'); ?></strong></div>
+                                    <div class="col-xs-8 col-md-4"><?= h($log['hostname']); ?></div>
+                                    <div class="col-xs-4 col-md-2 text-right"><strong><?= __('IP'); ?></strong></div>
+                                    <div class="col-xs-8 col-md-4"><?= h($log['ip']); ?></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-2 text-right"><strong><?= __('Uri'); ?></strong></div>
+                                    <div class="col-xs-8 col-md-4"><?= h($log['uri']); ?></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 text-right"><strong><?= __('Referrer'); ?></strong></div>
+                                    <div class="col-md-10"><?= h($log['refer']); ?></div>
+                                </div>
+                                <div class="row" style="margin-top:20px;">
+                                    <div class="col-md-2 text-right"><strong><?= __('Message'); ?></strong></div>
+                                    <div class="col-md-10"><pre><small><?= trim(h($log['message'])); ?></small></pre></div>
+                                </div>
+                                <?php if (!empty($log['context']['scope'])) : ?>
+                                <div class="row">
+                                    <div class="col-md-2 text-right"><strong><?= __('Context'); ?></strong></div>
+                                    <div class="col-md-10"><pre><small><?= h($log['context']); ?></small></pre></div>
+                                </div>
+                                <?php endif; ?>
+                            </div> <!-- .box-body -->
+                        </div> <!-- .timeline-body -->
+                    </div>
+                </li>
+                <?php endforeach; ?>
+                <!-- END timeline item -->
 
-                <h2 class="timeline-header"><?= ucfirst($log['type']); ?></h2>
+            </ul>
 
-                <div class="timeline-body">
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-xs-4 col-md-2 text-right">
-                                <strong><?= __('Hostname'); ?></strong>
-                            </div>
-                            <div class="col-xs-8 col-md-4">
-                                <?= h($log['hostname']); ?>
-                            </div>
-                            <div class="col-xs-4 col-md-2 text-right">
-                                <strong><?= __('IP'); ?></strong>
-                            </div>
-                            <div class="col-xs-8 col-md-4">
-                                <?= h($log['ip']); ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-4 col-md-2 text-right">
-                                <strong><?= __('Uri'); ?></strong>
-                            </div>
-                            <div class="col-xs-8 col-md-4">
-                                <?= h($log['uri']); ?>
-                            </div>
-                            <div class="col-xs-4 col-md-2 text-right">
-                                <strong><?= __('Referrer'); ?></strong>
-                            </div>
-                            <div class="col-xs-8 col-md-4">
-                                <?= h($log['refer']); ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2 text-right">
-                                <strong><?= __('Message'); ?></strong>
-                            </div>
-                            <div class="col-md-10">
-                                <pre><small><?= trim(h($log['message'])); ?></small></pre>
-                            </div>
-                        </div>
-                        <?php if (!empty($log['context']['scope'])) : ?>
-                        <div class="row">
-                            <div class="col-md-2 text-right">
-                                <strong><?= __('Context'); ?></strong>
-                            </div>
-                            <div class="col-md-10">
-                                <pre><small><?= h($log['context']); ?></small></pre>
-                            </div>
-                        </div>
-                        <?php endif; ?>
+            <!-- Timeline end -->
+            <div class="box box-solid">
+                <div class="box-body">
+                    <div class="paginator">
+                        <?= $this->Paginator->counter([
+                            'format' => __('Showing {{start}} to {{end}} of {{count}} entries')
+                        ]) ?>
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                            <?= $this->Paginator->prev('&laquo;', ['escape' => false]) ?>
+                            <?= $this->Paginator->numbers() ?>
+                            <?= $this->Paginator->next('&raquo;', ['escape' => false]) ?>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </li>
-        <?php endforeach; ?>
-        <!-- END timeline item -->
 
-        </ul>
-        <!-- Timeline end -->
-        <div class="box-footer">
-            <div class="paginator">
-                <?= $this->Paginator->counter([
-                    'format' => __('Showing {{start}} to {{end}} of {{count}} entries')
-                ]) ?>
-                <ul class="pagination pagination-sm no-margin pull-right">
-                    <?= $this->Paginator->prev('&laquo;', ['escape' => false]) ?>
-                    <?= $this->Paginator->numbers() ?>
-                    <?= $this->Paginator->next('&raquo;', ['escape' => false]) ?>
-                </ul>
-            </div>
         </div>
     </div>
 </section>
