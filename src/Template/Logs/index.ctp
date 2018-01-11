@@ -20,7 +20,7 @@ $typeIcons = [
     'warning' => 'fa fa-exclamation-triangle bg-yellow',
     'notice' => 'fa fa-info-circle bg-blue',
     'info' => 'fa fa-info-circle bg-blue',
-    'debug' => 'fa-wrench bg-green'
+    'debug' => 'fa fa-wrench bg-green'
 ];
 
 ?>
