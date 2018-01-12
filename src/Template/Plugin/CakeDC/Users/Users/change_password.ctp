@@ -4,23 +4,31 @@
 <?= $this->Flash->render('auth') ?>
 <?= $this->Flash->render() ?>
 <fieldset>
-    <div class="form-group has-feedback">
-        <?= $this->Form->input('Users.password', [
-            'type' => 'password',
-            'required' => true,
-            'label' => false,
-            'placeholder' => __('Password')
-        ]); ?>
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="fa fa-lock"></span>
+            </span>
+            <?= $this->Form->input('Users.password', [
+                'type' => 'password',
+                'required' => true,
+                'label' => false,
+                'placeholder' => __('Password')
+            ]); ?>
+        </div>
     </div>
-    <div class="form-group has-feedback">
-        <?= $this->Form->input('Users.password_confirm', [
-            'type' => 'password',
-            'required' => true,
-            'label' => false,
-            'placeholder' => __('Password Confirm')
-        ]); ?>
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="fa fa-lock"></span>
+            </span>
+            <?= $this->Form->input('Users.password_confirm', [
+                'type' => 'password',
+                'required' => true,
+                'label' => false,
+                'placeholder' => __('Password Confirm')
+            ]); ?>
+        </div>
     </div>
     <div class="row">
         <div class="col-xs-4">
