@@ -5,28 +5,36 @@ $this->layout = 'AdminLTE/login';
 ?>
 <?= $this->Form->create() ?>
 <fieldset>
-    <div class="form-group has-feedback">
-        <?= $this->Form->input('username', [
-            'required' => true,
-            'label' => false,
-            'placeholder' => 'Username',
-            'autofocus' => true,
-            'templates' => [
-                'inputContainer' => '{{content}}'
-            ]
-        ]) ?>
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="fa fa-user"></span>
+            </span>
+            <?= $this->Form->input('username', [
+                'required' => true,
+                'label' => false,
+                'placeholder' => 'Username',
+                'autofocus' => true,
+                'templates' => [
+                    'inputContainer' => '{{content}}'
+                ]
+            ]) ?>
+        </div>
     </div>
-    <div class="form-group has-feedback">
-        <?= $this->Form->input('password', [
-            'required' => true,
-            'label' => false,
-            'placeholder' => 'Password',
-            'templates' => [
-                'inputContainer' => '{{content}}'
-            ]
-        ]) ?>
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="fa fa-lock"></span>
+            </span>
+            <?= $this->Form->input('password', [
+                'required' => true,
+                'label' => false,
+                'placeholder' => 'Password',
+                'templates' => [
+                    'inputContainer' => '{{content}}'
+                ]
+            ]) ?>
+        </div>
     </div>
     <div class="row">
         <div class="col-xs-8">

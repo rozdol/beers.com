@@ -4,15 +4,19 @@
 <?= $this->Flash->render() ?>
 <fieldset>
     <div class="form-group has-feedback">
-        <?= $this->Form->input('reference', [
-            'required' => true,
-            'label' => false,
-            'placeholder' => 'Username',
-            'templates' => [
-                'inputContainer' => '{{content}}'
-            ]
-        ]) ?>
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="fa fa-user"></span>
+            </span>
+            <?= $this->Form->input('reference', [
+                'required' => true,
+                'label' => false,
+                'placeholder' => 'Username',
+                'templates' => [
+                    'inputContainer' => '{{content}}'
+                ]
+            ]) ?>
+        </div>
     </div>
     <div class="row">
         <div class="col-xs-4">
