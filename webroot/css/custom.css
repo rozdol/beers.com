@@ -45,3 +45,7 @@
 .search-form-top-menu .form-control:focus {
     border-color: #d2d6de;
 }
+
+#control-sidebar-settings-tab {
+    margin: -10px -15px;
+}
