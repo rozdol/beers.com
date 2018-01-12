@@ -9,4 +9,7 @@ use CsvMigrations\Controller\AppController as BaseController;
  */
 class ScheduledJobsController extends BaseController
 {
+    public function index()
+    {
+    }
 }
