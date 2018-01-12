@@ -76,7 +76,7 @@ $hasActivity = false;
         <!-- /.tab-pane -->
 
         <!-- Settings tab content -->
-        <div class="tab-pane" id="control-sidebar-settings-tab">
+        <div class="tab-pane control-sidebar-settings-tab" id="control-sidebar-settings-tab">
             <section class="sidebar">
                 <?= $this->cell('Menu.Menu', [
                     'name' => MENU_ADMIN,
