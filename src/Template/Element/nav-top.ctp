@@ -9,8 +9,8 @@
     </a>
 
     <div class="navbar-custom-menu">
-        <?= $this->element('aside/form') ?>
         <ul class="nav navbar-nav">
+            <li><?= $this->element('aside/form') ?></li>
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
