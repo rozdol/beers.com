@@ -9,6 +9,9 @@ use Cake\Utility\Inflector;
 
 class CakeShellHandler extends AbstractHandler
 {
+    /** @var $prefix for differentiating jobs */
+    protected $prefix = 'CakeShell';
+
     /**
      * Get List of Shells
      *
@@ -47,7 +50,7 @@ class CakeShellHandler extends AbstractHandler
         // flatting command list
         foreach ($shellList as $plugin => $shells) {
             foreach ($shells as $name) {
-                $result[] = ucfirst($plugin) . '::' . $name;
+                $result[] = $this->prefix . '::' . ucfirst($plugin) . '::' . $name;
             }
         }
 
