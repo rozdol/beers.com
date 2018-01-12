@@ -34,15 +34,15 @@ class CakeShellHandler extends AbstractHandler
         $shellList = array_fill_keys($plugins, null) + ['CORE' => null, 'app' => null];
 
         $appPath = App::path('Shell');
-        $appShells = $this->_scanDir($appPath[0]);
+        $appShells = $this->scanDir($appPath[0]);
         $appShells = array_diff($appShells, $skipFiles);
 
-        $shellList = $this->_appendShells('app', $appShells, $shellList);
+        $shellList = $this->appendShells('app', $appShells, $shellList);
 
         foreach ($plugins as $plugin) {
             $pluginPath = Plugin::classPath($plugin) . 'Shell';
-            $pluginShells = $this->_scanDir($pluginPath);
-            $shellList = $this->_appendShells($plugin, $pluginShells, $shellList);
+            $pluginShells = $this->scanDir($pluginPath);
+            $shellList = $this->appendShells($plugin, $pluginShells, $shellList);
         }
 
         $shellList = array_filter($shellList);
@@ -71,7 +71,7 @@ class CakeShellHandler extends AbstractHandler
      * @param array $shellList List of shells.
      * @return array The updated $shellList
      */
-    protected function _appendShells($type, $shells, $shellList)
+    protected function appendShells($type, $shells, $shellList)
     {
         foreach ($shells as $shell) {
             $shellList[$type][] = Inflector::underscore(str_replace('Shell', '', $shell));
@@ -87,7 +87,7 @@ class CakeShellHandler extends AbstractHandler
      * @param string $dir The directory to read.
      * @return array The list of shell classnames based on conventions.
      */
-    protected function _scanDir($dir)
+    protected function scanDir($dir)
     {
         $dir = new Folder($dir);
         $contents = $dir->read(true, true);
