@@ -6,6 +6,8 @@ arguments,text
 recurrence,text
 active,boolean
 priority,integer
+start_date,datetime
+end_date,datetime
 created,datetime
 modified,datetime
 created_by,related(Users)

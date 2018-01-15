@@ -2,4 +2,5 @@ PANEL NAME,FIRST COLUMN FIELD NAME,SECOND COLUMN FIELD NAME
 Details,name,active
 Details,command,priority
 Details,arguments
+Recurrence,start_date,end_date
 Recurrence,recurrence

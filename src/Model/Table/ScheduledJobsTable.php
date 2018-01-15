@@ -24,7 +24,7 @@ class ScheduledJobsTable extends AppTable
         $result = [];
 
         $query = $this->find()
-            ->where(['active' => true])
+            ->where(['active' => 1])
             ->order(['priority' => 'ASC']);
 
         $entities = $query->all();
@@ -33,9 +33,7 @@ class ScheduledJobsTable extends AppTable
             return $result;
         }
 
-        foreach ($entities as $k => $entity) {
-
-        }
+        $result = $entities;
 
         return $result;
     }

@@ -25,7 +25,7 @@ $dtOptions = [
             'controller' => $this->name,
             'action' => $this->request->param('action')
         ]) . '.json',
-        'columns' => ['name', 'active', 'command', 'recurrence', '_Menus'],
+        'columns' => ['name', 'active', 'command', 'recurrence', 'start_date', 'end_date', '_Menus'],
         'extras' => ['format' => 'pretty', 'menus' => 1]
     ],
 ];
@@ -64,6 +64,8 @@ echo $this->Html->scriptBlock(
                         <th><?= __('Active');?></th>
                         <th><?= __('Command');?></th>
                         <th><?= __('Recurrence'); ?></th>
+                        <th><?= __('Start');?></th>
+                        <th><?= __('End');?></th>
                         <th><?= __('Actions');?></th>
                     </tr>
                 </thead>
