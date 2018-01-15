@@ -3,6 +3,8 @@ namespace App\Shell;
 
 use Cake\Console\Shell;
 use Cake\ORM\TableRegistry;
+use RRule\RRule;
+use RRule\RfcParser;
 
 /**
  * Cron shell command.
@@ -33,6 +35,7 @@ class CronShell extends Shell
      */
     public function main()
     {
+
         $this->info('Running cron...');
         $this->ScheduledJobs = TableRegistry::get('ScheduledJobs');
 
@@ -47,8 +50,15 @@ class CronShell extends Shell
         }
 
         foreach ($jobs as $job) {
-            $rrule = new RRule($job['recurrence']);
-            dd($rrule);
+            if (!empty($job['start_date'])) {
+                $config = RfcParser::parseRRule($job['recurrence'], $job['start_date']);
+            } else {
+                $config = RfcParser::parseRRule($job['recurrence']);
+            }
+
+            $rrule = new RRule($config);
+
+            pr($rrule);
         }
 
         $lock->unlock();
