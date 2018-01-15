@@ -18,4 +18,26 @@ class ScheduledJobsTable extends AppTable
 
         $this->addBehavior('Timestamp');
     }
+
+    public function getActiveJobs()
+    {
+        $result = [];
+
+        $query = $this->find()
+            ->where(['active' => true])
+            ->order(['priority' => 'ASC']);
+
+        $entities = $query->all();
+
+        if (empty($entities)) {
+            return $result;
+        }
+
+        foreach ($entities as $k => $entity) {
+
+        }
+
+        return $result;
+    }
+
 }
