@@ -295,11 +295,11 @@ class SystemInfoHelper extends Helper
      *  getComposerMatchCounts method
      *
      * @param array $packages installed composer packages
+     * @param array $matchWords list of words to match
      * @return array packages matched specified words
      */
-    public function getComposerMatchCounts($packages)
+    public function getComposerMatchCounts($packages, $matchWords)
     {
-        $matchWords = ['cakephp', 'qobo'];
         $matchCounts = [];
         foreach ($packages as $package) {
             // Concatenate all fields that we'll be matching against
