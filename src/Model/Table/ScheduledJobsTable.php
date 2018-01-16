@@ -113,20 +113,7 @@ class ScheduledJobsTable extends AppTable
         $namespace = 'App\\ScheduledJobs\\Handlers\\';
         $path = dirname(dirname(dirname(__FILE__))) . DS . 'ScheduledJobs' . DS . 'Handlers';
 
-        $dir = new Folder($path);
-        $contents = $dir->read(true, true);
-
-        if (empty($contents[1])) {
-            return $result;
-        }
-
-        foreach ($contents[1] as $file) {
-            if (substr($file, -4) !== '.php' || preg_match('/^Abstract/', $file)) {
-                continue;
-            }
-
-            $handlers[] = substr($file, 0, -4);
-        }
+        $handlers = $this->scanDir($path);
 
         foreach ($handlers as $handlerName) {
             $class = $namespace . $handlerName;
@@ -138,6 +125,33 @@ class ScheduledJobsTable extends AppTable
             } catch (RuntimeException $e) {
                 pr($e->getMessage());
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * List Handlers in the directory
+     *
+     * @param string $path of the directory
+     */
+    protected function scanDir($path)
+    {
+        $result = [];
+        $dir = new Folder($path);
+        $contents = $dir->read(true, true);
+
+        if (empty($contents[1])) {
+            return $result;
+        }
+
+        foreach ($contents[1] as $file) {
+            // @NOTE: ignoring Abstract classes.
+            if (substr($file, -4) !== '.php' || preg_match('/^Abstract/', $file)) {
+                continue;
+            }
+
+            $result[] = substr($file, 0, -4);
         }
 
         return $result;
