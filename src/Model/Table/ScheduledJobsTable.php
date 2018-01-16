@@ -146,8 +146,11 @@ class ScheduledJobsTable extends AppTable
         }
 
         foreach ($contents[1] as $file) {
-            // @NOTE: ignoring Abstract classes.
-            if (substr($file, -4) !== '.php' || preg_match('/^Abstract/', $file)) {
+            if (substr($file, -4) !== '.php') {
+                continue;
+            }
+
+            if (preg_match('/^Abstract/', $file)) {
                 continue;
             }
 
