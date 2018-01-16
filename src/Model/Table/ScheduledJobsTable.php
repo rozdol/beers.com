@@ -3,7 +3,10 @@ namespace App\Model\Table;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Filesystem\Folder;
+use Cake\I18n\Time;
 use Cake\Utility\Inflector;
+use DateTime;
+use RRule\RfcParser;
 use RRule\RRule;
 use RuntimeException;
 
@@ -86,14 +89,20 @@ class ScheduledJobsTable extends AppTable
     /**
      * Is Time To Run the command
      *
-     * @param \Cake\Datasource\EntityInterface $entity of the job
+     * @paam \Cake\I18n\Time $now system time
      * @param \RRule\RRule $rrule of the recurrence if any
      *
      * @return bool $state whether to run it or not.
      */
-    public function isTimeToRun(EntityInterface $entity, RRule $rrule)
+    public function timeToRun(Time $now, RRule $rrule)
     {
-        $state = true;
+        $state = false;
+
+        $dt = new DateTime($now->i18nFormat('yyyy-MM-dd HH:mm'), $now->timezone);
+
+        if ($rrule->occursAt($dt)) {
+            $state = true;
+        }
 
         return $state;
     }
@@ -177,5 +186,35 @@ class ScheduledJobsTable extends AppTable
         }
 
         return $valid;
+    }
+
+    /**
+     * Get RRule object based on entity
+     *
+     * @param \Cake\Datasource\EntityInterface $entity of the job
+     *
+     * @return \RRule\RRule $rrule to be used
+     */
+    public function getRRule(EntityInterface $entity)
+    {
+        $rrule = null;
+
+        if (empty($entity->recurrence)) {
+            return $rrule;
+        }
+
+        $stdate = $entity->start_date;
+
+        if (empty($stdate)) {
+            $config = RfcParser::parseRRule($entity->recurrence);
+        } else {
+            // @NOTE: using native DateTime objects within RRule.
+            $stdate = new DateTime($stdate->i18nFormat('yyyy-MM-dd HH:mm'), $stdate->timezone);
+            $config = RfcParser::parseRRule($entity->recurrence, $stdate);
+        }
+
+        $rrule = new RRule($config);
+
+        return $rrule;
     }
 }

@@ -2,10 +2,9 @@
 namespace App\Shell;
 
 use Cake\Console\Shell;
-use Cake\Datasource\EntityInterface;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
-use RRule\RfcParser;
-use RRule\RRule;
+use DateTime;
 
 /**
  * Cron shell command.
@@ -45,8 +44,11 @@ class CronShell extends Shell
 
         if (empty($jobs)) {
             $lock->unlock();
+
             return $this->out('No jobs found. Exiting...');
         }
+
+        $now = Time::now();
 
         foreach ($jobs as $entity) {
             $instance = $this->ScheduledJobs->getInstance($entity->job, 'Job');
@@ -55,42 +57,16 @@ class CronShell extends Shell
                 continue;
             }
 
-            $rrule = $this->getRRule($entity);
+            $rrule = $this->ScheduledJobs->getRRule($entity);
 
-            if ($this->ScheduledJobs->isTimeToRun($entity, $rrule)) {
+            if ($this->ScheduledJobs->timeToRun($now, $rrule)) {
                 $state = $instance->run($entity->options);
-                pr($state);
+
                 // @TODO: saving state response of shell execution.
             }
         }
 
         $lock->unlock();
         $this->out('Lock released. Exiting...');
-    }
-
-    /**
-     * Get RRule object based on entity
-     *
-     * @param \Cake\Datasource\EntityInterface $entity of the job
-     *
-     * @return \RRule\RRule $rrule to be used
-     */
-    protected function getRRule(EntityInterface $entity)
-    {
-        $rrule = null;
-
-        if (empty($entity->recurrence)) {
-            return $rrule;
-        }
-
-        if (empty($entity->start_date)) {
-            $config = RfcParser::parseRRule($entity->recurrence);
-        } else {
-            $config = RfcParser::parseRRule($entity->recurrence, $entity->start_date);
-        }
-
-        $rrule = new RRule($config);
-
-        return $rrule;
     }
 }
