@@ -79,15 +79,17 @@ class CronShell extends Shell
     {
         $rrule = null;
 
-        if (!empty($entity->recurrence)) {
-            if (!empty($entity->start_date)) {
-                $config = RfcParser::parseRRule($entity->recurrence, $entity->start_date);
-            } else {
-                $config = RfcParser::parseRRule($entity->recurrence);
-            }
-
-            $rrule = new RRule($config);
+        if (empty($entity->recurrence)) {
+            return $rrule;
         }
+
+        if (empty($entity->start_date)) {
+            $config = RfcParser::parseRRule($entity->recurrence);
+        } else {
+            $config = RfcParser::parseRRule($entity->recurrence, $entity->start_date);
+        }
+
+        $rrule = new RRule($config);
 
         return $rrule;
     }
