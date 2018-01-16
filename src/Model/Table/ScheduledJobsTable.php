@@ -146,11 +146,7 @@ class ScheduledJobsTable extends AppTable
         }
 
         foreach ($contents[1] as $file) {
-            if (substr($file, -4) !== '.php') {
-                continue;
-            }
-
-            if (preg_match('/^Abstract/', $file)) {
+            if (!$this->isValidFile($file)) {
                 continue;
             }
 
@@ -158,5 +154,27 @@ class ScheduledJobsTable extends AppTable
         }
 
         return $result;
+    }
+
+    /**
+     * Is given file valid for being listed
+     *
+     * @param string $file string
+     *
+     * @return bool $valid result check.
+     */
+    protected function isValidFile($file = null)
+    {
+        $valid = true;
+
+        if (substr($file, -4) !== '.php') {
+            $valid = false;
+        }
+
+        if (preg_match('/^Abstract/', $file)) {
+            $valid = false;
+        }
+
+        return $valid;
     }
 }
