@@ -170,9 +170,7 @@ class SystemInfoHelper extends Helper
         $localModificationsCommand = $this->getLocalModificationsCommand();
 
         $localModifications = trim(shell_exec($localModificationsCommand));
-        if (!empty($localModifications)) {
-            $localModifications = explode("\n", $localModifications);
-        }
+        $localModifications = empty($localModifications) ? [] : explode("\n", $localModifications);
 
         return $localModifications;
     }
