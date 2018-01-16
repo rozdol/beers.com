@@ -45,12 +45,10 @@ class CronShell extends Shell
 
         if (empty($jobs)) {
             $lock->unlock();
-            $this->info('No jobs found.Exiting...');
-            exit;
+            return $this->out('No jobs found. Exiting...');
         }
 
         foreach ($jobs as $entity) {
-            $rrule = null;
             $instance = $this->ScheduledJobs->getInstance($entity->job, 'Job');
 
             if (!$instance) {
@@ -61,7 +59,7 @@ class CronShell extends Shell
 
             if ($this->ScheduledJobs->isTimeToRun($entity, $rrule)) {
                 $state = $instance->run($entity->options);
-
+                pr($state);
                 // @TODO: saving state response of shell execution.
             }
         }
