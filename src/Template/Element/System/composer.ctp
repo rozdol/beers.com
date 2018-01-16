@@ -29,6 +29,7 @@ $matchCounts = $this->SystemInfo->getComposerMatchCounts($packages);
                     <tr>
                         <th>Name</th>
                         <th>Version</th>
+                        <th>License</th>
                         <th>Description</th>
                     </tr>
                 </thead>
@@ -37,6 +38,7 @@ $matchCounts = $this->SystemInfo->getComposerMatchCounts($packages);
                         <tr>
                             <td><?= $package['name'] ?></td>
                             <td><?= $package['version'] ?></td>
+                            <td><?= implode(', ', $package['license']); ?></td>
                             <td><?= empty($package['description']) ? '&nbsp;' : $package['description'] ?></td>
                         </tr>
                     <?php endforeach; ?>
