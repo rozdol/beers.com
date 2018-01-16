@@ -50,15 +50,27 @@ class CronShell extends Shell
         }
 
         foreach ($jobs as $job) {
-            if (!empty($job['start_date'])) {
-                $config = RfcParser::parseRRule($job['recurrence'], $job['start_date']);
-            } else {
-                $config = RfcParser::parseRRule($job['recurrence']);
+            $rrule = null;
+
+            if (!empty($job['recurrence'])) {
+                if (!empty($job['start_date'])) {
+                    $config = RfcParser::parseRRule($job['recurrence'], $job['start_date']);
+                } else {
+                    $config = RfcParser::parseRRule($job['recurrence']);
+                }
+
+                $rrule = new RRule($config);
             }
 
-            $rrule = new RRule($config);
+            $instance = $this->ScheduledJobs->getInstance($job->command, 'Job');
 
-            pr($rrule);
+            $handler = $this->ScheduledJobs->getInstance($job->command, 'Handler');
+            dd([$instance, $handler]);
+            if ($this->ScheduledJobs->isTimeToRun($job, $rrule)) {
+                $state = $instance->run($job['arguments']);
+
+                //$this->ScheduledJobs->log($state);
+            }
         }
 
         $lock->unlock();
