@@ -2,8 +2,10 @@
 namespace App\Model\Table;
 
 use Cake\Datasource\EntityInterface;
+use Cake\Filesystem\Folder;
 use Cake\Utility\Inflector;
 use RRule\RRule;
+use RuntimeException;
 
 class ScheduledJobsTable extends AppTable
 {
@@ -23,6 +25,11 @@ class ScheduledJobsTable extends AppTable
         $this->addBehavior('Timestamp');
     }
 
+    /**
+     * Get Activated Job records
+     *
+     * @return array $result containing record entities.
+     */
     public function getActiveJobs()
     {
         $result = [];
@@ -81,13 +88,58 @@ class ScheduledJobsTable extends AppTable
      * @param \Cake\Datasource\EntityInterface $entity of the job
      * @param \RRule\RRule $rrule of the recurrence if any
      *
-     * @return boolean $state whether to run it or not.
+     * @return bool $state whether to run it or not.
      */
     public function isTimeToRun(EntityInterface $entity, RRule $rrule)
     {
         $state = true;
 
-
         return $state;
+    }
+
+    /**
+     * Get List of Existing Jobs
+     *
+     * Iterate through all Handlers and ask for jobs list
+     *
+     * @param array $options if any needed
+     *
+     * @return array $result of scripts for UI.
+     */
+    public function getList(array $options = [])
+    {
+        $result = $handlers = [];
+
+        $namespace = 'App\\ScheduledJobs\\Handlers\\';
+        $path = dirname(dirname(dirname(__FILE__))) . DS . 'ScheduledJobs' . DS . 'Handlers';
+
+        $dir = new Folder($path);
+        $contents = $dir->read(true, true);
+
+        if (empty($contents[1])) {
+            return $result;
+        }
+
+        foreach ($contents[1] as $file) {
+            if (substr($file, -4) !== '.php' || preg_match('/^Abstract/', $file)) {
+                continue;
+            }
+
+            $handlers[] = substr($file, 0, -4);
+        }
+
+        foreach ($handlers as $handlerName) {
+            $class = $namespace . $handlerName;
+
+            try {
+                $object = new $class();
+
+                $result = array_merge($result, $object->getList());
+            } catch (RuntimeException $e) {
+                pr($e->getMessage());
+            }
+        }
+
+        return $result;
     }
 }

@@ -50,7 +50,7 @@ class CakeShellHandler extends AbstractHandler
         // flatting command list
         foreach ($shellList as $plugin => $shells) {
             foreach ($shells as $name) {
-                $result[] = $this->prefix . '::' . ucfirst($plugin) . '::' . $name;
+                $result[] = $this->prefix . '::' . ucfirst($plugin) . ':' . $name;
             }
         }
 

@@ -1,13 +1,13 @@
 FIELD NAME,FIELD TYPE,REQUIRED,NOT SEARCHABLE,UNIQUE
 id,uuid
 name,string
-command,text
-arguments,text
-recurrence,text
+job,text
+options,text
 active,boolean
-priority,integer
+recurrence,text
 start_date,datetime
 end_date,datetime
+priority,integer
 created,datetime
 modified,datetime
 created_by,related(Users)

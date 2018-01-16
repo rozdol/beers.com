@@ -11,15 +11,51 @@ class CakeShellJob implements JobInterface
 
     protected $arguments = '';
 
+    /**
+     * Default construct
+     *
+     * @param string $command for the scripts.
+     */
     public function __construct($command = '')
     {
         $this->command = $command;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function run($arguments = null)
     {
-        $state = [];
+        $this->arguments = $arguments;
+        $parts = $this->parseCommand();
 
-        return "./bin/cake " . $this->command . " " . $this->arguments;
+        $command = $this->operator . ' ' . implode(' ', $parts) . ' ' . $this->arguments;
+
+        exec($command, $output, $state);
+
+        $result = [
+            'state' => ($state > 0) ? false : true,
+            'response' => $output,
+        ];
+
+        return $result;
+    }
+
+    /**
+     * Parsing Command string into script
+     *
+     * @return array $shell containing required command parts to be used.
+     */
+    protected function parseCommand()
+    {
+        $shell = [];
+        list($prefix, $fullCommand) = explode('::', $this->command, 2);
+
+        // cutting off App prefix as it's not used anywhere.
+        if (preg_match('/^(.*)\:(.*)/', $fullCommand, $matches)) {
+            $shell[] = $matches[2];
+        }
+
+        return $shell;
     }
 }

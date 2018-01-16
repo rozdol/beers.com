@@ -3,8 +3,8 @@ namespace App\Shell;
 
 use Cake\Console\Shell;
 use Cake\ORM\TableRegistry;
-use RRule\RRule;
 use RRule\RfcParser;
+use RRule\RRule;
 
 /**
  * Cron shell command.
@@ -35,7 +35,6 @@ class CronShell extends Shell
      */
     public function main()
     {
-
         $this->info('Running cron...');
         $this->ScheduledJobs = TableRegistry::get('ScheduledJobs');
 
@@ -49,40 +48,32 @@ class CronShell extends Shell
             exit;
         }
 
-        foreach ($jobs as $job) {
+        foreach ($jobs as $entity) {
             $rrule = null;
+            $instance = $this->ScheduledJobs->getInstance($entity->job, 'Job');
 
-            if (!empty($job['recurrence'])) {
-                if (!empty($job['start_date'])) {
-                    $config = RfcParser::parseRRule($job['recurrence'], $job['start_date']);
+            if (!$instance) {
+                continue;
+            }
+
+            if (!empty($entity->recurrence)) {
+                if (!empty($entity->start_date)) {
+                    $config = RfcParser::parseRRule($entity->recurrence, $entity->start_date);
                 } else {
-                    $config = RfcParser::parseRRule($job['recurrence']);
+                    $config = RfcParser::parseRRule($entity->recurrence);
                 }
 
                 $rrule = new RRule($config);
             }
 
-            $instance = $this->ScheduledJobs->getInstance($job->command, 'Job');
+            if ($this->ScheduledJobs->isTimeToRun($entity, $rrule)) {
+                $state = $instance->run($entity->options);
 
-            $handler = $this->ScheduledJobs->getInstance($job->command, 'Handler');
-            dd([$instance, $handler]);
-            if ($this->ScheduledJobs->isTimeToRun($job, $rrule)) {
-                $state = $instance->run($job['arguments']);
-
-                //$this->ScheduledJobs->log($state);
+                // @TODO: saving state response of shell execution.
             }
         }
 
         $lock->unlock();
         $this->out('Lock released. Exiting...');
-        /*
-            1. [x]Locker::on()
-            2. [x]$table->getActiveJobs();
-            3. From entity: RuleObject $rrule, ArgumentInterface $argsObject, CommandInterface $command.
-            4. CronShell.php checks RuleOBject (run or not).
-            if ($rrule->isOk()) {
-                5. JobRunner->run($command, $Arguments);
-            }
-        */
     }
 }

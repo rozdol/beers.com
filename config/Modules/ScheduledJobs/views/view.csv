@@ -1,5 +1,5 @@
 PANEL NAME,FIRST COLUMN FIELD NAME,SECOND COLUMN FIELD NAME
 Details,name,active
-Details,command,arguments
+Details,job,options
 Details,recurrence
 Details,created,modified
