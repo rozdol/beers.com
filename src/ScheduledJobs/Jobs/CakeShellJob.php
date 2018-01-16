@@ -49,10 +49,10 @@ class CakeShellJob implements JobInterface
     protected function parseCommand()
     {
         $shell = [];
-        list($prefix, $fullCommand) = explode('::', $this->command, 2);
+        $parts = explode('::', $this->command, 2);
 
         // cutting off App prefix as it's not used anywhere.
-        if (preg_match('/^(.*)\:(.*)/', $fullCommand, $matches)) {
+        if (preg_match('/^(.*)\:(.*)/', $parts[1], $matches)) {
             $shell[] = $matches[2];
         }
 

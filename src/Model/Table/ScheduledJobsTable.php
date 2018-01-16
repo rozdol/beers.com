@@ -66,7 +66,8 @@ class ScheduledJobsTable extends AppTable
             return $instance;
         }
 
-        list($handlerName, $shellCommand) = explode('::', $command, 2);
+        $parts = explode('::', $command, 2);
+        $handlerName = $parts[0];
 
         $dir = Inflector::camelize(Inflector::pluralize($type));
         $suffix = Inflector::camelize(Inflector::singularize($type));
