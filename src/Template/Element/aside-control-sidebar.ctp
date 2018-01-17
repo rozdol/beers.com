@@ -10,7 +10,7 @@ $table = TableRegistry::get('LogAudit');
 
 $cacheKey = 'recent_activity_' . $user['id'];
 $history = Cache::read($cacheKey);
-if (!$history) {
+if (false === $history) {
     $history = $table
         ->find('all')
         ->limit(10)
