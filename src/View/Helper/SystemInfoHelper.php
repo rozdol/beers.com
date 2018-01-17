@@ -170,9 +170,7 @@ class SystemInfoHelper extends Helper
         $localModificationsCommand = $this->getLocalModificationsCommand();
 
         $localModifications = trim(shell_exec($localModificationsCommand));
-        if (!empty($localModifications)) {
-            $localModifications = explode("\n", $localModifications);
-        }
+        $localModifications = empty($localModifications) ? [] : explode("\n", $localModifications);
 
         return $localModifications;
     }
@@ -217,7 +215,7 @@ class SystemInfoHelper extends Helper
      */
     public function getNumberOfCpus()
     {
-        $numCpus = null;
+        $numCpus = 0;
         $cpuInfoFile = '/proc/cpuinfo';
         if (is_file($cpuInfoFile) && is_readable($cpuInfoFile)) {
             $cpuInfoFile = file($cpuInfoFile);
@@ -235,7 +233,7 @@ class SystemInfoHelper extends Helper
      */
     public function getTotalRam()
     {
-        $totalRam = null;
+        $totalRam = 'N/A';
         $memoryInfoFile = '/proc/meminfo';
         if (is_file($memoryInfoFile) && is_readable($memoryInfoFile)) {
             $memoryInfoFile = file($memoryInfoFile);
@@ -295,11 +293,11 @@ class SystemInfoHelper extends Helper
      *  getComposerMatchCounts method
      *
      * @param array $packages installed composer packages
+     * @param array $matchWords list of words to match
      * @return array packages matched specified words
      */
-    public function getComposerMatchCounts($packages)
+    public function getComposerMatchCounts(array $packages, array $matchWords)
     {
-        $matchWords = ['cakephp', 'qobo'];
         $matchCounts = [];
         foreach ($packages as $package) {
             // Concatenate all fields that we'll be matching against
