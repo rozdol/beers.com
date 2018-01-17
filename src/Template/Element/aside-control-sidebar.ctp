@@ -1,18 +1,27 @@
 <?php
+use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 
-$fhf = new FieldHandlerFactory();
+$factory = new FieldHandlerFactory();
 $table = TableRegistry::get('LogAudit');
-$history = $table
-    ->find('all')
-    ->limit(10)
-    ->where(['LogAudit.meta LIKE' => '%"user":"' . $user['id'] . '"%'])
-    ->distinct(['LogAudit.primary_key'])
-    ->order(['timestamp' => 'DESC'])
-    ->all();
+
+$cacheKey = 'recent_activity_' . $user['id'];
+$history = Cache::read($cacheKey);
+if (false === $history) {
+    $history = $table
+        ->find('all')
+        ->limit(10)
+        ->where(['LogAudit.meta LIKE' => '%"user":"' . $user['id'] . '"%'])
+        ->distinct(['LogAudit.primary_key'])
+        ->order(['timestamp' => 'DESC'])
+        ->all();
+
+    Cache::write($cacheKey, $history);
+}
+
 $hasActivity = false;
 ?>
 <aside class="control-sidebar control-sidebar-dark">
@@ -42,11 +51,11 @@ $hasActivity = false;
                 } catch (Exception $e) {
                     continue;
                 }
-                $label = $fhf->renderValue(
+                $label = $factory->renderValue(
                     $table,
                     $table->displayField(),
                     $entity->{$table->displayField()},
-                    [ 'renderAs' => 'plain']
+                    ['renderAs' => 'plain']
                 );
                 $hasActivity = true;
                 ?>
