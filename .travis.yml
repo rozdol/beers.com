@@ -4,10 +4,11 @@ dist: trusty
 language: php
 
 php:
-    - 5.6
-    - 7.0
-    - 7.1
-    - nightly
+  - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
+  - nightly
 
 node_js:
   - "7"
@@ -21,19 +22,21 @@ cache:
     - node_modules
 
 matrix:
-    fast_finish: true
-    allow_failures:
-        - php: nightly
+  fast_finish: true
+  allow_failures:
+    - php: 7.2
+    - php: nightly
 
 install:
-    - ./bin/composer install --no-interaction --no-progress --no-suggest
-    - yarn install
-    - mkdir -p build/logs
-    - ./bin/build app:install CHOWN_USER=$USER,CHGRP_GROUP=$USER,DB_NAME=app,DB_ADMIN_USER=root,DB_USER=root
+  - ./bin/composer validate --strict
+  - ./bin/composer install --no-interaction --no-progress --no-suggest
+  - yarn install
+  - mkdir -p build/logs
+  - ./bin/build app:install CHOWN_USER=$USER,CHGRP_GROUP=$USER,DB_NAME=app,DB_ADMIN_USER=root,DB_USER=root
 
 before_script:
-    - ./bin/phpserv >/dev/null 2>&1 &
-    - sleep 10
+  - ./bin/phpserv >/dev/null 2>&1 &
+  - sleep 10
 
 script:
   - yarn test
