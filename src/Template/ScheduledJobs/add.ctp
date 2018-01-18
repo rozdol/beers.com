@@ -111,7 +111,7 @@ $tableName = 'ScheduledJobs';
                             'type' => 'string',
                             'required' => false,
                         ];
-                        $inputField = $fhf->renderInput($tableName, 'recurrence', $entity->options, [
+                        $inputField = $fhf->renderInput($tableName, 'recurrence', $entity->recurrence, [
                             'fieldDefinitions' => $definition,
                         ]);
                         echo $inputField;
