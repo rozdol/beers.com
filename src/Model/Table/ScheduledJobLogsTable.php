@@ -97,10 +97,11 @@ class ScheduledJobLogsTable extends Table
      *
      * @param \Cake\Datasource\EntityInterface $entity of the scheduled job
      * @param array $state of the script response
+     * @param \Cake\I18n\Time $stamp of currently executed cron iteration
      *
      * @return mixed $result containing bool or inserted Id
      */
-    public function log(EntityInterface $entity, array $state = [], Time $stamp)
+    public function log(EntityInterface $entity, array $state, Time $stamp)
     {
         $logEntity = $this->newEntity();
 

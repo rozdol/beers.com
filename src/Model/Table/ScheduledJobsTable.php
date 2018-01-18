@@ -151,7 +151,6 @@ class ScheduledJobsTable extends AppTable
         return $state;
     }
 
-
     /**
      * Check Scheduled Jobs logs to avoid dups
      *
