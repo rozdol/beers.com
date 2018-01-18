@@ -10,7 +10,7 @@
     },
     "require": {
         "cakephp/migrations": "^1.6",
-        "cakephp/plugin-installer": "*",
+        "cakephp/plugin-installer": "^1.1",
         "consolidation/robo": "^1.1",
         "dereuromark/cakephp-databaselog": "^2.1",
         "mobiledetect/mobiledetectlib": "2.*",
