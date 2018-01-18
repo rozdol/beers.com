@@ -43,7 +43,7 @@ echo $this->Html->scriptBlock(
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <h4><?php echo __('Integrations'); ?></h4>
+            <h4><?php echo __('Scheduled Jobs'); ?></h4>
         </div>
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">

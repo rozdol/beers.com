@@ -36,13 +36,13 @@ $tableName = 'ScheduledJobs';
                 ?>
                          </div>
                <div class="col-xs-12 col-md-6">
-                <?php
+               <?php
                     $definition = [
-                        'name' => 'active',
-                        'type' => 'boolean',
+                        'name' => 'priority',
+                        'type' => 'integer',
                         'required' => false,
                     ];
-                    $inputField = $fhf->renderInput($tableName, 'active', $entity->active, [
+                    $inputField = $fhf->renderInput($tableName, 'priority', $entity->priority, [
                         'fieldDefinitions' => $definition,
                     ]);
                     echo $inputField;
@@ -69,18 +69,40 @@ $tableName = 'ScheduledJobs';
                 <div class="col-xs-12 col-md-6">
                     <?php
                         $definition = [
-                            'name' => 'priority',
-                            'type' => 'integer',
+                            'name' => 'options',
+                            'type' => 'text',
                             'required' => false,
                         ];
-                        $inputField = $fhf->renderInput($tableName, 'priority', $entity->priority, [
+                        $inputField = $fhf->renderInput($tableName, 'options', $entity->options, [
                             'fieldDefinitions' => $definition,
                         ]);
                         echo $inputField;
                     ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                <?php
+                    $definition = [
+                        'name' => 'active',
+                        'type' => 'boolean',
+                        'required' => false,
+                    ];
+                    $inputField = $fhf->renderInput($tableName, 'active', $entity->active, [
+                        'fieldDefinitions' => $definition,
+                    ]);
+                    echo $inputField;
+                ?>
+                </div>
+            </div>
+        </div> <!-- box-body -->
+    </div>
 
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <h3 class="box-title"><?= __('Recurrence');?></h3>
+        </div>
+        <div class="box-body">
             <div class="row">
                  <div class="col-xs-12 col-md-6">
                     <?php
@@ -95,21 +117,8 @@ $tableName = 'ScheduledJobs';
                         echo $inputField;
                     ?>
                 </div>
-
-                <div class="col-xs-12 col-md-6">
-                    <?php
-                        $definition = [
-                            'name' => 'options',
-                            'type' => 'text',
-                            'required' => false,
-                        ];
-                        $inputField = $fhf->renderInput($tableName, 'options', $entity->options, [
-                            'fieldDefinitions' => $definition,
-                        ]);
-                        echo $inputField;
-                    ?>
-                </div>
             </div>
+
 
             <div class="row">
                 <div class="col-xs-12 col-md-6">
@@ -142,8 +151,10 @@ $tableName = 'ScheduledJobs';
 
             </div>
 
-        </div> <!-- box-body -->
+
+        </div>
     </div>
+
 <?php
 echo $this->Form->button(__('Submit'), ['name' => 'btn_operation', 'value' => 'submit', 'class' => 'btn btn-primary']);
 echo '&nbsp;';
