@@ -1,10 +1,15 @@
 <?php
 namespace App\Model\Table;
 
+use ArrayObject;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\Filesystem\Folder;
 use Cake\I18n\Time;
+use Cake\ORM\Table;
 use Cake\Utility\Inflector;
+use CsvMigrations\Event\EventName;
 use DateTime;
 use RRule\RfcParser;
 use RRule\RRule;
@@ -26,6 +31,45 @@ class ScheduledJobsTable extends AppTable
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Muffin/Trash.Trash');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
+    {
+        $user = $this->getCurrentUser();
+
+        if (empty($user['id'])) {
+            return;
+        }
+
+        $entity->set('modified_by', $user['id']);
+        if ($entity->isNew()) {
+            $entity->set('created_by', $user['id']);
+        }
+    }
+
+    /**
+     * afterSave hook
+     *
+     * @param \Cake\Event\Event $event from the parent afterSave
+     * @param \Cake\Datasource\EntityInterface $entity from the parent afterSave
+     * @param \ArrayObject $options from the parent afterSave
+     * @return void
+     */
+    public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options)
+    {
+        $options['current_user'] = $this->getCurrentUser();
+
+        $ev = new Event(
+            (string)EventName::MODEL_AFTER_SAVE(),
+            $this,
+            ['entity' => $entity, 'options' => $options]
+        );
+
+        EventManager::instance()->dispatch($ev);
     }
 
     /**
@@ -135,6 +179,12 @@ class ScheduledJobsTable extends AppTable
             } catch (RuntimeException $e) {
                 pr($e->getMessage());
             }
+        }
+
+        $result = array_flip($result);
+
+        foreach ($result as $command => $caption) {
+            $result[$command] = $command;
         }
 
         return $result;
