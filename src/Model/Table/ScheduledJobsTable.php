@@ -138,7 +138,7 @@ class ScheduledJobsTable extends AppTable
      *
      * @return bool $state whether to run it or not.
      */
-    public function timeToRun(Time $now, RRule $rrule)
+    public function timeToInvoke(Time $now, RRule $rrule)
     {
         $state = false;
 
@@ -149,6 +149,22 @@ class ScheduledJobsTable extends AppTable
         }
 
         return $state;
+    }
+
+
+    /**
+     * Check Scheduled Jobs logs to avoid dups
+     *
+     * @param \Cake\Datasource\EntityInterface $entity of the job
+     * @param \RRule\RRule $rrule object of the job
+     *
+     * @return bool $invoked status whether it previously ran.
+     */
+    public function invokedBefore(EntityInterface $entity, RRule $rrule)
+    {
+        $invoked = false;
+
+        return $invoked;
     }
 
     /**

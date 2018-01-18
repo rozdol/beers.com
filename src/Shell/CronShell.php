@@ -37,6 +37,7 @@ class CronShell extends Shell
     {
         $this->info('Running cron...');
         $this->ScheduledJobs = TableRegistry::get('ScheduledJobs');
+        $this->ScheduledJobLogs = TableRegistry::get('ScheduledJobLogs');
 
         $lock = $this->Lock->lock(__FILE__, __CLASS__);
 
@@ -51,18 +52,19 @@ class CronShell extends Shell
         $now = Time::now();
 
         foreach ($jobs as $entity) {
-            $instance = $this->ScheduledJobs->getInstance($entity->job, 'Job');
+            $rrule = $this->ScheduledJobs->getRRule($entity);
+            $shouldRun = $this->ScheduledJobs->timeToInvoke($now, $rrule);
 
-            if (!$instance) {
+            if (!$shouldRun) {
                 continue;
             }
 
-            $rrule = $this->ScheduledJobs->getRRule($entity);
-
-            if ($this->ScheduledJobs->timeToRun($now, $rrule)) {
+            if (!$this->ScheduledJobs->invokedBefore($entity, $rrule)) {
+                $instance = $this->ScheduledJobs->getInstance($entity->job, 'Job');
                 $state = $instance->run($entity->options);
 
                 // @TODO: saving state response of shell execution.
+                $this->ScheduledJobLogs->log($entity, $state, $now);
             }
         }
 
