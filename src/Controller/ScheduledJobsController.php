@@ -30,7 +30,7 @@ class ScheduledJobsController extends BaseController
             $entity = $model->patchEntity($entity, $this->request->getData());
 
             if ($model->save($entity)) {
-                $this->Flash->succesS(__('Scheduled Job has been saved.'));
+                $this->Flash->success(__('Scheduled Job has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
