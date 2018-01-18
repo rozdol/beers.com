@@ -1,7 +1,7 @@
 {
     "name": "qobo/project-template-cakephp",
     "description": "Template for new CakePHP projects",
-    "license": "GPL-2.0",
+    "license": "MIT",
     "config": {
         "sort-packages": true,
         "platform": {
