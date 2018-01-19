@@ -63,7 +63,7 @@ class CronShell extends Shell
             $state = $instance->run($entity->options);
 
             // @TODO: saving state response of shell execution.
-            $this->ScheduledJobLogs->log($entity, $state, $now);
+            $this->ScheduledJobLogs->logJob($entity, $state, $now);
         }
 
         $lock->unlock();

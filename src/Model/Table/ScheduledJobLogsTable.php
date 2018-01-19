@@ -101,7 +101,7 @@ class ScheduledJobLogsTable extends Table
      *
      * @return mixed $result containing bool or inserted Id
      */
-    public function log(EntityInterface $entity, array $state, Time $stamp)
+    public function logJob(EntityInterface $entity, array $state, Time $stamp)
     {
         $logEntity = $this->newEntity();
 
