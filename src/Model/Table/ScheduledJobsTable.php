@@ -152,21 +152,6 @@ class ScheduledJobsTable extends AppTable
     }
 
     /**
-     * Check Scheduled Jobs logs to avoid dups
-     *
-     * @param \Cake\Datasource\EntityInterface $entity of the job
-     * @param \RRule\RRule $rrule object of the job
-     *
-     * @return bool $invoked status whether it previously ran.
-     */
-    public function invokedBefore(EntityInterface $entity, RRule $rrule)
-    {
-        $invoked = false;
-
-        return $invoked;
-    }
-
-    /**
      * Get List of Existing Jobs
      *
      * Iterate through all Handlers and ask for jobs list
