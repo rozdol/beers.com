@@ -12,5 +12,5 @@
 <?php
 // @todo find a way to load this as part of 'block' => 'css'
 echo $this->Html->css('custom');
+$this->Html->script('Qobo/Utils.QoboStorage.js', ['block' => 'script']);
 $this->Html->script('general.js', ['block' => 'scriptBottom']);
-
