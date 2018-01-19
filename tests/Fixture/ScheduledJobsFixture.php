@@ -52,20 +52,20 @@ class ScheduledJobsFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => '151cb74d-bd9c-40ce-b16e-72cf161a3094',
-            'name' => 'Lorem ipsum dolor sit amet',
-            'job' => 'Lorem ipsum dolor sit amet',
-            'options' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'recurrence' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'name' => 'Test Job',
+            'job' => 'CakeShell::App:foobar',
+            'options' => '',
+            'recurrence' => 'FREQ=MONTHLY',
             'active' => 1,
-            'priority' => 1,
-            'start_date' => '2018-01-18 15:47:16',
-            'end_date' => '2018-01-18 15:47:16',
+            'priority' => 100,
+            'start_date' => '2018-01-18 09:00:00',
+            'end_date' => null,
             'created' => '2018-01-18 15:47:16',
             'modified' => '2018-01-18 15:47:16',
-            'created_by' => 'aaf4cb07-3e55-4ea0-8920-42b5323a1405',
-            'modified_by' => 'bba90811-4720-4cbe-a654-24ded7be6c96',
-            'trashed' => '2018-01-18 15:47:16'
+            'created_by' => '00000000-0000-0000-0000-000000000001',
+            'modified_by' => '00000000-0000-0000-0000-000000000001',
+            'trashed' => null
         ],
     ];
 }

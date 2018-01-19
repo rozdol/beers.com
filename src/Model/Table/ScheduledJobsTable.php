@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
@@ -37,7 +36,7 @@ class ScheduledJobsTable extends AppTable
     /**
      * {@inheritDoc}
      */
-    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
+    public function beforeSave(Event $event, EntityInterface $entity, \ArrayObject $options)
     {
         $user = $this->getCurrentUser();
 
@@ -59,17 +58,17 @@ class ScheduledJobsTable extends AppTable
      * @param \ArrayObject $options from the parent afterSave
      * @return void
      */
-    public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options)
+    public function afterSave(Event $event, EntityInterface $entity, \ArrayObject $options)
     {
         $options['current_user'] = $this->getCurrentUser();
 
-        $ev = new Event(
+        $afterSaveEvent = new Event(
             (string)EventName::MODEL_AFTER_SAVE(),
             $this,
             ['entity' => $entity, 'options' => $options]
         );
 
-        EventManager::instance()->dispatch($ev);
+        EventManager::instance()->dispatch($afterSaveEvent);
     }
 
     /**
@@ -142,9 +141,9 @@ class ScheduledJobsTable extends AppTable
     {
         $state = false;
 
-        $dt = new DateTime($now->i18nFormat('yyyy-MM-dd HH:mm'), $now->timezone);
+        $dtNow = new DateTime($now->i18nFormat('yyyy-MM-dd HH:mm'), $now->timezone);
 
-        if ($rrule->occursAt($dt)) {
+        if ($rrule->occursAt($dtNow)) {
             $state = true;
         }
 
@@ -181,9 +180,9 @@ class ScheduledJobsTable extends AppTable
             }
         }
 
-        $result = array_flip($result);
+        $result = array_keys(array_flip($result));
 
-        foreach ($result as $command => $caption) {
+        foreach ($result as $command) {
             $result[$command] = $command;
         }
 
