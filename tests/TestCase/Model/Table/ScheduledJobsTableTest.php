@@ -76,6 +76,9 @@ class ScheduledJobsTableTest extends TestCase
 
     public function testGetInstance()
     {
+        $result = $this->ScheduledJobsTable->getInstance();
+        $this->assertNull($result);
+
         $result = $this->ScheduledJobsTable->getInstance('CakeShell::App:clean_modules_data', 'Handler');
 
         $this->assertInstanceOf('\App\ScheduledJobs\Handlers\CakeShellHandler', $result);
