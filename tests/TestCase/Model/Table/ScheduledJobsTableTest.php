@@ -73,4 +73,67 @@ class ScheduledJobsTableTest extends TestCase
         $this->assertNotEmpty($result);
         $this->assertInstanceOf('\Cake\ORM\ResultSet', $result);
     }
+
+    public function testGetInstance()
+    {
+        $result = $this->ScheduledJobsTable->getInstance('CakeShell::App:clean_modules_data', 'Handler');
+
+        $this->assertInstanceOf('\App\ScheduledJobs\Handlers\CakeShellHandler', $result);
+    }
+
+    public function testGetList()
+    {
+        $result = $this->ScheduledJobsTable->getList();
+
+        $this->assertTrue(is_array($result));
+        $this->assertNotEmpty($result);
+    }
+
+    public function testTimeToInvoke()
+    {
+        $time = new \Cake\I18n\Time('2018-01-18 09:00:00', 'UTC');
+
+        // in 1st scenario, the rule will be executed at the beginning of each hour.
+        // Due to that dtstart won't fall in condition.
+        $dtstart = new \DateTime('2018-01-18 08:10:00', new \DateTimeZone('UTC'));
+        $dtstartString = $dtstart->format('Y-m-d H:i:s');
+        $rrule = new \RRule\RRule(['FREQ' => 'HOURLY', 'DTSTART' => $dtstartString]);
+
+        $result = $this->ScheduledJobsTable->timeToInvoke($time, $rrule);
+        $this->assertFalse($result);
+
+        // in 2nd scenario, the rrule will be executed every minute, as
+        // previous time/date vars match FREQ condition.
+        $rrule2 = new \RRule\RRule(['FREQ' => 'MINUTELY', 'DTSTART' => $dtstartString]);
+        $result = $this->ScheduledJobsTable->timeToInvoke($time, $rrule2);
+        $this->assertTrue($result);
+
+        unset($rrule2);
+        unset($rrule);
+    }
+
+    /**
+     * @dataProvider providerGetRRule
+     */
+    public function testGetRRule($id, $expected)
+    {
+        $entity = $this->ScheduledJobsTable->get($id);
+
+        $result = $this->ScheduledJobsTable->getRRule($entity);
+
+        if (is_null($expected)) {
+            $this->assertEquals($result, $expected);
+        } else {
+            $this->assertInstanceOf($expected, $result);
+        }
+    }
+
+    public function providerGetRRule()
+    {
+        return [
+            ['00000000-0000-0000-0000-000000000001', '\RRule\RRule'],
+            ['00000000-0000-0000-0000-000000000002', '\RRule\RRule'],
+            ['00000000-0000-0000-0000-000000000003', null],
+        ];
+    }
 }

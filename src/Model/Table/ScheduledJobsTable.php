@@ -180,9 +180,10 @@ class ScheduledJobsTable extends AppTable
             }
         }
 
-        $result = array_keys(array_flip($result));
+        $commands = array_keys(array_flip($result));
+        $result = [];
 
-        foreach ($result as $command) {
+        foreach ($commands as $command) {
             $result[$command] = $command;
         }
 
