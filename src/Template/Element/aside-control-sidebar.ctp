@@ -26,7 +26,7 @@ $hasActivity = false;
 ?>
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs" id="aside-control-sidebar">
         <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
         <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
     </ul>
