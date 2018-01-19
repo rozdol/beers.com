@@ -126,7 +126,7 @@ $tableName = 'ScheduledJobs';
                         $definition = [
                             'name' => 'start_date',
                             'type' => 'datetime',
-                            'required' => false,
+                            'required' => true,
                         ];
                         $inputField = $fhf->renderInput($tableName, 'start_date', $entity->start_date, [
                             'fieldDefinitions' => $definition,
