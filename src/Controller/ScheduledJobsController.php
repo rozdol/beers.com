@@ -64,29 +64,24 @@ class ScheduledJobsController extends BaseController
             'contain' => [],
         ]);
 
+        $redirectUrl = ['action' => 'view', $entityId];
         $commands = $model->getList();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             if ($this->request->data('btn_operation') == 'cancel') {
-                return $this->redirect(['action' => 'view', $entityId]);
+                return $this->redirect($redirectUrl);
             }
 
             $entity = $model->patchEntity($entity, $this->request->getData());
-
             $saved = $model->save($entity);
 
             if ($saved) {
                 $this->Flash->success(__('The record has been saved.'));
-                $redirectUrl = $model->getParentRedirectUrl($model, $entity);
-
-                if (empty($redirectUrl)) {
-                    return $this->redirect(['action' => 'view', $entity->{$model->primaryKey()}]);
-                } else {
-                    return $this->redirect($redirectUrl);
-                }
             } else {
                 $this->Flash->error(__('This record could not be saved.'));
             }
+
+            return $this->redirect($redirectUrl);
         }
 
         $this->set(compact('entity', 'commands'));
