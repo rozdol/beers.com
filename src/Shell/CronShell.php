@@ -3,6 +3,7 @@ namespace App\Shell;
 
 use Cake\Console\Shell;
 use Cake\I18n\Time;
+use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use DateTime;
 
@@ -60,9 +61,13 @@ class CronShell extends Shell
             }
 
             $instance = $this->ScheduledJobs->getInstance($entity->job, 'Job');
-            $state = $instance->run($entity->options);
 
-            // @TODO: saving state response of shell execution.
+            if (!$instance) {
+                Log::warning("Failed to instantiate Job [{$entity->job}]");
+                continue;
+            }
+
+            $state = $instance->run($entity->options);
             $this->ScheduledJobLogs->logJob($entity, $state, $now);
         }
 
