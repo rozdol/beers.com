@@ -92,6 +92,24 @@ class ScheduledJobsTableTest extends TestCase
         $this->assertNotEmpty($result);
     }
 
+    /**
+     * @dataProvider providerTestIsValidFile
+     */
+    public function testIsValidFile($file, $expected)
+    {
+        $result = $this->ScheduledJobsTable->isValidFile($file);
+
+        $this->assertEquals($result, $expected);
+    }
+
+    public function providerTestIsValidFile()
+    {
+        return [
+            ['foobar.php', true],
+            ['foo.bar', false],
+        ];
+    }
+
     public function testTimeToInvoke()
     {
         $time = new \Cake\I18n\Time('2018-01-18 09:00:00', 'UTC');

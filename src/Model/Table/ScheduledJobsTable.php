@@ -223,7 +223,7 @@ class ScheduledJobsTable extends AppTable
      *
      * @return bool $valid result check.
      */
-    protected function isValidFile($file = null)
+    public function isValidFile($file = null)
     {
         $valid = true;
 
