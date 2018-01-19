@@ -34,7 +34,16 @@ class ScheduledJobsTable extends AppTable
     }
 
     /**
-     * {@inheritDoc}
+     * Before Save callback
+     *
+     * Triggered before saving Entity
+     * to save modified/created by user id
+     *
+     * @param \Cake\Event\Event $event broadcasted
+     * @param \Cake\Datasource\EntityInterface $entity to be saved
+     * @param \ArrayObject $options passed extras
+     *
+     * @return void
      */
     public function beforeSave(Event $event, EntityInterface $entity, \ArrayObject $options)
     {

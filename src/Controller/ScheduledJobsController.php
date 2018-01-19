@@ -10,14 +10,22 @@ use CsvMigrations\Controller\AppController as BaseController;
 class ScheduledJobsController extends BaseController
 {
     /**
-     * {@inheritDoc}
+     * Index method
+     *
+     * Returns a a list of scheduled jobs
+     *
+     * @return void|\Cake\Network\Response
      */
     public function index()
     {
     }
 
     /**
-     * {@inheritDoc}
+     * Add Scheduled Job instance
+     *
+     * Saving executing Scheduled Job with RRule params
+     *
+     * @return void|\Cake\Network\Response
      */
     public function add()
     {
@@ -43,12 +51,16 @@ class ScheduledJobsController extends BaseController
     }
 
     /**
-     * {@inheritDoc}
+     * Edit Scheduled Jobs record
+     *
+     * @param mixed $entityId of the scheduled job
+     *
+     * @return void|\Cake\Network\Response
      */
-    public function edit($id = null)
+    public function edit($entityId = null)
     {
         $model = $this->{$this->name};
-        $entity = $model->get($id, [
+        $entity = $model->get($entityId, [
             'contain' => [],
         ]);
 
@@ -56,7 +68,7 @@ class ScheduledJobsController extends BaseController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             if ($this->request->data('btn_operation') == 'cancel') {
-                return $this->redirect(['action' => 'view', $id]);
+                return $this->redirect(['action' => 'view', $entityId]);
             }
 
             $entity = $model->patchEntity($entity, $this->request->getData());
