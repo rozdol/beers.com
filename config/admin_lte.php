@@ -37,7 +37,7 @@ return [
             'show_social' => false,
         ],
         'templates' => [
-            'login' => 'login-default'
+            'login' => 'login-light'
         ]
     ],
 ];

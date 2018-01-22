@@ -5,7 +5,7 @@ $this->layout = 'AdminLTE/login';
 
 $element = (string)Configure::read('Theme.templates.login');
 if (! $this->elementExists($element)) {
-    $element = 'login-default';
+    $element = 'login-light';
 }
 
 echo $this->element($element);

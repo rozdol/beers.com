@@ -1,7 +1,7 @@
 <?php
 use Cake\Core\Configure;
 
-$this->Html->css('qobo-login', ['block' => 'css']);
+$this->Html->css('login-dark', ['block' => 'css']);
 
 $images = [
     '/img/qobo-robots-bg-design-bat.jpg',
