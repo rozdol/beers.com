@@ -1,9 +1,11 @@
 <?php
 namespace App\Shell;
 
+use App\Feature\Factory as FeatureFactory;
 use Cake\Console\Shell;
 use Cake\I18n\Time;
 use Cake\Log\Log;
+use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use DateTime;
 
@@ -14,6 +16,8 @@ class CronShell extends Shell
 {
 
     public $tasks = ['Lock'];
+
+    protected $featureName = 'ScheduledJobs';
 
     /**
      * Manage the available sub-commands along with their arguments and help
@@ -36,6 +40,12 @@ class CronShell extends Shell
      */
     public function main()
     {
+        $feature = FeatureFactory::get('Module' . DS . $this->featureName);
+
+        if (!$feature->isActive()) {
+            throw new NotFoundException();
+        }
+
         $this->info('Running cron...');
         $this->ScheduledJobs = TableRegistry::get('ScheduledJobs');
         $this->ScheduledJobLogs = TableRegistry::get('ScheduledJobLogs');
