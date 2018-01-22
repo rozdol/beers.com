@@ -1,18 +1,15 @@
 <?php
 use Cake\Core\Configure;
+use Cake\Filesystem\Folder;
 
 $this->Html->css('login-dark', ['block' => 'css']);
 
-$images = [
-    '/img/qobo-robots-bg-design-bat.jpg',
-    '/img/qobo-robots-bg-design-chameleon.jpg',
-    '/img/qobo-robots-bg-design-elephant.jpg',
-    '/img/qobo-robots-bg-design-shark.jpg',
-];
+$dir = new Folder(WWW_ROOT . '/img/login');
+$images = $dir->find();
 
 echo $this->Html->tag(
     'style',
-    '.login-page {' . $this->Html->style(['background-image' => 'url(' . $images[array_rand($images)] . ')']) . '}'
+    '.login-page {' . $this->Html->style(['background-image' => 'url(/img/login/' . $images[array_rand($images)] . ')']) . '}'
 );
 ?>
 <?= $this->Form->create() ?>
