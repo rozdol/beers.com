@@ -10,7 +10,6 @@ class ScheduledJobsFeatureTest extends TestCase
     public function testIsActive()
     {
         $config = Configure::read('Features.Module/ScheduledJobs');
-
         $feature = Factory::get('Module/ScheduledJobs');
 
         $this->assertEquals($config['active'], $feature->isActive());
@@ -19,11 +18,9 @@ class ScheduledJobsFeatureTest extends TestCase
     public function testEnable()
     {
         $feature = Factory::get('Module/ScheduledJobs');
-
         $feature->enable();
 
         $config = Configure::read('RolesCapabilities.accessCheck.skipControllers');
-
         $value = 'App\\Controller\\ScheduledJobsController';
 
         $this->assertFalse(array_search($value, $config));
