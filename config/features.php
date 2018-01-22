@@ -1,5 +1,7 @@
 <?php
 // Features configuration
 return [
-    'Features' => [],
+    'Features' => [
+        'Module' . DS . 'ScheduledJobs' => ['active' => false],
+    ],
 ];
