@@ -36,21 +36,17 @@ echo $this->Html->tag(
         ]) ?>
     </div>
     <div class="row">
+        <?php if (Configure::read('Users.RememberMe.active')) : ?>
         <div class="col-xs-12">
             <div class="checkbox icheck">
-                <?php
-                if (Configure::read('Users.RememberMe.active')) {
-                    echo $this->Form->input(Configure::read('Users.Key.Data.rememberMe'), [
-                        'type' => 'checkbox',
-                        'label' => ' ' . __d('Users', 'Remember Me'),
-                        'templates' => [
-                            'inputContainer' => '{{content}}'
-                        ]
-                    ]);
-                }
-                ?>
+                <?= $this->Form->input(Configure::read('Users.Key.Data.rememberMe'), [
+                    'type' => 'checkbox',
+                    'label' => ' ' . __d('Users', 'Remember Me'),
+                    'templates' => ['inputContainer' => '{{content}}']
+                ]); ?>
             </div>
         </div>
+        <?php endif; ?>
         <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <?= $this->Form->button(
                 __d('Users', 'Sign In'),

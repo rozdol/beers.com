@@ -1,30 +1,11 @@
-<?php $this->layout = 'AdminLTE/login'; ?>
-<?= $this->Form->create('User') ?>
-<?= $this->Flash->render('auth') ?>
-<?= $this->Flash->render() ?>
-<fieldset>
-    <div class="form-group has-feedback">
-        <div class="input-group">
-            <span class="input-group-addon">
-                <span class="fa fa-user"></span>
-            </span>
-            <?= $this->Form->input('reference', [
-                'required' => true,
-                'label' => false,
-                'placeholder' => 'Username',
-                'templates' => [
-                    'inputContainer' => '{{content}}'
-                ]
-            ]) ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-4">
-            <?= $this->Form->button(
-                '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> ' . __d('Users', 'Submit'),
-                ['class' => 'btn btn-primary btn-block btn-flat']
-            ); ?>
-        </div>
-    </div>
-    <?= $this->Form->end() ?>
-</fieldset>
+<?php
+use Cake\Core\Configure;
+
+$this->layout = 'AdminLTE/login';
+
+$element = (string)Configure::read('Theme.templates.reset-password');
+if (! $this->elementExists($element)) {
+    $element = 'reset-password-light';
+}
+
+echo $this->element($element);
