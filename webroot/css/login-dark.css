@@ -1,0 +1,75 @@
+.login-page {
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.login-box-body {
+    background: #0c1833;
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid #d2d6de;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.login-box-body form {
+    margin-bottom: 10px;
+}
+
+.login-box-body a,
+.login-box-body a:hover,
+.login-box-body a:active,
+.login-box-body a:focus {
+    color: #fff;
+}
+
+.login-box-body .btn-primary {
+    background-color: #00aef0;
+    border-color: #d2d6de;
+}
+
+.login-box-body .alert .close {
+    color: #fff;
+    opacity: .7;
+}
+
+.login-box-body .form-control {
+    background: #253048;
+    background: rgba(255, 255, 255, .1);
+    color: #fff;
+    border-radius: 4px;
+}
+
+.login-box-body .form-control:focus {
+    border-color: #00aef0;
+}
+
+.login-box-body .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #ccc;
+    opacity: 1; /* Firefox */
+}
+
+.login-box-body .form-control::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #ccc;
+}
+
+.login-box-body .form-control::-moz-placeholder { /* Firefox 19+ */
+  color: #ccc;
+}
+
+.login-box-body .form-control:-ms-input-placeholder { /* IE 10+ */
+  color: #ccc;
+}
+
+.login-box-body .form-control::-ms-input-placeholder { /* Microsoft Edge */
+    color: #ccc;
+}
+
+.login-box-body .form-control:-moz-placeholder { /* Firefox 18- */
+  color: #ccc;
+}

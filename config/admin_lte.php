@@ -23,7 +23,6 @@ if (file_exists($path)) {
     $logoMini = $logo;
 }
 
-
 return [
     'Theme' => [
         'folder' => ROOT,
@@ -36,6 +35,7 @@ return [
             'show_remember' => true,
             'show_register' => false,
             'show_social' => false,
-        ]
+        ],
+        'version' => 'dark'
     ],
 ];
