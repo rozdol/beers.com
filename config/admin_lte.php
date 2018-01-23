@@ -36,8 +36,6 @@ return [
             'show_register' => false,
             'show_social' => false,
         ],
-        'templates' => [
-            'login' => 'login-light'
-        ]
+        'version' => 'dark'
     ],
 ];

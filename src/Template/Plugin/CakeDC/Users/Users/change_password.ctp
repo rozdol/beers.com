@@ -4,7 +4,7 @@ use Cake\Core\Configure;
 if (! $validatePassword) {
     $this->layout = 'AdminLTE/login';
 
-    $element = (string)Configure::read('Theme.templates.change-password');
+    $element = 'change-password-' . (string)Configure::read('Theme.version');
     if (! $this->elementExists($element)) {
         $element = 'change-password-light';
     }

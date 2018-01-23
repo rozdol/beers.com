@@ -3,7 +3,7 @@ use Cake\Core\Configure;
 
 $this->layout = 'AdminLTE/login';
 
-$element = (string)Configure::read('Theme.templates.reset-password');
+$element = 'reset-password-' . (string)Configure::read('Theme.version');
 if (! $this->elementExists($element)) {
     $element = 'reset-password-light';
 }
