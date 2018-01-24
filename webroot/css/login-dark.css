@@ -14,6 +14,11 @@
     background: rgba(255, 255, 255, .1);
     border: 1px solid #d2d6de;
     border-radius: 4px;
+}
+
+.login-box-body h3,
+.login-box-body label,
+.login-box-body legend {
     color: #fff;
 }
 
@@ -22,15 +27,35 @@
 }
 
 .login-box-body a,
-.login-box-body a:hover,
 .login-box-body a:active,
-.login-box-body a:focus {
+.login-box-body a:focus,
+.login-box-body a:hover {
     color: #fff;
+}
+
+.login-box-body .btn-danger,
+.login-box-body .btn-default,
+.login-box-body .btn-info,
+.login-box-body .btn-primary,
+.login-box-body .btn-success,
+.login-box-body .btn-warning {
+    border-color: #d2d6de;
 }
 
 .login-box-body .btn-primary {
     background-color: #00aef0;
-    border-color: #d2d6de;
+}
+
+.login-box-body .btn-default,
+.login-box-body .btn-default:active,
+.login-box-body .btn-default:focus,
+.login-box-body .btn-default:hover {
+    background-color: transparent;
+}
+
+.login-box-body .btn-default:active,
+.login-box-bod .btn-default:active:hover {
+    color: #8c8c8c;
 }
 
 .login-box-body .alert .close {
@@ -43,6 +68,10 @@
     background: rgba(255, 255, 255, .1);
     color: #fff;
     border-radius: 4px;
+}
+
+.login-box-body .form-control option {
+    background: #253048;
 }
 
 .login-box-body .form-control:focus {
