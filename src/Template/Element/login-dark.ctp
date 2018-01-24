@@ -13,25 +13,35 @@ echo $this->Html->tag(
 <?= $this->Form->create() ?>
 <fieldset>
     <div class="form-group">
-        <?= $this->Form->input('username', [
-            'required' => true,
-            'label' => false,
-            'placeholder' => 'Username',
-            'autofocus' => true,
-            'templates' => [
-                'inputContainer' => '{{content}}'
-            ]
-        ]) ?>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="fa fa-user"></span>
+            </span>
+            <?= $this->Form->input('username', [
+                'required' => true,
+                'label' => false,
+                'placeholder' => 'Username',
+                'autofocus' => true,
+                'templates' => [
+                    'inputContainer' => '{{content}}'
+                ]
+            ]) ?>
+        </div>
     </div>
     <div class="form-group">
-        <?= $this->Form->input('password', [
-            'required' => true,
-            'label' => false,
-            'placeholder' => 'Password',
-            'templates' => [
-                'inputContainer' => '{{content}}'
-            ]
-        ]) ?>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="fa fa-lock"></span>
+            </span>
+            <?= $this->Form->input('password', [
+                'required' => true,
+                'label' => false,
+                'placeholder' => 'Password',
+                'templates' => [
+                    'inputContainer' => '{{content}}'
+                ]
+            ]) ?>
+        </div>
     </div>
     <div class="row">
         <?php if (Configure::read('Users.RememberMe.active')) : ?>

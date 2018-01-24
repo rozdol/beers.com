@@ -12,20 +12,30 @@ echo $this->Html->tag(
 <?= $this->Form->create('User') ?>
 <fieldset>
     <div class="form-group">
-        <?= $this->Form->input('Users.password', [
-            'type' => 'password',
-            'required' => true,
-            'label' => false,
-            'placeholder' => __('Password')
-        ]); ?>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="fa fa-lock"></span>
+            </span>
+            <?= $this->Form->input('Users.password', [
+                'type' => 'password',
+                'required' => true,
+                'label' => false,
+                'placeholder' => __('Password')
+            ]); ?>
+        </div>
     </div>
     <div class="form-group">
-        <?= $this->Form->input('Users.password_confirm', [
-            'type' => 'password',
-            'required' => true,
-            'label' => false,
-            'placeholder' => __('Password Confirm')
-        ]); ?>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="fa fa-lock"></span>
+            </span>
+            <?= $this->Form->input('Users.password_confirm', [
+                'type' => 'password',
+                'required' => true,
+                'label' => false,
+                'placeholder' => __('Password Confirm')
+            ]); ?>
+        </div>
     </div>
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
