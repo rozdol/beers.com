@@ -1,8 +1,6 @@
 <?php
 use Cake\Filesystem\Folder;
 
-$this->Html->css('login-dark', ['block' => 'css']);
-
 $dir = new Folder(WWW_ROOT . '/img/login');
 $images = $dir->find();
 

@@ -1,4 +1,8 @@
-<?php use Cake\Core\Configure; ?>
+<?php
+use Cake\Core\Configure;
+
+$this->Html->css('login-' . (string)(Configure::read('Theme.version') ?: 'light'), ['block' => 'css']);
+?>
 <!DOCTYPE html>
 <html>
     <head>
