@@ -5,6 +5,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Utility\Inflector;
 use CsvMigrations\Event\EventName;
+use CsvMigrations\FieldHandlers\FieldHandlerInterface;
 
 class MagicDefaultValueListener implements EventListenerInterface
 {
@@ -99,30 +100,16 @@ class MagicDefaultValueListener implements EventListenerInterface
         $result = null;
 
         // No way to figure out user without fieldHandler
-        if (empty($fieldHandler) || !is_object($fieldHandler)) {
+        if (! $fieldHandler instanceof FieldHandlerInterface) {
             return $result;
         }
 
-        // No way to figure out user without AppView instance
-        if (!property_exists($fieldHandler, 'cakeView') || empty($fieldHandler->cakeView)) {
+        $view = $fieldHandler->getConfig()->getView();
+
+        if (empty($view->viewVars['user']['id'])) {
             return $result;
         }
 
-        // No way to figure out user without view variables
-        if (!property_exists($fieldHandler->cakeView, 'viewVars')) {
-            return $result;
-        }
-
-        // No way to figure out user without user view variable
-        if (empty($fieldHandler->cakeView->viewVars['user'])) {
-            return $result;
-        }
-
-        // We are in luck if the user ID is set
-        if (!empty($fieldHandler->cakeView->viewVars['user']['id'])) {
-            $result = $fieldHandler->cakeView->viewVars['user']['id'];
-        }
-
-        return $result;
+        return $view->viewVars['user']['id'];
     }
 }
