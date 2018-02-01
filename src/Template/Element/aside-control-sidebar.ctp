@@ -6,16 +6,16 @@ use Cake\Utility\Inflector;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 
 $factory = new FieldHandlerFactory();
-$table = TableRegistry::get('LogAudit');
 
 $cacheKey = 'recent_activity_' . $user['id'];
 $history = Cache::read($cacheKey);
 if (false === $history) {
-    $history = $table
+    $history = TableRegistry::get('LogAudit')
         ->find('all')
+        ->select(['source', 'primary_key', 'timestamp'])
         ->limit(10)
-        ->where(['LogAudit.meta LIKE' => '%"user":"' . $user['id'] . '"%'])
-        ->distinct(['LogAudit.primary_key'])
+        ->where(['user_id' => $user['id']])
+        ->distinct(['primary_key'])
         ->order(['timestamp' => 'DESC'])
         ->all();
 
@@ -26,7 +26,7 @@ $hasActivity = false;
 ?>
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs" id="aside-control-sidebar">
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
         <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
         <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
     </ul>
