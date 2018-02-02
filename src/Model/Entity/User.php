@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use CakeDC\Users\Model\Entity\User as BaseUser;
+use Cake\Core\Configure;
 
 class User extends BaseUser
 {
@@ -39,10 +40,25 @@ class User extends BaseUser
      */
     protected function _getImage($image)
     {
+        if (Configure::read('Users.gravatar.active') && $this->get('email')) {
+            return $this->getGravatar($this->get('email'));
+        }
+
         if (is_resource($image)) {
             return stream_get_contents($image);
         }
 
         return $image;
+    }
+
+    /**
+     * Gravatar getter.
+     *
+     * @param string $email User email
+     * @return string
+     */
+    private function getGravatar($email)
+    {
+        return sprintf('https://www.gravatar.com/avatar/%s?s=150&d=mm&r=g', md5(strtolower(trim($email))));
     }
 }
