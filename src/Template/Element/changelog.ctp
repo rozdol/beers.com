@@ -46,22 +46,18 @@ $iconColors = [
         <ul class="timeline">
 <?php foreach ($changelog as $record) : ?>
     <?php
-    $meta = json_decode($record->meta);
-    if (empty($meta)) {
-        $meta = new StdClass();
-    }
     $date = $record->timestamp->i18nFormat('d MMM. YYY');
 
     $url = '#';
     $username = __('Unknown');
-    if (isset($meta->user)) {
-        $user = $usersTable->findById($meta->user)->first();
-        $username = empty($user) ? $meta->user : $user->name;
+    if ($record->get('user_id')) {
+        $user = $usersTable->findById($record->user_id)->first();
+        $username = empty($user) ? $record->user_id : $user->name;
         $url = $this->Url->build([
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'view',
-            $meta->user
+            $record->user_id
         ]);
     }
     ?>

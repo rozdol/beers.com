@@ -36,9 +36,11 @@ trait ChangelogTrait
         for now we are using just the timestamp assuming that different will edit the same record at the same time is
         very unlikely.
          */
-        $query = TableRegistry::get($this->_tableLog)->findByPrimaryKey($id)
-            ->order([$this->_tableLog . '.timestamp' => 'DESC'])
-            ->group($this->_tableLog . '.timestamp');
+        $query = TableRegistry::get($this->_tableLog)->find('all')
+            ->where(['primary_key' => $id, 'source' => $this->name])
+            ->select(['timestamp', 'user_id', 'original', 'changed'])
+            ->order(['timestamp' => 'DESC'])
+            ->group('timestamp');
 
         $modelAlias = $this->{$this->name}->alias();
         $methodName = 'moduleAlias';

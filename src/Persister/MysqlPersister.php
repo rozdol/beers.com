@@ -17,6 +17,7 @@ class MysqlPersister implements PersisterInterface
     {
         foreach ($auditLogs as $log) {
             $eventType = $log->getEventType();
+            $meta = $log->getMetaInfo();
             $data = [
                 'timestamp' => $log->getTimestamp(),
                 'transaction' => $log->getTransactionId(),
@@ -26,7 +27,8 @@ class MysqlPersister implements PersisterInterface
                 'parent_source' => $log->getParentSourceName(),
                 'changed' => 'delete' === $eventType ? null : json_encode($log->getChanged()),
                 'original' => 'delete' === $eventType ? null : json_encode($log->getOriginal()),
-                'meta' => json_encode($log->getMetaInfo())
+                'meta' => json_encode($meta),
+                'user_id' => isset($meta['user']) ? $meta['user'] : null
             ];
             // save audit log
             TableRegistry::get('LogAudit')->save(new Entity($data));
