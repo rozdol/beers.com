@@ -110,6 +110,7 @@ class ScheduledJobsTable extends AppTable
      * Retrieve job object that can be run
      *
      * @param string $command from DB entity
+     * @param string $type Job type
      *
      * @return \App\ScheduledJobs\JobInterface $instance of the job.
      */
@@ -141,8 +142,8 @@ class ScheduledJobsTable extends AppTable
     /**
      * Is Time To Run the command
      *
-     * @paam \Cake\I18n\Time $now system time
-     * @param \RRule\RRule $rrule of the recurrence if any
+     * @param \Cake\I18n\Time $now system time
+     * @param \RRule\RRule $rrule rule of the recurrence if any
      *
      * @return bool $state whether to run it or not.
      */
@@ -203,6 +204,7 @@ class ScheduledJobsTable extends AppTable
      * List Handlers in the directory
      *
      * @param string $path of the directory
+     * @return array
      */
     protected function scanDir($path)
     {
