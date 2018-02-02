@@ -11,7 +11,8 @@ class LockTask extends Shell
     /**
      * Generate lock file. Abort if lock file is already generated.
      *
-     * @param string $file optional lockfile name
+     * @param string $file Path to the shell script which acquires lock
+     * @param string $class Name of the shell class which acquires lock
      * @return \Qobo\Utils\Utility\FileLock
      */
     public function lock($file, $class)
@@ -34,14 +35,14 @@ class LockTask extends Shell
     /**
      * getLockFileName method
      *
-     * @param string $fileName - path to the shell script which acquires lock
-     * @param string $className - name of the shell class which acquires lock
-     * @return string - unique lock file name
+     * @param string $file Path to the shell script which acquires lock
+     * @param string $class Name of the shell class which acquires lock
+     * @return string Unique lock file name
      */
-    private function getLockFileName($fileName, $className)
+    private function getLockFileName($file, $class)
     {
-        $className = Inflector::underscore(preg_replace('/\\\/', '', $className));
-        $lockFile = $className . '_' . md5($fileName) . '.lock';
+        $class = Inflector::underscore(preg_replace('/\\\/', '', $class));
+        $lockFile = $class . '_' . md5($file) . '.lock';
 
         return $lockFile;
     }
