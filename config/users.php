@@ -16,4 +16,7 @@ return [
         // 'CakeDC/Users.RememberMe',
         'Form',
     ],
+    'Users.gravatar' => [
+        'active' => true
+    ]
 ];
