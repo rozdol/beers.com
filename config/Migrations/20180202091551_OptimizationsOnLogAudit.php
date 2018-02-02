@@ -1,7 +1,7 @@
 <?php
 use Migrations\AbstractMigration;
 
-class AddIndexesToLogAudit extends AbstractMigration
+class OptimizationsOnLogAudit extends AbstractMigration
 {
     /**
      * Change Method.
@@ -13,6 +13,16 @@ class AddIndexesToLogAudit extends AbstractMigration
     public function change()
     {
         $table = $this->table('log_audit');
+
+        $table->addColumn('user_id', 'uuid', [
+            'default' => null,
+            'null' => true,
+        ]);
+
+        // Change timestamp type to dateTime
+        $table->changeColumn('timestamp', 'datetime');
+
+        // Add indexes
         $table->addIndex([
             'user_id',
         ], [
@@ -37,6 +47,7 @@ class AddIndexesToLogAudit extends AbstractMigration
             'name' => 'BY_PRIMARY_KEY_AND_SOURCE',
             'unique' => false,
         ]);
+
         $table->update();
     }
 }
