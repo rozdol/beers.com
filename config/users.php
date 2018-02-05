@@ -17,6 +17,6 @@ return [
         'Form',
     ],
     'Users.gravatar' => [
-        'active' => true
+        'active' => false
     ]
 ];
