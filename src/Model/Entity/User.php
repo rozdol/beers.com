@@ -41,7 +41,11 @@ class User extends BaseUser
             return $this->getGravatar($this->get('email'));
         }
 
-        return $this->get('image');
+        if ($this->get('image')) {
+            return $this->get('image');
+        }
+
+        return '/img/user-image-160x160.png';
     }
 
     /**
@@ -52,6 +56,6 @@ class User extends BaseUser
      */
     private function getGravatar($email)
     {
-        return sprintf('https://www.gravatar.com/avatar/%s?s=150&d=mm&r=g', md5(strtolower(trim($email))));
+        return sprintf('https://www.gravatar.com/avatar/%s?s=160&d=mm&r=g', md5(strtolower(trim($email))));
     }
 }
