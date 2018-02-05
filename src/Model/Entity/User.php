@@ -9,7 +9,7 @@ class User extends BaseUser
     /**
      * @var $_virtual - make virtual fields visible to export to JSON or array
      */
-    protected $_virtual = ['name', 'image', 'image_src'];
+    protected $_virtual = ['name', 'image_src'];
 
     /**
      * Virtual Field: name
