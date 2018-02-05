@@ -9,7 +9,7 @@ class User extends BaseUser
     /**
      * @var $_virtual - make virtual fields visible to export to JSON or array
      */
-    protected $_virtual = ['name', 'image'];
+    protected $_virtual = ['name', 'image', 'image_src'];
 
     /**
      * Virtual Field: name
@@ -28,6 +28,20 @@ class User extends BaseUser
         }
 
         return $result;
+    }
+
+    /**
+     * Virtual field image_src accessor.
+     *
+     * @return string
+     */
+    protected function _getImageSrc()
+    {
+        if (Configure::read('Users.gravatar.active') && $this->get('email')) {
+            return $this->getGravatar($this->get('email'));
+        }
+
+        return $this->get('image');
     }
 
     /**
