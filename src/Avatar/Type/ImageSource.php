@@ -28,6 +28,10 @@ final class ImageSource implements AvatarInterface
      */
     public function get()
     {
-        return str_replace(array_keys($this->options), array_values($this->options), '{{src}}');
+        return str_replace(
+            array_keys($this->options),
+            array_values($this->options),
+            '{{src}}'
+        );
     }
 }
