@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
+use App\Avatar\Service as AvatarService;
+use App\Avatar\Type\ImageSource;
 use CakeDC\Users\Model\Entity\User as BaseUser;
 use Cake\Core\Configure;
 
@@ -37,15 +39,19 @@ class User extends BaseUser
      */
     protected function _getImageSrc()
     {
-        if (Configure::read('Users.gravatar.active') && $this->get('email')) {
-            return $this->getGravatar($this->get('email'));
+        $type = Configure::read('Users.avatar.type') ?: ImageSource::class;
+        $options = (array)Configure::read('Users.avatar.options');
+
+        if ($this->get('email')) {
+            $options['{{email}}'] = $this->get('email');
         }
 
         if ($this->get('image')) {
-            return $this->get('image');
+            $options['{{src}}'] = $this->get('image');
         }
 
-        return '/img/user-image-160x160.png';
+        $service = new AvatarService(new $type($options));
 
+        return $service->getImage();
     }
 }
