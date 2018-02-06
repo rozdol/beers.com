@@ -46,16 +46,6 @@ class User extends BaseUser
         }
 
         return '/img/user-image-160x160.png';
-    }
 
-    /**
-     * Gravatar getter.
-     *
-     * @param string $email User email
-     * @return string
-     */
-    private function getGravatar($email)
-    {
-        return sprintf('https://www.gravatar.com/avatar/%s?s=160&d=mm&r=g', md5(strtolower(trim($email))));
     }
 }
