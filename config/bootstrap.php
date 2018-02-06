@@ -284,4 +284,4 @@ FeatureFactory::init();
 /**
  * Register custom database type(s)
  */
-Type::map('base64image', 'App\Database\Type\EncodedImageType');
+Type::map('base64', 'App\Database\Type\EncodedFileType');

@@ -7,11 +7,11 @@ use InvalidArgumentException;
 use PDO;
 
 /**
- * Base64 Encoded image type converter.
+ * Base64 Encoded file type converter.
  *
- * Use to convert base64 eoncoded image data between PHP and the database types.
+ * Use to convert base64 eoncoded file data between PHP and the database types.
  */
-class EncodedImageType extends Type
+class EncodedFileType extends Type
 {
     /**
      * {@inheritDoc}
@@ -19,15 +19,15 @@ class EncodedImageType extends Type
     public function toDatabase($value, Driver $driver)
     {
         if (! is_array($value)) {
-            throw new InvalidArgumentException('Encoded image value must be an array');
+            throw new InvalidArgumentException('Encoded file value must be an array');
         }
 
         if (! isset($value['type'])) {
-            throw new InvalidArgumentException('Encoded image "type" is not defined');
+            throw new InvalidArgumentException('Encoded file "type" is not defined');
         }
 
         if (! isset($value['tmp_name'])) {
-            throw new InvalidArgumentException('Encoded image "tmp_name" is not defined');
+            throw new InvalidArgumentException('Encoded file "tmp_name" is not defined');
         }
 
         return sprintf('data:%s;base64,%s', $value['type'], base64_encode(file_get_contents($value['tmp_name'])));
