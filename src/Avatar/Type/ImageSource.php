@@ -18,7 +18,7 @@ final class ImageSource implements AvatarInterface
     /**
      * {@inheritDoc}
      */
-    public function __construct(array $options = [])
+    public function __construct(array $options)
     {
         $this->options = array_merge($this->options, $options);
     }
