@@ -1,14 +1,17 @@
 <?php
 namespace App\Model\Entity;
 
+use App\Avatar\Service as AvatarService;
+use App\Avatar\Type\ImageSource;
 use CakeDC\Users\Model\Entity\User as BaseUser;
+use Cake\Core\Configure;
 
 class User extends BaseUser
 {
     /**
      * @var $_virtual - make virtual fields visible to export to JSON or array
      */
-    protected $_virtual = ['name', 'image'];
+    protected $_virtual = ['name', 'image_src'];
 
     /**
      * Virtual Field: name
@@ -30,19 +33,25 @@ class User extends BaseUser
     }
 
     /**
-     * User image accessor
+     * Virtual field image_src accessor.
      *
-     * Converts image resource into a string.
-     *
-     * @param resource $image Image resource
      * @return string
      */
-    protected function _getImage($image)
+    protected function _getImageSrc()
     {
-        if (is_resource($image)) {
-            return stream_get_contents($image);
+        $type = Configure::read('Users.avatar.type') ?: ImageSource::class;
+        $options = (array)Configure::read('Users.avatar.options');
+
+        if ($this->get('email')) {
+            $options['{{email}}'] = $this->get('email');
         }
 
-        return $image;
+        if ($this->get('image')) {
+            $options['{{src}}'] = $this->get('image');
+        }
+
+        $service = new AvatarService(new $type($options));
+
+        return $service->getImage();
     }
 }

@@ -59,6 +59,7 @@ use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Core\Plugin;
+use Cake\Database\Type;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
 use Cake\Event\EventManager;
@@ -279,3 +280,8 @@ Configure::load('admin_lte', 'default');
 // Feature Factory initialization
 // IMPORTANT: this line should be placed at the end of the bootstrap file.
 FeatureFactory::init();
+
+/**
+ * Register custom database type(s)
+ */
+Type::map('base64', 'App\Database\Type\EncodedFileType');

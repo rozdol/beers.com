@@ -102,10 +102,7 @@ class UsersController extends AppController
             return $this->redirect($this->request->referer());
         }
 
-        // base64 encode image
-        $image = 'data:' . $data['type'] . ';base64,' . base64_encode(file_get_contents($data['tmp_name']));
-
-        $user = $this->Users->patchEntity($user, ['image' => $image]);
+        $user = $this->Users->patchEntity($user, ['image' => $data]);
 
         if ($this->Users->save($user)) {
             if ($hasImage) {

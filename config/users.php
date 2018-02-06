@@ -16,4 +16,13 @@ return [
         // 'CakeDC/Users.RememberMe',
         'Form',
     ],
+    'Users.avatar' => [
+        'type' => 'App\Avatar\Type\ImageSource',
+        'options' => [
+            '{{size}}' => 160, // used in Gravatar to set the desired image size
+            '{{default}}' => 'mm', // used in Gravatar to set the default/fallback themed image
+            '{{rating}}' => 'g', // used in Gravatar to set the desired image appropriateness rating
+            '{{src}}' => '/img/user-image-160x160.png' // used in ImageSource to set the default/fallback image
+        ]
+    ]
 ];

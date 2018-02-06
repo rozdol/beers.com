@@ -13,26 +13,13 @@
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <?php
-                    if (!empty($user['image'])) {
-                        echo '<img src="' . $user['image'] . '" class="user-image" />';
-                    } else {
-                        echo $this->Html->image('user-image-160x160.png', ['class' => 'user-image']);
-                    }
-                    ?>
+                    <?= $this->Html->tag('img', false, ['src' => $user['image_src'], 'class' => 'user-image']) ?>
                     <span class="hidden-xs"><?= $user['name']; ?></span>
                 </a>
                 <ul class="dropdown-menu">
                     <!-- User image -->
                     <li class="user-header">
-                        <?php
-                        if (!empty($user['image'])) {
-                            echo '<img src="' . $user['image'] . '" class="img-circle" />';
-                        } else {
-                            echo $this->Html->image('user-image-160x160.png', ['class' => 'img-circle']);
-                        }
-                        ?>
-
+                        <?= $this->Html->tag('img', false, ['src' => $user['image_src'], 'class' => 'img-circle']) ?>
                         <p>
                             <?= $user['name']; ?>
                             <small><?= __d('cake', 'Member since') ?> <?= $user['created']->i18nFormat('LLLL yyyy') ?></small>

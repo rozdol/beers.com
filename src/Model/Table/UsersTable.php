@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use CakeDC\Users\Model\Table\UsersTable as Table;
+use Cake\Database\Schema\TableSchema;
 use Cake\Validation\Validator;
 use CsvMigrations\ConfigurationTrait;
 use CsvMigrations\FieldTrait;
@@ -26,6 +27,16 @@ class UsersTable extends Table
 
         // set table/module configuration
         $this->setConfig($this->table());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function _initializeSchema(TableSchema $schema)
+    {
+        $schema->columnType('image', 'base64');
+
+        return $schema;
     }
 
     /**
