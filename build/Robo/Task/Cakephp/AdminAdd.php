@@ -45,6 +45,7 @@ class AdminAdd extends \Qobo\Robo\AbstractCmdTask
      */
     protected $tokenKeys = [
         ['username', '--username='],
-        ['password', '--password=']
+        ['password', '--password='],
+        ['email', '--email']
     ];
 }
