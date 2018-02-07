@@ -39,8 +39,8 @@ class User extends BaseUser
      */
     protected function _getImageSrc()
     {
-        $type = Configure::read('Users.avatar.type') ?: ImageSource::class;
-        $options = (array)Configure::read('Users.avatar.options');
+        $type = Configure::read('Avatar.default') ?: ImageSource::class;
+        $options = (array)Configure::read('Avatar.options.' . $type);
 
         if ($this->get('email')) {
             $options['{{email}}'] = $this->get('email');
