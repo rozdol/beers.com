@@ -17,7 +17,7 @@ class LoggerTest extends TestCase
 
     public function testImageSourceWithOptions()
     {
-        $service = new Service(new ImageSource(['{{src}}' => '/img/foo.png']));
+        $service = new Service(new ImageSource(['src' => '/img/foo.png']));
 
         $this->assertEquals('/img/foo.png', $service->getImage());
     }
@@ -35,10 +35,10 @@ class LoggerTest extends TestCase
     public function testGravatarWithOptions()
     {
         $options = [
-            '{{email}}' => 'john.smith@company.com',
-            '{{size}}' => 256,
-            '{{default}}' => 'identicon',
-            '{{rating}}' => 'pg'
+            'email' => 'john.smith@company.com',
+            'size' => 256,
+            'default' => 'identicon',
+            'rating' => 'pg'
         ];
 
         $service = new Service(new Gravatar($options));
@@ -46,10 +46,10 @@ class LoggerTest extends TestCase
         $this->assertEquals(
             sprintf(
                 'https://www.gravatar.com/avatar/%s?size=%d&default=%s&rating=%s',
-                md5($options['{{email}}']),
-                $options['{{size}}'],
-                $options['{{default}}'],
-                $options['{{rating}}']
+                md5($options['email']),
+                $options['size'],
+                $options['default'],
+                $options['rating']
             ),
             $service->getImage()
         );
