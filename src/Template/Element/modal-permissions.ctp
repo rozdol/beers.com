@@ -138,7 +138,7 @@ $permissions = $query->all();
                                     '/roles-capabilities/permissions/delete/' . $permission->get($primaryKey),
                                     [
                                         'class' => 'btn btn-default btn-xs',
-                                        'confirm' => 'Are you sure to delete this permission?',
+                                        'confirm' => 'Are you sure you want to delete this permission?',
                                         'data' => [
                                             'plugin' => $this->plugin,
                                             'model' => $this->name,
