@@ -43,11 +43,11 @@ class User extends BaseUser
         $options = (array)Configure::read('Avatar.options.' . $type);
 
         if ($this->get('email')) {
-            $options['{{email}}'] = $this->get('email');
+            $options['email'] = $this->get('email');
         }
 
         if ($this->get('image')) {
-            $options['{{src}}'] = $this->get('image');
+            $options['src'] = $this->get('image');
         }
 
         $service = new AvatarService(new $type($options));

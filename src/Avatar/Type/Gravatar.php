@@ -12,10 +12,10 @@ final class Gravatar implements AvatarInterface
      * @var array
      */
     private $options = [
-        '{{email}}' => '',
-        '{{size}}' => 160,
-        '{{default}}' => 'mm',
-        '{{rating}}' => 'g'
+        'email' => '',
+        'size' => 160,
+        'default' => 'mm',
+        'rating' => 'g'
     ];
 
     /**
@@ -25,7 +25,7 @@ final class Gravatar implements AvatarInterface
     {
         $this->options = array_merge($this->options, $options);
 
-        $this->options['{{email}}'] = md5(strtolower(trim($this->options['{{email}}'])));
+        $this->options['email'] = md5(strtolower(trim($this->options['email'])));
     }
 
     /**
@@ -33,10 +33,12 @@ final class Gravatar implements AvatarInterface
      */
     public function get()
     {
-        return str_replace(
-            array_keys($this->options),
-            array_values($this->options),
-            'https://www.gravatar.com/avatar/{{email}}?size={{size}}&default={{default}}&rating={{rating}}'
+        return sprintf(
+            'https://www.gravatar.com/avatar/%s?size=%d&default=%s&rating=%s',
+            $this->options['email'],
+            $this->options['size'],
+            $this->options['default'],
+            $this->options['rating']
         );
     }
 }
