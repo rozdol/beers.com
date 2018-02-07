@@ -4,7 +4,7 @@ use App\Avatar\Type\ImageSource;
 
 return [
     'Avatar' => [
-        'default' => ImageSource::class,
+        'default' => Gravatar::class,
         'options' => [
             ImageSource::class => [
                 'src' => '/img/user-image-160x160.png' // sets the default/fallback image
