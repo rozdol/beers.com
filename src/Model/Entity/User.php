@@ -43,7 +43,6 @@ class User extends BaseUser
             $service = new AvatarService(new ImageSource(['src' => $this->get('image')]));
 
             return $service->getImage();
-
         }
 
         $type = Configure::read('Avatar.default');
