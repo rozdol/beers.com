@@ -44,16 +44,9 @@ Router::defaultRouteClass('Route');
 /**
  * Add api route to handle our REST API functionality
  */
-Router::prefix('api', function ($routes) {
-    /**
-     * handle json file extension on API calls
-     */
-    $routes->extensions(['json']);
-    $routes->resources('Users');
-    $routes->resources('LanguageTranslations');
-
-    $routes->fallbacks('DashedRoute');
-});
+if (!class_exists('ApiRoutes')) {
+    include('routes_api.php');
+}
 
 Router::scope('/', function ($routes) {
     /**
