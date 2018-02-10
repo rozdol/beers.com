@@ -12,7 +12,7 @@ class Analyser extends StaticAnalyser
      * auto-generated swagger annotations content.
      *
      * @param string $filename Path to a php file.
-     * @return Analysis
+     * @return \Swagger\Analysis
      */
     public function fromFile($filename)
     {
