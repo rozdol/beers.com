@@ -11,7 +11,6 @@
     "require": {
         "cakephp/migrations": "^1.6",
         "cakephp/plugin-installer": "^1.1",
-        "consolidation/robo": "^1.1",
         "dereuromark/cakephp-databaselog": "^2.1",
         "mobiledetect/mobiledetectlib": "2.*",
         "pelago/emogrifier": "^1.2",
@@ -23,6 +22,7 @@
         "qobo/cakephp-search": "^17.0",
         "qobo/cakephp-utils": "^6.0",
         "qobo/phake-builder": "^5.0",
+        "qobo/qobo-robo": "^1.0",
         "qobo/qobo-robo-cakephp": "^1.0"
     },
     "require-dev": {
