@@ -17,7 +17,7 @@ class Analyser extends StaticAnalyser
     public function fromFile($filename)
     {
         $className = basename($filename, '.php');
-        $className = App::className($className, 'Controller/Api');
+        $className = App::className($className, 'Controller/Api/V1/V0');
 
         $tokens = [];
         if ($className) {

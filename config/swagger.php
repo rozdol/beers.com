@@ -23,7 +23,7 @@ return [
         'library' => [
             'api' => [
                 'include' => [
-                    ROOT . DS . 'src' . DS . 'Controller' . DS . 'Api'
+                    ROOT . DS . 'src' . DS . 'Controller' . DS . 'Api' . DS . 'V1' . DS . 'V0'
                 ]
             ]
         ],
