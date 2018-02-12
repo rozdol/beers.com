@@ -20,6 +20,7 @@
 
 use Cake\Core\Plugin;
 use Cake\Routing\Router;
+use App\Routing\ApiRouter;
 
 /**
  * The default class to use for all routes
@@ -44,9 +45,9 @@ Router::defaultRouteClass('Route');
 /**
  * Add api route to handle our REST API functionality
  */
-if (!class_exists('ApiRoutes')) {
-    include('routes_api.php');
-}
+$apiRouter = new ApiRouter();
+$apiRouter->setRoutes();
+
 
 Router::scope('/', function ($routes) {
     /**

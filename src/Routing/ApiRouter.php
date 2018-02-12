@@ -1,18 +1,61 @@
 <?php
+/**
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link      http://cakephp.org CakePHP(tm) Project
+ * @since     0.2.9
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
+ */
+namespace App\Routing;
+
 use Cake\Core\App;
 use Cake\Filesystem\Folder;
 use Cake\Routing\Router;
+use Cake\Routing\Route\DashedRoute;
 
-class ApiRoutes
+/**
+ * ApiRouter Class
+ *
+ * Class responsible for setting up fallback
+ * API routes, including API-versioned routes.
+ *
+ * Both `api/:controller/:action` and `api/v1.0/:controller/:action` would
+ * point to the same `V1/V0` sub-namespace.
+ *
+ * API versions codebase is located within subdirs in attempt to isolate the
+ * business logic of the application.
+ *
+ */
+class ApiRouter
 {
+    /** @var array $_versions */
     protected $_versions = [];
 
-    public function __construct() {
-        $this->_getVersions();
-        $this->_setRoutes();
+    /**
+     * Default constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->getVersions();
     }
 
-    protected function _getVersions() {
+    /**
+     * Get API Versions based on subdirs
+     *
+     * Setting API version routes in $_versions.
+     *
+     * @return void
+     */
+    public function getVersions()
+    {
         $apiPath = App::path('Controller/Api')[0];
 
         $dir = new Folder();
@@ -42,17 +85,34 @@ class ApiRoutes
         }
     }
 
+    /**
+     * Get API Route path
+     *
+     * @param string $version of the path
+     * @return string with prefixes api path version.
+     */
     protected function _getApiRoutePath($version)
     {
         return '/api/v' . $version;
     }
 
+    /**
+     * Get API Route prefix
+     *
+     * @param array $versions that contain subdirs of prefix
+     * @return string with combined API routing.
+     */
     protected function _getApiRoutePrefix($versions)
     {
         return 'api/v' . implode('/v', $versions);
     }
 
-    protected function _setRoutes()
+    /**
+     * Setting Router API prefixes and nested API versiones
+     *
+     * @return void
+     */
+    public function setRoutes()
     {
         $versions = $this->_versions;
         $default = 'api/v1/v0';
@@ -78,5 +138,3 @@ class ApiRoutes
         });
     }
 }
-
-new ApiRoutes();
