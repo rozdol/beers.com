@@ -12,7 +12,7 @@ final class ImageSource implements AvatarInterface
      * @var array
      */
     private $options = [
-        '{{src}}' => '/img/user-image-160x160.png',
+        'src' => '/img/user-image-160x160.png',
     ];
 
     /**
@@ -28,10 +28,6 @@ final class ImageSource implements AvatarInterface
      */
     public function get()
     {
-        return str_replace(
-            array_keys($this->options),
-            array_values($this->options),
-            '{{src}}'
-        );
+        return sprintf('%s', $this->options['src']);
     }
 }

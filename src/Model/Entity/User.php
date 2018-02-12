@@ -39,16 +39,15 @@ class User extends BaseUser
      */
     protected function _getImageSrc()
     {
-        $type = Configure::read('Users.avatar.type') ?: ImageSource::class;
-        $options = (array)Configure::read('Users.avatar.options');
-
-        if ($this->get('email')) {
-            $options['{{email}}'] = $this->get('email');
-        }
-
         if ($this->get('image')) {
-            $options['{{src}}'] = $this->get('image');
+            $service = new AvatarService(new ImageSource(['src' => $this->get('image')]));
+
+            return $service->getImage();
         }
+
+        $type = Configure::read('Avatar.default');
+        $options = (array)Configure::read('Avatar.options.' . $type);
+        $options['email'] = (string)$this->get('email');
 
         $service = new AvatarService(new $type($options));
 
