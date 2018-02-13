@@ -1,9 +1,11 @@
 <?php
 namespace App\Test\TestCase;
 
+use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
+use Cake\Filesystem\Folder;
 
 class AppTest extends TestCase
 {
@@ -36,6 +38,35 @@ class AppTest extends TestCase
             $message = "Plugin $plugin is not loaded but [" . implode(' or ', (array)$config) . "] is true";
             $this->assertEquals($enabled, Plugin::loaded($plugin), $message);
         }
+    }
+
+    /**
+     * Test API files moved to its subdirectories.
+     *
+     * Making sure that with API versioning being
+     * introduced we're not left with not moved
+     * controller files
+     */
+    public function testApiFilesPlacedCorrectly()
+    {
+        $dir = App::path('Controller/Api')[0];
+        $dir = new Folder($dir);
+
+        $contents = $dir->read(true, true);
+        $found = 0;
+
+        // checking for scanned files
+        if (!empty($contents[1])) {
+            foreach ($contents[1] as $file) {
+                if (preg_match('/^(.*)Controller\.php$/', $file, $matches)) {
+                    if (count($matches) > 1) {
+                        $found++;
+                    }
+                }
+            }
+        }
+
+        $this->assertEquals(0, $found, "Check API directory. Not all controllers were moved to corresponding API subdirs");
     }
 
     public function pluginProvider()
