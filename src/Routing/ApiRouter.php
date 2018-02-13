@@ -2,7 +2,6 @@
 namespace App\Routing;
 
 use Cake\Core\App;
-use Cake\Filesystem\Folder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
 use Qobo\Utils\Utility;
