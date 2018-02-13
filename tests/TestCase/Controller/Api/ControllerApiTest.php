@@ -15,11 +15,7 @@ class ControllerApiTest extends TestCase
 
         // checking for scanned files
         foreach ($dir->find('^\w+Controller\.php$') as $file) {
-            if (preg_match('/^(.*)Controller\.php$/', $file, $matches)) {
-                if (count($matches) > 1) {
-                    $found++;
-                }
-            }
+            $found++;
         }
 
         $this->assertEquals(0, $found, "Check API directory. Not all controllers were moved to corresponding API subdirs");
