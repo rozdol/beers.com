@@ -4,8 +4,8 @@ namespace App\Test\TestCase;
 use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
-use Cake\TestSuite\TestCase;
 use Cake\Filesystem\Folder;
+use Cake\TestSuite\TestCase;
 
 class AppTest extends TestCase
 {
