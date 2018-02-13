@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shell;
+namespace App\Shell\Task;
 
 use Cake\Console\Shell;
 use Cake\Datasource\ConnectionManager;
@@ -8,7 +8,7 @@ use Cake\Datasource\ConnectionManager;
 /**
  *  Set value of the datetime field in case it allows null and it has value 0000-00-00 00:00:0
  */
-class FixNullDatesShell extends Shell
+class Upgrade20170316Task extends Shell
 {
     /**
      *  Default datetime field name
@@ -19,6 +19,27 @@ class FixNullDatesShell extends Shell
      *  Default field type
      */
     const TARGET_COLUMN_TYPE = 'datetime';
+
+    /**
+     * Configure option parser
+     *
+     * @return \Cake\Console\ConsoleOptionParser
+     */
+    public function getOptionParser()
+    {
+        $parser = parent::getOptionParser();
+        $parser->description('Convert datetime fields, which accept null value, from 0000-00-00 00:00:00 to NULL');
+        $parser->addArgument('target_table', [
+            'help' => 'Target table to fix datetime null value (optional)',
+            'required' => false,
+        ]);
+        $parser->addArgument('target_field', [
+            'help' => 'Target field to fix datetime null value (optional)',
+            'required' => false,
+        ]);
+
+        return $parser;
+    }
 
     /**
      *  Run update process
@@ -56,26 +77,5 @@ class FixNullDatesShell extends Shell
                 }
             }
         }
-    }
-
-    /**
-     * Configure option parser
-     *
-     * @return \Cake\Console\ConsoleOptionParser
-     */
-    public function getOptionParser()
-    {
-        $parser = parent::getOptionParser();
-        $parser->description('Get datetime field');
-        $parser->addArgument('target_table', [
-            'help' => 'Target table to fix datetime null value (optional)',
-            'required' => false,
-        ]);
-        $parser->addArgument('target_field', [
-            'help' => 'Target field to fix datetime null value (optional)',
-            'required' => false,
-        ]);
-
-        return $parser;
     }
 }
