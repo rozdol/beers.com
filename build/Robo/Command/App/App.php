@@ -213,7 +213,7 @@ class App extends AbstractCommand
             ->email($this->getValue('DEV_EMAIL', $env));
 
         $shellScripts = [
-           'fix_null_dates',
+            'upgrade',
             'group import',
             'group assign',
             'role import',
@@ -376,7 +376,7 @@ class App extends AbstractCommand
         $tasks []= $this->taskCakephpMigration();
 
         $shellScripts = [
-           'fix_null_dates',
+            'upgrade',
             'group import',
             'group assign',
             'role import',
