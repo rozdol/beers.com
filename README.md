@@ -18,7 +18,11 @@ Developed by [Qobo](https://www.qobo.biz), used in [Qobrix](https://qobrix.com).
 Install
 -------
 
-When starting a new CakePHP project, do the following:
+There are two ways to install and start using this project template.
+
+### Composer Project
+
+You can create a new project from this template using composer.
 
 ```bash
 composer create-project qobo/project-template-cakephp example.com
@@ -29,17 +33,34 @@ git commit -m "Initial commit"
 ./bin/build app:install DB_NAME=my_app,PROJECT_NAME="My Project",PROJECT_VERSION="v1.0.0"
 ```
 
+### Git
+
+Alternatively, you can start using this project by cloning the git repository
+and changing remote origin.
+
+```bash
+git clone https://github.com/QoboLtd/project-template-cakephp.git example.com
+cd example.com
+./bin/build app:install DB_NAME=my_app,PROJECT_NAME="My Project",PROJECT_VERSION="v1.0.0"
+git remote remove origin
+git remote add origin git@github.com:YOUR-VENDOR/YOUR-REPOSITORY.git
+git push origin master
+```
+
 Update
 ------
 
 When you want to update your project with the latest
-and greatest project-template, do the following:
+and greatest project-template-cakephp, do the following:
 
 ```
 cd exmample.com
 git pull https://github.com/QoboLtd/project-template-cakephp
 ```
 
+The above will only work if you installed it via the git clone.  For composer
+project installations you might need to add `--allow-unrelated-histories`
+parameter.
 
 Usage
 -----
@@ -99,7 +120,7 @@ Test
 
 ### PHPUnit
 
-project-template brings quite a bit of setup for testing your projects.  The
+project-template-cakephp brings quite a bit of setup for testing your projects.  The
 first part of this setup is [PHPUnit](https://phpunit.de/).  To try it out,
 runt the following command (don't worry if it fails, we'll get to it shortly):
 
@@ -110,31 +131,65 @@ runt the following command (don't worry if it fails, we'll get to it shortly):
 If it didn't work for you, here are some of the things to try:
 
 * If `phpunit` command wasn't found, try `composer install` and then run the command again.  Chances are phpunit was removed during the `app:install`, which runs composer with `--no-dev` parameter.
-* If you had some other issue, please [let us know](https://github.com/QoboLtd/project-template/issues/new).
+* If you had some other issue, please [let us know](https://github.com/QoboLtd/project-template-cakephp/issues/new).
 
 ### Travis CI
 
 Continious Integration is a tool that helps to run your tests whenever you do any
 changes on your code base (commit, merge, etc).  There are many tools that you can
-use, but project-template provides an example integration with [Travis CI](https://travis-ci.org/).
+use, but project-template-cakephp provides an example integration with [Travis CI](https://travis-ci.org/).
 
 Have a look at `.travis.yml` file, which describes the environment matrix, project installation
-steps and ways to run the test suite.  For your real project, based on project-template, you'd probably
+steps and ways to run the test suite.  For your real project, based on project-template-cakephp, you'd probably
 want to remove the example tests from the file.
 
 ### Examples
 
-project-template provides a few examples of how to write and organize unit tests.  Have a look
+project-template-cakephp provides a few examples of how to write and organize unit tests.  Have a look
 in the `tests/` folder.  Now you have **NO EXCUSE** for not testing your applications!
 
-###Configurations
+Known Issues
+------------
 
-####Analytics
+### MySQL 5.7 / MariaDB 10
 
-Load Google Analytics in your project by doing the following.
+Running this project template with MySQL 5.7 or MariaDB 10 sometimes causes fatal
+errors with SQL queries.  We are looking for better ways to catch and fix those, but
+if you encounter them in your environment, please adjust your MySQL / MariaDB
+configuration for SQL mode.
+
+SQL mode can be adjusted by either setting it in the `etc/my.cnf` file like so:
 
 ```
-<?= $this->element('Snippet/google_analytics', ['ua' => 'UA goes here']); ?>
+[mysqld]
+sql-mode="NO_ZERO_IN_DATE,NO_ZERO_DATE"
 ```
-The parameter is optional as it defaults to App.analytics configuration.
+
+Or, alternatively, via an SQL query, like so:
+
+```
+mysql > SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+```
+
+See [this StackOverflow
+thread](https://stackoverflow.com/questions/23921117/disable-only-full-group-by) for
+more information.
+
+Here are a few examples of the issues and how to fix them.
+
+```
+Error: SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect datetime
+value: '2017-11-30T13:30:48+02:00' for column 'timestamp' at row 1
+```
+
+If you encounter the above error (often seen on Fedora 27 or above), make sure
+your SQL mode includes "NO_ZERO_IN_DATE,NO_ZERO_DATE".
+
+```
+Error: SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #1 of
+SELECT list is not in GROUP BY clause and contains nonaggregated column ...
+```
+
+If you encounter the above error (often seen on Ubuntu 16.05), make sure
+your SQL mode DOES NOT include "ONLY_FULL_GROUP_BY".
 
