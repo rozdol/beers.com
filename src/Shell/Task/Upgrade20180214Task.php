@@ -5,6 +5,7 @@ namespace App\Shell\Task;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Filesystem\File;
+use Cake\Filesystem\Folder;
 use InvalidArgumentException;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
@@ -69,7 +70,19 @@ class Upgrade20180214Task extends Shell
         $path = rtrim($path, DS);
 
         foreach (Utility::findDirs($path) as $module) {
-            $this->migrateReports($path, $module);
+            $this->migrateReports($module);
+
+            $lists = $this->getLists($path . DS . $module . DS . 'lists');
+            if (empty($lists)) {
+                $this->info(sprintf('migrateLists skipped, lists not found in %s', $module));
+
+                continue;
+            }
+
+            foreach ($lists as $list) {
+                $file = new File($list);
+                $this->migrateLists($module, $file->name());
+            }
         }
     }
 
@@ -97,44 +110,6 @@ class Upgrade20180214Task extends Shell
     }
 
     /**
-     * CSV Module path getter, example: /var/www/html/my-project/config/Modules/Articles
-     *
-     * @param string $path CSV modules base path, example: /var/www/html/my-project/config/Modules
-     * @param string $module Module name
-     * @return string
-     */
-    private function getModulePath($path, $module)
-    {
-        return $path . DS . $module;
-    }
-
-    /**
-     * Source file path getter, example: /var/www/html/my-project/config/Modules/Articles/config/reports.ini
-     *
-     * @param array $config File config based on type, for example: ['dir' => 'config', 'name' => 'reports', 'ext' => 'ini']
-     * @param string $path CSV modules base path, example: /var/www/html/my-project/config/Modules
-     * @param string $module Module name
-     * @return string
-     */
-    private function getSourcePath($config, $path, $module)
-    {
-        return $this->getModulePath($path, $module) . DS . $config['dir'] . DS . $config['name'] . '.' . $config['ext'];
-    }
-
-    /**
-     * Destination file path getter, example: /var/www/html/my-project/config/Modules/Articles/config/reports.json
-     *
-     * @param array $config File config based on type, for example: ['dir' => 'config', 'name' => 'reports', 'ext' => 'ini']
-     * @param string $path CSV modules base path, example: /var/www/html/my-project/config/Modules
-     * @param string $module Module name
-     * @return string
-     */
-    private function getDestPath($config, $path, $module)
-    {
-        return $this->getModulePath($path, $module) . DS . $config['dir'] . DS . $config['name'] . '.' . static::EXTENSION;
-    }
-
-    /**
      * Converts data into JSON.
      *
      * @param mixed $data Source file data
@@ -148,58 +123,97 @@ class Upgrade20180214Task extends Shell
     /**
      * Main method responsible for migrating reports.ini files to reports.json.
      *
-     * @param string $path CSV modules base path, example: /var/www/html/my-project/config/Modules
      * @param string $module Module name
      * @return void
      */
-    private function migrateReports($path, $module)
+    private function migrateReports($module)
     {
-        $config = ['dir' => 'config', 'name' => 'reports', 'ext' => 'ini'];
+        $config = new ModuleConfig(ConfigType::REPORTS(), $module);
 
-        $source = new File($this->getSourcePath($config, $path, $module));
-        if (! $source->exists()) {
-            $this->info(
-                sprintf('Skipping "%s": source file "%s" does not exist', __FUNCTION__, $source->path)
-            );
+        try {
+            $source = new File($config->find());
+        } catch (InvalidArgumentException $e) {
+            $this->info(sprintf('%s skipped, reports not found in %s', __FUNCTION__, $module));
 
             return;
         }
 
-        $dest = new File($this->getDestPath($config, $path, $module), true);
+        $dest = new File(
+            $source->info()['dirname'] . DS . $source->info()['filename'] . '.' . static::EXTENSION,
+            true
+        );
+
         if (! $dest->exists()) {
-            $this->err(
-                sprintf('Skipping "%s": failed to create destination file "%s"', __FUNCTION__, $dest->path)
-            );
-
-            return;
+            $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
         }
 
-        if (! $dest->write($this->toJSON($this->parse(ConfigType::REPORTS(), $module)))) {
-            $this->err(
-                sprintf('Skipping "%s": failed to write data on "%s"', __FUNCTION__, $dest->path)
-            );
+        $data = $config->parse();
 
-            $dest->delete();
-
-            return;
+        if (! $dest->write($this->toJSON($data))) {
+            $this->abort(sprintf('Failed to write data on "%s"', $dest->path));
         }
 
-        if ($source->delete()) {
-            $this->warn(sprintf('Failed to delete source file "%s"', $source->path));
+        if (! $source->delete()) {
+            $this->abort(sprintf('Failed to delete source file "%s"', $source->path));
         }
     }
 
     /**
-     * Parses and returns module configuration by type.
+     * Main method responsible for migrating {lists}.csv files to {lists}.json.
      *
-     * @param \Qobo\Utils\ModuleConfig\ConfigType $type Configuration type
      * @param string $module Module name
-     * @return \stdClass
+     * @param string $name Target list name
+     * @return void
      */
-    private function parse(ConfigType $type, $module)
+    private function migrateLists($module, $name)
     {
-        $config = new ModuleConfig($type, $module);
+        $config = new ModuleConfig(ConfigType::LISTS(), $module, $name);
 
-        return $config->parse();
+        try {
+            $source = new File($config->find());
+        } catch (InvalidArgumentException $e) {
+            $this->info(sprintf('%s skipped, lists not found in %s', __FUNCTION__, $module));
+
+            return;
+        }
+
+        $dest = new File(
+            $source->info()['dirname'] . DS . $source->info()['filename'] . '.' . static::EXTENSION,
+            true
+        );
+
+        if (! $dest->exists()) {
+            $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
+        }
+
+        $data = $config->parse();
+
+        if (! $dest->write($this->toJSON($data))) {
+            $this->abort(sprintf('Failed to write data on "%s"', $dest->path));
+        }
+
+        if (file_exists($source->Folder->path . DS . $source->info()['filename'])) {
+            $dir = new Folder($source->Folder->path . DS . $source->info()['filename']);
+            if (! $dir->delete()) {
+                $this->abort(sprintf('Failed to delete directory "%s"', $dir->path));
+            }
+        }
+
+        if (! $source->delete()) {
+            $this->abort(sprintf('Failed to delete source file "%s"', $source->path));
+        }
+    }
+
+    /**
+     * Retrieves CSV lists files from specified directory.
+     *
+     * @param string $path Target directory, for example: /var/www/html/my-project/config/Modules/Articles/lists/
+     * @return array
+     */
+    private function getLists($path)
+    {
+        $dir = new Folder($path);
+
+        return $dir->find('.*\.csv');
     }
 }
