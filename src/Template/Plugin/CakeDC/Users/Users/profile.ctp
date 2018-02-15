@@ -136,7 +136,7 @@ echo $this->Html->script('AdminLTE./plugins/datepicker/bootstrap-datepicker', ['
                         <div class="row">
                             <div class="col-xs-12 col-md-6">
                             <?= $this->Form->label('Users.gender'); ?>
-                            <?= $fhf->renderInput('Users', 'gender', $user['gender'], [
+                            <?= $fhf->renderInput('Users', 'gender', $user, [
                                 'fieldDefinitions' => [
                                     'name' => 'gender',
                                     'type' => 'list(genders)',
