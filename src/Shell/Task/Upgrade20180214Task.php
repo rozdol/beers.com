@@ -5,7 +5,6 @@ use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
-use Cake\Utility\Inflector;
 use InvalidArgumentException;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
@@ -19,24 +18,12 @@ class Upgrade20180214Task extends Shell
 {
     const EXTENSION = 'json';
 
-    private $basePath = '';
-    private $config = [
-        'fields' => [
-            'dir' => 'config',
-            'name' => 'fields',
-            'ext' => 'ini'
-        ],
-        'lists' => [
-            'dir' => 'lists',
-            'name' => '%s',
-            'ext' => 'csv'
-        ],
-        'migrations' => [
-            'dir' => 'db',
-            'name' => 'migration',
-            'ext' => 'csv'
-        ]
-    ];
+    /**
+     * CSV modules configurations path.
+     *
+     * @var string
+     */
+    private $path = '';
 
     /**
      * Configure option parser
@@ -46,83 +33,218 @@ class Upgrade20180214Task extends Shell
     public function getOptionParser()
     {
         $parser = parent::getOptionParser();
-        $parser->description('Migrates INI/CSV configuration files to JSON');
+        $parser->description('Migration of INI/CSV configuration files to JSON');
 
         return $parser;
     }
 
     /**
-     *
+     * Main method.
      *
      * @return void
      */
     public function main()
     {
-        $path = Configure::read('CsvMigrations.modules.path');
-        if (! $this->isValidPath($path)) {
-            $this->err(
-                sprintf('Invalid modules path, skipping task that "%s"', $this->getOptionParser()->getDescription())
-            );
+        $this->path = Configure::readOrFail('CsvMigrations.modules.path');
+        $this->validatePath();
+        // remove trailing slash
+        $this->path = rtrim($this->path, DS);
 
-            return;
-        }
+        // fetch modules
+        $modules = Utility::findDirs($this->path);
 
-        $path = rtrim($path, DS);
-        $modules = Utility::findDirs($path);
+        array_walk($modules, [$this, 'migrateToJSON']);
+        array_walk($modules, [$this, 'mergeWithFieldsJSON']);
 
-        // migrate reports.ini
-        foreach ($modules as $module) {
-            if (! $this->migrate('reports', $this->getReportsConfig($module), $module)) {
-                $this->info(sprintf('Migrate reports.ini skipped, no relevant files found in %s module', $module));
-            }
-        }
-
-        // migrate {lists}.csv
-        foreach ($modules as $module) {
-            $lists = $this->getLists($path . DS . $module . DS . 'lists');
-            if (empty($lists)) {
-                $this->info(sprintf('Migrate {lists}.csv skipped, no relevant files found in %s module', $module));
-
-                continue;
-            }
-
-            foreach ($lists as $list) {
-                $file = new File($list);
-                if (! $this->migrate('lists', $this->getListsConfig($module, $file->name()), $module)) {
-                    $this->info(sprintf('Migrate {lists}.csv skipped, no relevant files found in %s module', $module));
-                }
-            }
-        }
-
-        // migrate fields.ini
-        foreach ($modules as $module) {
-            if (! $this->migrate('fields', $this->getFieldsConfig($module), $module)) {
-                $this->info(sprintf('Migrate fields.ini skipped, no relevant files found in %s module', $module));
-            }
-        }
+        $this->success(sprintf('%s completed.', $this->getOptionParser()->getDescription()));
     }
 
     /**
      * Validates CSV modules path.
      *
-     * @param string $path CSV modules path
+     * @return void
+     */
+    private function validatePath()
+    {
+        if (! is_string($this->path)) {
+            $this->abort('$path must be a string');
+        }
+
+        if ('' === trim($this->path)) {
+            $this->abort('$path cannot be empty');
+        }
+
+        if (0 !== strpos($this->path, ROOT)) {
+            $this->abort('$path does not reside in project directory');
+        }
+    }
+
+    /**
+     * Handles iteration of configuration list and initialization of migrations to JSON.
+     *
+     * @param string $module Module name
+     * @return void
+     */
+    private function migrateToJSON($module)
+    {
+        // configuration list to iterate through and run the migrations from CSV/INI to JSON.
+        $configList = [
+            ['type' => ConfigType::REPORTS()], // reports.ini
+            ['type' => ConfigType::FIELDS()], // fields.ini
+            ['type' => ConfigType::MIGRATION()], // migration.csv
+            ['type' => ConfigType::MODULE()], // config.ini
+            ['type' => ConfigType::LISTS(), 'multi' => ['dir' => 'lists', 'ext' => 'csv']], // {lists}.csv
+            ['type' => ConfigType::VIEW(), 'multi' => ['dir' => 'views', 'ext' => 'csv']] // {views}.csv
+        ];
+
+        // loops through configuration list and executes migration
+        foreach ($configList as $config) {
+            if (! isset($config['multi'])) {
+                $this->singleFileMigration($config['type'], $module);
+            }
+
+            if (isset($config['multi'])) {
+                $this->multiFileMigration($config['type'], $module, $config['multi']);
+            }
+        }
+    }
+
+    /**
+     * Prepares single file for migration (used for reports.ini, migration.csv, fields.ini and config.ini).
+     *
+     * @param \Qobo\Utils\ModuleConfig\ConfigType $type ConfigType enum
+     * @param string $module Module name
+     * @param string $filename Optional filename
+     * @return void
+     */
+    private function singleFileMigration(ConfigType $type, $module, $filename = '')
+    {
+        if ($this->migrate($type, $this->getConfig($type, $module, $filename))) {
+            $this->success(sprintf('Migrated %s for %s module', $filename ? $filename : $type, $module));
+
+            return;
+        }
+
+        $this->info(sprintf('Migrate %s skipped, no relevant files found in %s module', $type, $module));
+    }
+
+    /**
+     * Prepares multiple files for migration (used for lists/ and views/ directory files).
+     *
+     * @param \Qobo\Utils\ModuleConfig\ConfigType $type ConfigType enum
+     * @param string $module Module name
+     * @param array $config Multi files configuration
+     * @return void
+     */
+    private function multiFileMigration(ConfigType $type, $module, array $config)
+    {
+        $path = $this->path . DS . $module . DS . $config['dir'];
+
+        $files = $this->getFilesByType($path, $config['ext']);
+        if (empty($files)) {
+            $this->info(sprintf('Migrate %s skipped, no relevant files found in %s module', $type, $module));
+
+            return;
+        }
+
+        foreach ($files as $file) {
+            $file = new File($file);
+            $this->singleFileMigration($type, $module, $file->name());
+        }
+    }
+
+    /**
+     * Executes migration logic.
+     *
+     * @param \Qobo\Utils\ModuleConfig\ConfigType $type ConfigType enum
+     * @param \Qobo\Utils\ModuleConfig\ModuleConfig $config Module config instance
      * @return bool
      */
-    private function isValidPath($path)
+    private function migrate(ConfigType $type, ModuleConfig $config)
     {
-        if (! is_string($path)) {
+        $source = $this->getFileByConfig($config);
+
+        if (is_null($source)) {
             return false;
         }
 
-        if ('' === trim($path)) {
-            return false;
+        $dest = new File($source->info()['dirname'] . DS . $source->info()['filename'] . '.' . static::EXTENSION, true);
+        if (! $dest->exists()) {
+            $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
         }
 
-        if (0 !== strpos($path, ROOT)) {
-            return false;
+        if (! $dest->write($this->toJSON($config->parse()))) {
+            $this->abort(sprintf('Failed to write on destination file "%s"', $dest->path));
+        }
+
+        // special case for handling deletions of a list's related sub-list(s)
+        if (ConfigType::LISTS() === $type) {
+            $path = $source->Folder->path . DS . $source->info()['filename'];
+            if (file_exists($path)) {
+                $dir = new Folder($path);
+                if (! $dir->delete()) {
+                    return false;
+                }
+            }
+        }
+
+        if (! $source->delete()) {
+            $this->abort(sprintf('Failed to delete source file "%s"', $source->path));
         }
 
         return true;
+    }
+
+    /**
+     * Method responsible for merging 'migration.json' data into 'fields.json'.
+     * If merge is successful, then it proceeds with the deletion of 'migration.json'.
+     *
+     * @param string $module Module name
+     * @return void
+     */
+    private function mergeWithFieldsJSON($module)
+    {
+        $source = $this->getFileByConfig($this->getConfig(ConfigType::MIGRATION(), $module, 'migration.json'));
+        if (is_null($source)) {
+            $this->info(sprintf('Merge skipped, no "migration.json" file found in %s module', $module));
+
+            return;
+        }
+
+        $dest = $this->getFileByConfig($this->getConfig(ConfigType::FIELDS(), $module, 'fields.json'));
+        if (is_null($dest)) {
+            $dest = new File($this->path . DS . $module . DS . 'config' . DS . 'fields.' . static::EXTENSION, true);
+            if (! $dest->exists()) {
+                $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
+            }
+        }
+
+        $data = array_merge_recursive(
+            (array)json_decode($source->read(), true),
+            (array)json_decode($dest->read(), true)
+        );
+
+        if (! $dest->write($this->toJSON($data))) {
+            $this->abort(sprintf('Failed to write on destination file "%s"', $dest->path));
+        }
+
+        if (! $source->delete()) {
+            $this->abort(sprintf('Failed to delete source file "%s"', $source->path));
+        }
+
+        $this->success(sprintf('Merged migration.json with fields.json for %s module', $module));
+    }
+
+    /**
+     *
+     * @param \Qobo\Utils\ModuleConfig\ConfigType $type ConfigType enum
+     * @param string $module Module name
+     * @param string $configFile Optional config file name
+     * @return \Qobo\Utils\ModuleConfig\ModuleConfig
+     */
+    private function getConfig(ConfigType $type, $module, $configFile = '')
+    {
+        return new ModuleConfig($type, $module, $configFile);
     }
 
     /**
@@ -138,75 +260,10 @@ class Upgrade20180214Task extends Shell
 
     /**
      *
-     * @param string $module Module name
-     * @return \Qobo\Utils\ModuleConfig\ModuleConfig
-     */
-    private function getReportsConfig($module)
-    {
-        return new ModuleConfig(ConfigType::REPORTS(), $module);
-    }
-
-    /**
-     *
-     * @param string $module Module name
-     * @param string $list List name
-     * @return \Qobo\Utils\ModuleConfig\ModuleConfig
-     */
-    private function getListsConfig($module, $list)
-    {
-        return new ModuleConfig(ConfigType::LISTS(), $module, $list);
-    }
-
-    /**
-     *
-     * @param string $module Module name
-     * @return \Qobo\Utils\ModuleConfig\ModuleConfig
-     */
-    private function getFieldsConfig($module)
-    {
-        return new ModuleConfig(ConfigType::FIELDS(), $module);
-    }
-
-    /**
-     * Main method responsible for migrating {lists}.csv files to {lists}.json.
-     *
-     * @param string $type File category type [lists, reports, migrations, fields]
-     * @param \Qobo\Utils\ModuleConfig\ModuleConfig $config Module config instance
-     * @param string $module Module name
-     * @return bool
-     */
-    private function migrate($type, $config, $module)
-    {
-        $source = $this->getSourceFile($config);
-
-        if (is_null($source)) {
-            return false;
-        }
-
-        $dest = $this->getDestFile($source);
-        if (! $dest->exists()) {
-            $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
-        }
-
-        $merge = in_array($type, ['migrations', 'fields']);
-        dd($merge);
-        if (! $this->writeToDestFile($dest, $config, $merge)) {
-            $this->abort(sprintf('Failed to write data on destination file "%s"', $dest->path));
-        }
-
-        if (! $this->deleteSourceFile($source, $type)) {
-            $this->abort(sprintf('Failed to delete source file "%s"', $source->path));
-        }
-
-        return true;
-    }
-
-    /**
-     *
      * @param \Qobo\Utils\ModuleConfig\ModuleConfig $config Module config instance
      * @return \Cake\Filesystem\File|null
      */
-    private function getSourceFile(ModuleConfig $config)
+    private function getFileByConfig(ModuleConfig $config)
     {
         try {
             return new File($config->find());
@@ -218,61 +275,16 @@ class Upgrade20180214Task extends Shell
     }
 
     /**
-     *
-     * @param \Cake\Filesystem\File $source Source instance
-     * @return \Cake\Filesystem\File
-     */
-    private function getDestFile(File $source)
-    {
-        return new File($source->info()['dirname'] . DS . $source->info()['filename'] . '.' . static::EXTENSION, true);
-    }
-
-    /**
-     *
-     * @param \Cake\Filesystem\File $dest Destination instance
-     * @param \Qobo\Utils\ModuleConfig\ModuleConfig $config Module config instance
-     * @return bool
-     */
-    private function writeToDestFile(File $dest, ModuleConfig $config)
-    {
-        $data = $this->toJSON($config->parse());
-
-        return $dest->write($data);
-    }
-
-    /**
-     *
-     * @param \Cake\Filesystem\File $source Source instance
-     * @param string $type File category type [lists, reports, migrations, fields]
-     * @return bool
-     */
-    private function deleteSourceFile(File $source, $type)
-    {
-        switch ($type) {
-            case 'lists':
-                $path = $source->Folder->path . DS . $source->info()['filename'];
-                if (file_exists($path)) {
-                    $dir = new Folder($path);
-                    if (! $dir->delete()) {
-                        return false;
-                    }
-                }
-                break;
-        }
-
-        return $source->delete();
-    }
-
-    /**
-     * Retrieves CSV lists files from specified directory.
+     * Retrieves files from specified directory by type.
      *
      * @param string $path Target directory, for example: /var/www/html/my-project/config/Modules/Articles/lists/
+     * @param string $type Target file type, for example: csv, ini, json
      * @return array
      */
-    private function getLists($path)
+    private function getFilesByType($path, $type = 'csv')
     {
         $dir = new Folder($path);
 
-        return $dir->find('.*\.csv');
+        return $dir->find(sprintf('.*\.%s', $type));
     }
 }
