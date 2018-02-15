@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Shell\Task;
 
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
+use Cake\Utility\Inflector;
 use InvalidArgumentException;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
@@ -68,20 +68,25 @@ class Upgrade20180214Task extends Shell
         }
 
         $path = rtrim($path, DS);
+        $modules = Utility::findDirs($path);
 
-        foreach (Utility::findDirs($path) as $module) {
-            $this->migrateReports($module);
+        // migrate reports.ini
+        foreach ($modules as $module) {
+            $this->migrate('reports', $this->getReportsConfig($module), $module);
+        }
 
+        // migrate {lists}.csv
+        foreach ($modules as $module) {
             $lists = $this->getLists($path . DS . $module . DS . 'lists');
             if (empty($lists)) {
-                $this->info(sprintf('migrateLists skipped, lists not found in %s', $module));
+                $this->info(sprintf('Migrate Lists skipped, relevant files not found in %s module', $module));
 
                 continue;
             }
 
             foreach ($lists as $list) {
                 $file = new File($list);
-                $this->migrateLists($module, $file->name());
+                $this->migrate('lists', $this->getListsConfig($module, $file->name()), $module);
             }
         }
     }
@@ -121,87 +126,122 @@ class Upgrade20180214Task extends Shell
     }
 
     /**
-     * Main method responsible for migrating reports.ini files to reports.json.
      *
      * @param string $module Module name
-     * @return void
+     * @return \Qobo\Utils\ModuleConfig\ModuleConfig
      */
-    private function migrateReports($module)
+    private function getReportsConfig($module)
     {
-        $config = new ModuleConfig(ConfigType::REPORTS(), $module);
+        return new ModuleConfig(ConfigType::REPORTS(), $module);
+    }
 
-        try {
-            $source = new File($config->find());
-        } catch (InvalidArgumentException $e) {
-            $this->info(sprintf('%s skipped, reports not found in %s', __FUNCTION__, $module));
-
-            return;
-        }
-
-        $dest = new File(
-            $source->info()['dirname'] . DS . $source->info()['filename'] . '.' . static::EXTENSION,
-            true
-        );
-
-        if (! $dest->exists()) {
-            $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
-        }
-
-        $data = $config->parse();
-
-        if (! $dest->write($this->toJSON($data))) {
-            $this->abort(sprintf('Failed to write data on "%s"', $dest->path));
-        }
-
-        if (! $source->delete()) {
-            $this->abort(sprintf('Failed to delete source file "%s"', $source->path));
-        }
+    /**
+     *
+     * @param string $module Module name
+     * @param string $list List name
+     * @return \Qobo\Utils\ModuleConfig\ModuleConfig
+     */
+    private function getListsConfig($module, $list)
+    {
+        return new ModuleConfig(ConfigType::LISTS(), $module, $list);
     }
 
     /**
      * Main method responsible for migrating {lists}.csv files to {lists}.json.
      *
+     * @param string $type File category type [lists, reports, migrations, fields]
+     * @param \Qobo\Utils\ModuleConfig\ModuleConfig $config Module config instance
      * @param string $module Module name
-     * @param string $name Target list name
      * @return void
      */
-    private function migrateLists($module, $name)
+    private function migrate($type, $config, $module)
     {
-        $config = new ModuleConfig(ConfigType::LISTS(), $module, $name);
+        $source = $this->getSourceFile($config);
 
-        try {
-            $source = new File($config->find());
-        } catch (InvalidArgumentException $e) {
-            $this->info(sprintf('%s skipped, lists not found in %s', __FUNCTION__, $module));
+        if (is_null($source)) {
+            $this->info(sprintf(
+                '%s skipped, relevant files not found in %s module',
+                Inflector::humanize(Inflector::delimit(__FUNCTION__)),
+                $module
+            ));
 
             return;
         }
 
-        $dest = new File(
-            $source->info()['dirname'] . DS . $source->info()['filename'] . '.' . static::EXTENSION,
-            true
-        );
-
+        $dest = $this->getDestFile($source);
         if (! $dest->exists()) {
             $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
         }
 
-        $data = $config->parse();
-
-        if (! $dest->write($this->toJSON($data))) {
-            $this->abort(sprintf('Failed to write data on "%s"', $dest->path));
+        if (! $this->writeToDestFile($dest, $config)) {
+            $this->abort(sprintf('Failed to write data on destination file "%s"', $dest->path));
         }
 
-        if (file_exists($source->Folder->path . DS . $source->info()['filename'])) {
-            $dir = new Folder($source->Folder->path . DS . $source->info()['filename']);
-            if (! $dir->delete()) {
-                $this->abort(sprintf('Failed to delete directory "%s"', $dir->path));
-            }
-        }
-
-        if (! $source->delete()) {
+        if (! $this->deleteSourceFile($source, $type)) {
             $this->abort(sprintf('Failed to delete source file "%s"', $source->path));
         }
+    }
+
+    /**
+     *
+     * @param \Qobo\Utils\ModuleConfig\ModuleConfig $config Module config instance
+     * @return \Cake\Filesystem\File|null
+     */
+    private function getSourceFile(ModuleConfig $config)
+    {
+        try {
+            return new File($config->find());
+        } catch (InvalidArgumentException $e) {
+            //
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * @param \Cake\Filesystem\File $source Source instance
+     * @return \Cake\Filesystem\File
+     */
+    private function getDestFile(File $source)
+    {
+        return new File($source->info()['dirname'] . DS . $source->info()['filename'] . '.' . static::EXTENSION, true);
+    }
+
+    /**
+     *
+     * @param \Cake\Filesystem\File $dest Destination instance
+     * @param \Qobo\Utils\ModuleConfig\ModuleConfig $config Module config instance
+     * @return bool
+     */
+    private function writeToDestFile(File $dest, ModuleConfig $config)
+    {
+        $data = $this->toJSON($config->parse());
+
+        return $dest->write($data);
+    }
+
+    /**
+     *
+     * @param \Cake\Filesystem\File $source Source instance
+     * @param string $type File category type [lists, reports, migrations, fields]
+     * @return bool
+     */
+    private function deleteSourceFile(File $source, $type)
+    {
+        switch ($type) {
+            case 'lists':
+                $path = $source->Folder->path . DS . $source->info()['filename'];
+                if (file_exists($path)) {
+                    $dir = new Folder($path);
+                    if (! $dir->delete()) {
+                        return false;
+                    }
+                }
+                break;
+        }
+
+        return $source->delete();
     }
 
     /**
