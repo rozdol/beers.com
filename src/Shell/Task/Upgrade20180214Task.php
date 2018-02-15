@@ -72,21 +72,32 @@ class Upgrade20180214Task extends Shell
 
         // migrate reports.ini
         foreach ($modules as $module) {
-            $this->migrate('reports', $this->getReportsConfig($module), $module);
+            if (! $this->migrate('reports', $this->getReportsConfig($module), $module)) {
+                $this->info(sprintf('Migrate reports.ini skipped, no relevant files found in %s module', $module));
+            }
         }
 
         // migrate {lists}.csv
         foreach ($modules as $module) {
             $lists = $this->getLists($path . DS . $module . DS . 'lists');
             if (empty($lists)) {
-                $this->info(sprintf('Migrate Lists skipped, relevant files not found in %s module', $module));
+                $this->info(sprintf('Migrate {lists}.csv skipped, no relevant files found in %s module', $module));
 
                 continue;
             }
 
             foreach ($lists as $list) {
                 $file = new File($list);
-                $this->migrate('lists', $this->getListsConfig($module, $file->name()), $module);
+                if (! $this->migrate('lists', $this->getListsConfig($module, $file->name()), $module)) {
+                    $this->info(sprintf('Migrate {lists}.csv skipped, no relevant files found in %s module', $module));
+                }
+            }
+        }
+
+        // migrate fields.ini
+        foreach ($modules as $module) {
+            if (! $this->migrate('fields', $this->getFieldsConfig($module), $module)) {
+                $this->info(sprintf('Migrate fields.ini skipped, no relevant files found in %s module', $module));
             }
         }
     }
@@ -147,25 +158,29 @@ class Upgrade20180214Task extends Shell
     }
 
     /**
+     *
+     * @param string $module Module name
+     * @return \Qobo\Utils\ModuleConfig\ModuleConfig
+     */
+    private function getFieldsConfig($module)
+    {
+        return new ModuleConfig(ConfigType::FIELDS(), $module);
+    }
+
+    /**
      * Main method responsible for migrating {lists}.csv files to {lists}.json.
      *
      * @param string $type File category type [lists, reports, migrations, fields]
      * @param \Qobo\Utils\ModuleConfig\ModuleConfig $config Module config instance
      * @param string $module Module name
-     * @return void
+     * @return bool
      */
     private function migrate($type, $config, $module)
     {
         $source = $this->getSourceFile($config);
 
         if (is_null($source)) {
-            $this->info(sprintf(
-                '%s skipped, relevant files not found in %s module',
-                Inflector::humanize(Inflector::delimit(__FUNCTION__)),
-                $module
-            ));
-
-            return;
+            return false;
         }
 
         $dest = $this->getDestFile($source);
@@ -173,13 +188,17 @@ class Upgrade20180214Task extends Shell
             $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
         }
 
-        if (! $this->writeToDestFile($dest, $config)) {
+        $merge = in_array($type, ['migrations', 'fields']);
+        dd($merge);
+        if (! $this->writeToDestFile($dest, $config, $merge)) {
             $this->abort(sprintf('Failed to write data on destination file "%s"', $dest->path));
         }
 
         if (! $this->deleteSourceFile($source, $type)) {
             $this->abort(sprintf('Failed to delete source file "%s"', $source->path));
         }
+
+        return true;
     }
 
     /**
