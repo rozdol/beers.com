@@ -53,8 +53,10 @@ class Upgrade20180214Task extends Shell
         // fetch modules
         $modules = Utility::findDirs($this->path);
 
-        array_walk($modules, [$this, 'migrateToJSON']);
-        array_walk($modules, [$this, 'mergeWithFieldsJSON']);
+        foreach ($modules as $module) {
+            $this->migrateToJSON($module);
+            $this->mergeWithFieldsJSON($module);
+        }
 
         $this->success(sprintf('%s completed.', $this->getOptionParser()->getDescription()));
     }
