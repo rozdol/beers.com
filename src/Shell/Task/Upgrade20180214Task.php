@@ -179,13 +179,7 @@ class Upgrade20180214Task extends Shell
 
         // special case for handling deletions of a list's related sub-list(s)
         if (ConfigType::LISTS() === $type) {
-            $path = $source->Folder->path . DS . $source->info()['filename'];
-            if (file_exists($path)) {
-                $dir = new Folder($path);
-                if (! $dir->delete()) {
-                    return false;
-                }
-            }
+            $this->deleteNestedLists($source);
         }
 
         if (! $source->delete()) {
@@ -286,5 +280,27 @@ class Upgrade20180214Task extends Shell
         $dir = new Folder($path);
 
         return $dir->find(sprintf('.*\.%s', $type));
+    }
+
+    /**
+     * Handles deletion of a list's nested lists.
+     *
+     * @param \Cake\Filesystem\File $file File instance
+     * @return void
+     */
+    private function deleteNestedLists(File $file)
+    {
+        $path = $file->Folder->path . DS . $file->info()['filename'];
+
+        if (! file_exists($path)) {
+            return;
+        }
+
+        $dir = new Folder($path);
+        if ($dir->delete()) {
+            return;
+        }
+
+        $this->abort(sprintf('Failed to delete nested lists in %s', $path));
     }
 }
