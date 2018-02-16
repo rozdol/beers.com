@@ -206,6 +206,7 @@ class Upgrade20180214Task extends Shell
         }
 
         $dest = $this->getFileByConfig($this->getConfig(ConfigType::FIELDS(), $module, 'fields.json'));
+        // if 'fields.json' does not exist, which it might be the case in some projects, create it
         if (is_null($dest)) {
             $dest = new File($this->path . DS . $module . DS . 'config' . DS . 'fields.' . static::EXTENSION, true);
             if (! $dest->exists()) {
@@ -230,6 +231,7 @@ class Upgrade20180214Task extends Shell
     }
 
     /**
+     *  Retrieves module configuration by specified type.
      *
      * @param \Qobo\Utils\ModuleConfig\ConfigType $type ConfigType enum
      * @param string $module Module name
@@ -253,6 +255,7 @@ class Upgrade20180214Task extends Shell
     }
 
     /**
+     * Returns File instance of module configuration file.
      *
      * @param \Qobo\Utils\ModuleConfig\ModuleConfig $config Module config instance
      * @return \Cake\Filesystem\File|null
@@ -269,7 +272,7 @@ class Upgrade20180214Task extends Shell
     }
 
     /**
-     * Retrieves files from specified directory by type.
+     * Retrieves files from specified directory, by type.
      *
      * @param string $path Target directory, for example: /var/www/html/my-project/config/Modules/Articles/lists/
      * @param string $type Target file type, for example: csv, ini, json
