@@ -209,9 +209,10 @@ class Upgrade20180214Task extends Shell
         // if 'fields.json' does not exist, which it might be the case in some projects, create it
         if (is_null($dest)) {
             $dest = new File($this->path . DS . $module . DS . 'config' . DS . 'fields.' . static::EXTENSION, true);
-            if (! $dest->exists()) {
-                $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
-            }
+        }
+
+        if (! $dest->exists()) {
+            $this->abort(sprintf('Failed to create destination file "%s"', $dest->path));
         }
 
         $data = array_merge_recursive(
