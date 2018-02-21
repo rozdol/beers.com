@@ -20,7 +20,7 @@
         "qobo/cakephp-menu": "^11.0",
         "qobo/cakephp-roles-capabilities": "^14.0",
         "qobo/cakephp-search": "^17.0",
-        "qobo/cakephp-utils": "^6.0",
+        "qobo/cakephp-utils": "^7.0",
         "qobo/phake-builder": "^5.0",
         "qobo/qobo-robo": "^1.0",
         "qobo/qobo-robo-cakephp": "^1.0"
