@@ -249,7 +249,7 @@ class Upgrade20180214Task extends Shell
      */
     private function getConfig(ConfigType $type, $module, $configFile = '')
     {
-        return new ModuleConfig($type, $module, $configFile);
+        return new ModuleConfig($type, $module, $configFile, ['cacheSkip' => true]);
     }
 
     /**
