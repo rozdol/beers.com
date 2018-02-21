@@ -45,6 +45,9 @@ class Upgrade20180214Task extends Shell
      */
     public function main()
     {
+        // switch to old module config class map
+        Configure::write('ModuleConfig.classMapVersion', 'V1');
+
         $this->path = Configure::readOrFail('CsvMigrations.modules.path');
         $this->validatePath();
         // remove trailing slash
