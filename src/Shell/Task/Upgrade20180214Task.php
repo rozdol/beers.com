@@ -55,7 +55,10 @@ class Upgrade20180214Task extends Shell
 
         foreach ($modules as $module) {
             $this->migrateToJSON($module);
-            $this->mergeWithFieldsJSON($module);
+            /**
+             * @todo temporarily disabled "migration.json" merge with "fields.json" to make migration to JSON smoother, we will need to come back to this and re-enable it in the future.
+             */
+            // $this->mergeWithFieldsJSON($module);
         }
 
         $this->success(sprintf('%s completed.', $this->getOptionParser()->getDescription()));
