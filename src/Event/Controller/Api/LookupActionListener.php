@@ -11,8 +11,8 @@ use Cake\ORM\TableRegistry;
 use CsvMigrations\ConfigurationTrait;
 use CsvMigrations\FieldHandlers\CsvField;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
-use CsvMigrations\FieldHandlers\RelatedFieldHandler;
 use CsvMigrations\FieldHandlers\RelatedFieldTrait;
+use CsvMigrations\FieldHandlers\Setting;
 use RuntimeException;
 
 class LookupActionListener extends BaseActionListener
@@ -177,7 +177,7 @@ class LookupActionListener extends BaseActionListener
                 $table,
                 $table->displayField(),
                 $label,
-                ['renderAs' => RelatedFieldHandler::RENDER_PLAIN_VALUE]
+                ['renderAs' => Setting::RENDER_PLAIN_VALUE_RELATED()]
             );
         }
 
