@@ -1,9 +1,24 @@
 {
     "name": "qobo/project-template-cakephp",
     "description": "Template for new CakePHP projects",
+    "keywords": ["cakephp", "project", "template", "setup", "rapid-development", "dry"],
     "license": "MIT",
+    "homepage": "https://www.qobo.biz",
+    "authors": [
+        {
+            "name": "Qobo Ltd",
+            "email": "info@qobo.biz",
+            "homepage": "https://www.qobo.biz",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/QoboLtd/project-template-cakephp/issues",
+        "source": "https://github.com/QoboLtd/project-template-cakephp"
+    },
     "config": {
         "sort-packages": true,
+        "optimize-autoloader": true,
         "platform": {
             "php": "5.6"
         }
@@ -21,9 +36,9 @@
         "qobo/cakephp-roles-capabilities": "^14.0",
         "qobo/cakephp-search": "^17.0",
         "qobo/cakephp-utils": "^7.0",
-        "qobo/phake-builder": "^5.0",
         "qobo/qobo-robo": "^1.0",
-        "qobo/qobo-robo-cakephp": "^1.0"
+        "qobo/qobo-robo-cakephp": "^1.0",
+        "vlucas/phpdotenv": "^1.1"
     },
     "require-dev": {
         "cakephp/bake": "~1.0",
@@ -32,9 +47,7 @@
         "psy/psysh": "@stable"
     },
     "suggest": {
-        "ext-xdebug": "Allows code coverage reports and advanced debugging",
-        "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
-        "cakephp/cakephp-codesniffer": "Allows to check the code against the coding standards used in CakePHP."
+        "ext-xdebug": "Allows code coverage reports and advanced debugging"
     },
     "autoload": {
         "psr-4": {
