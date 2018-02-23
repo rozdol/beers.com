@@ -186,7 +186,7 @@ class Upgrade20180214Task extends Shell
         }
 
         // special case for handling deletions of a list's related sub-list(s)
-        if (ConfigType::LISTS() === $type) {
+        if ((string)ConfigType::LISTS() === (string)$type) {
             $this->deleteNestedLists($source);
         }
 
