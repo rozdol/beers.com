@@ -1,0 +1,23 @@
+{
+    "items": [
+        [
+            "Details",
+            "name",
+            "active"
+        ],
+        [
+            "Command",
+            "job",
+            "options"
+        ],
+        [
+            "Recurrence",
+            "recurrence"
+        ],
+        [
+            "Recurrence",
+            "start_date",
+            "end_date"
+        ]
+    ]
+}
