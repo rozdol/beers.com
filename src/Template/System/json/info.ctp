@@ -1,2 +1,5 @@
 <?php
-echo $this->element('System/' . $content);
+$element = 'System/' . $content;
+if ($this->elementExists($element)) {
+    echo $this->element('System/' . $content);
+}
