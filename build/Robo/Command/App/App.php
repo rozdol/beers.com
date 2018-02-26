@@ -198,6 +198,9 @@ class App extends AbstractCommand
             ->hide($this->getValue('DB_ADMIN_PASS', $env))
             ->host($this->getValue('DB_HOST', $env));
 
+        // cleanup database logs
+        $tasks []= $this->taskCakephpShellScript()->name('database_log')->param('gc');
+
         // do plugin migrations
         foreach ($plugins as $plugin) {
             $tasks []= $this->taskCakephpMigration()
@@ -365,6 +368,9 @@ class App extends AbstractCommand
             ->host($this->getValue('DB_HOST', $env));
 
         $tasks [] = $this->taskCakephpCacheClear();
+
+        // cleanup database logs
+        $tasks []= $this->taskCakephpShellScript()->name('database_log')->param('gc');
 
         // do plugin migrations
         foreach ($plugins as $plugin) {
