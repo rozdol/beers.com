@@ -3,6 +3,8 @@
 //
 // Key is used as element name, href link and
 // div id, so pick wisely.
+use Cake\Core\Configure;
+
 $tabs = [
     'project' => [
         'label' => 'Project',
@@ -33,7 +35,10 @@ $tabs = [
         'icon' => 'fa-wrench',
     ],
 ];
+
+echo $this->Html->scriptBlock('var api_token="' . Configure::read('API.token') . '";', ['block' => 'scriptBottom']);
 ?>
+
 <section class="content-header">
     <h1><?= __('System Information'); ?></h1>
 </section>
@@ -41,12 +46,12 @@ $tabs = [
     <div class="row">
         <div class="col-md-12">
             <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs system-info">
                     <?php
                         $first = true;
                         foreach ($tabs as $tab => $settings) {
                            echo $first ? '<li class="active">' : '<li>';
-                           echo '<a href="#' . $tab . '" data-toggle="tab" aria-expanded="true">';
+                           echo '<a href="#' . $tab . '" data-tab="' . $tab . '" data-toggle="tab" aria-expanded="true">';
                            echo '<i class="fa ' . $settings['icon'] . '"></i>';
                            echo ' ';
                            echo $settings['label'];
@@ -57,11 +62,13 @@ $tabs = [
                     ?>
                 </ul>
                 <div class="tab-content">
+                    <div id="spinner-system-info" style="height:150px;padding-top:60px;display:none;">
+                        <p class="lead text-center"><i class="fa fa-refresh fa-spin fa-fw"></i> Processing..</p>
+                    </div>
                     <?php
                         $first = true;
                         foreach ($tabs as $tab => $settings) {
                             echo $first ? '<div class="tab-pane active" id="' . $tab . '">' : '<div class="tab-pane" id="' . $tab . '">';
-                            echo $this->element('System/' . $tab);
                             echo '</div>';
                             $first = false;
                         }
