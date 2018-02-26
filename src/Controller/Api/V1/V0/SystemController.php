@@ -5,6 +5,11 @@ use Cake\Utility\Inflector;
 
 class SystemController extends AppController
 {
+    /**
+     * Return dynamic info tabs
+     *
+     * @return null|string response of HTML content
+     */
     public function info()
     {
         $data = $this->request->getData();
