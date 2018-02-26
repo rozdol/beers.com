@@ -278,6 +278,9 @@ EventManager::instance()->on(new ViewActionListener());
 // load AdminLTE theme settings
 Configure::load('admin_lte', 'default');
 
+// load system information settings
+Configure::load('system_info', 'default');
+
 // Feature Factory initialization
 // IMPORTANT: this line should be placed at the end of the bootstrap file.
 FeatureFactory::init();
