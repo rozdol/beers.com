@@ -57,7 +57,7 @@ echo $this->Html->tag(
         <?php endif; ?>
         <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <?= $this->Form->button(
-                __d('Users', 'Sign In'),
+                '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> ' . __d('Users', 'Sign In'),
                 ['class' => 'btn btn-primary btn-block']
             ); ?>
         </div>
