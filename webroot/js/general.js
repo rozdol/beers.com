@@ -65,6 +65,7 @@
                 Authorization: 'Bearer ' + api_token
             },
             beforeSend: function (xhr) {
+                $('#' + destination).empty();
                 $('#spinner-system-info').show();
             }
         }).then(function (response) {
