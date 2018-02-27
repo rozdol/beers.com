@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-xs-4">
             <?= $this->Form->button(
-                '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> ' . __d('Users', 'Submit'),
+                '<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> ' . __d('Users', 'Submit'),
                 ['class' => 'btn btn-primary btn-block btn-flat']
             ); ?>
         </div>
