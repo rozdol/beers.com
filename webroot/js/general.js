@@ -38,6 +38,42 @@
         $('#' + navId + ' li:eq(' + storage.read(prefix + navId) + ') a').tab('show');
     });
 
+    /**
+     * Dynamic tab loading for system info
+     */
+    $('.system-info li').each(function (key,element) {
+        if ($(element).hasClass('active')) {
+            var link = $(element).find('a');
+            getSystemInfo(link);
+        }
+    });
+
+    $('.system-info a').click(function () {
+        getSystemInfo($(this));
+    });
+
+    function getSystemInfo(element)
+    {
+        var destination = $(element).data('tab');
+
+        $.ajax({
+            url: '/api/v1.0/system/info',
+            method: 'POST',
+            dataType: 'html',
+            data: { tab: $(element).data('tab') },
+            headers: {
+                Authorization: 'Bearer ' + api_token
+            },
+            beforeSend: function (xhr) {
+                $('#spinner-system-info').show();
+            }
+        }).then(function (response) {
+            $('#spinner-system-info').hide();
+            $('#' + destination).empty();
+            $('#' + destination).append(response);
+        });
+    }
+
 })(jQuery);
 
 
