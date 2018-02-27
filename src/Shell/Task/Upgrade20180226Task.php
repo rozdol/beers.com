@@ -6,11 +6,9 @@ use Cake\Core\Configure;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
 use Cake\Utility\Inflector;
-use InvalidArgumentException;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 use Qobo\Utils\Utility;
-use RuntimeException;
 use stdClass;
 
 /**
@@ -49,38 +47,15 @@ class Upgrade20180226Task extends Shell
     public function main()
     {
         $this->path = Configure::readOrFail('CsvMigrations.modules.path');
-        $this->validatePath();
+        Utility::validatePath($this->path);
         // remove trailing slash
         $this->path = rtrim($this->path, DS);
 
-        // fetch modules
-        $modules = Utility::findDirs($this->path);
-
-        foreach ($modules as $module) {
+        foreach (Utility::findDirs($this->path) as $module) {
             $this->migrateModule($module);
         }
 
         $this->success(sprintf('%s completed.', $this->getOptionParser()->getDescription()));
-    }
-
-    /**
-     * Validates CSV modules path.
-     *
-     * @return void
-     */
-    private function validatePath()
-    {
-        if (! is_string($this->path)) {
-            $this->abort('$path must be a string');
-        }
-
-        if ('' === trim($this->path)) {
-            $this->abort('$path cannot be empty');
-        }
-
-        if (0 !== strpos($this->path, ROOT)) {
-            $this->abort('$path does not reside in project directory');
-        }
     }
 
     /**
