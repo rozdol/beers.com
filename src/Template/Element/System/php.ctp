@@ -3,22 +3,21 @@
 // PHP setup
 //
 
+use App\SystemInfo\Php;
+
 $setup = [
-    'Server API' => PHP_SAPI,
-    'PHP Server User' => get_current_user(),
-    'PHP Binary' => PHP_BINARY,
-    'PHP Configuration File' => php_ini_loaded_file(),
-    'Memory Limit' => ini_get('memory_limit'),
-    'Max Execution Time' => ini_get('max_execution_time') . ' seconds',
-    'Upload Max Filesize' => $this->Number->toReadableSize(sizeToBytes(ini_get('upload_max_filesize'))),
-    'Post Max Size' => $this->Number->toReadableSize(sizeToBytes(ini_get('post_max_size'))),
+    'Server API' => Php::getSapi(),
+    'PHP Server User' => Php::getUser(),
+    'PHP Binary' => Php::getBinary(),
+    'PHP Configuration File' => Php::getIniPath(),
+    'Max Execution Time' => Php::getMaxExecutionTime() . ' seconds',
+    'Memory Limit' => $this->Number->toReadableSize(Php::getMemoryLimit()),
+    'Upload Max Filesize' => $this->Number->toReadableSize(Php::getUploadMaxFilesize()),
+    'Post Max Size' => $this->Number->toReadableSize(Php::getPostMaxSize()),
 ];
 
-//
 // PHP extensions
-//
-$extensions = get_loaded_extensions();
-asort($extensions);
+$extensions = Php::getLoadedExtensions();
 ?>
 <div class="row">
     <div class="col-md-3">
@@ -31,7 +30,7 @@ asort($extensions);
                     <span class="info-box-icon bg-blue"><i class="fa fa-heart"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">PHP version</span>
-                        <span class="info-box-number"><?php echo PHP_VERSION; ?></span>
+                        <span class="info-box-number"><?= Php::getVersion() ?></span>
                     </div>
                 </div>
                 <div class="info-box">
@@ -66,12 +65,13 @@ asort($extensions);
                 <h3 class="box-title">Loaded Extensions</h3>
             </div>
             <div class="box-body">
-
-                <ul class="list-inline">
-                <?php foreach ($extensions as $extension) : ?>
-                    <li><?= $extension ?></li>
-                <?php endforeach; ?>
-                </ul>
+                <dl class="dl-horizontal">
+                <?php
+                    foreach ($extensions as $name => $version) {
+                        print '<dt>' . $name . ':</dt><dd>' . $version . '</dd>';
+                    }
+                ?>
+                </dl>
             </div>
         </div>
     </div>
