@@ -48,7 +48,7 @@ class Project
      *
      * @return string
      */
-    public function getUrl()
+    public static function getUrl()
     {
         $result = self::$defaultUrl;
 
@@ -158,7 +158,7 @@ class Project
      *
      * @return string
      */
-    public function getCopyright()
+    public static function getCopyright()
     {
         $result = 'Copyright &copy; ' . date('Y') . ' ' . self::getName() . '. All rights reserved.';
 
