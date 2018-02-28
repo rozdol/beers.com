@@ -14,6 +14,11 @@ use Cake\Core\Plugin;
 class Cake
 {
     /**
+     * @var string $releasesUrl Base URL to CakePHP releases
+     */
+    protected static $releasesUrl = 'https://github.com/cakephp/cakephp/releases/tag/';
+
+    /**
      * Get CakePHP version
      *
      * @return string
@@ -21,6 +26,26 @@ class Cake
     public static function getVersion()
     {
         return Configure::version();
+    }
+
+    /**
+     * Get CakePHP version URL
+     *
+     * This method returns the URL to the release
+     * notes of a given version.  If the version
+     * is not specified, then the URL to the current
+     * CakePHP version will be returned.
+     *
+     * @param string $version CakePHP version
+     * @return string
+     */
+    public static function getVersionUrl($version = null)
+    {
+        if (empty($version)) {
+            $version = self::getVersion();
+        }
+
+        return self::$releasesUrl . $version;
     }
 
     /**
