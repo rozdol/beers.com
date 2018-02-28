@@ -2,6 +2,7 @@
 namespace App\SystemInfo;
 
 use InvalidArgumentException;
+use Qobo\Utils\Utility;
 
 /**
  * Php class
@@ -110,40 +111,6 @@ class Php
     }
 
     /**
-     * Convert value to bytes
-     *
-     * Convert sizes from PHP settings like post_max_size
-     * for example 8M to integer number of bytes.
-     *
-     * If number is integer return as is.
-     *
-     * NOTE: This is a modified copy from qobo/cakephp-utils/config/bootstrap.php
-     *
-     * @throws \InvalidArgumentException when cannot convert
-     * @param string|int $value Value to convert
-     * @return int
-     */
-    public static function valueToBytes($value)
-    {
-        if (is_int($value)) {
-            return $value;
-        }
-
-        $result = (string)$value;
-        if (preg_match('/(\d+)K/i', $result, $matches)) {
-            $result = $matches[1] * 1024;
-        } elseif (preg_match('/(\d+)M/i', $result, $matches)) {
-            $result = $matches[1] * 1024 * 1024;
-        } elseif (preg_match('/(\d+)G/i', $result, $matches)) {
-            $result = $matches[1] * 1024 * 1024 * 1024;
-        } else {
-            throw new InvalidArgumentException("Failed to find K, M, or G in a non-integer value [$result]");
-        }
-
-        return (int)$result;
-    }
-
-    /**
      * Get configuration setting for memory_limit
      *
      * @return int Memory limit in bytes
@@ -151,7 +118,7 @@ class Php
     public static function getMemoryLimit()
     {
         $result = static::getIniValue('memory_limit');
-        $result = static::valueToBytes($result);
+        $result = Utility::valueToBytes($result);
 
         return $result;
     }
@@ -174,7 +141,7 @@ class Php
     public static function getUploadMaxFilesize()
     {
         $result = static::getIniValue('upload_max_filesize');
-        $result = static::valueToBytes($result);
+        $result = Utility::valueToBytes($result);
 
         return $result;
     }
@@ -187,7 +154,7 @@ class Php
     public static function getPostMaxSize()
     {
         $result = static::getIniValue('post_max_size');
-        $result = static::valueToBytes($result);
+        $result = Utility::valueToBytes($result);
 
         return $result;
     }
