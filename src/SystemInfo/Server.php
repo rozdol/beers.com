@@ -23,10 +23,10 @@ class Server
     {
         $result = [
             'Hostname' => gethostname(),
-            'Operating System' => self::getOperatingSystem(),
-            'Machine Type' => self::getMachineType(),
-            'Number of CPUs' => self::getNumberOfCpus(),
-            'Total RAM' => self::getTotalRam(),
+            'Operating System' => static::getOperatingSystem(),
+            'Machine Type' => static::getMachineType(),
+            'Number of CPUs' => static::getNumberOfCpus(),
+            'Total RAM' => static::getTotalRam(),
         ];
 
         return $result;

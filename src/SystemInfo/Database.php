@@ -39,7 +39,7 @@ class Database
         //
         // Statistics
         //
-        $allTables = self::getAllTables();
+        $allTables = static::getAllTables();
         $skipTables = 0;
         $tableStats = [];
         foreach ($allTables as $table) {

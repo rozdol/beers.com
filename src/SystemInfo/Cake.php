@@ -42,10 +42,10 @@ class Cake
     public static function getVersionUrl($version = null)
     {
         if (empty($version)) {
-            $version = self::getVersion();
+            $version = static::getVersion();
         }
 
-        return self::$releasesUrl . $version;
+        return static::$releasesUrl . $version;
     }
 
     /**

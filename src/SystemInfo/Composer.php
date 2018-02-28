@@ -46,7 +46,7 @@ class Composer
         $result = [];
         foreach ($packages as $package) {
             // Concatenate all fields that we'll be matching against
-            $matchString = self::getMatchString($package);
+            $matchString = static::getMatchString($package);
             foreach ($matchWords as $word) {
                 if (empty($result[$word])) {
                     $result[$word] = 0;

@@ -50,7 +50,7 @@ class Project
      */
     public static function getUrl()
     {
-        $result = self::$defaultUrl;
+        $result = static::$defaultUrl;
 
         $url = getenv('PROJECT_URL');
         if (!empty($url)) {
@@ -80,7 +80,7 @@ class Project
      */
     public static function getDisplayVersion()
     {
-        $result = self::$defaultVersion;
+        $result = static::$defaultVersion;
 
         $version = getenv('PROJECT_VERSION');
         if (!empty($version)) {
@@ -130,7 +130,7 @@ class Project
             'previous' => ROOT . DS . 'build' . DS . 'version.bak',
         ];
         foreach ($versions as $version => $file) {
-            $result[$version] = self::$defaultVersion;
+            $result[$version] = static::$defaultVersion;
             if (is_readable($file)) {
                 $result[$version] = file_get_contents($file);
             }
@@ -160,7 +160,7 @@ class Project
      */
     public static function getCopyright()
     {
-        $result = 'Copyright &copy; ' . date('Y') . ' ' . self::getName() . '. All rights reserved.';
+        $result = 'Copyright &copy; ' . date('Y') . ' ' . static::getName() . '. All rights reserved.';
 
         return $result;
     }

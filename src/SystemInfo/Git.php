@@ -29,11 +29,11 @@ class Git
      */
     public static function getCommand($command)
     {
-        if (empty(self::$commands[$command])) {
+        if (empty(static::$commands[$command])) {
             throw new RuntimeException("Git command [$command] is not defined");
         }
 
-        return self::$commands[$command];
+        return static::$commands[$command];
     }
 
     /**
@@ -45,7 +45,7 @@ class Git
     {
         $result = [];
 
-        $command = self::getCommand('localChanges');
+        $command = static::getCommand('localChanges');
 
         $changes = trim(shell_exec($command));
         if (empty($changes)) {
@@ -64,7 +64,7 @@ class Git
      */
     public static function getCurrentHash()
     {
-        $command = self::getCommand('currentHash');
+        $command = static::getCommand('currentHash');
 
         return (string)shell_exec($command);
     }
