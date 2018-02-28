@@ -46,10 +46,7 @@ class Composer
         $result = [];
         foreach ($packages as $package) {
             // Concatenate all fields that we'll be matching against
-            $matchString = $package['name'];
-            if (!empty($package['description'])) {
-                $matchString .= $package['description'];
-            }
+            $matchString = self::getMatchString($package);
             foreach ($matchWords as $word) {
                 if (empty($result[$word])) {
                     $result[$word] = 0;
@@ -57,6 +54,26 @@ class Composer
                 if (preg_match('/' . $word . '/', $matchString)) {
                     $result[$word]++;
                 }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Concatenate matching package fields into a single string
+     *
+     * @param array $package Package data
+     * @return string
+     */
+    protected static function getMatchString(array $package)
+    {
+        $result = '';
+
+        $keys = ['name', 'description'];
+        foreach ($keys as $key) {
+            if (!empty($package[$key])) {
+                $result .= ' ' . $package[$key];
             }
         }
 
