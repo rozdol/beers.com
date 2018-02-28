@@ -75,7 +75,7 @@ class Server
      *
      * @return string
      */
-    public function getTotalRam()
+    public static function getTotalRam()
     {
         $result = 'N/A';
         $memoryInfoFile = '/proc/meminfo';
