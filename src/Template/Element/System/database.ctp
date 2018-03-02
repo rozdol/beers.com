@@ -5,6 +5,7 @@
 
 use App\SystemInfo\Database;
 
+$driver = Database::getDriver();
 $allTables = Database::getAllTables();
 list($skipTables, $tableStats) = Database::getTableStats();
 
@@ -16,6 +17,14 @@ list($skipTables, $tableStats) = Database::getTableStats();
                 <h3 class="box-title">Database Summary</h3>
             </div>
             <div class="box-body">
+                <div class="info-box">
+                    <span class="info-box-icon bg-blue"><i class="fa fa-database"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Database engine</span>
+                        <span class="info-box-number"><?= $driver ?></span>
+                    </div>
+                </div>
+
                 <div class="info-box bg-blue">
                     <span class="info-box-icon"><i class="fa fa-database"></i></span>
                     <div class="info-box-content">

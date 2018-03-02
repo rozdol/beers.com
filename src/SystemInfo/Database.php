@@ -3,6 +3,7 @@ namespace App\SystemInfo;
 
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
+use ReflectionClass;
 
 /**
  * Database class
@@ -13,6 +14,40 @@ use Cake\ORM\TableRegistry;
  */
 class Database
 {
+    /**
+     * Get driver and version
+     *
+     * Get the database driver in use, and, if possible,
+     * the version of the database engine
+     *
+     * @param bool $skipVersion Do not include the version
+     * @return string
+     */
+    public static function getDriver($skipVersion = false)
+    {
+        $driver = ConnectionManager::get('default')->driver();
+        // Find the class name of the driver without namespace
+        $driver = new ReflectionClass($driver);
+        $driver = $driver->getShortName();
+        $driver = strtoupper($driver);
+
+        if ($skipVersion) {
+            return $driver;
+        }
+
+        // Find version of the database engine
+        switch ($driver) {
+            case 'MYSQL':
+                $version = ConnectionManager::get('default')->execute("SELECT VERSION()");
+                $version = $version->fetch()[0];
+                $driver .= ' ' . $version;
+
+                break;
+        }
+
+        return $driver;
+    }
+
     /**
      * Get all tables
      *
