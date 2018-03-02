@@ -75,7 +75,7 @@ $age = Configure::read('DatabaseLog.maxLength');
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-solid">
+            <div class="box box-primary">
                 <div class="box-body">
                     <div class="btn-group btn-group-sm" role="group" aria-label="...">
                         <?= $this->Html->link(
@@ -123,8 +123,8 @@ $age = Configure::read('DatabaseLog.maxLength');
                 <li>
                     <i class="<?= $typeIcons[$log['type']] ?>"></i>
                     <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> <?= $log['created']->i18nFormat('HH:mm:ss') ?></span>
-                        <h2 class="timeline-header"><?= ucfirst($log['type']); ?></h2>
+                        <span class="time"><i class="fa fa-clock-o"></i> <?= $log['created']->i18nFormat('yyyy-MM-dd HH:mm:ss') ?></span>
+                        <h2 class="timeline-header bg-<?= $typeLabels[$log['type']] ?>"><?= ucfirst($log['type']); ?></h2>
                         <div class="timeline-body">
                             <div class="box-body">
                                 <div class="row">
@@ -161,7 +161,7 @@ $age = Configure::read('DatabaseLog.maxLength');
             </ul>
 
             <!-- Timeline end -->
-            <div class="box box-solid">
+            <div class="box box-primary">
                 <div class="box-body">
                     <div class="paginator">
                         <?= $this->Paginator->counter([
