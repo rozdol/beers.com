@@ -25,7 +25,7 @@ class DatabaseLogShell extends BaseShell
 
         $count = $this->DatabaseLogs->deleteAll(['created <' => $date]);
 
-        $this->info('Removed ' . number_format($count) . ' log records older than ' . ltrim($age, '-'));
+        $this->info('Removed ' . number_format($count) . ' log records older than ' . ltrim($age, '-') . '.');
     }
 
     /**
