@@ -14,7 +14,7 @@ if (!empty($this->passedArgs[0])) {
 <section class="content">
     <div class="row">
         <div class="col-md-6">
-            <div class="box box-solid">
+            <div class="box box-primary">
                 <?php if (!empty($username)) : ?>
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= __('Please enter the new password for user {0}', '<i>' . $username . '</i>') ?></h3>
