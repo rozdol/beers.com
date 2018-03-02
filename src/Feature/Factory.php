@@ -5,7 +5,6 @@ use App\Feature\Config;
 use Cake\Controller\Component\AuthComponent;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
-use Cake\Log\Log;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -78,7 +77,6 @@ class Factory
         }
 
         if (empty($options)) {
-            Log::debug('Feature [' . $feature . '] does not exist.');
             $options = static::$defaultOptions;
         }
 
