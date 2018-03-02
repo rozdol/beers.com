@@ -1,4 +1,6 @@
 <?php
+use Cake\Core\Configure;
+
 echo $this->Html->css('database-logs', ['block' => 'css']);
 
 $typeLabels = [
@@ -23,6 +25,7 @@ $typeIcons = [
     'debug' => 'fa fa-wrench bg-green'
 ];
 
+$age = Configure::read('DatabaseLog.maxLength');
 ?>
 <section class="content-header">
     <h1><?= __('Logs'); ?>
@@ -38,6 +41,19 @@ $typeIcons = [
                     'class' => 'btn btn-danger'
                 ]
             );
+
+            if ($age) {
+                echo $this->Form->postLink(
+                    '<i class="fa fa-trash-o"></i> ' . __('Delete old'),
+                    ['plugin' => false, 'controller' => 'Logs', 'action' => 'gc'],
+                    [
+                        'title' => __('Delete old logs'),
+                        'confirm' => 'Are you sure? This action will delete all logs older than ' . ltrim($age, '-') . '.',
+                        'escape' => false,
+                        'class' => 'btn btn-danger'
+                    ]
+                );
+            }
 
             if ('localhost' === $this->request->env('SERVER_NAME')) {
                 echo $this->Form->postLink(
