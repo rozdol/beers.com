@@ -6,6 +6,19 @@ use PHPUnit\Framework\TestCase;
 
 class DatabaseTest extends TestCase
 {
+    public function testGetDriver()
+    {
+        // With version
+        $result = Database::getDriver();
+        $this->assertTrue(is_string($result), "getDriver() returned a non-string result");
+        $this->assertFalse(empty($result), "getDriver() returned an empty result");
+
+        // Without version
+        $result = Database::getDriver();
+        $this->assertTrue(is_string($result), "getDriver() returned a non-string result");
+        $this->assertFalse(empty($result), "getDriver() returned an empty result");
+    }
+
     public function testGetAllTables()
     {
         $result = Database::getAllTables();
