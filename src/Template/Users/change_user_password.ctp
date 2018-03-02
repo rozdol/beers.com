@@ -2,10 +2,10 @@
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 
-$username = '';
+$fullname = '';
 if (!empty($this->passedArgs[0])) {
     $entity = TableRegistry::get('Users')->get($this->passedArgs[0]);
-    $username = $entity->name;
+    $fullname = $entity->name;
 }
 ?>
 <section class="content-header">
@@ -15,11 +15,9 @@ if (!empty($this->passedArgs[0])) {
     <div class="row">
         <div class="col-md-6">
             <div class="box box-solid">
-                <?php if (!empty($username)) : ?>
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?= __('Please enter the new password for user {0}', '<i>' . $username . '</i>') ?></h3>
+                    <h3 class="box-title"><?= __('Please enter the new password for user {0}', '<i>' . $entity->username . '</i>') ?> <?= empty($fullname) ? '' : "($fullname)" ?></h3>
                 </div>
-                <?php endif; ?>
                 <?= $this->Form->create('User') ?>
                 <div class="box-body">
                     <?= $this->Form->input('password'); ?>
