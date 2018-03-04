@@ -19,3 +19,4 @@ $projectLogo = Project::getLogo('large');
         <p>Welcome to <b><?= $projectName ?></b>.  You are using version <b><?= $projectVersion ?></b>.
     </div>
 </div>
+<?= $this->element('System/about-qobo'); ?>
