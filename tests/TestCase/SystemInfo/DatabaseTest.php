@@ -19,17 +19,24 @@ class DatabaseTest extends TestCase
         $this->assertFalse(empty($result), "getDriver() returned an empty result");
     }
 
-    public function testGetAllTables()
+    public function testGetTables()
     {
-        $result = Database::getAllTables();
-        $this->assertTrue(is_array($result), "getAllTables() returned a non-array result");
-        $this->assertFalse(empty($result), "getAllTables() returned an empty result");
+        // All tables (no match)
+        $result = Database::getTables();
+        $this->assertTrue(is_array($result), "getTables() returned a non-array result for all tables");
+        $this->assertFalse(empty($result), "getTables() returned an empty result for all tables");
+
+        // Matched tables
+        $result = Database::getTables('users');
+        $this->assertTrue(is_array($result), "getTables() returned a non-array result for matched tables");
+        $this->assertFalse(empty($result), "getTables() returned an empty result for matched tables");
     }
 
     public function testGetTableStats()
     {
-        $result = Database::getTableStats();
-        $this->assertTrue(is_array($result), "getTableStats() returned a non-array result");
-        $this->assertFalse(empty($result), "getTableStats() returned an empty result");
+        $tables = Database::getTables();
+        $result = Database::getTablesStats($tables);
+        $this->assertTrue(is_array($result), "getTablesStats() returned a non-array result");
+        $this->assertFalse(empty($result), "getTablesStats() returned an empty result");
     }
 }
