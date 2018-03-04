@@ -5,7 +5,7 @@
 ?>
 <div class="box box-primary">
     <div class="box-header with-border">
-        <h3 class="box-title">About CakePHP</h3>
+        <h3 class="box-title">CakePHP</h3>
     </div>
     <div class="box-body">
         <p>
