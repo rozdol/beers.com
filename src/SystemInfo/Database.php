@@ -153,7 +153,6 @@ class Database
     {
         $result = 0;
 
-        $tableInstance = TableRegistry::get($table);
         // Bypassing any CakePHP logic for permissions, pagination, and so on,
         // and executing raw query to get reliable data.
         $sth = ConnectionManager::get('default')->execute("SELECT COUNT(*) AS total FROM `$table`");
