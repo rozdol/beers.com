@@ -106,34 +106,12 @@ $age = Configure::read('DatabaseLog.maxLength');
                     <i class="<?= $iconStyle ?>"></i>
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i> <?= $log['created']->i18nFormat('yyyy-MM-dd HH:mm:ss') ?></span>
-                        <h2 class="timeline-header <?= $headerStyle ?>"><b><?= ucfirst($log['type']); ?></b></h2>
+                        <h2 class="timeline-header <?= $headerStyle ?>">
+                            <b><?= ucfirst($log['type']); ?></b>
+                            <?= $this->Html->link('#' . $log['id'], ['action' => 'view', $log['id']]) ?>
+                        </h2>
                         <div class="timeline-body">
-                            <div class="box-body">
-                                <div class="row">
-                                    <div class="col-xs-4 col-md-2 text-right"><strong><?= __('Hostname'); ?></strong></div>
-                                    <div class="col-xs-8 col-md-4"><?= h($log['hostname']); ?></div>
-                                    <div class="col-xs-4 col-md-2 text-right"><strong><?= __('IP'); ?></strong></div>
-                                    <div class="col-xs-8 col-md-4"><?= h($log['ip']); ?></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-4 col-md-2 text-right"><strong><?= __('Uri'); ?></strong></div>
-                                    <div class="col-xs-8 col-md-4"><?= h($log['uri']); ?></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2 text-right"><strong><?= __('Referrer'); ?></strong></div>
-                                    <div class="col-md-10"><?= h($log['refer']); ?></div>
-                                </div>
-                                <div class="row" style="margin-top:20px;">
-                                    <div class="col-md-2 text-right"><strong><?= __('Message'); ?></strong></div>
-                                    <div class="col-md-10"><pre><small><?= trim(h($log['message'])); ?></small></pre></div>
-                                </div>
-                                <?php if (!empty($log['context']['scope'])) : ?>
-                                <div class="row">
-                                    <div class="col-md-2 text-right"><strong><?= __('Context'); ?></strong></div>
-                                    <div class="col-md-10"><pre><small><?= h($log['context']); ?></small></pre></div>
-                                </div>
-                                <?php endif; ?>
-                            </div> <!-- .box-body -->
+                            <?= $this->element('Log/message', ['log' => $log]); ?>
                         </div> <!-- .timeline-body -->
                     </div>
                 </li>
