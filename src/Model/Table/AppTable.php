@@ -33,66 +33,13 @@ class AppTable extends Table
      *
      * {@inheritDoc}
      */
-    protected function _setAssociationsFromConfig(array $config)
+    protected function setAssociation($type, $alias, array $options)
     {
-        $mc = new ModuleConfig(ConfigType::MODULE(), $this->getRegistryAlias());
-        $config = $mc->parse();
-        $modules = $config->manyToMany->modules;
-        if (empty($modules)) {
+        // skip if associated module is disabled
+        if (isset($options['className']) && ! FeatureFactory::get('Module' . DS . $options['className'])->isActive()) {
             return;
         }
 
-        foreach ($modules as $module) {
-            // skip if associated module is disabled
-            $feature = FeatureFactory::get('Module' . DS . $module);
-            if (!$feature->isActive()) {
-                continue;
-            }
-
-            $this->belongsToMany($module, [
-                'className' => $module
-            ]);
-        }
-    }
-
-    /**
-     * Skip setting associations for disabled modules.
-     *
-     * {@inheritDoc}
-     */
-    protected function setFieldAssociations(array $config, array $data)
-    {
-        foreach ($data as $module => $fields) {
-            foreach ($fields as $field) {
-                // skip non related type
-                if (!in_array($field->getType(), ['related'])) {
-                    continue;
-                }
-
-                // skip if associated module is disabled
-                $feature = FeatureFactory::get('Module' . DS . $field->getAssocCsvModule());
-                if (!$feature->isActive()) {
-                    continue;
-                }
-
-                // belongs-to association of the current module.
-                if ($module === $config['table']) {
-                    $name = CsvMigrationsUtils::createAssociationName($field->getAssocCsvModule(), $field->getName());
-                    $this->belongsTo($name, [
-                        'className' => $field->getAssocCsvModule(),
-                        'foreignKey' => $field->getName()
-                    ]);
-                }
-
-                // foreign key found in related module.
-                if ($field->getAssocCsvModule() === $config['table']) {
-                    $name = CsvMigrationsUtils::createAssociationName($module, $field->getName());
-                    $this->hasMany($name, [
-                        'className' => $module,
-                        'foreignKey' => $field->getName()
-                    ]);
-                }
-            }
-        }
+        $this->{$type}($alias, $options);
     }
 }
