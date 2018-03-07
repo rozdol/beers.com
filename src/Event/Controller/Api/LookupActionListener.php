@@ -2,17 +2,18 @@
 namespace App\Event\Controller\Api;
 
 use App\Event\EventName;
+use Cake\Datasource\QueryInterface;
+use Cake\Datasource\RepositoryInterface;
 use Cake\Datasource\ResultSetDecorator;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
-use Cake\ORM\Query;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
-use CsvMigrations\ConfigurationTrait;
 use CsvMigrations\FieldHandlers\CsvField;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 use CsvMigrations\FieldHandlers\RelatedFieldTrait;
 use CsvMigrations\FieldHandlers\Setting;
+use Qobo\Utils\ModuleConfig\ConfigType;
+use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RuntimeException;
 
 class LookupActionListener extends BaseActionListener
@@ -34,10 +35,10 @@ class LookupActionListener extends BaseActionListener
      * Add conditions to Lookup Query.
      *
      * @param \Cake\Event\Event $event Event instance
-     * @param \Cake\ORM\Query $query ORM Query
+     * @param \Cake\Datasource\QueryInterface $query ORM Query
      * @return void
      */
-    public function beforeLookup(Event $event, Query $query)
+    public function beforeLookup(Event $event, QueryInterface $query)
     {
         $request = $event->subject()->request;
         $table = $event->subject()->{$event->subject()->name};
@@ -57,12 +58,12 @@ class LookupActionListener extends BaseActionListener
      *
      * NOTE: There are recursive calls between this method and _getRelatedModuleValues().
      *
-     * @param \Cake\ORM\Table $table Table instance
-     * @param \Cake\ORM\Query $query Query object
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
+     * @param \Cake\Datasource\QueryInterface $query Query object
      * @param \Cake\Http\ServerRequest $request Request object
      * @return void
      */
-    protected function _alterQuery(Table $table, Query $query, ServerRequest $request)
+    protected function _alterQuery(RepositoryInterface $table, QueryInterface $query, ServerRequest $request)
     {
         $fields = $this->_getTypeaheadFields($table);
 
@@ -99,10 +100,10 @@ class LookupActionListener extends BaseActionListener
      * Instantiates and returns a CsvField object of the provided field.
      *
      * @param string $field Field name
-     * @param \Cake\ORM\Table $table Table instance
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return null|\CsvMigrations\FieldHandlers\CsvField
      */
-    protected function _getCsvField($field, Table $table)
+    protected function _getCsvField($field, RepositoryInterface $table)
     {
         $result = null;
         if (false !== strpos($field, '.')) {
@@ -171,11 +172,10 @@ class LookupActionListener extends BaseActionListener
         // This will recurse into related modules and get display
         // values as deep as needed.
         $fhf = new FieldHandlerFactory();
-
         foreach ($entities as $id => $label) {
             $event->result[$id] = $fhf->renderValue(
                 $table,
-                $table->displayField(),
+                $table->getDisplayField(),
                 $label,
                 ['renderAs' => Setting::RENDER_PLAIN_VALUE_RELATED()]
             );
@@ -194,37 +194,33 @@ class LookupActionListener extends BaseActionListener
     /**
      * Get module's type-ahead fields.
      *
-     * @param \Cake\ORM\Table $table Table instance
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return array
      */
-    protected function _getTypeaheadFields(Table $table)
+    protected function _getTypeaheadFields(RepositoryInterface $table)
     {
-        // Get typeahead fields from configuration
-        $result = [];
-        if (method_exists($table, 'getConfig') && is_callable([$table, 'getConfig'])) {
-            $result = $table->getConfig(ConfigurationTrait::$CONFIG_OPTION_TYPEAHEAD_FIELDS);
-        }
-        // If there are no typeahead fields configured, use displayFields()
-        if (empty($result)) {
-            $result[] = $table->displayField();
+        $config = (new ModuleConfig(ConfigType::MODULE(), $table->getRegistryAlias()))->parse();
+
+        $fields = ! empty($config->table->typeahead_fields) ?
+            $config->table->typeahead_fields :
+            [$table->getDisplayField()];
+
+        foreach ($fields as $k => $v) {
+            $fields[$k] = $table->aliasField($v);
         }
 
-        foreach ($result as &$typeaheadField) {
-            $typeaheadField = $table->aliasField($typeaheadField);
-        }
-
-        return $result;
+        return $fields;
     }
 
     /**
      * Get order by fields for lookup Query.
      *
-     * @param \Cake\ORM\Table $table Table instance
-     * @param \Cake\ORM\Query $query ORM Query
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
+     * @param \Cake\Datasource\QueryInterface $query ORM Query
      * @param array $fields Optional fields to be used in order by clause
      * @return array
      */
-    protected function _getOrderByFields(Table $table, Query $query, array $fields = [])
+    protected function _getOrderByFields(RepositoryInterface $table, QueryInterface $query, array $fields = [])
     {
         $parentModule = $this->_getParentModule($table);
 
@@ -258,11 +254,11 @@ class LookupActionListener extends BaseActionListener
     /**
      * Join parent modules.
      *
-     * @param \Cake\ORM\Table $table Table instance
-     * @param \Cake\ORM\Query $query ORM Query
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
+     * @param \Cake\Datasource\QueryInterface $query ORM Query
      * @return void
      */
-    protected function _joinParentTables(Table $table, Query $query)
+    protected function _joinParentTables(RepositoryInterface $table, QueryInterface $query)
     {
         $parentModule = $this->_getParentModule($table);
 
@@ -302,10 +298,10 @@ class LookupActionListener extends BaseActionListener
      * Returns parent module name for provided Table instance.
      * If parent module is not defined then it returns null.
      *
-     * @param \Cake\ORM\Table $table Table instance
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return string|null
      */
-    protected function _getParentModule(Table $table)
+    protected function _getParentModule(RepositoryInterface $table)
     {
         if (!method_exists($table, 'getConfig') || !is_callable([$table, 'getConfig'])) {
             return null;

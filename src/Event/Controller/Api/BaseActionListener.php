@@ -2,7 +2,12 @@
 namespace App\Event\Controller\Api;
 
 use Cake\Controller\Controller;
+use Cake\Core\App;
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
+use Cake\Datasource\QueryInterface;
+use Cake\Datasource\RepositoryInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
@@ -12,10 +17,11 @@ use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
-use CsvMigrations\ConfigurationTrait;
+use Cake\View\View;
 use CsvMigrations\FieldHandlers\CsvField;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 use CsvMigrations\FileUploadsUtils;
+use Psr\Http\Message\ServerRequestInterface;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 
@@ -25,6 +31,16 @@ abstract class BaseActionListener implements EventListenerInterface
      * Pretty format identifier
      */
     const FORMAT_PRETTY = 'pretty';
+
+    /**
+     * Include menus identifier
+     */
+    const FLAG_INCLUDE_MENUS = 'menus';
+
+    /**
+     * Property name for menu items
+     */
+    const MENU_PROPERTY_NAME = '_Menus';
 
     /**
      * File association class name
@@ -44,27 +60,6 @@ abstract class BaseActionListener implements EventListenerInterface
      * @var \CsvMigrations\FieldHandlers\FieldHandlerFactory
      */
     private $factory;
-
-    /**
-     * Method that fetches action fields from the corresponding csv file.
-     *
-     * @param  \Cake\Network\Request $request Request object
-     * @param  string                $action  Action name
-     * @return array
-     */
-    protected function _getActionFields(Request $request, $action = null)
-    {
-        $controller = $request->controller;
-
-        if (is_null($action)) {
-            $action = $request->action;
-        }
-
-        $mc = new ModuleConfig(ConfigType::VIEW(), $controller, $action);
-        $result = $mc->parse()->items;
-
-        return $result;
-    }
 
     /**
      * Move associated files under the corresponding entity property
@@ -93,19 +88,18 @@ abstract class BaseActionListener implements EventListenerInterface
      * }
      * ```
      *
-     * @param \Cake\ORM\Entity $entity Entity
-     * @param \Cake\ORM\Table $table Table instance
+     * @param \Cake\Datasource\EntityInterface $entity Entity
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return void
      */
-    protected function _restructureFiles(Entity $entity, Table $table)
+    protected function _restructureFiles(EntityInterface $entity, RepositoryInterface $table)
     {
-        $fileAssociationFields = $this->_getFileAssociationFields($table);
-        foreach ($fileAssociationFields as $associationName => $fieldName) {
-            $associatedFieldName = Inflector::underscore($associationName);
+        foreach ($this->_getFileAssociationFields($table) as $association => $target) {
+            $source = Inflector::underscore($association);
 
-            $entity->set($fieldName, $entity->get($associatedFieldName));
-            $entity->unsetProperty($associatedFieldName);
-            $this->_attachThumbnails($entity->{$fieldName}, $table);
+            $entity->set($target, $entity->get($source));
+            $entity->unsetProperty($source);
+            $this->_attachThumbnails($entity->get($target), $table);
         }
     }
 
@@ -283,6 +277,54 @@ abstract class BaseActionListener implements EventListenerInterface
             }
 
             $entity->{$field} = $this->factory->renderValue($table, $field, $entity->{$field}, ['entity' => $entity]);
+        }
+    }
+
+    /**
+     * Query order clause getter.
+     *
+     * This is a temporary solution for multi-column sort support,
+     * until crud plugin adds relevant functionality.
+     * @link https://github.com/FriendsOfCake/crud/issues/522
+     * @link https://github.com/cakephp/cakephp/issues/7324
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request Request instance
+     * @return array
+     */
+    protected function getOrderClause(ServerRequestInterface $request)
+    {
+        if (! $request->getQuery('sort')) {
+            return [];
+        }
+
+        // add sort direction to all columns
+        return array_fill_keys(
+            explode(',', $request->getQuery('sort')),
+            $request->getQuery('direction')
+        );
+    }
+
+    /**
+     * Method that retrieves and attaches menu elements to API response.
+     *
+     * @param \Cake\Datasource\ResultSetInterface $resultSet ResultSet object
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
+     * @param array $user User info
+     * @return void
+     */
+    protected function attachMenu(ResultSetInterface $resultSet, RepositoryInterface $table, array $user)
+    {
+        $view = new View();
+        $controllerName = App::shortName(get_class($table), 'Model/Table', 'Table');
+
+        foreach ($resultSet as $entity) {
+            $entity->set(static::MENU_PROPERTY_NAME, $view->element('CsvMigrations.Menu/index_actions', [
+                'plugin' => false,
+                'controller' => $controllerName,
+                'displayField' => $table->getDisplayField(),
+                'entity' => $entity,
+                'user' => $user
+            ]));
         }
     }
 }
