@@ -26,13 +26,8 @@ class ViewActionListener extends BaseActionListener
      */
     public function beforeFind(Event $event, Query $query)
     {
-        $table = $event->subject()->{$event->subject()->name};
-        $request = $event->subject()->request;
-
-        $this->_lookupFields($query, $event);
-
-        if (static::FORMAT_PRETTY !== $request->query('format')) {
-            $query->contain($this->_getFileAssociations($table));
+        if (static::FORMAT_PRETTY !== $event->subject()->request->getQuery('format')) {
+            $query->contain($this->_getFileAssociations($event->subject()->{$event->subject()->name}));
         }
     }
 

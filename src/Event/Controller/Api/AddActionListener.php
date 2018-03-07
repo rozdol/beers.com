@@ -23,7 +23,7 @@ class AddActionListener extends BaseActionListener
      */
     public function beforeSave(Event $event, Entity $entity)
     {
-        $this->_associatedByLookupFields($entity, $event);
+        //
     }
 
     /**

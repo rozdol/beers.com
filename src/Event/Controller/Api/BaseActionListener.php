@@ -46,45 +46,6 @@ abstract class BaseActionListener implements EventListenerInterface
     private $factory;
 
     /**
-     * Wrapper method that checks if Table instance has method 'findByLookupFields'
-     * and if it does, it calls it, passing along the required arguments.
-     *
-     * @param  \Cake\ORM\Query   $query the Query
-     * @param  \Cake\Event\Event $event Event instance
-     * @return void
-     */
-    protected function _lookupFields(Query $query, Event $event)
-    {
-        $methodName = 'findByLookupFields';
-        $table = $event->subject()->{$event->subject()->name};
-        if (!method_exists($table, $methodName) || !is_callable([$table, $methodName])) {
-            return;
-        }
-        $id = $event->subject()->request['pass'][0];
-
-        $table->{$methodName}($query, $id);
-    }
-
-    /**
-     * Wrapper method that checks if Table instance has method 'setAssociatedByLookupFields'
-     * and if it does, it calls it, passing along the required arguments.
-     *
-     * @param  \Cake\ORM\Entity  $entity Entity
-     * @param  \Cake\Event\Event $event  Event instance
-     * @return void
-     */
-    protected function _associatedByLookupFields(Entity $entity, Event $event)
-    {
-        $methodName = 'setAssociatedByLookupFields';
-        $table = $event->subject()->{$event->subject()->name};
-        if (!method_exists($table, $methodName) || !is_callable([$table, $methodName])) {
-            return;
-        }
-
-        $table->{$methodName}($entity);
-    }
-
-    /**
      * Method that fetches action fields from the corresponding csv file.
      *
      * @param  \Cake\Network\Request $request Request object

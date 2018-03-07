@@ -171,6 +171,11 @@ class AppController extends Controller
     public function view()
     {
         $this->Crud->on('beforeFind', function (Event $event) {
+            $event->getSubject()->query->applyOptions([
+                'lookup' => true,
+                'value' => $this->request->getParam('pass.0')
+            ]);
+
             $ev = new Event((string)EventName::API_VIEW_BEFORE_FIND(), $this, [
                 'query' => $event->subject()->query
             ]);
@@ -258,6 +263,8 @@ class AppController extends Controller
      */
     public function add()
     {
+        $this->Crud->action()->saveOptions(['lookup' => true]);
+
         $this->Crud->on('beforeSave', function (Event $event) {
             $ev = new Event((string)EventName::API_ADD_BEFORE_SAVE(), $this, [
                 'entity' => $event->subject()->entity
@@ -285,7 +292,14 @@ class AppController extends Controller
      */
     public function edit()
     {
+        $this->Crud->action()->saveOptions(['lookup' => true]);
+
         $this->Crud->on('beforeFind', function (Event $event) {
+            $event->getSubject()->query->applyOptions([
+                'lookup' => true,
+                'value' => $this->request->getParam('pass.0')
+            ]);
+
             $ev = new Event((string)EventName::API_EDIT_BEFORE_FIND(), $this, [
                 'query' => $event->subject()->query
             ]);

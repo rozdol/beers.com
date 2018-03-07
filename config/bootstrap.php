@@ -45,6 +45,7 @@ use App\Event\Controller\Api\IndexActionListener;
 use App\Event\Controller\Api\LookupActionListener;
 use App\Event\Controller\Api\RelatedActionListener;
 use App\Event\Controller\Api\ViewActionListener;
+use App\Event\Model\LookupListener;
 use App\Event\Plugin\CsvMigrations\Controller\BatchActionListener;
 use App\Event\Plugin\CsvMigrations\FieldHandlers\MagicDefaultValueListener;
 use App\Event\Plugin\Menu\View\MenuListener;
@@ -267,6 +268,7 @@ EventManager::instance()->on(new LocalListener([
     ]
 ]));
 EventManager::instance()->on(new LookupActionListener());
+EventManager::instance()->on(new LookupListener());
 EventManager::instance()->on(new MagicDefaultValueListener());
 EventManager::instance()->on(new MenuListener());
 EventManager::instance()->on(new ChildListItemsListener());
