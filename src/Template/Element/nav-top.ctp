@@ -29,16 +29,16 @@
                     <li class="user-footer">
                         <div class="pull-left">
                             <?= $this->Html->link(
-                                __d('cake', 'Profile'),
+                                '<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ' . __d('cake', 'Profile'),
                                 '/users/profile',
-                                ['class' => 'btn btn-default btn-flat']
+                                ['class' => 'btn btn-default btn-flat', 'escape' => false]
                             ); ?>
                         </div>
                         <div class="pull-right">
                             <?= $this->Html->link(
-                                __d('cake', 'Sign out'),
+                                '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> ' . __d('cake', 'Sign out'),
                                 '/users/logout',
-                                ['class' => 'btn btn-default btn-flat']
+                                ['class' => 'btn btn-default btn-flat', 'escape' => false]
                             ); ?>
                         </div>
                     </li>

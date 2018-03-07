@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use Cake\Core\Configure;
+
 /**
  * System Controller
  */
@@ -18,6 +20,8 @@ class SystemController extends AppController
      */
     public function info()
     {
+        $tabs = Configure::read('SystemInfo.tabs');
+        $this->set('tabs', $tabs);
     }
 
     /**
