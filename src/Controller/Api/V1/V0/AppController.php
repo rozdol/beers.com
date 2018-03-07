@@ -51,7 +51,8 @@ class AppController extends Controller
                 'Crud.Add',
                 'Crud.Edit',
                 'Crud.Delete',
-                'Crud.Lookup'
+                'Crud.Lookup',
+                'related' => ['className' => '\App\Crud\Action\RelatedAction']
             ],
             'listeners' => [
                 'Crud.Api',
@@ -187,22 +188,36 @@ class AppController extends Controller
     }
 
     /**
-     * Related API request for View Tabs
+     * Related CRUD action events handling logic.
      *
-     * @return void
+     * @param string $id Record id
+     * @param string $associationName Association name
+     * @return \Cake\Network\Response
      */
-    public function related()
+    public function related($id, $associationName)
     {
-        $result = [];
+        $this->Crud->on('beforePaginate', function (Event $event) {
+            $ev = new Event((string)EventName::API_RELATED_BEFORE_PAGINATE(), $this, [
+                'query' => $event->subject()->query
+            ]);
+            $this->eventManager()->dispatch($ev);
+        });
 
-        $this->request->allowMethod(['get']);
+        $this->Crud->on('afterPaginate', function (Event $event) {
+            $ev = new Event((string)EventName::API_RELATED_AFTER_PAGINATE(), $this, [
+                'entities' => $event->subject()->entities
+            ]);
+            $this->eventManager()->dispatch($ev);
+        });
 
-        $data = $this->request->query();
+        $this->Crud->on('beforeRender', function (Event $event) {
+            $ev = new Event((string)EventName::API_RELATED_BEFORE_RENDER(), $this, [
+                'entities' => $event->subject()->entities
+            ]);
+            $this->eventManager()->dispatch($ev);
+        });
 
-        $result = $this->{$this->name}->getRelatedEntities($data, $this->Auth->user());
-
-        $this->set(compact('result'));
-        $this->set('_serialize', 'result');
+        return $this->Crud->execute();
     }
 
     /**
