@@ -17,6 +17,8 @@ use CsvMigrations\CsvMigrationsUtils;
 use CsvMigrations\FileUploadsUtils;
 use CsvMigrations\Panel;
 use CsvMigrations\PanelUtilTrait;
+use Qobo\Utils\ModuleConfig\ConfigType;
+use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
 
 /**
@@ -414,25 +416,22 @@ class AppController extends Controller
             'success' => false,
             'data' => [],
         ];
-        $table = $this->loadModel();
-        $tableConfig = $table->getConfig();
         $data = $this->request->data;
-        if (empty($data) || !is_array($data)) {
+        if (empty($data) || ! is_array($data)) {
             return $result;
         }
 
         if (is_array($data[$this->name])) {
             $innerKey = key($data[$this->name]);
-            if (!is_array($data[$this->name][$innerKey])) {
-                //Regular form format - [module][inputName]
-                $data = $data[$this->name];
-            } else {
-                //Embedded form - [module][dynamicField][inputName]
-                $data = $data[$this->name][$innerKey];
-            }
+            // embedded form - [module][dynamicField][inputName] : Regular form format - [module][inputName]
+            $data = is_array($data[$this->name][$innerKey]) ? $data[$this->name][$innerKey] : $data[$this->name];
         }
-        $evalPanels = $this->getEvalPanels($tableConfig, $data);
-        if (!empty($evalPanels)) {
+
+        $evalPanels = $this->getEvalPanels(
+            json_decode(json_encode((new ModuleConfig(ConfigType::MODULE(), $this->name))->parse()), true),
+            $data
+        );
+        if (! empty($evalPanels)) {
             $result['success'] = true;
             $result['data'] = $evalPanels;
         }
