@@ -2,11 +2,7 @@
 namespace App\Model\Table;
 
 use App\Feature\Factory as FeatureFactory;
-use Cake\Core\Configure;
-use CsvMigrations\CsvMigrationsUtils;
 use CsvMigrations\Table;
-use Qobo\Utils\ModuleConfig\ConfigType;
-use Qobo\Utils\ModuleConfig\ModuleConfig;
 
 /**
  * App Model
