@@ -1,4 +1,6 @@
 <?php
+use Qobo\Utils\Utility\Salt;
+
 try {
     Dotenv::makeMutable();
     Dotenv::load(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
@@ -11,7 +13,6 @@ try {
 
 $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? true : false;
 $debug = (bool)env('DEBUG');
-$salt = getenv('SALT') ?: 'dc363e686e16eafeab563188e3a5264ee73196accaec05a3541b1ce4148d9992';
 
 $logLevels = ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency'];
 if ($debug) {
@@ -118,7 +119,7 @@ return [
      *   You should treat it as extremely sensitive data.
      */
     'Security' => [
-        'salt' => $salt,
+        'salt' => Salt::getSalt(),
     ],
 
     /**
