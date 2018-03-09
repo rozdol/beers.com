@@ -24,5 +24,16 @@ class FactoryTest extends TestCase
         $feature = Factory::get('Foobar');
         $this->assertInstanceOf(FeatureInterface::class, $feature);
         $this->assertInstanceOf(BaseFeature::class, $feature);
+
+        $feature = Factory::get('Not Existing Feature');
+        $this->assertInstanceOf(BaseFeature::class, $feature);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetExceptionNotString()
+    {
+        $result = Factory::get(true);
     }
 }
