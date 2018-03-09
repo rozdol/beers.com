@@ -49,14 +49,11 @@ class Upgrade20180214Task extends Shell
         Configure::write('ModuleConfig.classMapVersion', 'V1');
 
         $this->path = Configure::readOrFail('CsvMigrations.modules.path');
-        $this->validatePath();
+        Utility::validatePath($this->path);
         // remove trailing slash
         $this->path = rtrim($this->path, DS);
 
-        // fetch modules
-        $modules = Utility::findDirs($this->path);
-
-        foreach ($modules as $module) {
+        foreach (Utility::findDirs($this->path) as $module) {
             $this->migrateToJSON($module);
             /**
              * @todo temporarily disabled "migration.json" merge with "fields.json" to make migration to JSON smoother, we will need to come back to this and re-enable it in the future.
@@ -65,26 +62,6 @@ class Upgrade20180214Task extends Shell
         }
 
         $this->success(sprintf('%s completed.', $this->getOptionParser()->getDescription()));
-    }
-
-    /**
-     * Validates CSV modules path.
-     *
-     * @return void
-     */
-    private function validatePath()
-    {
-        if (! is_string($this->path)) {
-            $this->abort('$path must be a string');
-        }
-
-        if ('' === trim($this->path)) {
-            $this->abort('$path cannot be empty');
-        }
-
-        if (0 !== strpos($this->path, ROOT)) {
-            $this->abort('$path does not reside in project directory');
-        }
     }
 
     /**

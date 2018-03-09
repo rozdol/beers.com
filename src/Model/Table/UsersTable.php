@@ -4,16 +4,14 @@ namespace App\Model\Table;
 use CakeDC\Users\Model\Table\UsersTable as Table;
 use Cake\Database\Schema\TableSchema;
 use Cake\Validation\Validator;
-use CsvMigrations\ConfigurationTrait;
-use CsvMigrations\FieldTrait;
+use CsvMigrations\Model\AssociationsAwareTrait;
 
 /**
  * Users Model
  */
 class UsersTable extends Table
 {
-    use ConfigurationTrait;
-    use FieldTrait;
+    use AssociationsAwareTrait;
 
     /**
      * Initialize method
@@ -25,8 +23,7 @@ class UsersTable extends Table
     {
         parent::initialize($config);
 
-        // set table/module configuration
-        $this->setConfig($this->table());
+        $this->setAssociations();
     }
 
     /**
