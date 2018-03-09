@@ -13,10 +13,12 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Crud\Controller\ControllerTrait;
+use CsvMigrations\Controller\Traits\PanelsTrait;
 use CsvMigrations\CsvMigrationsUtils;
-use CsvMigrations\FileUploadsUtils;
 use CsvMigrations\Panel;
-use CsvMigrations\PanelUtilTrait;
+use CsvMigrations\Utility\FileUpload;
+use Qobo\Utils\ModuleConfig\ConfigType;
+use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
 
 /**
@@ -40,7 +42,7 @@ class AppController extends Controller
 {
     use CapabilityTrait;
     use ControllerTrait;
-    use PanelUtilTrait;
+    use PanelsTrait;
 
     public $components = [
         'RequestHandler',
@@ -51,7 +53,8 @@ class AppController extends Controller
                 'Crud.Add',
                 'Crud.Edit',
                 'Crud.Delete',
-                'Crud.Lookup'
+                'Crud.Lookup',
+                'related' => ['className' => '\App\Crud\Action\RelatedAction']
             ],
             'listeners' => [
                 'Crud.Api',
@@ -95,7 +98,7 @@ class AppController extends Controller
         'checkAuthIn' => 'Controller.initialize'
     ];
 
-    protected $_fileUploadsUtils;
+    protected $fileUpload;
 
     /**
      * {@inheritDoc}
@@ -120,7 +123,7 @@ class AppController extends Controller
             $this->enableAuthorization();
         }
 
-        $this->_fileUploadsUtils = new FileUploadsUtils($this->{$this->name});
+        $this->fileUpload = new FileUpload($this->{$this->name});
     }
 
     /**
@@ -170,6 +173,11 @@ class AppController extends Controller
     public function view()
     {
         $this->Crud->on('beforeFind', function (Event $event) {
+            $event->getSubject()->query->applyOptions([
+                'lookup' => true,
+                'value' => $this->request->getParam('pass.0')
+            ]);
+
             $ev = new Event((string)EventName::API_VIEW_BEFORE_FIND(), $this, [
                 'query' => $event->subject()->query
             ]);
@@ -187,22 +195,36 @@ class AppController extends Controller
     }
 
     /**
-     * Related API request for View Tabs
+     * Related CRUD action events handling logic.
      *
-     * @return void
+     * @param string $id Record id
+     * @param string $associationName Association name
+     * @return \Cake\Network\Response
      */
-    public function related()
+    public function related($id, $associationName)
     {
-        $result = [];
+        $this->Crud->on('beforePaginate', function (Event $event) {
+            $ev = new Event((string)EventName::API_RELATED_BEFORE_PAGINATE(), $this, [
+                'query' => $event->subject()->query
+            ]);
+            $this->eventManager()->dispatch($ev);
+        });
 
-        $this->request->allowMethod(['get']);
+        $this->Crud->on('afterPaginate', function (Event $event) {
+            $ev = new Event((string)EventName::API_RELATED_AFTER_PAGINATE(), $this, [
+                'entities' => $event->subject()->entities
+            ]);
+            $this->eventManager()->dispatch($ev);
+        });
 
-        $data = $this->request->query();
+        $this->Crud->on('beforeRender', function (Event $event) {
+            $ev = new Event((string)EventName::API_RELATED_BEFORE_RENDER(), $this, [
+                'entities' => $event->subject()->entities
+            ]);
+            $this->eventManager()->dispatch($ev);
+        });
 
-        $result = $this->{$this->name}->getRelatedEntities($data, $this->Auth->user());
-
-        $this->set(compact('result'));
-        $this->set('_serialize', 'result');
+        return $this->Crud->execute();
     }
 
     /**
@@ -243,6 +265,8 @@ class AppController extends Controller
      */
     public function add()
     {
+        $this->Crud->action()->saveOptions(['lookup' => true]);
+
         $this->Crud->on('beforeSave', function (Event $event) {
             $ev = new Event((string)EventName::API_ADD_BEFORE_SAVE(), $this, [
                 'entity' => $event->subject()->entity
@@ -252,7 +276,7 @@ class AppController extends Controller
 
         $this->Crud->on('afterSave', function (Event $event) {
             // handle file uploads if found in the request data
-            $linked = $this->_fileUploadsUtils->linkFilesToEntity($event->subject()->entity, $this->{$this->name}, $this->request->data);
+            $linked = $this->fileUpload->linkFilesToEntity($event->subject()->entity, $this->{$this->name}, $this->request->data);
 
             $ev = new Event((string)EventName::API_ADD_AFTER_SAVE(), $this, [
                 'entity' => $event->subject()->entity
@@ -270,7 +294,14 @@ class AppController extends Controller
      */
     public function edit()
     {
+        $this->Crud->action()->saveOptions(['lookup' => true]);
+
         $this->Crud->on('beforeFind', function (Event $event) {
+            $event->getSubject()->query->applyOptions([
+                'lookup' => true,
+                'value' => $this->request->getParam('pass.0')
+            ]);
+
             $ev = new Event((string)EventName::API_EDIT_BEFORE_FIND(), $this, [
                 'query' => $event->subject()->query
             ]);
@@ -293,7 +324,7 @@ class AppController extends Controller
 
         $this->Crud->on('afterSave', function (Event $event) {
             // handle file uploads if found in the request data
-            $linked = $this->_fileUploadsUtils->linkFilesToEntity($event->subject()->entity, $this->{$this->name}, $this->request->data);
+            $linked = $this->fileUpload->linkFilesToEntity($event->subject()->entity, $this->{$this->name}, $this->request->data);
         });
 
         return $this->Crud->execute();
@@ -329,7 +360,7 @@ class AppController extends Controller
             }
 
             foreach ($files as $modelField => $fileInfo) {
-                $saved = $this->_fileUploadsUtils->ajaxSave(
+                $saved = $this->fileUpload->ajaxSave(
                     $this->{$this->name},
                     $modelField,
                     $fileInfo,
@@ -385,27 +416,24 @@ class AppController extends Controller
             'success' => false,
             'data' => [],
         ];
-        $table = $this->loadModel();
-        $tableConfig = $table->getConfig();
         $data = $this->request->data;
-        if (empty($data) || !is_array($data)) {
+        if (empty($data) || ! is_array($data)) {
             return $result;
         }
 
         if (is_array($data[$this->name])) {
             $innerKey = key($data[$this->name]);
-            if (!is_array($data[$this->name][$innerKey])) {
-                //Regular form format - [module][inputName]
-                $data = $data[$this->name];
-            } else {
-                //Embedded form - [module][dynamicField][inputName]
-                $data = $data[$this->name][$innerKey];
-            }
+            // embedded form - [module][dynamicField][inputName] : Regular form format - [module][inputName]
+            $data = is_array($data[$this->name][$innerKey]) ? $data[$this->name][$innerKey] : $data[$this->name];
         }
-        $evalPanels = $this->getEvalPanels($tableConfig, $data);
-        if (!empty($evalPanels)) {
+
+        $panels = $this->getPanels(
+            json_decode(json_encode((new ModuleConfig(ConfigType::MODULE(), $this->name))->parse()), true),
+            $data
+        );
+        if (! empty($panels)) {
             $result['success'] = true;
-            $result['data'] = $evalPanels;
+            $result['data'] = $panels;
         }
 
         $this->set('result', $result);

@@ -4,7 +4,7 @@ namespace App\Shell\Task;
 use Cake\Console\Shell;
 use Cake\Utility\Inflector;
 use Exception;
-use Qobo\Utils\Utility\FileLock;
+use Qobo\Utils\Utility\Lock\FileLock;
 
 class LockTask extends Shell
 {

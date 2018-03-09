@@ -20,6 +20,9 @@ class EventName extends Enum
     const API_INDEX_BEFORE_RENDER = 'API.Index.beforeRender';
     const API_LOOKUP_AFTER_FIND = 'API.Lookup.afterFind';
     const API_LOOKUP_BEFORE_FIND = 'API.Lookup.beforeFind';
+    const API_RELATED_AFTER_PAGINATE = 'API.Related.afterPaginate';
+    const API_RELATED_BEFORE_PAGINATE = 'API.Related.beforePaginate';
+    const API_RELATED_BEFORE_RENDER = 'API.Related.beforeRender';
     const API_VIEW_AFTER_FIND = 'API.View.afterFind';
     const API_VIEW_BEFORE_FIND = 'API.View.beforeFind';
 }
