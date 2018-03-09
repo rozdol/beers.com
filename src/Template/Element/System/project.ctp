@@ -42,7 +42,7 @@ $projectUrl = Project::getUrl();
             </div>
         </div>
     </div>
-    <div class="col-md-5">
+    <div class="col-md-8">
         <?= $this->element('System/about'); ?>
     </div>
 </div>

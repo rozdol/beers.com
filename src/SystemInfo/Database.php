@@ -3,6 +3,7 @@ namespace App\SystemInfo;
 
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
+use ReflectionClass;
 
 /**
  * Database class
@@ -14,55 +15,170 @@ use Cake\ORM\TableRegistry;
 class Database
 {
     /**
-     * Get all tables
+     * Get driver and version
      *
-     * This method returns a list of all tables found
-     * in the default database connection.
+     * Get the database driver in use, and, if possible,
+     * the version of the database engine
      *
-     * @return array
+     * @param bool $skipVersion Do not include the version
+     * @return string
      */
-    public static function getAllTables()
+    public static function getDriver($skipVersion = false)
     {
-        return ConnectionManager::get('default')->schemaCollection()->listTables();
+        $driver = ConnectionManager::get('default')->driver();
+        // Find the class name of the driver without namespace
+        $driver = new ReflectionClass($driver);
+        $driver = $driver->getShortName();
+        $driver = strtoupper($driver);
+
+        if ($skipVersion) {
+            return $driver;
+        }
+
+        // Find version of the database engine
+        switch ($driver) {
+            case 'MYSQL':
+                $version = ConnectionManager::get('default')->execute("SELECT VERSION()");
+                $version = $version->fetch()[0];
+                $driver .= ' ' . $version;
+
+                break;
+        }
+
+        return $driver;
     }
 
     /**
-     * Get table stats
+     * Get tables
      *
-     * This method returns a variety of stats, such as
-     * the count of all records, deleted records, etc.
+     * This method returns a list of all tables found
+     * in the default database connection, that match
+     * a given string in the name.
      *
+     * If not match string provided, all found tables
+     * are returned.
+     *
+     * @param string $match String to match in the table names
      * @return array
      */
-    public static function getTableStats()
+    public static function getTables($match = '')
     {
-        //
-        // Statistics
-        //
-        $allTables = static::getAllTables();
-        $skipTables = 0;
-        $tableStats = [];
-        foreach ($allTables as $table) {
-            // Skip phinx database schema version tables
-            if (preg_match('/phinxlog/', $table)) {
-                $skipTables++;
-                continue;
-            }
-            // Bypassing any CakePHP logic for permissions, pagination, and so on,
-            // and executing raw query to get reliable data.
-            $sth = ConnectionManager::get('default')->execute("SELECT COUNT(*) AS total FROM `$table`");
-            $result = $sth->fetch('assoc');
-            $tableStats[$table]['total'] = $result['total'];
+        $tables = ConnectionManager::get('default')->schemaCollection()->listTables();
 
-            $tableInstance = TableRegistry::get($table);
-            $tableStats[$table]['deleted'] = 0;
-            if ($tableInstance->hasField('trashed')) {
-                $sth = ConnectionManager::get('default')->execute("SELECT COUNT(*) AS deleted FROM `$table` WHERE `trashed` IS NOT NULL AND `trashed` <> '0000-00-00 00:00:00'");
-                $result = $sth->fetch('assoc');
-                $tableStats[$table]['deleted'] = $result['deleted'];
+        if (empty($match)) {
+            return $tables;
+        }
+
+        $result = [];
+        foreach ($tables as $table) {
+            if (preg_match("/$match/", $table)) {
+                $result[] = $table;
             }
         }
 
-        return [$skipTables, $tableStats];
+        return $result;
+    }
+
+    /**
+     * Get tables stats
+     *
+     * This method returns a variety of stats, such as
+     * the count of all records, deleted records, etc.
+     * for a given list of tables.
+     *
+     * @param array $tables List of tables to get stats for
+     * @return array
+     */
+    public static function getTablesStats(array $tables)
+    {
+        // Initialize tables stats
+        $allTables = [];
+        foreach ($tables as $table) {
+            $allTables[$table] = [];
+        }
+
+        // Engine-specific stats are much faster to generate
+        $engine = static::getDriver(true);
+        switch ($engine) {
+            case 'MYSQL':
+                $allTables = static::getMysqlTablesStats($tables);
+                break;
+        }
+
+        $result = [];
+        foreach ($allTables as $table => $stats) {
+            $result[$table] = $stats;
+
+            $result[$table]['size'] = isset($stats['size']) ? $stats['size'] : 'N/A';
+            $result[$table]['total'] = isset($stats['total']) ? $stats['total'] : static::getTotalRecordsCount($table);
+            $result[$table]['deleted'] = isset($stats['deleted']) ? $stats['deleted'] : static::getTrashedRecordsCount($table);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get MySQL tables stats
+     *
+     * This method returns a variety of stats, such as
+     * the count of all records, table size, etc.
+     * for a given list of tables.
+     *
+     * @param array $tables List of tables to get stats for
+     * @return array
+     */
+    protected static function getMysqlTablesStats(array $tables)
+    {
+        $result = [];
+        $sth = ConnectionManager::get('default')->execute("SHOW TABLE STATUS");
+        while ($data = $sth->fetch('assoc')) {
+            if (in_array($data['Name'], $tables)) {
+                $result[$data['Name']] = [
+                    'total' => $data['Rows'],
+                    'size' => $data['Data_length'] + $data['Index_length'],
+                ];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get count of all records in a given table
+     *
+     * @param string $table Table to get the count from
+     * @return int
+     */
+    protected static function getTotalRecordsCount($table)
+    {
+        $result = 0;
+
+        // Bypassing any CakePHP logic for permissions, pagination, and so on,
+        // and executing raw query to get reliable data.
+        $sth = ConnectionManager::get('default')->execute("SELECT COUNT(*) AS total FROM `$table`");
+        $sth = $sth->fetch('assoc');
+        $result = $sth['total'];
+
+        return $result;
+    }
+
+    /**
+     * Get count of trashed records in a given table
+     *
+     * @param string $table Table to get the count from
+     * @return int
+     */
+    protected static function getTrashedRecordsCount($table)
+    {
+        $result = 0;
+
+        $tableInstance = TableRegistry::get($table);
+        if ($tableInstance->hasField('trashed')) {
+            $sth = ConnectionManager::get('default')->execute("SELECT COUNT(*) AS deleted FROM `$table` WHERE `trashed` IS NOT NULL AND `trashed` <> '0000-00-00 00:00:00'");
+            $sth = $sth->fetch('assoc');
+            $result = $sth['deleted'];
+        }
+
+        return $result;
     }
 }

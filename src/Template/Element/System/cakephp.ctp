@@ -49,4 +49,7 @@ $plugins = Cake::getLoadedPlugins();
             </div>
         </div>
     </div>
+    <div class="col-md-3">
+        <?= $this->element('System/about-cakephp'); ?>
+    </div>
 </div>
