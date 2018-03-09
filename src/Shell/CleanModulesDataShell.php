@@ -7,7 +7,7 @@ use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use Exception;
-use Qobo\Utils\Utility\FileLock;
+use Qobo\Utils\Utility\Lock\FileLock;
 
 class CleanModulesDataShell extends Shell
 {

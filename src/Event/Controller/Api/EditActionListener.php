@@ -26,7 +26,7 @@ class EditActionListener extends BaseActionListener
      */
     public function beforeFind(Event $event, Query $query)
     {
-        $this->_lookupFields($query, $event);
+        //
     }
 
     /**
@@ -42,7 +42,7 @@ class EditActionListener extends BaseActionListener
      */
     public function beforeSave(Event $event, Entity $entity)
     {
-        $this->_associatedByLookupFields($entity, $event);
+        //
     }
 
     /**

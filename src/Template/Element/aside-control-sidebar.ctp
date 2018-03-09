@@ -4,6 +4,8 @@ use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
+use Qobo\Utils\ModuleConfig\ConfigType;
+use Qobo\Utils\ModuleConfig\ModuleConfig;
 
 $factory = new FieldHandlerFactory();
 
@@ -40,30 +42,25 @@ $hasActivity = false;
                 <?php foreach ($history as $item) : ?>
                 <?php
                 $table = TableRegistry::get(Inflector::camelize($item['source']));
-
-                $moduleAlias = $item['source'];
-                if (method_exists($table, 'moduleAlias') && is_callable([$table, 'moduleAlias'])) {
-                    $moduleAlias = $table->moduleAlias();
-                }
-                $moduleAlias = Inflector::humanize($moduleAlias);
                 try {
                     $entity = $table->get($item['primary_key']);
                 } catch (Exception $e) {
+                    // skip non-found records
                     continue;
                 }
-                $label = $factory->renderValue(
-                    $table,
-                    $table->displayField(),
-                    $entity->{$table->displayField()},
-                    ['renderAs' => 'plain']
-                );
+
+                $config = (new ModuleConfig(ConfigType::MODULE(), Inflector::camelize($item['source'])))->parse();
+
                 $hasActivity = true;
+                $icon = isset($config->table->icon) ? $config->table->icon : Configure::read('Menu.default_menu_item_icon');
+                $title = isset($config->table->alias) ? $config->table->alias : Inflector::humanize(Inflector::underscore($item['source']));
+                $heading = $factory->renderValue($table, $table->getDisplayField(), $entity->get($table->getDisplayField()), ['renderAs' => 'plain']);
                 ?>
                 <li>
-                    <a href="<?= $this->Url->build(['plugin' => null, 'controller' => $table->alias(), 'action' => 'view', $item['primary_key']]) ?>">
-                        <i class="menu-icon fa fa-<?= method_exists($table, 'icon') ? $table->icon() : Configure::read('Menu.default_menu_item_icon'); ?> bg-primary" title="<?= $moduleAlias ?>"></i>
+                    <a href="<?= $this->Url->build(['plugin' => null, 'controller' => $item['source'], 'action' => 'view', $item['primary_key']]) ?>">
+                        <i class="menu-icon fa fa-<?= $icon ?> bg-primary" title="<?= $title ?>"></i>
                         <div class="menu-info">
-                            <h4 class="control-sidebar-subheading"><?= $label ?></h4>
+                            <h4 class="control-sidebar-subheading"><?= $heading ?></h4>
                             <p><?= $item['timestamp']->i18nFormat('yyyy-MM-dd HH:mm') ?></p>
                         </div>
                     </a>

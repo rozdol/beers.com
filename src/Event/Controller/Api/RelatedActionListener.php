@@ -2,11 +2,12 @@
 namespace App\Event\Controller\Api;
 
 use App\Event\EventName;
+use Cake\Core\App;
 use Cake\Datasource\QueryInterface;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Event\Event;
 
-class IndexActionListener extends BaseActionListener
+class RelatedActionListener extends BaseActionListener
 {
     /**
      * {@inheritDoc}
@@ -14,9 +15,9 @@ class IndexActionListener extends BaseActionListener
     public function implementedEvents()
     {
         return [
-            (string)EventName::API_INDEX_BEFORE_PAGINATE() => 'beforePaginate',
-            (string)EventName::API_INDEX_AFTER_PAGINATE() => 'afterPaginate',
-            (string)EventName::API_INDEX_BEFORE_RENDER() => 'beforeRender'
+            (string)EventName::API_RELATED_BEFORE_PAGINATE() => 'beforePaginate',
+            (string)EventName::API_RELATED_AFTER_PAGINATE() => 'afterPaginate',
+            (string)EventName::API_RELATED_BEFORE_RENDER() => 'beforeRender'
         ];
     }
 
@@ -25,15 +26,11 @@ class IndexActionListener extends BaseActionListener
      */
     public function beforePaginate(Event $event, QueryInterface $query)
     {
-        $request = $event->subject()->request;
-
         if (static::FORMAT_PRETTY !== $event->subject()->request->getQuery('format')) {
             $query->contain(
-                $this->_getFileAssociations($event->subject()->{$event->subject()->name})
+                $this->_getFileAssociations($this->getAssociatedTable($event))
             );
         }
-
-        $this->filterByConditions($query, $event);
 
         $query->order($this->getOrderClause($event->getSubject()->request));
     }
@@ -55,7 +52,7 @@ class IndexActionListener extends BaseActionListener
             return;
         }
 
-        $table = $event->getSubject()->{$event->getSubject()->name};
+        $table = $this->getAssociatedTable($event);
 
         foreach ($resultSet as $entity) {
             $this->_resourceToString($entity);
@@ -63,7 +60,7 @@ class IndexActionListener extends BaseActionListener
 
         if (static::FORMAT_PRETTY === $event->getSubject()->request->getQuery('format')) {
             foreach ($resultSet as $entity) {
-                $this->_prettify($entity, $table);
+                $this->_prettify($entity, App::shortName(get_class($table), 'Model/Table', 'Table'));
             }
         }
 
@@ -80,28 +77,17 @@ class IndexActionListener extends BaseActionListener
     }
 
     /**
-     * Method that filters ORM records by provided conditions.
+     * Retrieves association's target table.
      *
-     * @param \Cake\Datasource\QueryInterface $query Query object
-     * @param \Cake\Event\Event $event The event
-     * @return void
+     * @param \Cake\Event\Event $event Event object
+     * @return \Cake\Datasource\RepositoryInterface
      */
-    private function filterByConditions(QueryInterface $query, Event $event)
+    private function getAssociatedTable(Event $event)
     {
-        if (empty($event->subject()->request->query('conditions'))) {
-            return;
-        }
+        $associationName = $event->getSubject()->request->getParam('pass.1');
 
-        $conditions = [];
-        $tableName = $event->subject()->name;
-        foreach ($event->subject()->request->query('conditions') as $k => $v) {
-            if (false === strpos($k, '.')) {
-                $k = $tableName . '.' . $k;
-            }
-
-            $conditions[$k] = $v;
-        };
-
-        $query->applyOptions(['conditions' => $conditions]);
+        return $event->getSubject()->{$event->getSubject()->name}
+            ->association($associationName)
+            ->getTarget();
     }
 }
