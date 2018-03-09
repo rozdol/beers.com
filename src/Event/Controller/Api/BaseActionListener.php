@@ -20,7 +20,7 @@ use Cake\Utility\Inflector;
 use Cake\View\View;
 use CsvMigrations\FieldHandlers\CsvField;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
-use CsvMigrations\FileUploadsUtils;
+use CsvMigrations\Utility\FileUpload;
 use Psr\Http\Message\ServerRequestInterface;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
@@ -117,8 +117,8 @@ abstract class BaseActionListener implements EventListenerInterface
         }
 
         $hashes = Configure::read('FileStorage.imageHashes.file_storage');
-        $fileUploadsUtils = new FileUploadsUtils($table);
-        $extensions = $fileUploadsUtils->getImgExtensions();
+        $fileUpload = new FileUpload($table);
+        $extensions = $fileUpload->getImgExtensions();
 
         // append thumbnails
         foreach ($images as &$image) {
