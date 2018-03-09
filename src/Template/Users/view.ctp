@@ -9,7 +9,7 @@ $fhf = new FieldHandlerFactory($this);
 <section class="content">
     <div class="row">
         <div class="col-md-12 col-lg-4">
-            <div class="box box-solid">
+            <div class="box box-primary">
                 <div class="box-header with-border">
                     <i class="fa fa-user"></i>
 
@@ -35,7 +35,7 @@ $fhf = new FieldHandlerFactory($this);
             <!-- /.box -->
         </div>
         <div class="col-md-6 col-lg-4">
-            <div class="box box-solid">
+            <div class="box box-primary">
                 <div class="box-header with-border">
                     <i class="fa fa-info-circle"></i>
 
@@ -77,7 +77,7 @@ $fhf = new FieldHandlerFactory($this);
             <!-- /.box -->
         </div>
         <div class="col-md-6 col-lg-4">
-            <div class="box box-solid">
+            <div class="box box-primary">
                 <div class="box-header with-border">
                     <i class="fa fa-phone"></i>
 

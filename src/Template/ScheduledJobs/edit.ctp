@@ -18,7 +18,7 @@ $tableName = 'ScheduledJobs';
 </section>
 <section class="content">
 <?= $this->Form->create($entity) ?>
-    <div class="box box-solid">
+    <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Details');?></h3>
         </div>
@@ -98,7 +98,7 @@ $tableName = 'ScheduledJobs';
         </div> <!-- box-body -->
     </div>
 
-    <div class="box box-solid">
+    <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Recurrence');?></h3>
         </div>

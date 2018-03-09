@@ -2,20 +2,20 @@
 //
 // About project section
 //
-
-use App\SystemInfo\Project;
-
-$projectName = Project::getName();
-$projectVersion = Project::getDisplayVersion();
-$projectLogo = Project::getLogo('large');
-
 ?>
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">About <?= $projectName ?></h3>
+<div class="row">
+    <div class="col-md-6">
+        <?php echo $this->element('System/about-project'); ?>
     </div>
-    <div class="box-body">
-        <p><?= $projectLogo ?></p>
-        <p>Welcome to <b><?= $projectName ?></b>.  You are using version <b><?= $projectVersion ?></b>.
+    <div class="col-md-6">
+        <?php echo $this->element('System/about-project-template-cakephp'); ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <?php echo $this->element('System/about-qobo'); ?>
+    </div>
+    <div class="col-md-6">
+        <?php echo $this->element('System/about-cakephp'); ?>
     </div>
 </div>

@@ -14,7 +14,24 @@ use PDO;
 class EncodedFileType extends Type
 {
     /**
-     * {@inheritDoc}
+     * Casts given value from a PHP type to one acceptable by a database.
+     *
+     * The value must be an array with the same structure as the single
+     * uploaded file in PHP.  Example:
+     *
+     * ```
+     * [
+     *     'name' => 'logo.png',
+     *     'type' => 'image/png',
+     *     'tmp_name' => '/tmp/xyz',
+     *     'error' => 0,
+     *     'size' => 1234
+     * ]
+     * ```
+     *
+     * @param mixed $value Value to be converted to a database equivalent.
+     * @param \Cake\Database\Driver $driver Object from which database preferences and configuration will be extracted.
+     * @return mixed Given PHP type casted to one acceptable by a database.
      */
     public function toDatabase($value, Driver $driver)
     {
@@ -34,7 +51,14 @@ class EncodedFileType extends Type
     }
 
     /**
-     * {@inheritDoc}
+     * Casts given value from a database type to a PHP equivalent.
+     *
+     * Return the value as is, unless it is a resource.  If so, use
+     * `stream_get_contents()` to read all content  and return.
+     *
+     * @param mixed $value Value to be converted to PHP equivalent
+     * @param \Cake\Database\Driver $driver Object from which database preferences and configuration will be extracted
+     * @return mixed Given value casted from a database to a PHP equivalent.
      */
     public function toPHP($value, Driver $driver)
     {
@@ -46,7 +70,11 @@ class EncodedFileType extends Type
     }
 
     /**
-     * {@inheritDoc}
+     * Casts given value to its Statement equivalent.
+     *
+     * @param mixed $value Value to be converted to PDO statement.
+     * @param \Cake\Database\Driver $driver Object from which database preferences and configuration will be extracted.
+     * @return mixed Given value casted to its Statement equivalent.
      */
     public function toStatement($value, Driver $driver)
     {
@@ -54,7 +82,13 @@ class EncodedFileType extends Type
     }
 
     /**
-     * {@inheritDoc}
+     * Marshalls flat data into PHP objects.
+     *
+     * Most useful for converting request data into PHP objects,
+     * that make sense for the rest of the ORM/Database layers.
+     *
+     * @param mixed $value The value to convert.
+     * @return mixed Converted value.
      */
     public function marshal($value)
     {

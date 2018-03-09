@@ -36,7 +36,7 @@ echo $this->Html->scriptBlock(
     <div class="row">
         <div class="col-xs-12">
             <?= $this->Form->create($Users) ?>
-            <div class="box box-solid">
+            <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= __('User Information') ?></h3>
                 </div>
@@ -64,7 +64,7 @@ echo $this->Html->scriptBlock(
                     </div>
                 </div>
             </div>
-            <div class="box box-solid">
+            <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= __('Personal Details') ?></h3>
                 </div>
@@ -129,7 +129,7 @@ echo $this->Html->scriptBlock(
                     </div>
                 </div>
             </div>
-            <div class="box box-solid">
+            <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= __('Contact Details') ?></h3>
                 </div>
