@@ -28,7 +28,10 @@ echo $this->Html->tag(
     </div>
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-            <?= $this->Form->button(__d('Users', 'Submit'), ['class' => 'btn btn-primary btn-block']); ?>
+            <?= $this->Form->button(
+                '<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> ' . __d('Users', 'Submit'),
+                ['class' => 'btn btn-primary btn-block']
+            ); ?>
         </div>
     </div>
 </fieldset>

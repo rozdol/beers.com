@@ -1,35 +1,88 @@
 <?php
+//
+// Developer information
+//
 
-$localModificationsCommand = $this->SystemInfo->getLocalModificationsCommand();
-$localModifications = $this->SystemInfo->getLocalModifications();
+use App\SystemInfo\Project;
+use App\SystemInfo\Git;
+
+$currentVersion = Project::getDisplayVersion();
+$buildVersions = Project::getBuildVersions();
+
+$localChangesCommand = Git::getCommand('localChanges');
+$localChanges = Git::getLocalChanges();
+
+$localChangesOutput = "<b>$ " . $localChangesCommand . "</b>\n\n";
+$localChangesOutput .= !empty($localChanges) ? implode("\n", $localChanges) : "All good, no local modifications found.";
+
 ?>
 <div class="row">
     <div class="col-md-3">
-        <div class="info-box">
-        <?php if (empty($localModifications)) : ?>
-            <span class="info-box-icon bg-green"><i class="fa fa-thumbs-up"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Local modifications</span>
-                <span class="info-box-number">0</span>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Build Summary</h3>
             </div>
-        <?php else : ?>
-            <span class="info-box-icon bg-red"><i class="fa fa-exclamation-circle"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Local modifications</span>
-                <span class="info-box-number"><?php echo number_format(count($localModifications)); ?></span>
+            <div class="box-body">
+                <div class="info-box">
+                    <span class="info-box-icon bg-blue"><i class="fa fa-tag"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Current version</span>
+                        <span class="info-box-number"><?= $currentVersion; ?></span>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <span class="info-box-icon bg-blue"><i class="fa fa-tag"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Current build</span>
+                        <span class="info-box-number"><?= $buildVersions['current']; ?></span>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <span class="info-box-icon bg-blue"><i class="fa fa-tag"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Deployed build</span>
+                        <span class="info-box-number"><?= $buildVersions['deployed']; ?></span>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <span class="info-box-icon bg-blue"><i class="fa fa-tag"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Previous build</span>
+                        <span class="info-box-number"><?= $buildVersions['previous']; ?></span>
+                    </div>
+                </div>
             </div>
-        <?php endif; ?>
         </div>
     </div>
     <div class="col-md-9">
-        <?php if (!empty($localModifications)) : ?>
-            <pre><?php
-                echo $localModificationsCommand . "\n";
-                echo implode("\n", $localModifications);
-            ?></pre>
-        <?php else : ?>
-            All good, no local modifications found.
-        <?php endif; ?>
-
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Local Changes</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="info-box">
+                        <?php if (empty($localChanges)) : ?>
+                            <span class="info-box-icon bg-green"><i class="fa fa-thumbs-up"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Changed files</span>
+                                <span class="info-box-number">0</span>
+                            </div>
+                        <?php else : ?>
+                            <span class="info-box-icon bg-red"><i class="fa fa-exclamation-circle"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Changed files</span>
+                                <span class="info-box-number"><?php echo number_format(count($localChanges)); ?></span>
+                            </div>
+                        <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <pre><?php echo $localChangesOutput; ?></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -2,56 +2,77 @@
 //
 // PHP setup
 //
+
+use App\SystemInfo\Php;
+
 $setup = [
-    'PHP Version' => PHP_VERSION,
-    'Server API' => PHP_SAPI,
-    'PHP Server User' => get_current_user(),
-    'PHP Binary' => PHP_BINARY,
-    'PHP Configuration File' => php_ini_loaded_file(),
-    'Memory Limit' => ini_get('memory_limit'),
-    'Max Execution Time' => ini_get('max_execution_time') . ' seconds',
-    'Upload Max Filesize' => $this->Number->toReadableSize(sizeToBytes(ini_get('upload_max_filesize'))),
-    'Post Max Size' => $this->Number->toReadableSize(sizeToBytes(ini_get('post_max_size'))),
+    'Server API' => Php::getSapi(),
+    'PHP Server User' => Php::getUser(),
+    'PHP Binary' => Php::getBinary(),
+    'PHP Configuration File' => Php::getIniPath(),
+    'Max Execution Time' => Php::getMaxExecutionTime() . ' seconds',
+    'Memory Limit' => $this->Number->toReadableSize(Php::getMemoryLimit()),
+    'Upload Max Filesize' => $this->Number->toReadableSize(Php::getUploadMaxFilesize()),
+    'Post Max Size' => $this->Number->toReadableSize(Php::getPostMaxSize()),
 ];
 
-//
 // PHP extensions
-//
-$extensions = get_loaded_extensions();
-asort($extensions);
+$extensions = Php::getLoadedExtensions();
 ?>
 <div class="row">
     <div class="col-md-3">
-        <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-heart"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">PHP version</span>
-                <span class="info-box-number"><?php echo PHP_VERSION; ?></span>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">PHP Summary</h3>
             </div>
-        </div>
-        <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-plug"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">PHP extensions</span>
-                <span class="info-box-number"><?php echo number_format(count($extensions)); ?></span>
+            <div class="box-body">
+                <div class="info-box">
+                    <span class="info-box-icon bg-blue"><i class="fa fa-heart"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">PHP version</span>
+                        <span class="info-box-number"><?= Php::getVersion() ?></span>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <span class="info-box-icon bg-blue"><i class="fa fa-plug"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">PHP extensions</span>
+                        <span class="info-box-number"><?php echo number_format(count($extensions)); ?></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <dl class="dl-horizontal">
-        <?php
-            foreach ($setup as $name => $value) {
-                print '<dt>' . $name . ':</dt><dd>' . $value . '</dd>';
-            }
-        ?>
-        </dl>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">PHP Configuration</h3>
+            </div>
+            <div class="box-body">
+                <dl class="dl-horizontal">
+                <?php
+                    foreach ($setup as $name => $value) {
+                        print '<dt>' . $name . ':</dt><dd>' . $value . '</dd>';
+                    }
+                ?>
+                </dl>
+            </div>
+        </div>
     </div>
     <div class="col-md-5">
-        <b>Loaded extensions:</b>
-        <ul class="list-inline">
-        <?php foreach ($extensions as $extension) : ?>
-            <li><?= $extension ?></li>
-        <?php endforeach; ?>
-        </ul>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Loaded Extensions</h3>
+            </div>
+            <div class="box-body">
+                <dl class="dl-horizontal">
+                <?php
+                    foreach ($extensions as $name => $version) {
+                        print '<dt>' . $name . ':</dt><dd>' . $version . '</dd>';
+                    }
+                ?>
+                </dl>
+            </div>
+        </div>
     </div>
 </div>
