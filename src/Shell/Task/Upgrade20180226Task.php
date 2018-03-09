@@ -18,6 +18,15 @@ use stdClass;
 class Upgrade20180226Task extends Shell
 {
     /**
+     * Tasks to be loaded by this Task
+     *
+     * @var array
+     */
+    public $tasks = [
+        'CsvMigrations.CsvMigration'
+    ];
+
+    /**
      * CSV modules configurations path.
      *
      * @var string
@@ -122,6 +131,9 @@ class Upgrade20180226Task extends Shell
         }
 
         $this->info(sprintf('Many-to-many module %s created successfully', $moduleName));
+
+        // bake CSV migration
+        $this->CsvMigration->main($moduleName);
     }
 
     /**
