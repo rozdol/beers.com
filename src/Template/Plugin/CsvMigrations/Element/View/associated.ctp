@@ -51,7 +51,7 @@ if (!empty($associations)) : ?>
             'table' => $table, 'associations' => $associations
         ]); ?>
         <?= $this->element('CsvMigrations.Associated/tabs-content', [
-            'table' => $table, 'associations' => $associations, 'factory' => $factory
+            'table' => $table, 'associations' => $associations, 'factory' => $factory, 'entity' => $entity
         ]); ?>
     </div>
 <?php endif ?>
