@@ -289,19 +289,26 @@ abstract class BaseActionListener implements EventListenerInterface
      * @link https://github.com/cakephp/cakephp/issues/7324
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request Request instance
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return array
      */
-    protected function getOrderClause(ServerRequestInterface $request)
+    protected function getOrderClause(ServerRequestInterface $request, RepositoryInterface $table = null)
     {
         if (! $request->getQuery('sort')) {
             return [];
         }
 
-        // add sort direction to all columns
-        return array_fill_keys(
-            explode(',', $request->getQuery('sort')),
-            $request->getQuery('direction')
-        );
+        $columns = explode(',', $request->getQuery('sort'));
+
+        if (is_null($table)) {
+            return array_fill_keys($columns, $request->getQuery('direction'));
+        }
+
+        foreach ($columns as $k => $v) {
+            $columns[$k] = $table->aliasField($v);
+        }
+
+        return array_fill_keys($columns, $request->getQuery('direction'));
     }
 
     /**

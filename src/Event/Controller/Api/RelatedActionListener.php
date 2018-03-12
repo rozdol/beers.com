@@ -32,7 +32,10 @@ class RelatedActionListener extends BaseActionListener
             );
         }
 
-        $query->order($this->getOrderClause($event->getSubject()->request));
+        $query->order($this->getOrderClause(
+            $event->getSubject()->request,
+            $event->getSubject()->{$event->getSubject()->name}
+        ));
     }
 
     /**
