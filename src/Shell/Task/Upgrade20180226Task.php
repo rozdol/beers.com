@@ -132,7 +132,8 @@ class Upgrade20180226Task extends Shell
 
         $this->info(sprintf('Many-to-many module %s created successfully', $moduleName));
 
-        // bake CSV migration
+        // bake CSV migration (sleeping for 1 second to avoid conflicts)
+        sleep(1);
         $this->CsvMigration->main($moduleName);
     }
 
