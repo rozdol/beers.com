@@ -71,6 +71,8 @@ class UpgradeShell extends Shell
             $result[] = str_replace('Task.php', '', $file);
         }
 
+        sort($result);
+
         return $result;
     }
 }
