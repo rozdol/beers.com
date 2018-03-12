@@ -259,6 +259,7 @@ DispatcherFactory::add('ControllerFactory');
 EventManager::instance()->on(new AddActionListener());
 EventManager::instance()->on(new BatchActionListener());
 EventManager::instance()->on(new EditActionListener());
+EventManager::instance()->on(new ChildListItemsListener());
 EventManager::instance()->on(new IndexActionListener());
 // @link https://github.com/burzum/cakephp-file-storage/blob/master/docs/Documentation/Included-Event-Listeners.md
 EventManager::instance()->on(new LocalListener([
@@ -271,7 +272,6 @@ EventManager::instance()->on(new LookupActionListener());
 EventManager::instance()->on(new LookupListener());
 EventManager::instance()->on(new MagicDefaultValueListener());
 EventManager::instance()->on(new MenuListener());
-EventManager::instance()->on(new ChildListItemsListener());
 EventManager::instance()->on(new RelatedActionListener());
 EventManager::instance()->on(new ReportsListener());
 EventManager::instance()->on(new SearchableFieldsListener());
