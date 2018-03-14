@@ -45,7 +45,9 @@ class Upgrade20180214Task extends Shell
      */
     public function main()
     {
-        // switch to old module config class map
+        $classMapVersion = Configure::read('ModuleConfig.classMapVersion');
+
+        // switch to v1 of module config class map
         Configure::write('ModuleConfig.classMapVersion', 'V1');
 
         $this->path = Configure::readOrFail('CsvMigrations.modules.path');
@@ -60,6 +62,9 @@ class Upgrade20180214Task extends Shell
              */
             // $this->mergeWithFieldsJSON($module);
         }
+
+        // revert back to initial class map version
+        Configure::write('ModuleConfig.classMapVersion', $classMapVersion);
 
         $this->success(sprintf('%s completed.', $this->getOptionParser()->getDescription()));
     }
