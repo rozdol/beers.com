@@ -36,7 +36,7 @@ class UpgradeShell extends Shell
 
         foreach ($this->tasks as $task) {
             $parser->addSubcommand(strtolower($task), [
-                'help' => sprintf('Execute %s Task.', $task),
+                'help' => $this->{$task}->getOptionParser()->getDescription(),
                 'parser' => $this->{$task}->getOptionParser(),
             ]);
         }
