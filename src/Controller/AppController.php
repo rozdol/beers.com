@@ -24,6 +24,7 @@ use Cake\Event\EventManager;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 use Exception;
 use Firebase\JWT\JWT;
@@ -169,7 +170,7 @@ class AppController extends Controller
         $this->viewBuilder()->theme('AdminLTE');
         $this->viewBuilder()->layout('adminlte');
 
-        $title = $this->name;
+        $title = Inflector::humanize(Inflector::underscore($this->name));
         try {
             $mc = new ModuleConfig(ConfigType::MODULE(), $this->name);
             $config = $mc->parse();
