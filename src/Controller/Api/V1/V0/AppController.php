@@ -501,7 +501,14 @@ class AppController extends Controller
      */
     public static function generateSwaggerAnnotations($path)
     {
-        $csvAnnotation = new Annotation(get_called_class(), $path);
+        $module = basename($path, 'Controller.php');
+
+        $feature = FeatureFactory::get('Module' . DS . $module);
+        if (! $feature->isActive()) {
+            return '';
+        }
+
+        $csvAnnotation = new Annotation($module, $path);
 
         return $csvAnnotation->getContent();
     }
