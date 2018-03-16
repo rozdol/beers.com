@@ -92,7 +92,6 @@ class Annotation
                     response="200",
                     description="Successful operation",
                     @SWG\Schema(
-                        type="array",
                         ref="#/definitions/{{module_singular}}"
                     )
                 )
@@ -116,7 +115,6 @@ class Annotation
                     response="200",
                     description="Successful operation",
                     @SWG\Schema(
-                        type="array",
                         ref="#/definitions/{{module_singular}}"
                     )
                 ),
@@ -186,7 +184,7 @@ class Annotation
      */
     public function __construct($className, $path)
     {
-        $this->_className = App::shortName($className, 'Controller/Api', 'Controller');
+        $this->_className = $className;
 
         $this->_path = $path;
     }

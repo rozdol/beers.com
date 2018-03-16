@@ -11,7 +11,7 @@ use Firebase\JWT\JWT;
     @SWG\Post(
         path="/api/users/token",
         summary="API authentication",
-        tags={"Authentication"},
+        tags={"Users Authentication"},
         consumes={"application/json"},
         produces={"application/json"},
         @SWG\Parameter(
