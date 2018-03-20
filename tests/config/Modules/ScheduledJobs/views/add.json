@@ -1,0 +1,27 @@
+{
+    "items": [
+        [
+            "Details",
+            "name",
+            "active"
+        ],
+        [
+            "Details",
+            "job",
+            "priority"
+        ],
+        [
+            "Details",
+            "options"
+        ],
+        [
+            "Recurrence",
+            "start_date",
+            "end_date"
+        ],
+        [
+            "Recurrence",
+            "recurrence"
+        ]
+    ]
+}
