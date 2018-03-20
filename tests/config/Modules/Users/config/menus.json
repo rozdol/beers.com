@@ -1,0 +1,20 @@
+{
+    "admin_menu": [
+        {
+            "label": "Access Control",
+            "desc": "Manage access control",
+            "url": "#",
+            "icon": "lock",
+            "order": 10,
+            "children": [
+                {
+                    "label": "Users",
+                    "desc": "Manage system users",
+                    "url": "/users/",
+                    "icon": "user",
+                    "order": 10
+                }
+            ]
+        }
+    ]
+}

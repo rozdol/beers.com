@@ -1,4 +1,6 @@
 <?php
+use Cake\Core\Configure;
+
 /**
  * Test runner bootstrap.
  *
@@ -6,3 +8,6 @@
  * unit tests in this file.
  */
 require dirname(__DIR__) . '/config/bootstrap.php';
+
+// set Modules path to test configuration
+Configure::write('CsvMigrations.modules.path', TESTS . 'config' . DS . 'Modules' . DS);

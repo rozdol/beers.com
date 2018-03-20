@@ -1,0 +1,21 @@
+{
+    "admin_menu": [
+        {
+            "label": "Settings",
+            "desc": "Manage settings",
+            "url": "#",
+            "icon": "cog",
+            "order": 20,
+            "children": [
+                {
+                    "label": "Scheduled Jobs",
+                    "desc": "Automated Scripts execution",
+                    "url": "/scheduled-jobs/",
+                    "icon": "clock-o",
+                    "order": 100
+                }
+            ]
+        }
+    ]
+}
+
