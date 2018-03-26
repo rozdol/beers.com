@@ -504,7 +504,7 @@ class AppController extends Controller
         $module = basename($path, 'Controller.php');
 
         $feature = FeatureFactory::get('Module' . DS . $module);
-        if (! $feature->isActive()) {
+        if (! $feature->isSwaggerActive()) {
             return '';
         }
 
