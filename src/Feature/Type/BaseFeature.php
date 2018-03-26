@@ -34,6 +34,18 @@ class BaseFeature implements FeatureInterface
     /**
      * {@inheritDoc}
      */
+    public function isSwaggerActive()
+    {
+        if (!$this->isActive()) {
+            return false;
+        }
+
+        return !(bool)$this->config->get('disable_swagger');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function enable()
     {
         //
