@@ -63,6 +63,35 @@ class Factory
     }
 
     /**
+     * Features list getter.
+     *
+     * @param string $type Feature type
+     * @return array
+     */
+    public static function getList($type = '')
+    {
+        $features = Configure::read('Features');
+
+        if (empty($features)) {
+            return [];
+        }
+
+        $result = [];
+        foreach (array_keys($features) as $feature) {
+            if ($type && 0 !== strpos($feature, $type)) {
+                continue;
+            }
+
+            $config = static::getConfig($feature);
+            $class = static::getFeatureClass($config);
+
+            $result[] = new $class($config);
+        }
+
+        return $result;
+    }
+
+    /**
      * Feature Config getter method.
      *
      * @param string $feature Feature name
