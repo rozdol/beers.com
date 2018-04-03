@@ -39,7 +39,7 @@ class LockTask extends Shell
      * @param string $class Name of the shell class which acquires lock
      * @return string Unique lock file name
      */
-    private function getLockFileName($file, $class)
+    public function getLockFileName($file, $class)
     {
         $class = Inflector::underscore(preg_replace('/\\\/', '', $class));
         $lockFile = $class . '_' . md5($file) . '.lock';
