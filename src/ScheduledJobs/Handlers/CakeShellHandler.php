@@ -3,6 +3,7 @@ namespace App\ScheduledJobs\Handlers;
 
 use App\ScheduledJobs\Handlers\AbstractHandler;
 use Cake\Core\App;
+use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Filesystem\Folder;
 use Cake\Utility\Inflector;
@@ -25,8 +26,10 @@ class CakeShellHandler extends AbstractHandler
     {
         $result = [];
 
-        $skipFiles = ['ConsoleShell', 'FakerShell', 'PluginShell'];
-        $skipPlugins = ['Bake'];
+        $config = Configure::read('Cron.' . $this->prefix);
+
+        $skipFiles = !empty($config['skipFiles']) ? $config['skipFiles'] : [];
+        $skipPlugins = !empty($config['skipPlugins']) ? $config['skipPlugins'] : [];
 
         $plugins = Plugin::loaded();
         $plugins = array_diff($plugins, $skipPlugins);

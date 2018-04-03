@@ -92,6 +92,7 @@ try {
     Configure::load('icons', 'default');
     Configure::load('menu', 'default');
     Configure::load('roles_capabilities', 'default');
+    Configure::load('cron', 'default');
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }
