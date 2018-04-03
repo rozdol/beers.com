@@ -50,13 +50,9 @@ class CronShell extends Shell
         $this->ScheduledJobs = TableRegistry::get('ScheduledJobs');
         $this->ScheduledJobLogs = TableRegistry::get('ScheduledJobLogs');
 
-        $lock = $this->Lock->lock(__FILE__, __CLASS__);
-
         $jobs = $this->ScheduledJobs->getActiveJobs();
 
         if (empty($jobs)) {
-            $lock->unlock();
-
             return $this->out('No jobs found. Exiting...');
         }
 
@@ -77,11 +73,14 @@ class CronShell extends Shell
                 continue;
             }
 
+            $lock = $this->Lock->lock(__FILE__, $entity->job);
+
             $state = $instance->run($entity->options);
             $this->ScheduledJobLogs->logJob($entity, $state, $now);
+
+            $lock->unlock();
         }
 
-        $lock->unlock();
-        $this->out('Lock released. Exiting...');
+        $this->info('Exiting cron shell...');
     }
 }
