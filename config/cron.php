@@ -7,6 +7,7 @@ return [
                 'ConsoleShell',
                 'FakerShell',
                 'PluginShell',
+                'CronShell',
             ],
             'skipPlugins' => [
                 'Bake',
