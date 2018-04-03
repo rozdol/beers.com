@@ -7,7 +7,10 @@ use Cake\I18n\Time;
 use Cake\Log\Log;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
-use DateTime;
+use Qobo\Utils\Utility\Lock\FileLock;
+use \DateTime;
+use \Exception;
+use \RuntimeException;
 
 /**
  * Cron shell command.
@@ -73,14 +76,42 @@ class CronShell extends Shell
                 continue;
             }
 
-            $lock = $this->Lock->lock(__FILE__, $entity->job);
-
-            $state = $instance->run($entity->options);
-            $this->ScheduledJobLogs->logJob($entity, $state, $now);
-
+            try {
+                $lock = $this->lock(__FILE__, $entity->job);
+                $state = $instance->run($entity->options);
+                $this->ScheduledJobLogs->logJob($entity, $state, $now);
+            } catch (Exception $e) {
+                $this->info("Job [{$entity->job}] is already locked.");
+                continue;
+            }
             $lock->unlock();
         }
 
         $this->info('Exiting cron shell...');
+    }
+
+    /**
+     * Generate lock file. Abort if lock file is already generated.
+     *
+     * @param string $file Path to the shell script which acquires lock
+     * @param string $class Name of the shell class which acquires lock
+     * @return \Qobo\Utils\Utility\FileLock
+     */
+    public function lock($file, $class)
+    {
+        $class = str_replace(':', '_', $class);
+        $lockFile = $this->Lock->getLockFileName($file, $class);
+
+        try {
+            $lock = new FileLock($lockFile);
+        } catch (Exception $e) {
+            $this->abort($e->getMessage());
+        }
+
+        if (!$lock->lock()) {
+            throw new RuntimeException('Job already in process');
+        }
+
+        return $lock;
     }
 }
