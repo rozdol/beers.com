@@ -46,17 +46,21 @@ class CronShell extends Shell
         $feature = FeatureFactory::get('Module' . DS . $this->featureName);
 
         if (!$feature->isActive()) {
-            throw new NotFoundException();
+            $this->warn("Scheduled Tasks are disabled.  Nothing to do.");
+
+            return true;
         }
 
-        $this->info('Running cron...');
+        $this->info('Running Scheduled Tasks...');
         $this->ScheduledJobs = TableRegistry::get('ScheduledJobs');
         $this->ScheduledJobLogs = TableRegistry::get('ScheduledJobLogs');
 
         $jobs = $this->ScheduledJobs->getActiveJobs();
 
         if (empty($jobs)) {
-            return $this->out('No jobs found. Exiting...');
+            $this->info("No active Scheduled Tasks found.  Nothing to do.");
+
+            return true;
         }
 
         $now = Time::now();
@@ -66,28 +70,35 @@ class CronShell extends Shell
             $shouldRun = $this->ScheduledJobs->timeToInvoke($now, $rrule);
 
             if (!$shouldRun) {
+                $this->verbose("Skipping Scheduled Task [{$entity->name}]");
                 continue;
             }
 
             $instance = $this->ScheduledJobs->getInstance($entity->job, 'Job');
 
             if (!$instance) {
-                Log::warning("Failed to instantiate Job [{$entity->job}]");
+                $message = sprintf("Failed to instatiate Job class for [%s]", $entity->job);
+                $this->warn($message);
+                Log::warning($message);
                 continue;
             }
 
             try {
+                $this->info("Starting Scheduled Task [{$entity->name}]");
                 $lock = $this->lock(__FILE__, $entity->job);
                 $state = $instance->run($entity->options);
+                $this->info("Finished Scheduled Task [{$entity->name}]");
+                $this->verbose("Scheduled Task [" . $entity->name . "] finished with: " . print_r($state, true));
                 $this->ScheduledJobLogs->logJob($entity, $state, $now);
+                $this->info("Logged Scheduled Task [{$entity->name}]");
             } catch (Exception $e) {
-                $this->info("Job [{$entity->job}] is already locked.");
+                $this->info("Scheduled Task [{$entity->name}] is already in progress. Skipping.");
                 continue;
             }
             $lock->unlock();
         }
 
-        $this->info('Exiting cron shell...');
+        $this->info('Finished with all Schedule Tasks successfully');
     }
 
     /**
@@ -109,7 +120,7 @@ class CronShell extends Shell
         }
 
         if (!$lock->lock()) {
-            throw new RuntimeException('Job already in process');
+            throw new RuntimeException('Failed to acquire the lock');
         }
 
         return $lock;
