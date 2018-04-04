@@ -1,0 +1,7 @@
+{
+    "table": {
+        "icon": "clock",
+        "searchable": false,
+        "display_field": "context"
+    }
+}

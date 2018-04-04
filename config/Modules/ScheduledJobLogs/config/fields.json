@@ -1,0 +1,11 @@
+{
+  "datetime": {
+    "renderAs": "datetime"
+  },
+  "created": {
+    "renderAs": "datetime"
+  },
+  "status": {
+    "renderAs": "booleanYesNo"
+  }
+}
