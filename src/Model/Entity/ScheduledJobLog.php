@@ -28,11 +28,7 @@ class ScheduledJobLog extends Entity
      * @var array
      */
     protected $_accessible = [
-        'scheduled_job_id' => true,
-        'context' => true,
-        'status' => true,
-        'datetime' => true,
-        'created' => true,
-        'scheduled_job' => true
+        '*' => true,
+        'id' => false,
     ];
 }
