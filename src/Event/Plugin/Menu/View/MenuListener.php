@@ -242,23 +242,26 @@ class MenuListener implements EventListenerInterface
             }
         }
 
-        $url = $item['url'];
-        $url = is_string($url) ? array_filter(explode('/', $url)) : $url;
+        return $this->isBlacklisted($item['url']) ? [] : $item;
+    }
 
-        // definitely not a plugin route
-        if (2 > count($url)) {
-            return $item;
+    /**
+     * Validates if provided url is blacklisted by Menu plugin configuration routes.
+     *
+     * @param array|string $url Menu item URL
+     * @return bool
+     */
+    private function isBlacklisted($url)
+    {
+        $url = is_array($url) ? implode('/', $url) : $url;
+
+        foreach ((array)Configure::read('Menu.routes.blacklist') as $route) {
+            if (0 === strpos($url, $route)) {
+                return true;
+            }
         }
 
-        // remove keys
-        $url = array_values($url);
-
-        // get plugin name
-        $name = Inflector::camelize(Inflector::underscore($url[0]));
-
-        $feature = FeatureFactory::get('Plugin' . DS . $name);
-
-        return $feature->isActive() ? $item : [];
+        return false;
     }
 
     /**
