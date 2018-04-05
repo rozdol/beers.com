@@ -20,10 +20,6 @@ if ($accessFactory->hasAccess($url, $user)) : ?>
         ]
     ]); ?>
     <div class="input-group">
-        <?= $this->Form->hidden('type', [
-            'required' => true,
-            'value' => 'criteria'
-        ]); ?>
         <?= $this->Form->input('name', [
             'label' => false,
             'class' => 'form-control input-sm',
