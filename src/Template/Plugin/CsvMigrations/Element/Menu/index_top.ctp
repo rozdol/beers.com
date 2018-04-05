@@ -1,6 +1,11 @@
 <?php
 use Cake\Core\Configure;
 
+trigger_error(
+    '"CsvMigrations.Menu/index_top" element is deprecated, use "Module/Menu/index_top" instead',
+    E_USER_DEPRECATED
+);
+
 $menu = [];
 
 if (Configure::read('CsvMigrations.batch.active')) {
