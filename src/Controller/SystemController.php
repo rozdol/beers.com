@@ -38,6 +38,11 @@ class SystemController extends AppController
     {
     }
 
+    /**
+     * Action responsible for listing all system searches.
+     *
+     * @return void
+     */
     public function searches()
     {
         $table = TableRegistry::getTableLocator()->get('Search.SavedSearches');
