@@ -13,7 +13,7 @@ $title = isset($config->table->alias) ? $config->table->alias : Inflector::human
         </div>
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
-                <?= $this->element('CsvMigrations.Menu/index_top') ?>
+                <?= $this->element('Module/Menu/index_top') ?>
             </div>
         </div>
     </div>
