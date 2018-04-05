@@ -34,6 +34,9 @@ use RolesCapabilities\Access\AccessFactory;
 use RolesCapabilities\Capability;
 use RolesCapabilities\CapabilityTrait;
 use Search\Controller\SearchTrait;
+use Search\Utility as SearchUtility;
+use Search\Utility\Search;
+use Search\Utility\Validator as SearchValidator;
 
 /**
  * Application Controller
@@ -137,6 +140,36 @@ class AppController extends Controller
 
         // Load AdminLTE theme
         $this->loadAdminLTE();
+    }
+
+    /**
+     * Index method
+     *
+     * @return void
+     */
+    public function index()
+    {
+        $table = TableRegistry::getTableLocator()->get('Search.SavedSearches');
+
+        $entity = $table->find()
+            ->where(['SavedSearches.model' => $this->name, 'SavedSearches.system' => true])
+            ->firstOrFail();
+
+        $searchData = json_decode($entity->content, true);
+        $searchData = SearchValidator::validateData($this->{$this->name}, $searchData['latest'], $this->Auth->user());
+
+        $this->set([
+            'entity' => $entity,
+            'searchData' => $searchData,
+            'preSaveId' => (new Search($this->{$this->name}, $this->Auth->user()))->create($searchData),
+            'searchableFields' => SearchUtility::instance()->getSearchableFields(
+                $this->{$this->name},
+                $this->Auth->user()
+            ),
+            'associationLabels' => SearchUtility::instance()->getAssociationLabels($this->{$this->name})
+        ]);
+
+        $this->render('/Module/index');
     }
 
     /**
