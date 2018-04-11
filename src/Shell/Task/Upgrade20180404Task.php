@@ -1,9 +1,11 @@
 <?php
 namespace App\Shell\Task;
 
+use App\Event\Plugin\Search\Model\SearchableFieldsListener;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
+use Cake\Event\EventManager;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use Qobo\Utils\ModuleConfig\ConfigType;
@@ -40,6 +42,8 @@ class Upgrade20180404Task extends Shell
         if (! Plugin::loaded('Search')) {
             return;
         }
+
+        EventManager::instance()->on(new SearchableFieldsListener());
 
         $path = Configure::readOrFail('CsvMigrations.modules.path');
         Utility::validatePath($path);
@@ -112,7 +116,7 @@ class Upgrade20180404Task extends Shell
     {
         $table = TableRegistry::getTableLocator()->get('Search.SavedSearches');
 
-        $search = new Search(TableRegistry::getTableLocator()->get($module), ['id' => 'SYSTEM']);
+        $search = new Search(TableRegistry::getTableLocator()->get($module), $this->getUser());
         $id = $search->create(['system' => true]);
 
         $entity = $table->get($id);
@@ -126,5 +130,18 @@ class Upgrade20180404Task extends Shell
         }
 
         return $entity;
+    }
+
+    /**
+     * Get user to attach to system search.
+     *
+     * @return \Cake\Datasource\EntityInterface
+     */
+    private function getUser()
+    {
+        $table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
+        $query = $table->find()->where(['is_superuser' => true]);
+
+        return $query->firstOrFail()->toArray();
     }
 }
