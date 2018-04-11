@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
 
 /**
  * System Controller
@@ -35,5 +36,18 @@ class SystemController extends AppController
      */
     public function error()
     {
+    }
+
+    /**
+     * Action responsible for listing all system searches.
+     *
+     * @return void
+     */
+    public function searches()
+    {
+        $table = TableRegistry::getTableLocator()->get('Search.SavedSearches');
+        $query = $table->find()->where(['system' => true]);
+
+        $this->set('entities', $query->all());
     }
 }

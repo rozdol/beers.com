@@ -325,7 +325,7 @@ abstract class BaseActionListener implements EventListenerInterface
         $controllerName = App::shortName(get_class($table), 'Model/Table', 'Table');
 
         foreach ($resultSet as $entity) {
-            $entity->set(static::MENU_PROPERTY_NAME, $view->element('CsvMigrations.Menu/index_actions', [
+            $entity->set(static::MENU_PROPERTY_NAME, $view->element('Module/Menu/index_actions', [
                 'plugin' => false,
                 'controller' => $controllerName,
                 'displayField' => $table->getDisplayField(),

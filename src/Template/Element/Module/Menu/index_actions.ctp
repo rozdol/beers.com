@@ -1,9 +1,4 @@
 <?php
-trigger_error(
-    '"CsvMigrations.Menu/index_actions" element is deprecated, use "Module/Menu/index_actions" instead',
-    E_USER_DEPRECATED
-);
-
 $menu = [];
 
 $url = ['prefix' => false, 'plugin' => $plugin, 'controller' => $controller, 'action' => 'view', $entity->id];
