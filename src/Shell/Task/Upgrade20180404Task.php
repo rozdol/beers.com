@@ -50,7 +50,7 @@ class Upgrade20180404Task extends Shell
         $path = rtrim($path, DS);
 
         foreach (Utility::findDirs($path) as $module) {
-            if (! $this->isModule($module)) {
+            if (! $this->isSearchable($module)) {
                 continue;
             }
 
@@ -65,12 +65,12 @@ class Upgrade20180404Task extends Shell
     }
 
     /**
-     * Validates if provided module name is a valid csv module.
+     * Validates if provided module is searchable.
      *
      * @param string $module Module name
      * @return bool
      */
-    private function isModule($module)
+    private function isSearchable($module)
     {
         $config = (new ModuleConfig(ConfigType::MIGRATION(), $module, null, ['cacheSkip' => true]))->parse();
         $config = json_decode(json_encode($config), true);
@@ -80,12 +80,15 @@ class Upgrade20180404Task extends Shell
         }
 
         $config = (new ModuleConfig(ConfigType::MODULE(), $module, null, ['cacheSkip' => true]))->parse();
-
-        if (isset($config->table->type) && 'module' === $config->table->type) {
-            return true;
+        if (! $config->table->searchable) {
+            return false;
         }
 
-        return false;
+        if ('module' !== $config->table->type) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
