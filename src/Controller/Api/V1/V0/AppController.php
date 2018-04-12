@@ -15,7 +15,6 @@ use Cake\Utility\Inflector;
 use Crud\Controller\ControllerTrait;
 use CsvMigrations\Controller\Traits\PanelsTrait;
 use CsvMigrations\CsvMigrationsUtils;
-use CsvMigrations\Panel;
 use CsvMigrations\Utility\FileUpload;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
