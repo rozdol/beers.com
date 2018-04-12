@@ -30,7 +30,7 @@
         "mobiledetect/mobiledetectlib": "2.*",
         "pelago/emogrifier": "^1.2",
         "pyrech/composer-changelogs": "~1.4",
-        "qobo/cakephp-csv-migrations": "^29.0",
+        "qobo/cakephp-csv-migrations": "^30.0",
         "qobo/cakephp-groups": "^8.0",
         "qobo/cakephp-menu": "^11.0",
         "qobo/cakephp-roles-capabilities": "^14.0",
