@@ -102,6 +102,10 @@ class LookupListener implements EventListenerInterface
         }
 
         foreach ($event->getSubject()->associations() as $association) {
+            if (! $this->isValidAssociation($association)) {
+                continue;
+            }
+
             $this->setRelatedByLookupField($association, $entity);
         }
     }
@@ -115,10 +119,6 @@ class LookupListener implements EventListenerInterface
      */
     private function setRelatedByLookupField(Association $association, EntityInterface $entity)
     {
-        if (! $this->isValidAssociation($association)) {
-            return;
-        }
-
         // skip if foreign key is not set to the entity
         if (! $entity->get($association->getForeignKey())) {
             return;
