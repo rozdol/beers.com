@@ -92,6 +92,10 @@ class LookupListener implements EventListenerInterface
      */
     public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
     {
+        if (! $options['_primary']) {
+            return;
+        }
+
         if (! isset($options['lookup']) || ! $options['lookup']) {
             return;
         }
@@ -101,13 +105,18 @@ class LookupListener implements EventListenerInterface
                 continue;
             }
 
-            $config = (new ModuleConfig(ConfigType::MODULE(), $association->className()))->parse();
-
-            if (empty($config->table->lookup_fields)) {
+            if (is_null($association->className())) {
                 continue;
             }
 
+            // skip if foreign key is not set to the entity
             if (! $entity->get($association->getForeignKey())) {
+                continue;
+            }
+
+            $config = (new ModuleConfig(ConfigType::MODULE(), $association->className()))->parse();
+
+            if (empty($config->table->lookup_fields)) {
                 continue;
             }
 
