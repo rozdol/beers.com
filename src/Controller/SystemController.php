@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Feature\Factory;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 
@@ -48,6 +49,16 @@ class SystemController extends AppController
         $table = TableRegistry::getTableLocator()->get('Search.SavedSearches');
         $query = $table->find()->where(['system' => true]);
 
-        $this->set('entities', $query->all());
+        $entities = [];
+        foreach ($query->all() as $entity) {
+            $feature = Factory::get('Module' . DS . $entity->get('model'));
+            if (! $feature->isActive()) {
+                continue;
+            }
+
+            $entities[] = $entity;
+        }
+
+        $this->set('entities', $entities);
     }
 }
