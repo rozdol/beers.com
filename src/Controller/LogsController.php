@@ -8,6 +8,21 @@ use DatabaseLog\Controller\Admin\LogsController as BaseController;
 class LogsController extends BaseController
 {
     /**
+     * Setup pagination
+     *
+     * @var array
+     */
+    public $paginate = [
+        'order' => ['DatabaseLogs.id' => 'DESC'],
+        'fields' => [
+            'DatabaseLogs.created',
+            'DatabaseLogs.type',
+            'DatabaseLogs.message',
+            'DatabaseLogs.id'
+        ]
+    ];
+
+    /**
      * Initialization hook method.
      *
      * Implement this method to avoid having to overwrite
