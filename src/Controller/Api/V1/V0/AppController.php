@@ -502,13 +502,38 @@ class AppController extends Controller
     {
         $module = basename($path, 'Controller.php');
 
-        $feature = FeatureFactory::get('Module' . DS . $module);
-        if (! $feature->isSwaggerActive()) {
+        if (! static::allowsSwagger($module)) {
             return '';
         }
 
         $csvAnnotation = new Annotation($module, $path);
 
         return $csvAnnotation->getContent();
+    }
+
+    /**
+     * Validates if module allows Swagger annotations generation.
+     *
+     * @param string $module Module name
+     * @return bool
+     */
+    private static function allowsSwagger($module)
+    {
+        if (in_array($module, ['Users'])) {
+            return true;
+        }
+
+        $config = (new ModuleConfig(ConfigType::MIGRATION(), $module))->parse();
+        $config = json_decode(json_encode($config), true);
+        if (empty($config)) {
+            return false;
+        }
+
+        $feature = FeatureFactory::get('Module' . DS . $module);
+        if ($feature->isSwaggerActive()) {
+            return true;
+        }
+
+        return false;
     }
 }
