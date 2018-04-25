@@ -20,23 +20,6 @@ use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
 use RolesCapabilities\CapabilityTrait;
 
-/**
-    @SWG\Swagger(
-        @SWG\Info(
-            title="API Documentation",
-            description="Interactive API documentation powered by Swagger.io",
-            termsOfService="http://swagger.io/terms/",
-            version="1.0.0"
-        ),
-        @SWG\SecurityScheme(
-            securityDefinition="Bearer",
-            description="Json Web Tokens (JWT)",
-            type="apiKey",
-            name="token",
-            in="query"
-        )
-    )
- */
 class AppController extends Controller
 {
     use CapabilityTrait;
@@ -496,19 +479,45 @@ class AppController extends Controller
      * and returns its generated swagger annotation content.
      *
      * @param string $path File path
+     * @param bool $withInfo Info annotation flag
      * @return string
      */
-    public static function generateSwaggerAnnotations($path)
+    public static function generateSwaggerAnnotations($path, $withInfo)
     {
         $module = basename($path, 'Controller.php');
 
-        $feature = FeatureFactory::get('Module' . DS . $module);
-        if (! $feature->isSwaggerActive()) {
+        if (! static::allowsSwagger($module)) {
             return '';
         }
 
-        $csvAnnotation = new Annotation($module, $path);
+        $csvAnnotation = new Annotation($module, $path, $withInfo);
 
         return $csvAnnotation->getContent();
+    }
+
+    /**
+     * Validates if module allows Swagger annotations generation.
+     *
+     * @param string $module Module name
+     * @return bool
+     */
+    private static function allowsSwagger($module)
+    {
+        if (in_array($module, ['Users'])) {
+            return true;
+        }
+
+        $config = (new ModuleConfig(ConfigType::MIGRATION(), $module))->parse();
+        $config = json_decode(json_encode($config), true);
+        if (empty($config)) {
+            return false;
+        }
+
+        $feature = FeatureFactory::get('Module' . DS . $module);
+        if ($feature->isSwaggerActive()) {
+            return true;
+        }
+
+        return false;
     }
 }

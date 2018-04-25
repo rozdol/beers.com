@@ -8,6 +8,13 @@ use Swagger\StaticAnalyser;
 class Analyser extends StaticAnalyser
 {
     /**
+     * Flag for including Swagger Info annotation.
+     *
+     * @var bool
+     */
+    private $withInfo = true;
+
+    /**
      * Extract and process all doc-comments from an
      * auto-generated swagger annotations content.
      *
@@ -21,9 +28,11 @@ class Analyser extends StaticAnalyser
 
         $tokens = [];
         if ($className) {
-            $annotations = $className::generateSwaggerAnnotations($filename);
+            $annotations = $className::generateSwaggerAnnotations($filename, $this->withInfo);
             $tokens = token_get_all($annotations);
         }
+
+        $this->withInfo = false;
 
         return $this->fromTokens($tokens, new Context(['filename' => $filename]));
     }
