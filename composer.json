@@ -24,7 +24,6 @@
         }
     },
     "require": {
-        "cakephp/cakephp": "~3.5.0",
         "cakephp/migrations": "^1.6",
         "cakephp/plugin-installer": "^1.1",
         "dereuromark/cakephp-databaselog": "^2.1",
@@ -36,7 +35,7 @@
         "qobo/cakephp-menu": "^11.0",
         "qobo/cakephp-roles-capabilities": "^14.0",
         "qobo/cakephp-search": "^17.0",
-        "qobo/cakephp-utils": "^7.0",
+        "qobo/cakephp-utils": "^7.3.3",
         "qobo/qobo-robo": "^2.0",
         "qobo/qobo-robo-cakephp": "^2.0",
         "vlucas/phpdotenv": "^1.1"
