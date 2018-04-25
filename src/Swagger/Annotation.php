@@ -5,6 +5,7 @@ use Cake\Core\App;
 use Cake\Database\Exception;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
+use Qobo\Utils\Utility;
 
 class Annotation
 {
@@ -40,11 +41,35 @@ class Annotation
     protected $_path = '';
 
     /**
+     * Flag for including Swagger Info annotation.
+     *
+     * @var bool
+     */
+    protected $withInfo = false;
+
+    /**
      * Swagger annotations.
      *
      * @var array
      */
     protected $_annotations = [
+        'info' => '/**
+            @SWG\Swagger(
+                @SWG\Info(
+                    title="API Documentation",
+                    description="Interactive API documentation powered by Swagger.io",
+                    termsOfService="http://swagger.io/terms/",
+                    version="{{version}}"
+                ),
+                @SWG\SecurityScheme(
+                    securityDefinition="Bearer",
+                    description="Json Web Tokens (JWT)",
+                    type="apiKey",
+                    name="token",
+                    in="query"
+                )
+            )
+        */',
         'definition' => '/**
             @SWG\Definition(
                 definition="{{definition}}",
@@ -205,12 +230,15 @@ class Annotation
      *
      * @param string $className Class name
      * @param string $path File path
+     * @param bool $withInfo Info annotation flag
+     * @return void
      */
-    public function __construct($className, $path)
+    public function __construct($className, $path, $withInfo = false)
     {
         $this->_className = $className;
 
         $this->_path = $path;
+        $this->withInfo = $withInfo;
     }
 
     /**
@@ -247,15 +275,41 @@ class Annotation
     {
         $result = file_get_contents($this->_path);
 
+        $info = $this->getInfo();
+
         $properties = $this->_getProperties();
 
         $definition = $this->_getDefinition($properties);
 
         $paths = $this->_getPaths();
 
-        $result = preg_replace('/(^class\s)/im', implode("\n", [$definition, $paths]) . "\n$1", $result);
+        $result = preg_replace('/(^class\s)/im', implode("\n", [$info, $definition, $paths]) . "\n$1", $result);
 
         $this->setContent(trim($result));
+    }
+
+    /**
+     * Swagge Info annotation generator.
+     *
+     * @return string
+     */
+    protected function getInfo()
+    {
+        if (! $this->withInfo) {
+            return '';
+        }
+
+        $versions = Utility::getApiVersions(App::path('Controller/Api')[0]);
+
+        $placeholders = [
+            '{{version}}' => $versions[0]['number']
+        ];
+
+        return str_replace(
+            array_keys($placeholders),
+            array_values($placeholders),
+            $this->_annotations['info']
+        );
     }
 
     /**
