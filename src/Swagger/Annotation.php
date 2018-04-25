@@ -173,6 +173,30 @@ class Annotation
                     description="Not found"
                 )
             )
+
+            @SWG\Delete(
+                path="/api/{{module_url}}/delete/{id}",
+                summary="Delete a {{module_human_singular}}",
+                tags={"{{module_human_plural}}"},
+                consumes={"application/json"},
+                produces={"application/json"},
+                @SWG\Parameter(
+                    name="id",
+                    description="{{module_human_singular}} ID",
+                    in="path",
+                    required=true,
+                    type="string",
+                    default=""
+                ),
+                @SWG\Response(
+                    response="200",
+                    description="Successful operation"
+                ),
+                @SWG\Response(
+                    response="404",
+                    description="Not found"
+                )
+            )
         */'
     ];
 
