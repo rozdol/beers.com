@@ -14,6 +14,7 @@ class Upgrade201805111353Task extends Shell
         'CakeShell::App:database_log' => [
             // every 5 hours
             'recurrence' => 'FREQ=HOURLY;INTERVAL=5',
+            'options' => 'cleanup',
         ],
         'CakeShell::CsvMigrations:import' => [
             // every 5 minutes
@@ -61,11 +62,10 @@ class Upgrade201805111353Task extends Shell
     }
 
     /**
-     * Adding listed scheduled jobs in case needed
+     * Add Scheduled Job record if needed
      *
-     * @param string $command name based on the CakeShell handler list
-     *
-     * @return bool $result whether the record was added
+     * @param string $command to be added
+     * @return bool $result whether the record was added.
      */
     protected function addScheduleJob($command = '')
     {
@@ -84,24 +84,29 @@ class Upgrade201805111353Task extends Shell
 
         if ($query->count()) {
             $entity = $query->first();
-            $this->out("Scheduled Job [$command] already added. Status [$entity->active]");
+            $this->warn("Scheduled Job [$command] already added. Status [$entity->active]");
 
             return $result;
         }
 
         $entity = $scheduledJobsTable->newEntity();
+        $entity->name = "System [$command] command";
         $entity->job = $command;
         $entity->recurrence = $this->commandsToAdd[$command]['recurrence'];
+        if (! empty($this->commandsToAdd[$command]['options'])) {
+            $entity->options = $this->commandsToAdd[$command]['options'];
+        }
+
         $entity->active = true;
         $entity->start_date = Time::now();
 
         $saved = $scheduledJobsTable->save($entity);
 
         if ($saved) {
-            $this->out("Added Scheduled Job [$command] to the datatable.");
+            $this->success("Added Scheduled Job [$command] to the datatable.");
             $result = true;
         } else {
-            $this->warning("Error adding scheduled job [$command] to database");
+            $this->warn("Error adding scheduled job [$command] to database");
             $result = false;
         }
 
