@@ -19,6 +19,7 @@ class CakeShellJob implements JobInterface
     public function __construct($command = '')
     {
         $this->command = $command;
+        $this->operator = dirname(APP) . DS . 'bin' . DS . 'cake';
     }
 
     /**
@@ -34,7 +35,7 @@ class CakeShellJob implements JobInterface
         exec($command, $output, $state);
 
         $result = [
-            'state' => ($state > 0) ? false : true,
+            'state' => $state,
             'response' => $output,
         ];
 
