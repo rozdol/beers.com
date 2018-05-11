@@ -45,6 +45,7 @@ class Upgrade201805111353Task extends Shell
         $feature = FeatureFactory::get('Module' . DS . 'ScheduledJobs');
         if (! $feature->isActive()) {
             $this->out('Scheduled Jobs are disabled. Skipping...');
+
             return;
         }
 
@@ -59,6 +60,13 @@ class Upgrade201805111353Task extends Shell
         }
     }
 
+    /**
+     * Adding listed scheduled jobs in case needed
+     *
+     * @param string $command name based on the CakeShell handler list
+     *
+     * @return bool $result whether the record was added
+     */
     protected function addScheduleJob($command = '')
     {
         $result = false;

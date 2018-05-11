@@ -11,8 +11,8 @@
  */
 namespace App\Shell\Task;
 
-use Cake\Console\Shell;
 use Bake\Shell\Task\BakeTask;
+use Cake\Console\Shell;
 use Cake\I18n\Time;
 
 /**
@@ -40,6 +40,7 @@ class UpgradeFileTask extends BakeTask
     {
         $parser = parent::getOptionParser();
         $parser->setDescription('Generate UpgradeTask template with timestamp');
+
         return $parser;
     }
 
