@@ -67,7 +67,7 @@ class UpgradeShell extends Shell
         $dir = new Folder(__DIR__ . DS . 'Task');
 
         $result = [];
-        foreach ($dir->find('Upgrade.*Task\.php') as $file) {
+        foreach ($dir->find('Upgrade(\d+)Task\.php') as $file) {
             $result[] = str_replace('Task.php', '', $file);
         }
 
