@@ -49,7 +49,7 @@ class Upgrade201805111353Task extends Shell
         if (! $feature->isActive()) {
             $this->out('Scheduled Jobs are disabled. Skipping...');
 
-            return;
+            return false;
         }
 
         $cakeShellsHandler = new CakeShellHandler();
