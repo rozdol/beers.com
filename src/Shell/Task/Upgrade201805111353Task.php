@@ -42,7 +42,7 @@ class Upgrade201805111353Task extends Shell
     /**
      * main() method
      *
-     * @retun void
+     * @retun null
      */
     public function main()
     {
@@ -73,16 +73,14 @@ class Upgrade201805111353Task extends Shell
     protected function addScheduleJob($command = '')
     {
         $result = false;
+        $scheduledJobsTable = TableRegistry::get('ScheduledJobs');
 
         if (empty($command)) {
             return $result;
         }
 
-        $scheduledJobsTable = TableRegistry::get('ScheduledJobs');
-
         $query = $scheduledJobsTable->find()
             ->where(['job' => $command]);
-
         $query->execute();
 
         if ($query->count()) {
@@ -96,21 +94,18 @@ class Upgrade201805111353Task extends Shell
         $entity->name = "System [$command] command";
         $entity->job = $command;
         $entity->recurrence = $this->commandsToAdd[$command]['recurrence'];
+        $entity->active = true;
+        $entity->start_date = Time::now();
+
         if (! empty($this->commandsToAdd[$command]['options'])) {
             $entity->options = $this->commandsToAdd[$command]['options'];
         }
 
-        $entity->active = true;
-        $entity->start_date = Time::now();
-
-        $saved = $scheduledJobsTable->save($entity);
-
-        if ($saved) {
+        if ($scheduledJobsTable->save($entity)) {
             $this->success("Added Scheduled Job [$command] to the datatable.");
             $result = true;
         } else {
             $this->warn("Error adding scheduled job [$command] to database");
-            $result = false;
         }
 
         return $result;

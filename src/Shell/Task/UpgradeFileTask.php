@@ -49,7 +49,7 @@ class UpgradeFileTask extends BakeTask
      *
      * @return bool|int|null Success or error code.
      */
-    public function main($name = '')
+    public function main()
     {
         parent::main();
 
