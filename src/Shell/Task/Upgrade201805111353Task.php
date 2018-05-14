@@ -15,7 +15,7 @@ class Upgrade201805111353Task extends Shell
      */
     public $commandsToAdd = [
         'CakeShell::App:database_log' => [
-            // every 5 hours
+            // every 12 hours
             'recurrence' => 'FREQ=HOURLY;INTERVAL=12',
             'options' => 'cleanup',
         ],
