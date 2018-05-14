@@ -10,6 +10,9 @@ use Cake\ORM\TableRegistry;
 
 class Upgrade201805111353Task extends Shell
 {
+    /**
+     * @var array $commandsToAdd for default deploy commands
+     */
     public $commandsToAdd = [
         'CakeShell::App:database_log' => [
             // every 5 hours
