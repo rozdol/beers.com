@@ -42,7 +42,7 @@ class Upgrade201805111353Task extends Shell
     /**
      * main() method
      *
-     * @retun null
+     * @return null
      */
     public function main()
     {
