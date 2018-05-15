@@ -116,11 +116,13 @@ class ChildListItemsListener implements EventListenerInterface
         $result = json_decode(json_encode($listData), true);
 
         $list = [];
-        foreach ($result as $item) {
-            if ($item['value'] == $parentValue && !empty($item['children'])) {
-                foreach ($item['children'] as $child) {
-                    array_push($list, ['value' => $child['value']]);
-                }
+        foreach ($result as $value => $item) {
+            if ($value !== $parentValue || empty($item['children'])) {
+                continue;
+            }
+
+            foreach ($item['children'] as $childValue => $childItem) {
+                array_push($list, ['value' => $childValue]);
             }
         }
 
