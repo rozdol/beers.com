@@ -37,7 +37,7 @@ $setLabels = [];
         ?>
         <li role="presentation" class="<?= $active ?>">
             <?= $this->Html->link($label, '#' . $containerId, [
-                'role' => 'tab', 'data-toggle' => 'tab', 'escape' => false
+                'role' => 'tab', 'data-toggle' => 'tab', 'escape' => false, 'class' => $containerId
             ]);?>
         </li>
         <?php $active = ''; ?>

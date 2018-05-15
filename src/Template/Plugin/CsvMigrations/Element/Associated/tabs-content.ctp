@@ -31,3 +31,20 @@ $accessFactory = new AccessFactory();
         <?php $active = ''; ?>
     <?php endforeach; ?>
 </div> <!-- .tab-content -->
+<?php
+echo $this->Html->scriptBlock("
+$('#relatedTabs li').each(function(key, element) {
+    var activeTab = localStorage.getItem('activeTab_relatedTabs');
+    var link = $(this).find('a');
+    if (activeTab !== undefined) {
+        if (activeTab == key) {
+            $(link).click();
+        }
+    } else {
+        if ($(this).hasClass('active')) {
+            $(link).click();
+        }
+    }
+});
+", ['block' => 'scriptBottom']);
+?>
