@@ -25,7 +25,7 @@ $accessFactory = new AccessFactory();
                 echo $this->element('CsvMigrations.Embedded/lookup', ['association' => $association, 'user' => $user]);
             } ?>
             <?= $this->element('CsvMigrations.Associated/tab-content', [
-                'association' => $association, 'table' => $table, 'url' => $this->Url->build($url), 'factory' => $factory
+                'association' => $association, 'table' => $table, 'url' => $this->Url->build($url), 'factory' => $factory, 'containerId' => $containerId
             ]) ?>
         </div>
         <?php $active = ''; ?>
