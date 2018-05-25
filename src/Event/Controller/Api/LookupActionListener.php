@@ -182,7 +182,7 @@ class LookupActionListener extends BaseActionListener
         }
 
         $parentModule = $this->_getParentModule($table);
-        if (empty($parentModule)) {
+        if ('' === $parentModule) {
             return;
         }
 
@@ -223,8 +223,7 @@ class LookupActionListener extends BaseActionListener
     protected function _getOrderByFields(RepositoryInterface $table, QueryInterface $query, array $fields = [])
     {
         $parentModule = $this->_getParentModule($table);
-
-        if (empty($parentModule)) {
+        if ('' === $parentModule) {
             return $fields;
         }
 
@@ -261,8 +260,7 @@ class LookupActionListener extends BaseActionListener
     protected function _joinParentTables(RepositoryInterface $table, QueryInterface $query)
     {
         $parentModule = $this->_getParentModule($table);
-
-        if (empty($parentModule)) {
+        if ('' === $parentModule) {
             return;
         }
 
@@ -299,20 +297,13 @@ class LookupActionListener extends BaseActionListener
      * If parent module is not defined then it returns null.
      *
      * @param \Cake\Datasource\RepositoryInterface $table Table instance
-     * @return string|null
+     * @return string
      */
     protected function _getParentModule(RepositoryInterface $table)
     {
-        if (!method_exists($table, 'getConfig') || !is_callable([$table, 'getConfig'])) {
-            return null;
-        }
+        $config = (new ModuleConfig(ConfigType::MODULE(), $table->getRegistryAlias()))->parse();
 
-        $tableConfig = $table->getConfig();
-        if (empty($tableConfig['parent']['module'])) {
-            return null;
-        }
-
-        return $tableConfig['parent']['module'];
+        return isset($config->parent->module) ? $config->parent->module : '';
     }
 
     /**
