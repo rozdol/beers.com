@@ -1,0 +1,16 @@
+{
+    "bar_id": {
+        "name": "bar_id",
+        "type": "related(Bars)",
+        "required": "1",
+        "non-searchable": null,
+        "unique": null
+    },
+    "beer_id": {
+        "name": "beer_id",
+        "type": "related(Beers)",
+        "required": "1",
+        "non-searchable": null,
+        "unique": null
+    }
+}

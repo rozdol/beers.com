@@ -1,0 +1,10 @@
+{
+    "main_menu": [
+        {
+            "label": "Beers",
+            "url": "/beers/",
+            "icon": "beer",
+            "order": 40
+        }
+    ]
+}

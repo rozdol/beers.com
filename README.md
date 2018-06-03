@@ -193,3 +193,72 @@ SELECT list is not in GROUP BY clause and contains nonaggregated column ...
 If you encounter the above error (often seen on Ubuntu 16.05), make sure
 your SQL mode DOES NOT include "ONLY_FULL_GROUP_BY".
 
+
+## Cinstom intallation
+
+```bash
+git clone https://github.com/QoboLtd/project-template-cakephp.git beers.com
+cd beers.com
+composer install
+./bin/build app:install DB_NAME=beers_com,PROJECT_NAME="Beers",PROJECT_VERSION="v1.0.0",CHOWN_USER=admin,CHGRP_GROUP=staff,DEBUG=1
+#./bin/build app:remove #rollback DB and .env if error above
+
+./bin/phpserv
+
+./bin/cake bake csv_module Beers
+
+#edit ./config/Modules/Beers/...
+./bin/cake validate
+
+./bin/cake bake csv_migration Beers
+
+./bin/cake migrations migrate
+./bin/build app:update
+
+open -e /usr/local/etc/my.cnf
+
+./bin/cake bake csv_module Bars
+./bin/cake validate
+
+./bin/cake bake csv_migration Bars
+./bin/cake migrations migrate
+./bin/build app:update
+
+./bin/cake bake csv_relation 
+
+./bin/cake bake csv_migration BarsBeers
+
+./bin/cake migrations migrate
+
+
+
+./vendor/bin/phpcs
+./vendor/bin/phpcbf
+
+./vendor/bin/phpunit
+```
+
+Admin->Settings->System_search (Remove dates, add fielsd, test, save)
+
+add to `/usr/local/etc/my.cnf`
+```conf
+[mysqld]
+sql-mode="NO_ZERO_IN_DATE,NO_ZERO_DATE"
+```
+
+```bash
+mysql.server start
+#git remote remove origin
+#git remote add origin git@github.com:YOUR-VENDOR/YOUR-REPOSITORY.git
+#git push origin master
+```
+
+### API button
+
+```bash
+curl -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d '{"username":"alex","password":"1234"}' http://localhost:8000/api/users/token.json
+
+curl -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmNzk1MDM2Ny1mY2IxLTQyMWYtYWU5ZC1jY2FkODhjYmM0OTYiLCJleHAiOjE1Mjg1NTg2MTV9.kLURIJ3VGgb-Veg9twI-kAg-MVm2gTokcZ_DnUXjvdU" -X GET http://localhost:8000/api/beers.json
+
+curl -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmNzk1MDM2Ny1mY2IxLTQyMWYtYWU5ZC1jY2FkODhjYmM0OTYiLCJleHAiOjE1Mjg1NTg2MTV9.kLURIJ3VGgb-Veg9twI-kAg-MVm2gTokcZ_DnUXjvdU" -X GET http://localhost:8000/api/beers/get-date.json
+```

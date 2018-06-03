@@ -1,0 +1,7 @@
+{
+    "table": {
+        "type": "relation",
+        "display_field": "bar_id",
+        "icon": "connectdevelop"
+    }
+}

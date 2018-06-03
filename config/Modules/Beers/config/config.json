@@ -1,0 +1,10 @@
+{
+    "table": {
+        "icon": "beer",
+        "searchable": true,
+        "display_field": "brand"
+    },
+    "notifications": {
+        "enable": true
+    }
+}

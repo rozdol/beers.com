@@ -1,0 +1,10 @@
+{
+    "table": {
+        "icon": "cube",
+        "searchable": true,
+        "display_field": "name"
+    },
+    "notifications": {
+        "enable": true
+    }
+}

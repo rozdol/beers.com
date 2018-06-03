@@ -1,0 +1,10 @@
+{
+    "main_menu": [
+        {
+            "label": "Bars",
+            "url": "/bars/",
+            "icon": "cube",
+            "order": 40
+        }
+    ]
+}
