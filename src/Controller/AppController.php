@@ -156,12 +156,24 @@ class AppController extends Controller
             ->firstOrFail();
 
         $searchData = json_decode($entity->content, true);
-        $searchData = SearchValidator::validateData($this->{$this->name}, $searchData['latest'], $this->Auth->user());
+
+        // return json response and skip any further processing.
+        if ($this->request->is('ajax') && $this->request->accepts('application/json')) {
+            $this->viewBuilder()->className('Json');
+            $response = $this->getAjaxViewVars(
+                $searchData['latest'],
+                $this->{$this->name},
+                new Search($this->{$this->name}, $this->Auth->user())
+            );
+            $this->set($response);
+
+            return;
+        }
 
         $this->set([
             'entity' => $entity,
-            'searchData' => $searchData,
-            'preSaveId' => (new Search($this->{$this->name}, $this->Auth->user()))->create($searchData),
+            'searchData' => $searchData['latest'],
+            'preSaveId' => (new Search($this->{$this->name}, $this->Auth->user()))->create($searchData['latest']),
             'searchableFields' => SearchUtility::instance()->getSearchableFields(
                 $this->{$this->name},
                 $this->Auth->user()
