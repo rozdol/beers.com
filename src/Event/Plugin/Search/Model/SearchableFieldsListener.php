@@ -7,18 +7,15 @@ use Cake\Datasource\RepositoryInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
-use Cake\ORM\Table;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 use InvalidArgumentException;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
-use RolesCapabilities\CapabilityTrait;
+use RolesCapabilities\Access\AccessFactory;
 use Search\Event\EventName;
 
 class SearchableFieldsListener implements EventListenerInterface
 {
-    use CapabilityTrait;
-
     /**
      * {@inheritDoc}
      */
@@ -47,7 +44,9 @@ class SearchableFieldsListener implements EventListenerInterface
             'controller' => $controller,
             'action' => 'search'
         ];
-        if (!$this->_checkAccess($url, $user)) {
+
+        $accessFactory = new AccessFactory();
+        if (! $accessFactory->hasAccess($url, $user)) {
             return;
         }
 
