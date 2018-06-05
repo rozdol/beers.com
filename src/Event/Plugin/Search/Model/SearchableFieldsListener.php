@@ -3,6 +3,7 @@ namespace App\Event\Plugin\Search\Model;
 
 use App\Model\Table\UsersTable;
 use Cake\Core\App;
+use Cake\Datasource\RepositoryInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
@@ -34,11 +35,11 @@ class SearchableFieldsListener implements EventListenerInterface
      * Method that retrieves target table searchable fields.
      *
      * @param \Cake\Event\Event $event Event instance
-     * @param \Cake\ORM\Table $table Table instance
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @param array $user User info
      * @return void
      */
-    public function getSearchableFields(Event $event, Table $table, array $user)
+    public function getSearchableFields(Event $event, RepositoryInterface $table, array $user)
     {
         list($plugin, $controller) = pluginSplit(App::shortName(get_class($table), 'Model/Table', 'Table'));
         $url = [
@@ -89,10 +90,10 @@ class SearchableFieldsListener implements EventListenerInterface
      * Method that retrieves target table basic search fields.
      *
      * @param \Cake\Event\Event $event Event instance
-     * @param \Cake\ORM\Table $table Table instance
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return void
      */
-    public function getBasicSearchFields(Event $event, Table $table)
+    public function getBasicSearchFields(Event $event, RepositoryInterface $table)
     {
         $result = $this->_getBasicSearchFieldsFromConfig($table);
 
@@ -111,10 +112,10 @@ class SearchableFieldsListener implements EventListenerInterface
      * Method that retrieves target table search funcionality display fields.
      *
      * @param \Cake\Event\Event $event Event instance
-     * @param \Cake\ORM\Table $table Table instance
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return void
      */
-    public function getDisplayFields(Event $event, Table $table)
+    public function getDisplayFields(Event $event, RepositoryInterface $table)
     {
         $result = $this->_getBasicSearchFieldsFromView($table);
 
@@ -128,10 +129,10 @@ class SearchableFieldsListener implements EventListenerInterface
     /**
      * Returns basic search fields from provided Table's configuration.
      *
-     * @param \Cake\ORM\Table $table Table instance
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return array
      */
-    protected function _getBasicSearchFieldsFromConfig(Table $table)
+    protected function _getBasicSearchFieldsFromConfig(RepositoryInterface $table)
     {
         $config = [];
         try {
@@ -153,10 +154,10 @@ class SearchableFieldsListener implements EventListenerInterface
     /**
      * Returns basic search fields from provided Table's index View csv fields.
      *
-     * @param \Cake\ORM\Table $table Table instance
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return array
      */
-    protected function _getBasicSearchFieldsFromView(Table $table)
+    protected function _getBasicSearchFieldsFromView(RepositoryInterface $table)
     {
         $config = [];
         try {
