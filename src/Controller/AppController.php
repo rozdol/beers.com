@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 use App\Controller\ChangelogTrait;
+use App\Event\Plugin\Search\Model\SearchableFieldsListener;
 use App\Feature\Factory as FeatureFactory;
 use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
@@ -174,7 +175,7 @@ class AppController extends Controller
             'entity' => $entity,
             'searchData' => $searchData['latest'],
             'preSaveId' => (new Search($this->{$this->name}, $this->Auth->user()))->create($searchData['latest']),
-            'searchableFields' => SearchUtility::instance()->getSearchableFields(
+            'searchableFields' => SearchableFieldsListener::getSearchableFieldsByTable(
                 $this->{$this->name},
                 $this->Auth->user()
             ),
