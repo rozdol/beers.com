@@ -50,27 +50,41 @@ class SearchableFieldsListener implements EventListenerInterface
             return;
         }
 
+        $event->setResult(static::getSearchableFieldsByTable($table, $user));
+    }
+
+    /**
+     * Searchable fields getter by Table instance.
+     *
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
+     * @param array $user User info
+     * @param bool $withAssociated Flag for including associated searchable fields
+     * @return array
+     */
+    public static function getSearchableFieldsByTable(RepositoryInterface $table, array $user, $withAssociated = true)
+    {
         if ($table instanceof UsersTable) {
             $fields = ['first_name', 'last_name', 'username', 'email', 'created', 'modified'];
         } else {
             $method = 'getFieldsDefinitions';
             // skip if method cannot be called
             if (!method_exists($table, $method) || !is_callable([$table, $method])) {
-                return;
+                return [];
             }
 
             $fields = $table->{$method}();
             if (empty($fields)) {
-                return;
+                return [];
             }
 
             $fields = array_keys($fields);
         }
 
-        $fhf = new FieldHandlerFactory();
+        $factory = new FieldHandlerFactory();
+
         $result = [];
         foreach ($fields as $field) {
-            $searchOptions = $fhf->getSearchOptions($table, $field);
+            $searchOptions = $factory->getSearchOptions($table, $field);
             if (empty($searchOptions)) {
                 continue;
             }
@@ -82,7 +96,46 @@ class SearchableFieldsListener implements EventListenerInterface
             $result = array_merge($result, $options);
         }
 
-        $event->result = $result;
+        if ($withAssociated) {
+            $result = array_merge($result, static::byAssociations($table, $user));
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get associated tables searchable fields.
+     *
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
+     * @param array $user User info
+     * @return array
+     */
+    private static function byAssociations(RepositoryInterface $table, array $user)
+    {
+        $result = [];
+        foreach ($table->associations() as $association) {
+            // skip non-supported associations
+            if (!in_array($association->type(), ['manyToOne'])) {
+                continue;
+            }
+
+            $targetTable = $association->getTarget();
+
+            // skip associations with itself
+            if ($targetTable->getTable() === $table->getTable()) {
+                continue;
+            }
+
+            // fetch associated model searchable fields
+            $searchableFields = static::getSearchableFieldsByTable($targetTable, $user, false);
+            if (empty($searchableFields)) {
+                continue;
+            }
+
+            $result = array_merge($result, $searchableFields);
+        }
+
+        return $result;
     }
 
     /**
