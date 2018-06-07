@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e344315b74e57824ae9e721a7399fdd",
+    "content-hash": "ddb28e1e655947488c79721a0628bd43",
     "packages": [
         {
             "name": "admad/cakephp-jwt-auth",
@@ -3060,6 +3060,39 @@
                 "phinx"
             ],
             "time": "2017-06-05T13:30:19+00:00"
+        },
+        {
+            "name": "rozdol/numop",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rozdol/numop.git",
+                "reference": "e17732702b5ffcbe6ec106f6587474d03664ae21"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rozdol/numop/zipball/e17732702b5ffcbe6ec106f6587474d03664ae21",
+                "reference": "e17732702b5ffcbe6ec106f6587474d03664ae21",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rozdol\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Titoff",
+                    "email": "rozdol@gmail.com"
+                }
+            ],
+            "description": "Testing Composer",
+            "time": "2018-06-05T18:44:59+00:00"
         },
         {
             "name": "sabre/uri",

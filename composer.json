@@ -38,6 +38,7 @@
         "qobo/cakephp-utils": "^7.3.3",
         "qobo/qobo-robo": "^2.0",
         "qobo/qobo-robo-cakephp": "^2.0",
+        "rozdol/numop": "^v1.0",
         "vlucas/phpdotenv": "^1.1"
     },
     "require-dev": {
