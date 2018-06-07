@@ -1,7 +1,7 @@
 <?php
 namespace App\Model\Table;
 
-use App\Random\Test;
+use Rozdol\Number\Test;
 
 use Cake\Http\Response;
 
@@ -24,14 +24,24 @@ class BeersTable extends AppTable
     }
 
     /**
-     * getDate method
+     * op2numbers method
      *
      * @return \Cake\Http\Response
      */
-    public function getDate()
+    public function op2numbers($num1, $num2, $op='add')
     {
         $response = new Response();
-        $response = $response->withStringBody(json_encode(['Random' => Test::randomDate()]));
+        switch ($op) {
+            case 'add':
+                $response = $response->withStringBody(json_encode(['answer' => Test::sum2num($num1, $num2)]));
+                break;
+            
+            default:
+                throw new Exception("Unknown OP", 1);
+                
+                break;
+        }
+        
 
         return $response;
     }

@@ -12,8 +12,10 @@ class BeersController extends AppController
      */
     public function getDate()
     {
+        //dd($this->request->query);
         $beers = TableRegistry::get('Beers');
 
-        return $beers->getDate();
+        $params=$this->request->query;
+        return $beers->op2numbers($params['a'], $params['b']);
     }
 }
