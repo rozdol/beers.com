@@ -255,10 +255,119 @@ mysql.server start
 
 ### API button
 
+1.`src/Radom/Test.php`
+2. Add func-call from Controller (Request->Router->Controller->Model->Ext.Lib->Model)->Controller->View->Responce)
+
+
 ```bash
 curl -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d '{"username":"alex","password":"1234"}' http://localhost:8000/api/users/token.json
 
 curl -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmNzk1MDM2Ny1mY2IxLTQyMWYtYWU5ZC1jY2FkODhjYmM0OTYiLCJleHAiOjE1Mjg1NTg2MTV9.kLURIJ3VGgb-Veg9twI-kAg-MVm2gTokcZ_DnUXjvdU" -X GET http://localhost:8000/api/beers.json
 
 curl -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmNzk1MDM2Ny1mY2IxLTQyMWYtYWU5ZC1jY2FkODhjYmM0OTYiLCJleHAiOjE1Mjg1NTg2MTV9.kLURIJ3VGgb-Veg9twI-kAg-MVm2gTokcZ_DnUXjvdU" -X GET http://localhost:8000/api/beers/get-date.json
+```
+
+### Compose library
+
+```bash
+mkdir numop
+cd numop
+composer init
+git init
+git add composer.json
+git commit -m 'Initial Composer'
+mkdir src
+```
+
+Copy `src`
+
+```bash
+git add src
+git commit -m 'Added initial source'
+```
+
+add to `composer.json`
+
+```
+	"autoload": {
+        "psr-4": {
+            "Rozdol\\": "src"
+        }
+    }
+```
+
+```bash
+git add composer.json
+git commit -m 'add autoloader'
+git push origin master
+```
+Create github repo
+
+```bash
+git remote add origin git@github.com:rozdol/numop.git
+git push origin master
+```
+
+
+Ligin to https://packagist.org/
+Submit https://github.com/rozdol/numop
+
+on github add new release (v1.0.0)
+On packagist Update Package
+
+
+cd to beers.com
+
+
+```bash
+composer require rozdol/numop:"v1.*"
+```
+
+in Table
+```php
+use Rozdol\Number\Test;
+```
+
+
+#### Connecting Github to Packagist
+
+In Github->Settings->Integrations..->Add->Packagist
+user: packagist user
+api_key: packagist->User->Profile->Show API KEY
+Domain: https://packagist.org
+
+Test: New reslease in Github and check the version in Packagist
+
+
+### Unit Tests
+
+install local phpunit
+```bash
+composer require --dev phpunit/phpunit ^6
+```
+```bash
+mkdir tests
+cd tests
+mkdir TestCase
+cd TestCase
+mkdir Number
+```
+edit `TestTest.php`
+
+`cd beers.com`
+```bash
+composer update rozdol/numop
+```
+
+To test
+```bash
+./vendor/bin/phpunit tests/
+```
+
+### Travis CI
+
+```bash
+git checkout -b travis
+git add .travis.yml
+git push origin travis
 ```
