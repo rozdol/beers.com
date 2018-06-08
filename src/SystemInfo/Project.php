@@ -143,7 +143,7 @@ class Project
      *  Get project logo
      *
      * @param string $logoSize of logo - mini or large
-     * @return string base64 encoded project logo
+     * @return string HTML img tag with project logo
      */
     public static function getLogo($logoSize = '')
     {
