@@ -6,14 +6,12 @@ use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Filesystem\Folder;
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
 use Cake\Utility\Inflector;
-use Cake\Utility\Security;
-use Firebase\JWT\JWT;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
+use Qobo\Utils\TestSuite\JsonIntegrationTestCase;
 
-class ControllerApiTest extends IntegrationTestCase
+class ControllerApiTest extends JsonIntegrationTestCase
 {
     public $fixtures = [
         'plugin.CakeDC/Users.users',
@@ -23,19 +21,7 @@ class ControllerApiTest extends IntegrationTestCase
     public function setUp()
     {
         parent::setUp();
-
-        $token = JWT::encode(
-            ['sub' => '00000000-0000-0000-0000-000000000002', 'exp' => time() + 604800],
-            Security::salt()
-        );
-
-        $this->configRequest([
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-                'authorization' => 'Bearer ' . $token
-            ]
-        ]);
+        $this->setRequestHeaders([], '00000000-0000-0000-0000-000000000002');
     }
 
     public function testApiFilesPlacedCorrectly()
@@ -58,12 +44,7 @@ class ControllerApiTest extends IntegrationTestCase
     public function testIndex($module)
     {
         $this->get('/api/' . Inflector::dasherize($module));
-
-        $this->assertResponseOk();
-        $this->assertContentType('application/json');
-
-        $response = json_decode($this->_response->body());
-        $this->assertTrue($response->success);
+        $this->assertJsonResponseOk();
     }
 
     /**
@@ -76,12 +57,9 @@ class ControllerApiTest extends IntegrationTestCase
         $table->save($entity);
 
         $this->get('/api/' . Inflector::dasherize($module) . '/view/' . $entity->get($table->getPrimaryKey()));
+        $this->assertJsonResponseOk();
 
-        $this->assertResponseOk();
-        $this->assertContentType('application/json');
-
-        $response = json_decode($this->_response->body());
-        $this->assertTrue($response->success);
+        $response = $this->getParsedResponse();
         $this->assertEquals($entity->get($table->getPrimaryKey()), $response->data->{$table->getPrimaryKey()});
     }
 
@@ -93,12 +71,9 @@ class ControllerApiTest extends IntegrationTestCase
         $table = TableRegistry::getTableLocator()->get($module);
 
         $this->post('/api/' . Inflector::dasherize($module) . '/add/');
+        $this->assertJsonResponseOk();
 
-        $this->assertResponseOk();
-        $this->assertContentType('application/json');
-
-        $response = json_decode($this->_response->body());
-        $this->assertTrue($response->success);
+        $response = $this->getParsedResponse();
         $this->assertEquals(36, strlen($response->data->{$table->getPrimaryKey()}));
     }
 
@@ -112,12 +87,9 @@ class ControllerApiTest extends IntegrationTestCase
         $table->save($entity);
 
         $this->put('/api/' . Inflector::dasherize($module) . '/edit/' . $entity->get($table->getPrimaryKey()));
+        $this->assertJsonResponseOk();
 
-        $this->assertResponseOk();
-        $this->assertContentType('application/json');
-
-        $response = json_decode($this->_response->body());
-        $this->assertTrue($response->success);
+        $response = $this->getParsedResponse();
         $this->assertInternalType('array', $response->data);
         $this->assertEmpty($response->data);
     }
@@ -132,12 +104,9 @@ class ControllerApiTest extends IntegrationTestCase
         $table->save($entity);
 
         $this->delete('/api/' . Inflector::dasherize($module) . '/delete/' . $entity->get($table->getPrimaryKey()));
+        $this->assertJsonResponseOk();
 
-        $this->assertResponseOk();
-        $this->assertContentType('application/json');
-
-        $response = json_decode($this->_response->body());
-        $this->assertTrue($response->success);
+        $response = $this->getParsedResponse();
         $this->assertInternalType('array', $response->data);
 
         $query = $table->find()->where([$table->getPrimaryKey() => $entity->get($table->getPrimaryKey())]);
