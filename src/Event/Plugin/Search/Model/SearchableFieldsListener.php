@@ -7,6 +7,7 @@ use Cake\Datasource\RepositoryInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
+use Cake\ORM\TableRegistry;
 use CsvMigrations\FieldHandlers\FieldHandlerFactory;
 use InvalidArgumentException;
 use Qobo\Utils\ModuleConfig\ConfigType;
@@ -147,17 +148,21 @@ class SearchableFieldsListener implements EventListenerInterface
      */
     public function getBasicSearchFields(Event $event, RepositoryInterface $table)
     {
-        $result = $this->_getBasicSearchFieldsFromConfig($table);
+        $result = $this->getBasicSearchFieldsFromConfig($table);
 
         if (empty($result)) {
-            $result = $this->_getBasicSearchFieldsFromView($table);
+            $result = $this->getBasicSearchFieldsFromSystemSearch($table);
         }
 
-        foreach ($result as &$field) {
-            $field = $table->aliasField($field);
+        if (empty($result)) {
+            $result = $this->getBasicSearchFieldsFromView($table);
         }
 
-        $event->result = $result;
+        foreach ($result as $key => $value) {
+            $result[$key] = $table->aliasField($value);
+        }
+
+        $event->setResult($result);
     }
 
     /**
@@ -169,13 +174,17 @@ class SearchableFieldsListener implements EventListenerInterface
      */
     public function getDisplayFields(Event $event, RepositoryInterface $table)
     {
-        $result = $this->_getBasicSearchFieldsFromView($table);
+        $result = $this->getBasicSearchFieldsFromSystemSearch($table);
 
-        foreach ($result as &$field) {
-            $field = $table->aliasField($field);
+        if (empty($result)) {
+            $result = $this->getBasicSearchFieldsFromView($table);
         }
 
-        $event->result = $result;
+        foreach ($result as $key => $value) {
+            $result[$key] = $table->aliasField($value);
+        }
+
+        $event->setResult($result);
     }
 
     /**
@@ -184,7 +193,7 @@ class SearchableFieldsListener implements EventListenerInterface
      * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return array
      */
-    protected function _getBasicSearchFieldsFromConfig(RepositoryInterface $table)
+    private function getBasicSearchFieldsFromConfig(RepositoryInterface $table)
     {
         $config = [];
         try {
@@ -204,12 +213,33 @@ class SearchableFieldsListener implements EventListenerInterface
     }
 
     /**
+     * Returns basic search fields from provided Table's system search.
+     *
+     * @param \Cake\Datasource\RepositoryInterface $table Table instance
+     * @return array
+     */
+    private function getBasicSearchFieldsFromSystemSearch(RepositoryInterface $table)
+    {
+        $entity = TableRegistry::getTableLocator()->get('Search.SavedSearches')->find()
+            ->where(['SavedSearches.model' => $table->getAlias(), 'SavedSearches.system' => true])
+            ->first();
+
+        if (is_null($entity)) {
+            return [];
+        }
+
+        $searchData = json_decode($entity->content);
+
+        return (array)$searchData->saved->display_columns;
+    }
+
+    /**
      * Returns basic search fields from provided Table's index View csv fields.
      *
      * @param \Cake\Datasource\RepositoryInterface $table Table instance
      * @return array
      */
-    protected function _getBasicSearchFieldsFromView(RepositoryInterface $table)
+    private function getBasicSearchFieldsFromView(RepositoryInterface $table)
     {
         $config = [];
         try {
