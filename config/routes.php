@@ -65,6 +65,12 @@ Router::scope('/', function ($routes) {
     $routes->connect('/users/:action/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users']);
 
     /**
+     * ...and connect the rest of 'Testroute' controller's URLs.
+     */
+    $routes->connect('/testroute/*', ['controller' => 'TestButton', 'action' => 'display']);
+
+
+    /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);

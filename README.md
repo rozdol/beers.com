@@ -194,7 +194,7 @@ If you encounter the above error (often seen on Ubuntu 16.05), make sure
 your SQL mode DOES NOT include "ONLY_FULL_GROUP_BY".
 
 
-## Cinstom intallation
+## Custom installation
 
 ```bash
 git clone https://github.com/QoboLtd/project-template-cakephp.git beers.com
@@ -216,6 +216,7 @@ composer install
 ./bin/build app:update
 
 open -e /usr/local/etc/my.cnf
+## add sql-mode="NO_ZERO_IN_DATE,NO_ZERO_DATE"
 
 ./bin/cake bake csv_module Bars
 ./bin/cake validate
@@ -309,7 +310,7 @@ git push origin master
 ```
 
 
-Ligin to https://packagist.org/
+Login to https://packagist.org/
 Submit https://github.com/rozdol/numop
 
 on github add new release (v1.0.0)
@@ -371,3 +372,12 @@ git checkout -b travis
 git add .travis.yml
 git push origin travis
 ```
+
+##### Detactach from original source
+```bash
+git remote -v
+git remote remove origin
+git remote add origin git@github.com:rozdol/beers.com.git
+git push origin random_changes
+git push origin random_changes
+``
