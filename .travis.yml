@@ -20,6 +20,7 @@ cache:
   yarn: true
   directories:
     - node_modules
+    - $HOME/.composer/cache
 
 matrix:
   fast_finish: true
