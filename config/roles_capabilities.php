@@ -5,8 +5,10 @@ return [
         'ownerCheck' => [
             // List of tables that should be skipped during record access check.
             'skipTables' => [
-                'menus',
-                'menu_items'
+                'byInstance' => [
+                    Menu\Model\Table\MenuItemsTable::class,
+                    Menu\Model\Table\MenusTable::class
+                ]
             ],
         ],
         'accessCheck' => [
