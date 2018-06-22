@@ -385,6 +385,7 @@ git push origin random_changes
 
 # Update to latest project-template-cakephp
 
+```bash
 git remote -v
 git log master..HEAD
 git checkout master
@@ -401,9 +402,9 @@ git commit -m 'Explain'
 bin/build app:update
 
 
-Got err
+#Got err
 ./bin/cake 'validate'
-(find and correct error)
+#(find and correct error)
 bin/cake bake csv_migration BarsBeers
 bin/build app:update
 git add config
@@ -416,16 +417,18 @@ git branch -d updating
 git checkout random_changes
 git status
 git merge master
-(got conflicts)
+#(got conflicts)
 git status
 rm composer.lock
 composer update
 
 git add composer.lock
 git commit
+```
+
 :wq
 
-4 ways to solve conflicts:
+### 4 ways to solve conflicts:
 1. git checkout --ours composer.lock # Use our version
 2. git checkout --theirs composer.lock # Use their version
 3. edit composer.lock # manual conflict resolution
@@ -433,6 +436,19 @@ git commit
 git add composer.lock
 git commit
 :wq
+
+## umbing DB for export
+
+cd /var/www/app.fastconsent.com
+bin/cake bake
+bin/cake bake migration_snapshot users
+bin/cake bake migration_snapshot Initial
+bin/cake migrations migrate
+bin/cake bake
+bin/cake bake model Users
+git status
+bin/cake bake migration Users
+bin/cake migrations migrate
 
 
 
