@@ -41,11 +41,18 @@ and changing remote origin.
 ```bash
 git clone https://github.com/QoboLtd/project-template-cakephp.git example.com
 cd example.com
-./bin/build app:install DB_NAME=my_app,PROJECT_NAME="My Project",PROJECT_VERSION="v1.0.0"
+composer install
+./bin/build app:install DB_NAME=my_app,PROJECT_NAME="My Project",PROJECT_VERSION="v1.0.0",CHOWN_USER=$USER,CHGRP_GROUP=$USER
 git remote remove origin
 git remote add origin git@github.com:YOUR-VENDOR/YOUR-REPOSITORY.git
 git push origin master
 ```
+
+Note that the `CHOWN_USER` and `CHGRP_GROUP` above should be set to the user and group
+that is used by the web server.  In case of Apache and Nginx, these can be `nobody`
+or `nginx` or `apache`.  For the local development environment (regular user, without
+root access) should be set to the current user and group.
+
 
 Update
 ------
@@ -56,6 +63,8 @@ and greatest project-template-cakephp, do the following:
 ```
 cd exmample.com
 git pull https://github.com/QoboLtd/project-template-cakephp
+composer update
+./bin/build app:update
 ```
 
 The above will only work if you installed it via the git clone.  For composer

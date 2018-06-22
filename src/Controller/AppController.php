@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 use App\Controller\ChangelogTrait;
+use App\Event\Plugin\Search\Model\SearchableFieldsListener;
 use App\Feature\Factory as FeatureFactory;
 use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
@@ -156,13 +157,25 @@ class AppController extends Controller
             ->firstOrFail();
 
         $searchData = json_decode($entity->content, true);
-        $searchData = SearchValidator::validateData($this->{$this->name}, $searchData['latest'], $this->Auth->user());
+
+        // return json response and skip any further processing.
+        if ($this->request->is('ajax') && $this->request->accepts('application/json')) {
+            $this->viewBuilder()->className('Json');
+            $response = $this->getAjaxViewVars(
+                $searchData['latest'],
+                $this->{$this->name},
+                new Search($this->{$this->name}, $this->Auth->user())
+            );
+            $this->set($response);
+
+            return;
+        }
 
         $this->set([
             'entity' => $entity,
-            'searchData' => $searchData,
-            'preSaveId' => (new Search($this->{$this->name}, $this->Auth->user()))->create($searchData),
-            'searchableFields' => SearchUtility::instance()->getSearchableFields(
+            'searchData' => $searchData['latest'],
+            'preSaveId' => (new Search($this->{$this->name}, $this->Auth->user()))->create($searchData['latest']),
+            'searchableFields' => SearchableFieldsListener::getSearchableFieldsByTable(
                 $this->{$this->name},
                 $this->Auth->user()
             ),

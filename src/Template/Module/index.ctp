@@ -1,4 +1,5 @@
 <?php
+use Cake\Core\Configure;
 use Cake\Utility\Inflector;
 use Qobo\Utils\ModuleConfig\ConfigType;
 use Qobo\Utils\ModuleConfig\ModuleConfig;
@@ -20,12 +21,21 @@ $title = isset($config->table->alias) ? $config->table->alias : Inflector::human
 </section>
 <section class="content">
 <?php
-echo $this->element('Search.Search/results', [
-    'searchableFields' => $searchableFields,
-    'savedSearch' => $entity,
-    'searchData' => $searchData,
-    'preSaveId' => $preSaveId,
-    'associationLabels' => $associationLabels
-]);
+$args = [
+    [
+        'entity' => $entity,
+        'searchData' => $searchData,
+        'searchableFields' => $searchableFields,
+        'associationLabels' => $associationLabels,
+        'batch' => (bool)Configure::read('Search.batch.active'),
+        'preSaveId' => $preSaveId,
+        'action' => 'index'
+    ],
+    $this
+];
+
+$cell = $this->cell('Search.Result', $args);
+
+echo $cell;
 ?>
 </section>
