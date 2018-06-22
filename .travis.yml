@@ -20,6 +20,7 @@ cache:
   yarn: true
   directories:
     - node_modules
+    - $HOME/.composer/cache
 
 matrix:
   fast_finish: true
@@ -39,10 +40,10 @@ before_script:
   - sleep 10
 
 script:
-  - yarn test
-  - ./vendor/bin/phpunit --group example --no-coverage
-  - ./vendor/bin/phpunit --exclude-group example
   - ./vendor/bin/phpcs
+  - ./vendor/bin/phpunit --group example --no-coverage
+  - yarn test
+  - if [ $TRAVIS_PHP_VERSION != "7.1" ]; then ./vendor/bin/phpunit --exclude-group example --no-coverage; else ./vendor/bin/phpunit --exclude-group example; fi
 
 after_success:
   - curl -s https://codecov.io/bash > /tmp/codecov.sh
