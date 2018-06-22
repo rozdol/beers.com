@@ -41,18 +41,11 @@ and changing remote origin.
 ```bash
 git clone https://github.com/QoboLtd/project-template-cakephp.git example.com
 cd example.com
-composer install
-./bin/build app:install DB_NAME=my_app,PROJECT_NAME="My Project",PROJECT_VERSION="v1.0.0",CHOWN_USER=$USER,CHGRP_GROUP=$USER
+./bin/build app:install DB_NAME=my_app,PROJECT_NAME="My Project",PROJECT_VERSION="v1.0.0"
 git remote remove origin
 git remote add origin git@github.com:YOUR-VENDOR/YOUR-REPOSITORY.git
 git push origin master
 ```
-
-Note that the `CHOWN_USER` and `CHGRP_GROUP` above should be set to the user and group
-that is used by the web server.  In case of Apache and Nginx, these can be `nobody`
-or `nginx` or `apache`.  For the local development environment (regular user, without
-root access) should be set to the current user and group.
-
 
 Update
 ------
@@ -63,8 +56,6 @@ and greatest project-template-cakephp, do the following:
 ```
 cd exmample.com
 git pull https://github.com/QoboLtd/project-template-cakephp
-composer update
-./bin/build app:update
 ```
 
 The above will only work if you installed it via the git clone.  For composer
@@ -389,4 +380,66 @@ git remote remove origin
 git remote add origin git@github.com:rozdol/beers.com.git
 git push origin random_changes
 git push origin random_changes
-``
+```
+
+
+# Update to latest project-template-cakephp
+
+git remote -v
+git log master..HEAD
+git checkout master
+git checkout -b updating
+git remote -v
+git remote add upstream --no-tags https://github.com/QoboLtd/project-template-cakephp.git
+git remote -v
+git remote update
+git pull https://github.com/QoboLtd/project-template-cakephp.git v39.2.1
+composer update
+git status
+git add composer.lock
+git commit -m 'Explain'
+bin/build app:update
+
+
+Got err
+./bin/cake 'validate'
+(find and correct error)
+bin/cake bake csv_migration BarsBeers
+bin/build app:update
+git add config
+git commit -m 'fix validation error'
+
+git checkout master
+git merge updating
+git status
+git branch -d updating
+git checkout random_changes
+git status
+git merge master
+(got conflicts)
+git status
+rm composer.lock
+composer update
+
+git add composer.lock
+git commit
+:wq
+
+4 ways to solve conflicts:
+1. git checkout --ours composer.lock # Use our version
+2. git checkout --theirs composer.lock # Use their version
+3. edit composer.lock # manual conflict resolution
+4. rm composer.lock && composer update # only for automatic gen files.
+git add composer.lock
+git commit
+:wq
+
+
+
+
+
+
+
+
+
+
