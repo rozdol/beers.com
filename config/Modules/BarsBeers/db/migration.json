@@ -1,4 +1,10 @@
-{
+{   "id": {
+        "name": "id",
+        "type": "uuid",
+        "required": "1",
+        "non-searchable": null,
+        "unique": "1"
+    },
     "bar_id": {
         "name": "bar_id",
         "type": "related(Bars)",
@@ -10,6 +16,20 @@
         "name": "beer_id",
         "type": "related(Beers)",
         "required": "1",
+        "non-searchable": null,
+        "unique": null
+    },
+    "created": {
+        "name": "created",
+        "type": "datetime",
+        "required": null,
+        "non-searchable": null,
+        "unique": null
+    },
+    "modified": {
+        "name": "modified",
+        "type": "datetime",
+        "required": null,
         "non-searchable": null,
         "unique": null
     }
