@@ -439,6 +439,7 @@ git commit
 
 ## umbing DB for export
 
+```bash
 cd /var/www/app.fastconsent.com
 bin/cake bake
 bin/cake bake migration_snapshot users
@@ -449,6 +450,7 @@ bin/cake bake model Users
 git status
 bin/cake bake migration Users
 bin/cake migrations migrate
+```
 
 
 
